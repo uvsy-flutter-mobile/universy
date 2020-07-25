@@ -1,0 +1,5 @@
+const String CORR_TYPE_APPROVED = "APPROVED";
+const String CORR_TYPE_REGULAR = "REGULAR";
+
+const String CORR_RESTR_TO_TAKE = "TO_TAKE";
+const String CORR_RESTR_TO_APPROVE = "TO_APPROVE";
