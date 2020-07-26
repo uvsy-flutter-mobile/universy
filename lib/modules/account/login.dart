@@ -1,7 +1,16 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/constants/regex.dart';
+import 'package:universy/model/account.dart';
+import 'package:universy/modules/account/bloc/cubit.dart';
+import 'package:universy/services/exceptions.dart';
+import 'package:universy/services/inherited.dart';
+import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
+import 'package:universy/widgets/flushbar/builder.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
@@ -79,15 +88,42 @@ class LoginWidgetState extends State<LogInWidget> {
   void submitButtonOnPressedAction(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
-/*      await AsyncModalBuilder()
+      await AsyncModalBuilder()
           .perform(_logIn)
           .then(_navigateToHomeScreen)
           .handle(NotAuthorized, _showNotAuthorizedFlushBar)
-          .handle(ConnectionException, FlushBarBuilder.noConnection().show)
           .withTitle(_verifyingMessage())
           .build()
-          .run(context);*/
+          .run(context);
     }
+  }
+
+  Future<void> _logIn(BuildContext context) async {
+    User user = _getUserFromTextFields();
+    await _getAccountService(context).logIn(user);
+  }
+
+  User _getUserFromTextFields() {
+    return User(_userController.text.trim(), _passwordController.text.trim());
+  }
+
+  AccountService _getAccountService(BuildContext context) {
+    return Services.of(context).accountService();
+  }
+
+  void _navigateToHomeScreen(BuildContext context) {
+    // Navigator.pushReplacementNamed(context, ViewPathsConstants.MAIN);
+  }
+
+  void _navigateToLogonWidget(BuildContext context) {
+    BlocProvider.of<AccountCubit>(context).toSingUp();
+  }
+
+  void _showNotAuthorizedFlushBar(BuildContext context) {
+    FlushBarBuilder()
+        .withMessage(_notAuthorizeMessage())
+        .withIcon(Icon(Icons.block, color: Colors.redAccent))
+        .show(context);
   }
 
   String _notAuthorizeMessage() =>
@@ -139,9 +175,9 @@ class LoginUsernameWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _getUserInputValidator() {
-    return PatternNotEmptyTextFormFieldValidatorBuilder(
-      regExp: RegexConstants.USERNAME_FORMAT_REGEX,
-      patternMessage: AppText.getInstance().get("login.input.user.notValid"),
+    return NotEmptyFunctionTextFormValidatorBuilder(
+      validationFunction: EmailValidator.validate,
+      message: AppText.getInstance().get("login.input.user.notValid"),
       emptyMessage: AppText.getInstance().get("login.input.user.required"),
     );
   }
@@ -245,7 +281,7 @@ class LoginSubmitButtonWidget extends StatelessWidget {
   }
 }
 
-/// Login link for logon
+/// Login link for signup
 class LoginLinkToLogon extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
@@ -285,7 +321,7 @@ class LoginLinkToLogon extends StatelessWidget {
     return Column(
       children: <Widget>[
         EllipsisCustomText.left(
-          text: (AppText.getInstance().get("login.actions.logon")),
+          text: (AppText.getInstance().get("login.actions.signup")),
           textStyle: TextStyle(
               decoration: TextDecoration.underline, color: Colors.black),
         ),

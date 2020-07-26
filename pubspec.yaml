@@ -26,13 +26,21 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # Flutter widget that automatically resizes text to fit perfectly within its bounds.
+  # Flutter widget that automatically resizes text to fit perfectly within its bounds
   auto_size_text: 2.1.0
   # Optional helps avoid null reference errors
   optional: 5.0.0
   # Custom user notification
   flushbar: 1.10.4
-
+  # An AWS Cognito plugin for flutter
+  amazon_cognito_identity_dart_2: 0.1.15
+  # A predictable state management for Business Logic Components
+  # bloc: 6.0.1
+  flutter_bloc: 6.0.1
+  # Work with == in dart code
+  equatable: 1.2.3
+  # Validate emails
+  email_validator: 1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

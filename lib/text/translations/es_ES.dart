@@ -1,4 +1,7 @@
 const Map<dynamic, dynamic> ES = {
+  "general": {
+    "loading": "Cargando...",
+  },
   "login": {
     "title": "Iniciar Sesión",
     "input": {
@@ -16,7 +19,7 @@ const Map<dynamic, dynamic> ES = {
       "submit": "Ingresar",
       "verify": "Verificando información",
       "register": "¡Registrate!",
-      "logon": "Aún no tenes cuenta?"
+      "signup": "Aún no tenes cuenta?"
     },
     "error": {
       "notAuthorized": "Usuario y/o contraseña incorrectos",

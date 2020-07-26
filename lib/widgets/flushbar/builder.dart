@@ -1,7 +1,7 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/util/objects.dart';
+import 'package:universy/util/object.dart';
 
 class FlushBarBuilder {
   String _message = "";

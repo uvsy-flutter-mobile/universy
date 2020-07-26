@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +50,7 @@ class AsyncModalBuilder {
   ContextCallable _afterSuccess = (context) => {};
   Map<Type, ContextCallable> _exceptionHandlers = Map();
 
-  String _displayText = AppText.getInstance().get("student.loading");
+  String _displayText = AppText.getInstance().get("general.loading");
 
   AsyncModalBuilder perform(FutureContextCallable action) {
     this._asyncAction = action;

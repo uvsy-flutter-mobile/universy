@@ -4,6 +4,8 @@ import 'package:universy/system/config.dart';
 import 'package:universy/system/locale.dart';
 
 import 'app/universy.dart';
+import 'services/impl/default/factory.dart';
+import 'services/inherited.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +13,12 @@ void main() async {
   //await SystemConfig.instance().load();
 
   // TODO: Should we keep this portrait?
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  runApp(Universy());
+  var appWithServices = Services(
+    factory: DefaultServiceFactory.instance(),
+    child: Universy(),
+  );
+
+  runApp(appWithServices);
 }

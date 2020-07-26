@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:universy/modules/account/login.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/system/assets.dart';
+import 'package:universy/util/object.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
 import 'package:universy/widgets/decorations/box.dart';
 import 'package:universy/widgets/paddings/edge.dart';
+
+import 'bloc/builder.dart';
+import 'bloc/cubit.dart';
 
 class AccountView extends StatefulWidget {
   @override
@@ -12,12 +16,35 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  AccountCubit _accountCubit;
+
+  @override
+  void didChangeDependencies() {
+    if (isNull(_accountCubit)) {
+      this._accountCubit = AccountCubit();
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: assetImageDecoration(Assets.UNIVERSY_MAIN_BACKGROUND),
       child: ListView(
-        children: <Widget>[_LogoWidget(), _AccountWidget()],
+        children: <Widget>[
+          _LogoWidget(),
+          _AccountCard(child: buildAccountContent()),
+        ],
+      ),
+    );
+  }
+
+  Widget buildAccountContent() {
+    return BlocProvider(
+      create: (context) => _accountCubit,
+      child: BlocBuilder(
+        cubit: _accountCubit,
+        builder: AccountStateBuilder().builder(),
       ),
     );
   }
@@ -34,7 +61,11 @@ class _LogoWidget extends StatelessWidget {
   }
 }
 
-class _AccountWidget extends StatelessWidget {
+class _AccountCard extends StatelessWidget {
+  final Widget child;
+
+  const _AccountCard({Key key, this.child}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return AllEdgePaddedWidget(
@@ -42,11 +73,7 @@ class _AccountWidget extends StatelessWidget {
       child: CircularRoundedRectangleCard(
         radius: 18,
         color: Colors.white,
-        child: Container(
-          //height: MediaQuery.of(context).size.height * 0.40,
-          //width: MediaQuery.of(context).size.width * 0.90,
-          child: LogInWidget(),
-        ),
+        child: child,
       ),
     );
   }
