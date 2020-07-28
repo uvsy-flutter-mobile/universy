@@ -5,6 +5,7 @@ abstract class Service {
 }
 
 abstract class AccountService extends Service {
+  Future<bool> isLoggedIn();
   Future<void> logIn(User user);
   Future<void> signUp(User user);
   Future<void> confirmAccount(String code);

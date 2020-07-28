@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/util/logger.dart';
 import 'package:universy/widgets/flushbar/builder.dart';
 
 typedef FutureContextCallable = Future<dynamic> Function(BuildContext context);
@@ -27,6 +26,7 @@ class AsyncModal {
       _afterSuccess(context);
     } catch (e) {
       Navigator.of(context).pop();
+      Log.getLogger().error("Error", e);
       Optional.ofNullable(_exceptionHandlers[e.runtimeType])
           .orElse(defaultHandler)(context);
     }

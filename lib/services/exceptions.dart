@@ -2,4 +2,10 @@
 /// are expected to happen inside the services level.
 class ServiceException implements Exception {}
 
+/// [NotAuthorized] occurs when the user has no permissions
+/// over a resource/action
 class NotAuthorized extends ServiceException {}
+
+/// [UserAlreadyExists] occurs when the user exists already
+/// in the userpool
+class UserAlreadyExists extends ServiceException {}

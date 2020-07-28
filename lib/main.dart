@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:universy/system/config.dart';
+import 'package:provider/provider.dart';
+import 'package:universy/services/factory.dart';
+import 'package:universy/storage/factory.dart';
+import 'package:universy/storage/impl/factory.dart';
 import 'package:universy/system/locale.dart';
 
 import 'app/universy.dart';
-import 'services/impl/default/factory.dart';
-import 'services/inherited.dart';
+import 'services/impl/factory.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,10 +17,12 @@ void main() async {
   // TODO: Should we keep this portrait?
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  var appWithServices = Services(
-    factory: DefaultServiceFactory.instance(),
+  var appWithServices = MultiProvider(
+    providers: [
+      Provider<ServiceFactory>(create: (_) => DefaultServiceFactory.instance()),
+      Provider<StorageFactory>(create: (_) => DefaultStorageFactory.instance()),
+    ],
     child: Universy(),
   );
-
   runApp(appWithServices);
 }

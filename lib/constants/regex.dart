@@ -1,4 +1,4 @@
-abstract class RegexConstants {
+abstract class Regex {
   // ignore: non_constant_identifier_names
   static final RegExp PASSWORD_FORMAT_REGEX =
       RegExp(r"^(?=.*\d)[A-Za-z\d$@$!%*?&]{8,15}");

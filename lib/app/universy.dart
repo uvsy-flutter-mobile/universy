@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:universy/app/theme.dart';
-import 'package:universy/modules/account/account.dart';
+import 'package:universy/constants/routes.dart';
+import 'package:universy/modules/home/home.dart';
+import 'package:universy/modules/loading/loading.dart';
 import 'package:universy/system/config.dart';
 import 'package:universy/system/locale.dart';
+import 'package:universy/system/start.dart';
+import 'package:universy/widgets/future/future_widget.dart';
 
 class Universy extends StatelessWidget {
   @override
@@ -15,10 +19,20 @@ class Universy extends StatelessWidget {
       ],
       supportedLocales: [SystemLocale.getSystemLocale()],
       //title: _getApplicationTitle(),
-      color: Colors.amber,
       theme: uvsyTheme,
-      home: AccountView(),
+      home: FutureWidget(
+        fromFuture: SystemStart.getWidget(context),
+        onData: (home) => home,
+        onMeanTime: LoadingModule(),
+      ),
+      routes: _getApplicationRoutes(),
     );
+  }
+
+  Map<String, WidgetBuilder> _getApplicationRoutes() {
+    return {
+      Routes.MAIN: (context) => HomeModule(),
+    };
   }
 
   String _getApplicationTitle() {

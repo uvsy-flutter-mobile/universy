@@ -10,12 +10,12 @@ import 'package:universy/widgets/paddings/edge.dart';
 import 'bloc/builder.dart';
 import 'bloc/cubit.dart';
 
-class AccountView extends StatefulWidget {
+class AccountModule extends StatefulWidget {
   @override
-  _AccountViewState createState() => _AccountViewState();
+  _AccountModuleState createState() => _AccountModuleState();
 }
 
-class _AccountViewState extends State<AccountView> {
+class _AccountModuleState extends State<AccountModule> {
   AccountCubit _accountCubit;
 
   @override

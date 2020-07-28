@@ -1,11 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universy/constants/regex.dart';
+import 'package:provider/provider.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account.dart';
 import 'package:universy/modules/account/bloc/cubit.dart';
 import 'package:universy/services/exceptions.dart';
-import 'package:universy/services/inherited.dart';
+import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
@@ -71,8 +71,7 @@ class LoginWidgetState extends State<LogInWidget> {
                 obscure: _passwordHidden,
                 onPressed: _changePasswordVisibilityOnPressedAction),
             LoginSubmitButtonWidget(loginAction: submitButtonOnPressedAction),
-            LoginLinkToLogon(
-                linkAction: (BuildContext context) => print(context))
+            LoginLinkToSignUp(linkAction: _navigateToSignUpWidget)
           ],
         ),
       ),
@@ -108,15 +107,15 @@ class LoginWidgetState extends State<LogInWidget> {
   }
 
   AccountService _getAccountService(BuildContext context) {
-    return Services.of(context).accountService();
+    return context.read<ServiceFactory>().accountService();
   }
 
   void _navigateToHomeScreen(BuildContext context) {
-    // Navigator.pushReplacementNamed(context, ViewPathsConstants.MAIN);
+    Navigator.pushReplacementNamed(context, Routes.MAIN);
   }
 
-  void _navigateToLogonWidget(BuildContext context) {
-    BlocProvider.of<AccountCubit>(context).toSingUp();
+  void _navigateToSignUpWidget(BuildContext context) {
+    context.read<AccountCubit>().toSingUp();
   }
 
   void _showNotAuthorizedFlushBar(BuildContext context) {
@@ -130,7 +129,7 @@ class LoginWidgetState extends State<LogInWidget> {
       AppText.getInstance().get("login.error.notAuthorized");
 
   String _verifyingMessage() =>
-      AppText.getInstance().get("login.actions.verify");
+      AppText.getInstance().get("login.info.verifying");
 }
 
 /// Login Title
@@ -282,10 +281,10 @@ class LoginSubmitButtonWidget extends StatelessWidget {
 }
 
 /// Login link for signup
-class LoginLinkToLogon extends StatelessWidget {
+class LoginLinkToSignUp extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const LoginLinkToLogon(
+  const LoginLinkToSignUp(
       {Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);

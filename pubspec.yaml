@@ -35,12 +35,17 @@ dependencies:
   # An AWS Cognito plugin for flutter
   amazon_cognito_identity_dart_2: 0.1.15
   # A predictable state management for Business Logic Components
-  # bloc: 6.0.1
   flutter_bloc: 6.0.1
   # Work with == in dart code
   equatable: 1.2.3
   # Validate emails
   email_validator: 1.0.0
+  # Store data in a secure way
+  flutter_secure_storage: 3.3.3
+  # Wrapper around inherited widget
+  provider: 4.3.1
+  # Better logger
+  logger: 0.9.1
 
 
   # The following adds the Cupertino Icons font to your application.
