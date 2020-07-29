@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/model/account.dart';
 
 import 'states.dart';
 
@@ -13,5 +14,9 @@ class AccountCubit extends Cubit<AccountState> {
 
   Future<void> toLogIn() async {
     emit(LogInState());
+  }
+
+  Future<void> toVerify(User user) async {
+    emit(VerifyState(user));
   }
 }

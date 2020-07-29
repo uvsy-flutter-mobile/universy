@@ -1,6 +1,12 @@
 const Map<dynamic, dynamic> ES = {
   "general": {
     "loading": "Cargando...",
+    "exit": {
+      "title": "Estás saliendo de Universy",
+      "content": "Seguro que querés salir?",
+    },
+    "yes": "Si",
+    "no": "No"
   },
   "login": {
     "title": "Iniciar Sesión",
@@ -57,5 +63,27 @@ const Map<dynamic, dynamic> ES = {
       "parametersInvalid": "Los datos ingresados no son correctos",
       "usernameAlreadyExist": "El usuario ya existe",
     },
+  },
+  "verify": {
+    "title": "Verificá tu email",
+    "subtitle": "Un email con el código de verificación fue enviado a",
+    "input": {
+      "code": {
+        "message": "Ingresá el código",
+        "required": "El código no puede ser vacio",
+      },
+    },
+    "actions": {
+      "submit": "Verificar usuario",
+      "resend": "Reenviar código",
+    },
+    "info": {
+      "verified": "Email verificado!",
+      "resending": "Enviando nuevo código",
+      "codeSent": "Se envío un nuevo código"
+    },
+    "error": {
+      "codeMismatch": "El código no coincide",
+    }
   }
 };

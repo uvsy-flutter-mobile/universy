@@ -1,15 +1,22 @@
 import 'package:equatable/equatable.dart';
+import 'package:universy/model/account.dart';
 
 abstract class AccountState extends Equatable {
   AccountState([List props = const []]) : super();
-}
 
-class LogInState extends AccountState {
   @override
   List<Object> get props => [];
 }
 
-class SignUpState extends AccountState {
+class LogInState extends AccountState {}
+
+class SignUpState extends AccountState {}
+
+class VerifyState extends AccountState {
+  final User user;
+
+  VerifyState(this.user);
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user.hashCode];
 }

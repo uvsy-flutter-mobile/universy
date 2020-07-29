@@ -71,7 +71,7 @@ class LoginWidgetState extends State<LogInWidget> {
                 obscure: _passwordHidden,
                 onPressed: _changePasswordVisibilityOnPressedAction),
             LoginSubmitButtonWidget(loginAction: submitButtonOnPressedAction),
-            LoginLinkToSignUp(linkAction: _navigateToSignUpWidget)
+            LoginLinkToSignUp(linkAction: _navigateToSignUp)
           ],
         ),
       ),
@@ -91,6 +91,7 @@ class LoginWidgetState extends State<LogInWidget> {
           .perform(_logIn)
           .then(_navigateToHomeScreen)
           .handle(NotAuthorized, _showNotAuthorizedFlushBar)
+          .handle(UserNeedsConfirmation, _navigateToVerify)
           .withTitle(_verifyingMessage())
           .build()
           .run(context);
@@ -114,8 +115,13 @@ class LoginWidgetState extends State<LogInWidget> {
     Navigator.pushReplacementNamed(context, Routes.MAIN);
   }
 
-  void _navigateToSignUpWidget(BuildContext context) {
+  void _navigateToSignUp(BuildContext context) {
     context.read<AccountCubit>().toSingUp();
+  }
+
+  void _navigateToVerify(BuildContext context) {
+    User user = _getUserFromTextFields();
+    context.read<AccountCubit>().toVerify(user);
   }
 
   void _showNotAuthorizedFlushBar(BuildContext context) {

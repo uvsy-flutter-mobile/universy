@@ -26,7 +26,6 @@ class AsyncModal {
       _afterSuccess(context);
     } catch (e) {
       Navigator.of(context).pop();
-      Log.getLogger().error("Error", e);
       Optional.ofNullable(_exceptionHandlers[e.runtimeType])
           .orElse(defaultHandler)(context);
     }

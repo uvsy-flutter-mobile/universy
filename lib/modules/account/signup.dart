@@ -94,7 +94,7 @@ class SignUpWidgetState extends State<SignUpWidget> {
       await AsyncModalBuilder()
           .perform(_performSignUp)
           .withTitle(_creatingAccountMessage())
-          //.then(_navigateToVerification)
+          .then(_navigateToVerify)
           .handle(UserAlreadyExists, _showUsernameAlreadyExistFlushBar)
           //.handle(ParametersInvalid, _showParametersInvalidFlushBar)
           //.handle(ConnectionException, FlushBarBuilder.noConnection().show)
@@ -108,14 +108,6 @@ class SignUpWidgetState extends State<SignUpWidget> {
     await _getAccountService(context).signUp(user);
   }
 
-/*
-  void _navigateToVerification(BuildContext context) {
-    Account account = _getAccountFromTextFields();
-    _showAccountCreated(context);
-    _navigateToVerificationScreen(context, account);
-  }
-*/
-
   User _getUserFromTextFields() {
     return User(
       _usernameController.text.trim(),
@@ -127,9 +119,11 @@ class SignUpWidgetState extends State<SignUpWidget> {
     return Provider.of<ServiceFactory>(context, listen: false).accountService();
   }
 
-/*  void _navigateToVerificationScreen(BuildContext context, Account account) {
-    // BlocProvider.of<AccountBloc>(context).dispatch(VerificationCodeEvent(account));
-  }*/
+  void _navigateToVerify(BuildContext context) {
+    _showUserCreated(context);
+    User user = _getUserFromTextFields();
+    context.read<AccountCubit>().toVerify(user);
+  }
 
   void _navigateToLoginWidget(BuildContext context) {
     context.read<AccountCubit>().toLogIn();
@@ -149,21 +143,21 @@ class SignUpWidgetState extends State<SignUpWidget> {
         .show(context);
   }
 
-  void _showAccountCreated(BuildContext context) {
+  void _showUserCreated(BuildContext context) {
     FlushBarBuilder()
         .withMessage(AppText.getInstance().get("signUp.info.accountCreated"))
         .withIcon(Icon(Icons.check, color: Colors.green))
         .show(context);
   }
 
-  String _invalidParametersMessage() =>
-      AppText.getInstance().get("signUp.error.parametersInvalid");
+  String _invalidParametersMessage() => AppText.getInstance() //
+      .get("signUp.error.parametersInvalid");
 
-  String _usernameAlreadyExistsMessage() =>
-      AppText.getInstance().get("signUp.error.usernameAlreadyExist");
+  String _usernameAlreadyExistsMessage() => AppText.getInstance() //
+      .get("signUp.error.usernameAlreadyExist");
 
-  String _creatingAccountMessage() =>
-      AppText.getInstance().get("signUp.info.creatingAccount");
+  String _creatingAccountMessage() => AppText.getInstance() //
+      .get("signUp.info.creatingAccount");
 }
 
 /// Signup Title
