@@ -1,0 +1,4 @@
+const int STUDENT_SUBJECT_INDEX = 0;
+const int INSTITUTION_SUBJECT_INDEX = 1;
+const int PROFILE_INDEX = 2;
+const int SCHEDULE_INDEX = 3;

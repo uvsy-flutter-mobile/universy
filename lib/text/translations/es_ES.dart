@@ -85,5 +85,20 @@ const Map<dynamic, dynamic> ES = {
     "error": {
       "codeMismatch": "El código no coincide",
     }
-  }
+  },
+  "main": {
+    "modules": {
+      "studentSubjects": {
+        "title": "Mis Materias",
+        "subtitle": "Administrá tu estado académico!",
+      },
+      "institutionSubjects": {
+        "title": "Cátedras",
+        "subtitle": "Conocé tu carrera!",
+      },
+      "profile": {
+        "title": "Perfil",
+      },
+    }
+  },
 };

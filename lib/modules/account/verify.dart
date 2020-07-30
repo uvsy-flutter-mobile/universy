@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account.dart';
 import 'package:universy/services/exceptions.dart';
 import 'package:universy/services/factory.dart';
@@ -111,7 +112,7 @@ class _VerifyWidgetState extends State<VerifyWidget>
       await AsyncModalBuilder()
           .perform(_performConfirmUser)
           .withTitle(_sendMessage())
-          .then(_showVerifiedAccountFlushBar)
+          .then(_navigateToHomeScreen)
           .handle(ConfirmationCodeMismatch, _showCodeMismatchFlushBar)
           .build()
           .run(context);
@@ -123,6 +124,12 @@ class _VerifyWidgetState extends State<VerifyWidget>
     var accountService =
         Provider.of<ServiceFactory>(context, listen: false).accountService();
     await accountService.confirmUser(user, code);
+  }
+
+  void _navigateToHomeScreen(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.HOME);
+    // TODO: Should we keep this flushbar? We will go to the welcome page!
+    // _showVerifiedAccountFlushBar(context);
   }
 
   void _resendVerificationCode(BuildContext context) async {

@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universy/modules/home/bloc/states.dart';
+import 'package:universy/modules/main/bloc/states.dart';
 
-class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(StudentSubjectsState());
+class MainCubit extends Cubit<MainState> {
+  MainCubit() : super(StudentSubjectsState());
 
   void toStudentSubjects() {
     emit(StudentSubjectsState());

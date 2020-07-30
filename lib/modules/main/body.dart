@@ -4,22 +4,19 @@ import 'package:universy/util/bloc.dart';
 
 import 'bloc/cubit.dart';
 
-class HomeAppStateBuilder extends WidgetBuilderFactory {
+class MainBodyBuilder extends WidgetBuilderFactory {
   Widget translate(state) {
     throw UnimplementedError();
   }
 }
 
-class HomeAppBar extends StatelessWidget with PreferredSizeWidget {
+class MainBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<HomeCubit>(context);
+    var cubit = BlocProvider.of<MainCubit>(context);
     return BlocBuilder(
       cubit: cubit,
-      builder: HomeAppStateBuilder().builder(),
+      builder: MainBodyBuilder().builder(),
     );
   }
-
-  @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

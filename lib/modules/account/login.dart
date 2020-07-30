@@ -112,7 +112,7 @@ class LoginWidgetState extends State<LogInWidget> {
   }
 
   void _navigateToHomeScreen(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.MAIN);
+    Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
   void _navigateToSignUp(BuildContext context) {
