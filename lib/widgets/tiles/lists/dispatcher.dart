@@ -5,14 +5,14 @@ class DispatcherListTileItem extends StatelessWidget {
   final bool _selected;
   final String _title;
   final String _subtitle;
-  final Function(BuildContext context) _eventDispatcher;
+  final VoidCallback _eventDispatcher;
 
   const DispatcherListTileItem(
       {Key key,
       @required bool selected,
       @required String title,
       @required String subtitle,
-      @required Function(BuildContext context) eventDispatcher})
+      @required VoidCallback eventDispatcher})
       : this._selected = selected,
         this._title = title,
         this._subtitle = subtitle,
@@ -26,7 +26,7 @@ class DispatcherListTileItem extends StatelessWidget {
       child: ListTile(
         title: _buildTitle(),
         subtitle: _buildSubtitle(),
-        onTap: _eventDispatcher(context),
+        onTap: _eventDispatcher,
         selected: _selected,
       ),
     );
@@ -36,6 +36,8 @@ class DispatcherListTileItem extends StatelessWidget {
 
   Text _buildTitle() => Text(_title, style: TextStyle(color: Colors.black));
 
-  Text _buildSubtitle() =>
-      Text(_subtitle, style: TextStyle(color: Colors.black));
+  Text _buildSubtitle() => Text(
+        _subtitle,
+        style: TextStyle(color: Colors.black),
+      );
 }

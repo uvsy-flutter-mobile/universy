@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universy/modules/main/drawer/items.dart';
 import 'package:universy/util/bloc.dart';
 
 import 'bloc/cubit.dart';
 import 'bloc/states.dart';
+import 'drawer/header.dart';
+import 'drawer/items.dart';
 import 'index.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -35,11 +36,12 @@ class _Widget extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
+          UserDrawerHeader(),
           Ink(
               child: StudentSubjectsItem(
                   selected: _index == STUDENT_SUBJECT_INDEX)),
           Ink(
-              child: InstitutionSubjectItem(
+              child: InstitutionSubjectsItem(
                   selected: _index == INSTITUTION_SUBJECT_INDEX)),
           Divider(),
         ],

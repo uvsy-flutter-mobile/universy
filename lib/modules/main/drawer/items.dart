@@ -16,18 +16,17 @@ class StudentSubjectsItem extends StatelessWidget {
     return DispatcherListTileItem(
       selected: _selected,
       title: AppText.getInstance().get("main.modules.studentSubjects.title"),
-      subtitle:
-          AppText.getInstance().get("main.modules.studentSubjects.subtitle"),
-      eventDispatcher: (context) =>
-          BlocProvider.of<MainCubit>(context).toStudentSubjects(),
+      subtitle: AppText.getInstance() //
+          .get("main.modules.studentSubjects.subtitle"),
+      eventDispatcher: BlocProvider.of<MainCubit>(context).toStudentSubjects,
     );
   }
 }
 
-class InstitutionSubjectItem extends StatelessWidget {
+class InstitutionSubjectsItem extends StatelessWidget {
   final bool _selected;
 
-  const InstitutionSubjectItem({Key key, bool selected})
+  const InstitutionSubjectsItem({Key key, bool selected})
       : this._selected = selected,
         super(key: key);
 
@@ -39,8 +38,8 @@ class InstitutionSubjectItem extends StatelessWidget {
           AppText.getInstance().get("main.modules.institutionSubjects.title"),
       subtitle: AppText.getInstance()
           .get("main.modules.institutionSubjects.subtitle"),
-      eventDispatcher: (context) =>
-          BlocProvider.of<MainCubit>(context).toInstitutionSubjects(),
+      eventDispatcher:
+          BlocProvider.of<MainCubit>(context).toInstitutionSubjects,
     );
   }
 }
