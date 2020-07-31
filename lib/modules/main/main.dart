@@ -15,7 +15,7 @@ class MainModule extends StatelessWidget {
       create: (context) => MainCubit(),
       child: Scaffold(
         drawer: MainDrawer(),
-        //appBar: MainAppBar(),
+        appBar: MainAppBar(),
         //body: MainBody(),
         bottomNavigationBar: MainBottomNavigationBar(),
       ),

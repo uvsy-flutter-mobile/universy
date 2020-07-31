@@ -15,8 +15,4 @@ class MainCubit extends Cubit<MainState> {
   void toInstitutionSubjects() {
     emit(InstitutionSubjectsState());
   }
-
-  void toScheduleSubjects() {
-    emit(ScheduleState());
-  }
 }
