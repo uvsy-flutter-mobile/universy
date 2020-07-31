@@ -98,6 +98,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "profile": {
         "title": "Perfil",
+        "subtitle": "Personalizá tu usuario de Univery!",
       },
     }
   },
