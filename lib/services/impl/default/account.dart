@@ -32,6 +32,14 @@ class DefaultAccountService extends AccountService {
     return _instance;
   }
 
+  CognitoUser _createCognitoUser(User user) {
+    return CognitoUser(
+      user.username,
+      _userPool,
+      storage: SecureAccountStorage.instance(),
+    );
+  }
+
   Exception _translateCognitoClientException(CognitoClientException e) {
     var exceptionType = Optional.ofNullable(_clientExceptions[e.code]) //
         .orElse(() => ServiceException());
@@ -63,7 +71,8 @@ class DefaultAccountService extends AccountService {
       var session = await cognitoUser?.getSession();
       return notNull(session) && session.isValid();
     } on CognitoClientException catch (e) {
-      throw _translateCognitoClientException(e);
+      Log.getLogger().warning("Cognito client error.", e);
+      return false;
     } catch (e) {
       Log.getLogger().error("Error validating login.", e);
       throw ServiceException();
@@ -73,12 +82,8 @@ class DefaultAccountService extends AccountService {
   @override
   Future<void> logIn(User user) async {
     try {
-      final cognitoUser = new CognitoUser(
-        user.username,
-        _userPool,
-        storage: SecureAccountStorage.instance(),
-      );
-      final authDetails = new AuthenticationDetails(
+      final cognitoUser = _createCognitoUser(user);
+      final authDetails = AuthenticationDetails(
         username: user.username,
         password: user.password,
       );
@@ -97,7 +102,7 @@ class DefaultAccountService extends AccountService {
   @override
   Future<void> confirmUser(User user, String code) async {
     try {
-      final cognitoUser = new CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user.username, _userPool);
       await cognitoUser.confirmRegistration(code);
     } on CognitoClientException catch (e) {
       throw _translateCognitoClientException(e);
@@ -110,7 +115,7 @@ class DefaultAccountService extends AccountService {
   @override
   Future<void> resendConfirmationCode(User user) async {
     try {
-      final cognitoUser = new CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user.username, _userPool);
       await cognitoUser.resendConfirmationCode();
     } catch (e) {
       Log.getLogger().error("Error resending code.", e);
@@ -121,7 +126,7 @@ class DefaultAccountService extends AccountService {
   @override
   Future<void> logOut(User user) async {
     try {
-      final cognitoUser = new CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user.username, _userPool);
       await cognitoUser.signOut();
     } catch (e) {
       Log.getLogger().error("Error logging out.", e);
@@ -132,7 +137,7 @@ class DefaultAccountService extends AccountService {
   @override
   Future<void> changePassword(User user, String newPassword) async {
     try {
-      final cognitoUser = new CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user.username, _userPool);
       await cognitoUser.changePassword(
         user.password,
         newPassword,
@@ -146,7 +151,7 @@ class DefaultAccountService extends AccountService {
   @override
   Future<void> forgotPassword(User user) async {
     try {
-      final cognitoUser = new CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user.username, _userPool);
       await cognitoUser.forgotPassword();
     } catch (e) {
       Log.getLogger().error("Error recovering password.", e);
@@ -157,7 +162,7 @@ class DefaultAccountService extends AccountService {
   @override
   Future<void> confirmPassword(User user, String newPassword) async {
     try {
-      final cognitoUser = new CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user.username, _userPool);
       await cognitoUser.confirmPassword(user.password, newPassword);
     } catch (e) {
       Log.getLogger().error("Error confirming password.", e);

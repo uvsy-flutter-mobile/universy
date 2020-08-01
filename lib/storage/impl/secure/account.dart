@@ -16,42 +16,45 @@ class SecureAccountStorage extends AccountStorage {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> clear() {
     try {
       final storage = FlutterSecureStorage();
-      await storage.deleteAll();
+      return storage.deleteAll();
     } catch (e) {
       Log.getLogger().error("Error cleaning account info.", e);
+      return null;
     }
   }
 
   @override
-  Future getItem(String key) async {
+  Future<dynamic> getItem(String key) {
     try {
       final storage = FlutterSecureStorage();
-      await storage.read(key: key);
+      return storage.read(key: key);
     } catch (e) {
       Log.getLogger().error("Error reading account info.", e);
+      return null;
     }
   }
 
   @override
-  Future removeItem(String key) async {
+  Future<dynamic> removeItem(String key) {
     try {
       final storage = FlutterSecureStorage();
-      await storage.delete(key: key);
+      return storage.delete(key: key);
     } catch (e) {
       Log.getLogger().error("Error removing account info.", e);
     }
   }
 
   @override
-  Future setItem(String key, value) async {
+  Future<dynamic> setItem(String key, value) {
     try {
       final storage = FlutterSecureStorage();
-      await storage.write(key: key, value: value);
+      return storage.write(key: key, value: value);
     } catch (e) {
       Log.getLogger().error("Error writting account info.", e);
+      return null;
     }
   }
 }

@@ -7,10 +7,10 @@ import 'package:universy/services/factory.dart';
 class SystemStart {
   static Future<Widget> getWidget(BuildContext context) async {
     var accountService = Provider.of<ServiceFactory>(context).accountService();
-/*    if (await accountService.isLoggedIn()) {
+    if (await accountService.isLoggedIn()) {
+      return MainModule();
     } else {
       return AccountModule();
-    }*/
-    return MainModule();
+    }
   }
 }

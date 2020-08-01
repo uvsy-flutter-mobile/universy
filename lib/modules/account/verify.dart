@@ -121,9 +121,10 @@ class _VerifyWidgetState extends State<VerifyWidget>
 
   Future<void> _performConfirmUser(BuildContext context) async {
     String code = _getConfirmationCode();
-    var accountService =
-        Provider.of<ServiceFactory>(context, listen: false).accountService();
+    var accountService = Provider.of<ServiceFactory>(context, listen: false) //
+        .accountService();
     await accountService.confirmUser(user, code);
+    await accountService.logIn(user);
   }
 
   void _navigateToHomeScreen(BuildContext context) {
