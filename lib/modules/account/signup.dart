@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
 import 'package:universy/model/account.dart';
 import 'package:universy/modules/account/keys.dart';
-import 'package:universy/services/exceptions.dart';
+import 'package:universy/services/exceptions/account.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
@@ -130,21 +130,21 @@ class SignUpWidgetState extends State<SignUpWidget> {
   }
 
   void _showUsernameAlreadyExistFlushBar(BuildContext context) {
-    FlushBarBuilder()
+    FlushBarBroker()
         .withMessage(_usernameAlreadyExistsMessage())
         .withIcon(Icon(Icons.contacts, color: Colors.redAccent))
         .show(context);
   }
 
   void _showParametersInvalidFlushBar(BuildContext context) {
-    FlushBarBuilder()
+    FlushBarBroker()
         .withMessage(_invalidParametersMessage())
         .withIcon(Icon(Icons.assignment, color: Colors.redAccent))
         .show(context);
   }
 
   void _showUserCreated(BuildContext context) {
-    FlushBarBuilder()
+    FlushBarBroker()
         .withMessage(AppText.getInstance().get("signUp.info.accountCreated"))
         .withIcon(Icon(Icons.check, color: Colors.green))
         .show(context);

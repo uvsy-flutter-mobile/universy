@@ -27,12 +27,13 @@ class AsyncModal {
     } catch (e) {
       Navigator.of(context).pop();
       Optional.ofNullable(_exceptionHandlers[e.runtimeType])
-          .orElse(defaultHandler)(context);
+          .orElse(defaultHandler(e))(context);
     }
   }
 
-  void defaultHandler(BuildContext context) {
-    FlushBarBuilder.unknownError().show(context);
+  Function(BuildContext) defaultHandler(dynamic e) {
+    Log.getLogger().error(e);
+    return (context) => FlushBarBroker.unknownError().show(context);
   }
 
   void _showDialogForSubmit(BuildContext context) {

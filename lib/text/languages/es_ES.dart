@@ -102,4 +102,13 @@ const Map<dynamic, dynamic> ES = {
       },
     }
   },
+  "profile": {
+    "actions": {
+      "closeSession": "Cerrar Sesión",
+      "edit": "Editar",
+    },
+    "info": {
+      "closingSession": "Cerrando Sesión",
+    }
+  }
 };

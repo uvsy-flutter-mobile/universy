@@ -1,6 +1,4 @@
-/// [ServiceException] wraps all the exceptions that
-/// are expected to happen inside the services level.
-class ServiceException implements Exception {}
+import 'package:universy/services/exceptions/service.dart';
 
 /// [NotAuthorized] occurs when the user has no permissions
 /// over a resource/action

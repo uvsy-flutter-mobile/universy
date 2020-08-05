@@ -26,31 +26,31 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  # Flutter widget that automatically resizes text to fit perfectly within its bounds
-  auto_size_text: 2.1.0
-  # Optional helps avoid null reference errors
+  # Libs for clean code
   optional: 5.0.0
-  # Custom user notification
-  flushbar: 1.10.4
-  # An AWS Cognito plugin for flutter
-  amazon_cognito_identity_dart_2: 0.1.15
-  # A predictable state management for Business Logic Components
-  flutter_bloc: 6.0.1
-  # Work with == in dart code
   equatable: 1.2.3
-  # Validate emails
-  email_validator: 1.0.0
-  # Store data in a secure way
-  flutter_secure_storage: 3.3.3
-  # Wrapper around inherited widget
-  provider: 4.3.1
-  # Better logger
   logger: 0.9.1
 
+  # Libs for HTTP
+  http: 0.12.2
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
+  # Libs for Auth
+  amazon_cognito_identity_dart_2: 0.1.15
+
+  # Libs for Widgets
+  auto_size_text: 2.1.0
+  flushbar: 1.10.4
+  email_validator: 1.0.0
+  flutter_speed_dial: 1.2.5
+
+  # Libs for state management
+  flutter_bloc: 6.0.1
+  provider: 4.3.1
+
+  # Libs for storage
+  flutter_secure_storage: 3.3.3
+
+
 
 dev_dependencies:
   flutter_test:
@@ -69,8 +69,12 @@ flutter:
 
 
   assets:
-    - assets/universy/logos/universy.png
     - assets/universy/backgrounds/main.png
+    - assets/universy/backgrounds/city.png
+    - assets/universy/backgrounds/clouds.png
+    - assets/universy/backgrounds/clouds_header.png
+    - assets/universy/backgrounds/clouds_header_opaque.png
+    - assets/universy/logos/universy.png
 
 
   # To add assets to your application, add an assets section, like this:

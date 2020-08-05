@@ -1,7 +1,8 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/model/account.dart';
-import 'package:universy/services/exceptions.dart';
+import 'package:universy/services/exceptions/account.dart';
+import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/storage/impl/secure/account.dart';
 import 'package:universy/util/logger.dart';
@@ -45,6 +46,43 @@ class DefaultAccountService extends AccountService {
         .orElse(() => ServiceException());
     Log.getLogger().warning("Cognito client error.", e);
     return exceptionType();
+  }
+
+  @override
+  Future<Token> getAuthToken() async {
+    // This method assumes the user is already logged in
+    // and thus, it has a session available.
+    try {
+      var cognitoUser = await _userPool.getCurrentUser();
+      var session = await cognitoUser?.getSession();
+      if (!session.isValid()) {
+        session = await cognitoUser.refreshSession(session.refreshToken);
+      }
+      return Token(session.idToken.jwtToken, session.accessToken.jwtToken,
+          session.refreshToken.toString());
+    } on CognitoClientException catch (e) {
+      throw _translateCognitoClientException(e);
+    } catch (e) {
+      Log.getLogger().error("Error validating login.", e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<String> getUserId() async {
+    try {
+      var cognitoUser = await _userPool.getCurrentUser();
+      // In the cognito world, the "username" is the userId
+      // since the cognito user pool is configured to use
+      // email as its main attribute. In this case the "sub" attribute
+      // matches the "username" attribute. Which is the key for the account.
+      return cognitoUser.getUsername();
+    } on CognitoClientException catch (e) {
+      throw _translateCognitoClientException(e);
+    } catch (e) {
+      Log.getLogger().error("Error validating login.", e);
+      throw ServiceException();
+    }
   }
 
   @override
@@ -124,9 +162,9 @@ class DefaultAccountService extends AccountService {
   }
 
   @override
-  Future<void> logOut(User user) async {
+  Future<void> logOut() async {
     try {
-      final cognitoUser = CognitoUser(user.username, _userPool);
+      var cognitoUser = await _userPool.getCurrentUser();
       await cognitoUser.signOut();
     } catch (e) {
       Log.getLogger().error("Error logging out.", e);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account.dart';
-import 'package:universy/services/exceptions.dart';
+import 'package:universy/services/exceptions/account.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
@@ -154,21 +154,22 @@ class _VerifyWidgetState extends State<VerifyWidget>
   }
 
   void _showCodeMismatchFlushBar(BuildContext context) {
-    FlushBarBuilder()
+    FlushBarBroker()
         .withMessage(_codeMismatchMessage())
         .withIcon(Icon(Icons.block, color: Colors.redAccent))
         .show(context);
   }
 
   void _showEmailSentFlushBar(BuildContext context) {
-    FlushBarBuilder()
+    FlushBarBroker()
         .withMessage(_emailSentMessage())
         .withIcon(Icon(Icons.mail, color: Colors.white))
         .show(context);
   }
 
+  // TODO: Should we show this?
   void _showVerifiedAccountFlushBar(BuildContext context) {
-    FlushBarBuilder()
+    FlushBarBroker()
         .withMessage(_verifiedAccountMessage())
         .withIcon(Icon(Icons.check_circle, color: Colors.green))
         .withDuration(5)

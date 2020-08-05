@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account.dart';
 import 'package:universy/modules/account/bloc/cubit.dart';
-import 'package:universy/services/exceptions.dart';
+import 'package:universy/services/exceptions/account.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
@@ -112,6 +112,7 @@ class LoginWidgetState extends State<LogInWidget> {
   }
 
   void _navigateToHomeScreen(BuildContext context) {
+    FlushBarBroker().clear();
     Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
@@ -125,7 +126,7 @@ class LoginWidgetState extends State<LogInWidget> {
   }
 
   void _showNotAuthorizedFlushBar(BuildContext context) {
-    FlushBarBuilder()
+    FlushBarBroker()
         .withMessage(_notAuthorizeMessage())
         .withIcon(Icon(Icons.block, color: Colors.redAccent))
         .show(context);

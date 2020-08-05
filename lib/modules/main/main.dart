@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/modules/main/bloc/cubit.dart';
 import 'package:universy/modules/main/bloc/states.dart';
+import 'package:universy/apis/students/profile.dart' as profile;
+import 'package:universy/util/logger.dart';
 
 import 'appbar.dart';
 import 'body.dart';
@@ -16,7 +18,7 @@ class MainModule extends StatelessWidget {
       child: Scaffold(
         drawer: MainDrawer(),
         appBar: MainAppBar(),
-        //body: MainBody(),
+        body: MainBody(),
         bottomNavigationBar: MainBottomNavigationBar(),
       ),
     );

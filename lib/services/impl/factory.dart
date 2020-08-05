@@ -1,5 +1,6 @@
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/impl/default/account.dart';
+import 'package:universy/services/impl/default/profile.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/util/object.dart';
 
@@ -18,5 +19,10 @@ class DefaultServiceFactory extends ServiceFactory {
   @override
   AccountService accountService() {
     return DefaultAccountService.instance();
+  }
+
+  @override
+  ProfileService profileService() {
+    return DefaultProfileService.instance();
   }
 }
