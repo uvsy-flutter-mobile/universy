@@ -19,7 +19,8 @@ void checkStatus(http.Response response) {
 
 Future<Optional<R>> get<R>(String resource,
     {Map<String, String> queryParams,
-    R Function(Map<String, dynamic>) model}) async {
+    R Function(Map<String, dynamic>) model,
+    bool unwrap = true}) async {
   var url = UrlBuilder(resource: resource, queryParams: queryParams).build();
   var headers = await _getHeaders();
 
@@ -31,8 +32,10 @@ Future<Optional<R>> get<R>(String resource,
   checkStatus(response);
 
   if (response.statusCode == HTTP_OK) {
-    return Optional.ofNullable(
-        model(json.decode(utf8.decode(response.bodyBytes))));
+    var rawBody = utf8.decode(response.bodyBytes);
+    var body = json.decode(rawBody);
+
+    return Optional.ofNullable(model(unwrap ? body["data"] : body));
   }
   return Optional.empty();
 }

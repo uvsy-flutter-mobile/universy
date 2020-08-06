@@ -103,12 +103,26 @@ const Map<dynamic, dynamic> ES = {
     }
   },
   "profile": {
+    "input": {
+      "name": {
+        "notValid": "Entre 3 y 20 letras, sin símbolos",
+        "required": "Nombre es requerido",
+        "inputMessage": "Nombre",
+      },
+      "lastName": {
+        "notValid": "Entre 3 y 20 letras, sin símbolos",
+        "required": "El apellido es requerido",
+        "inputMessage": "Ingresá tu apellido",
+      },
+    },
     "actions": {
       "closeSession": "Cerrar Sesión",
       "edit": "Editar",
     },
     "info": {
       "closingSession": "Cerrando Sesión",
+      "profileUpdated": "Se actualizó tu perfil",
+      "saving": "Guardando...",
     }
   }
 };

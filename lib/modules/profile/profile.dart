@@ -1,153 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:universy/model/account.dart';
-import 'package:universy/modules/account/account.dart';
 import 'package:universy/services/factory.dart';
-import 'package:universy/text/formaters/profile.dart';
-import 'package:universy/text/text.dart';
-import 'package:universy/widgets/async/modal.dart';
-import 'package:universy/widgets/builder/builder.dart';
-import 'package:universy/widgets/dialog/exit.dart';
-import 'package:universy/widgets/future/future_widget.dart';
+import 'package:universy/util/object.dart';
 
-import 'header.dart';
+import 'bloc/builder.dart';
+import 'bloc/cubit.dart';
 
-class ProfileModule extends StatelessWidget {
+class ProfileModule extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return FutureWidget(
-      fromFuture: _fetchProfile(context),
-      onData: (profile) => _ProfileWidget(profile: profile),
-    );
-  }
-
-  Future<Profile> _fetchProfile(BuildContext context) {
-    var profileService =
-        Provider.of<ServiceFactory>(context, listen: false).profileService();
-    return profileService.getProfile();
-  }
+  _ProfileModuleState createState() => _ProfileModuleState();
 }
 
-class _ProfileWidget extends StatelessWidget {
-  final Profile profile;
+class _ProfileModuleState extends State<ProfileModule> {
+  ProfileCubit _profileCubit;
 
-  const _ProfileWidget({Key key, this.profile}) : super(key: key);
+  @override
+  void didChangeDependencies() {
+    if (isNull(_profileCubit)) {
+      var profileService =
+          Provider.of<ServiceFactory>(context, listen: false).profileService();
+      this._profileCubit = ProfileCubit(profileService);
+      this._profileCubit.toDisplay();
+    }
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _buildBody(),
-      floatingActionButton: _buildFloatingActionButton(context),
-    );
-  }
-
-  Widget _buildBody() {
-    return Container(
-      alignment: AlignmentDirectional.topCenter,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ProfileHeaderWidget(this.profile),
-          SizedBox(height: 15),
-          _buildNameAndLastName(),
-          SizedBox(height: 5),
-          _buildAlias(),
-          SizedBox(height: 10),
-          Divider(color: Colors.black12),
-          SizedBox(height: 8),
-        ],
+    return BlocProvider(
+      create: (context) => _profileCubit,
+      child: BlocBuilder(
+        cubit: _profileCubit,
+        builder: ProfileStateBuilder().builder(),
       ),
     );
-  }
-
-  Widget _buildNameAndLastName() {
-    return _buildFormattedText(
-      text: CompleteNameFormatter(profile).format(),
-    );
-  }
-
-  Widget _buildAlias() {
-    return _buildFormattedText(
-      text: AliasFormatter(profile).format(),
-      fontWeight: FontWeight.normal,
-    );
-  }
-
-  Widget _buildFormattedText(
-      {String text, FontWeight fontWeight = FontWeight.bold}) {
-    return Text(
-      text,
-      style:
-          TextStyle(letterSpacing: 0.5, fontSize: 20, fontWeight: fontWeight),
-      textAlign: TextAlign.end,
-    );
-  }
-
-  Widget _buildFloatingActionButton(BuildContext context) {
-    return SpeedDial(
-      shape: CircleBorder(),
-      heroTag: "profile_tooltip_hero_tag",
-      animatedIcon: AnimatedIcons.menu_close,
-      backgroundColor: Theme.of(context).primaryColor,
-      children: [
-        _EditDialBuilder().build(context),
-        _ExitDialBuilder().build(context),
-      ],
-    );
-  }
-}
-
-class _EditDialBuilder extends ComponentBuilder<SpeedDialChild> {
-  @override
-  SpeedDialChild build(BuildContext context) {
-    return SpeedDialChild(
-      child: Icon(Icons.edit),
-      backgroundColor: Theme.of(context).accentColor,
-      label: AppText.getInstance().get("profile.actions.edit"),
-      labelStyle: TextStyle(fontSize: 18.0),
-      onTap: () => print('FIRST CHILD'),
-    );
-  }
-}
-
-class _ExitDialBuilder extends ComponentBuilder<SpeedDialChild> {
-  @override
-  SpeedDialChild build(BuildContext context) {
-    return SpeedDialChild(
-      child: Icon(Icons.exit_to_app),
-      backgroundColor: Theme.of(context).accentColor,
-      label: AppText.getInstance().get("profile.actions.closeSession"),
-      labelStyle: TextStyle(fontSize: 18.0),
-      onTap: () => _confirmLogOut(context),
-    );
-  }
-
-  void _confirmLogOut(BuildContext context) async {
-    bool logout = await showDialog(
-          context: context,
-          builder: (context) => ExitDialog(),
-        ) ??
-        false;
-
-    if (logout) {
-      await AsyncModalBuilder()
-          .perform(_logOut)
-          .withTitle(AppText.getInstance().get("profile.info.closingSession"))
-          .then(_restartApp)
-          .build()
-          .run(context);
-    }
-  }
-
-  Future<void> _logOut(BuildContext context) {
-    var accountService =
-        Provider.of<ServiceFactory>(context, listen: false).accountService();
-    return accountService.logOut();
-  }
-
-  void _restartApp(BuildContext context) {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => AccountModule()));
   }
 }

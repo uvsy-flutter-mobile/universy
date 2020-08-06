@@ -41,4 +41,20 @@ class DefaultProfileService extends ProfileService {
       throw ServiceException();
     }
   }
+
+  @override
+  Future<void> updateProfile(Profile profile) async {
+    // Here we should put the handling of Conflict when alias is updated!
+    try {
+      var request = profileApi.UpdateProfileRequest(
+        profile.name,
+        profile.lastName,
+        profile.alias,
+      );
+      await profileApi.updateProfile(profile.userId, request);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
 }

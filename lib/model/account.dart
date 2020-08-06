@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:universy/model/copyable.dart';
 
 import "json.dart";
@@ -44,7 +45,7 @@ class Token implements JsonConvertible {
   }
 }
 
-class Profile implements JsonConvertible, Copyable<Profile> {
+class Profile extends Equatable implements JsonConvertible, Copyable<Profile> {
   final String _userId;
   final String _name;
   final String _lastName;
@@ -71,12 +72,11 @@ class Profile implements JsonConvertible, Copyable<Profile> {
   }
 
   factory Profile.fromJson(Map<String, dynamic> json) {
-    var data = json["data"];
     return Profile(
-      data["userId"],
-      data["name"],
-      data["lastName"],
-      data["alias"],
+      json["userId"],
+      json["name"],
+      json["lastName"],
+      json["alias"],
     );
   }
 
@@ -89,4 +89,7 @@ class Profile implements JsonConvertible, Copyable<Profile> {
   Profile copy() {
     return Profile.fromJson(this.toJson());
   }
+
+  @override
+  List<Object> get props => [_userId, _name, _lastName, _alias];
 }

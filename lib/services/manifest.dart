@@ -30,4 +30,6 @@ abstract class AccountService extends Service {
 
 abstract class ProfileService extends Service {
   Future<Profile> getProfile();
+
+  Future<void> updateProfile(Profile profile);
 }

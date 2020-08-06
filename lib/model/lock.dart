@@ -2,19 +2,19 @@ import 'package:universy/util/object.dart';
 
 import 'copyable.dart';
 
-class SaveLock<T extends Copyable> {
+class StateLock<T extends Copyable> {
   final T snapshot;
 
-  const SaveLock._(this.snapshot);
+  const StateLock._(this.snapshot);
 
-  bool shouldSave(T newSnapshot) {
+  bool hasChange(T newSnapshot) {
     return this.snapshot != newSnapshot;
   }
 
-  factory SaveLock.lock({T snapshot}) {
+  factory StateLock.lock({T snapshot}) {
     if (notNull(snapshot)) {
-      return SaveLock._(snapshot.copy());
+      return StateLock._(snapshot.copy());
     }
-    return SaveLock._(null);
+    return StateLock._(null);
   }
 }

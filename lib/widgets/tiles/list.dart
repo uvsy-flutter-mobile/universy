@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DispatcherListTileItem extends StatelessWidget {
+class ListTileItem extends StatelessWidget {
   final bool _selected;
   final String _title;
   final String _subtitle;
-  final VoidCallback _eventDispatcher;
+  final VoidCallback _onTap;
 
-  const DispatcherListTileItem(
+  const ListTileItem(
       {Key key,
       @required bool selected,
       @required String title,
       @required String subtitle,
-      @required VoidCallback eventDispatcher})
+      @required VoidCallback onTap})
       : this._selected = selected,
         this._title = title,
         this._subtitle = subtitle,
-        this._eventDispatcher = eventDispatcher,
+        this._onTap = onTap,
         super(key: key);
 
   @override
@@ -26,7 +25,7 @@ class DispatcherListTileItem extends StatelessWidget {
       child: ListTile(
         title: _buildTitle(),
         subtitle: _buildSubtitle(),
-        onTap: _eventDispatcher,
+        onTap: _onTap,
         selected: _selected,
       ),
     );

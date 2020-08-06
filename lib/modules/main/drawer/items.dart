@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/modules/main/bloc/cubit.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/widgets/tiles/lists/dispatcher.dart';
+import 'package:universy/widgets/tiles/list.dart';
 
 class StudentSubjectsItem extends StatelessWidget {
   final bool _selected;
@@ -13,13 +13,15 @@ class StudentSubjectsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DispatcherListTileItem(
-      selected: _selected,
-      title: AppText.getInstance().get("main.modules.studentSubjects.title"),
-      subtitle: AppText.getInstance() //
-          .get("main.modules.studentSubjects.subtitle"),
-      eventDispatcher: BlocProvider.of<MainCubit>(context).toStudentSubjects,
-    );
+    return ListTileItem(
+        selected: _selected,
+        title: AppText.getInstance().get("main.modules.studentSubjects.title"),
+        subtitle: AppText.getInstance() //
+            .get("main.modules.studentSubjects.subtitle"),
+        onTap: () {
+          BlocProvider.of<MainCubit>(context).toStudentSubjects();
+          Navigator.pop(context);
+        });
   }
 }
 
@@ -32,14 +34,16 @@ class InstitutionSubjectsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DispatcherListTileItem(
+    return ListTileItem(
       selected: _selected,
       title: AppText.getInstance() //
           .get("main.modules.institutionSubjects.title"),
       subtitle: AppText.getInstance() //
           .get("main.modules.institutionSubjects.subtitle"),
-      eventDispatcher:
-          BlocProvider.of<MainCubit>(context).toInstitutionSubjects,
+      onTap: () {
+        BlocProvider.of<MainCubit>(context).toInstitutionSubjects();
+        Navigator.pop(context);
+      },
     );
   }
 }
@@ -53,11 +57,14 @@ class ProfileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DispatcherListTileItem(
+    return ListTileItem(
       selected: _selected,
       title: AppText.getInstance().get("main.modules.profile.title"),
       subtitle: AppText.getInstance().get("main.modules.profile.subtitle"),
-      eventDispatcher: BlocProvider.of<MainCubit>(context).toProfile,
+      onTap: () {
+        BlocProvider.of<MainCubit>(context).toProfile();
+        Navigator.pop(context);
+      },
     );
   }
 }
