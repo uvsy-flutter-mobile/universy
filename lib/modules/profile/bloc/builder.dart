@@ -9,6 +9,8 @@ import 'states.dart';
 class ProfileStateBuilder extends WidgetBuilderFactory<ProfileState> {
   @override
   Widget translate(ProfileState state) {
+    // TODO: Lore, CreateState() needs its own widget
+    // Maybe the stepper?
     if (state is DisplayState) {
       return ProfileDisplayWidget(profile: state.profile);
     } else if (state is EditState) {

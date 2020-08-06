@@ -14,14 +14,15 @@ class StudentSubjectsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTileItem(
-        selected: _selected,
-        title: AppText.getInstance().get("main.modules.studentSubjects.title"),
-        subtitle: AppText.getInstance() //
-            .get("main.modules.studentSubjects.subtitle"),
-        onTap: () {
-          BlocProvider.of<MainCubit>(context).toStudentSubjects();
-          Navigator.pop(context);
-        });
+      selected: _selected,
+      title: AppText.getInstance().get("main.modules.studentSubjects.title"),
+      subtitle: AppText.getInstance() //
+          .get("main.modules.studentSubjects.subtitle"),
+      onTap: () {
+        BlocProvider.of<MainCubit>(context).toStudentSubjects();
+        Navigator.pop(context);
+      },
+    );
   }
 }
 

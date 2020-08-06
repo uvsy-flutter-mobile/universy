@@ -17,6 +17,8 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future<void> toDisplay() async {
     emit(LoadingState());
+    // TODO: Lore, add a try catch on "ProfileNotFound"
+    // and emit(CreateState())
     var profile = await _profileService.getProfile();
     emit(DisplayState(profile));
   }
