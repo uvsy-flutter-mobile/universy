@@ -118,11 +118,13 @@ const Map<dynamic, dynamic> ES = {
     "actions": {
       "closeSession": "Cerrar Sesión",
       "edit": "Editar",
+      "createProfile": "Crear Perfil"
     },
     "info": {
       "closingSession": "Cerrando Sesión",
       "profileUpdated": "Se actualizó tu perfil",
       "saving": "Guardando...",
+      "profileNotCreated": "¡ Aún no tienes creado tu perfil !"
     }
   }
 };

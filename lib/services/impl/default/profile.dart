@@ -57,4 +57,13 @@ class DefaultProfileService extends ProfileService {
       throw ServiceException();
     }
   }
+
+  Future<void> createProfile(Profile profile) async {
+    try {
+      await profileApi.createProfile(profile);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
 }

@@ -4,11 +4,26 @@ import 'package:universy/system/assets.dart';
 import 'package:universy/text/formaters/profile.dart';
 import 'package:universy/widgets/decorations/box.dart';
 
+
 class ProfileHeaderWidget extends StatelessWidget {
-  final Profile _profile;
+  final Widget child;
+  ProfileHeaderWidget(this.child);
 
-  ProfileHeaderWidget(this._profile);
-
+  factory ProfileHeaderWidget.create(){
+    var child = Icon(Icons.priority_high, size: 80, color: Colors.grey);
+    return ProfileHeaderWidget(child);
+  }
+  factory ProfileHeaderWidget.edit(Profile profile){
+    var child = Icon(Icons.more_horiz, size: 80, color: Colors.grey);
+    return ProfileHeaderWidget(child);
+  }
+  factory ProfileHeaderWidget.display(Profile profile){
+    var child = Text(
+      InitialsFormatter(profile).format(),
+      style: TextStyle(fontSize: 40.0),
+    );
+    return ProfileHeaderWidget(child);
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -20,7 +35,7 @@ class ProfileHeaderWidget extends StatelessWidget {
               color: Theme.of(context).accentColor,
               child: Container(
                 decoration:
-                    assetImageDecoration(Assets.UNIVERSY_CLOUDS_HEADER_OPAQUE),
+                assetImageDecoration(Assets.UNIVERSY_CLOUDS_HEADER_OPAQUE),
               ),
             ),
             SizedBox(
@@ -37,14 +52,10 @@ class ProfileHeaderWidget extends StatelessWidget {
       ],
     );
   }
-
   Widget _buildCircleAvatar() {
     return Container(
       child: CircleAvatar(
-        child: Text(
-          InitialsFormatter(_profile).format(),
-          style: TextStyle(fontSize: 40.0),
-        ),
+        child: child,
         minRadius: 55,
         backgroundColor: Colors.white,
       ),

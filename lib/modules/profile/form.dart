@@ -19,21 +19,31 @@ import 'package:universy/widgets/paddings/edge.dart';
 import 'bloc/cubit.dart';
 import 'keys.dart';
 
-class ProfileEditWidget extends StatefulWidget {
+class ProfileFormWidget extends StatefulWidget {
   final Profile _profile;
+  final bool _create;
 
-  const ProfileEditWidget({Key key, @required Profile profile})
+  const ProfileFormWidget._({Key key, @required Profile profile, @required bool create})
       : this._profile = profile,
+        this._create = create,
         super(key: key);
+
+  factory ProfileFormWidget.create(String userId) {
+    return ProfileFormWidget._(profile: Profile.empty(userId), create: true);
+  }
+  factory ProfileFormWidget.edit(Profile profile) {
+    return ProfileFormWidget._(profile: profile, create: false);
+  }
 
   @override
   _ProfileEditState createState() => _ProfileEditState();
 }
 
-class _ProfileEditState extends State<ProfileEditWidget> {
+class _ProfileEditState extends State<ProfileFormWidget> {
   GlobalKey<FormState> _formKeyLog;
   TextEditingController _nameController;
   TextEditingController _lastNameController;
+  TextEditingController _aliasController;
 
   Profile _profile;
   StateLock _saveLock;
@@ -46,6 +56,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
     this._nameController = TextEditingController()..text = _profile.name;
     this._lastNameController = TextEditingController()
       ..text = _profile.lastName;
+    this._aliasController = TextEditingController()..text = _profile.alias;
     super.initState();
   }
 
@@ -57,6 +68,8 @@ class _ProfileEditState extends State<ProfileEditWidget> {
     this._nameController = null;
     this._lastNameController.dispose();
     this._lastNameController = null;
+    this._aliasController.dispose();
+    this._aliasController = null;
     super.dispose();
   }
 
@@ -69,7 +82,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
             alignment: AlignmentDirectional.topCenter,
             child: Column(
               children: <Widget>[
-                ProfileHeaderWidget(this._profile),
+                ProfileHeaderWidget.edit(this._profile),
                 _buildProfileForm(context),
               ],
             ),
@@ -89,6 +102,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
           children: <Widget>[
             _buildNameInput(),
             _buildLastNameInput(),
+            _buildAliasInput(),
             _buildButtons(context),
           ],
         ),
@@ -138,6 +152,27 @@ class _ProfileEditState extends State<ProfileEditWidget> {
     );
   }
 
+  Widget _buildAliasInput() {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 6.0,
+      child: CustomTextFormField(
+        textCapitalization: TextCapitalization.words,
+        key: STUDENT_PROFILE_KEY_ALIAS_FIELD,
+        controller: _aliasController,
+        validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
+          regExp: Regex.ALIAS_FORMAT_REGEX,
+          patternMessage:
+          "Alias no valido", /*AppText.getInstance().get("profile.input.lastName.notValid"),*/
+          emptyMessage:
+          "Alias requerido",/* AppText.getInstance().get("profile.input.lastName.required"),*/
+        ),
+        decorationBuilder: TextInputDecorationBuilder(
+            "Ingresa un alias",/* AppText.getInstance().get("profile.input.lastName.inputMessage"),*/
+        ),
+      ),
+    );
+  }
+
   Widget _buildButtons(BuildContext context) {
     return OnlyEdgePaddedWidget.top(
       padding: 20,
@@ -158,7 +193,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
       if (_saveLock.hasChange(_profile)) {
         FocusScope.of(context).unfocus();
         await AsyncModalBuilder()
-            .perform(_updateProfile)
+            .perform(_saveProfile)
             .withTitle(_savingMessage())
             .then(_showProfileUpdated)
             .build()
@@ -168,10 +203,14 @@ class _ProfileEditState extends State<ProfileEditWidget> {
     }
   }
 
-  Future<void> _updateProfile(BuildContext context) async {
+  Future<void> _saveProfile(BuildContext context) async {
     var profileService =
-        Provider.of<ServiceFactory>(context, listen: false).profileService();
-    await profileService.updateProfile(_profile);
+    Provider.of<ServiceFactory>(context, listen: false).profileService();
+    if (widget._create) {
+      await profileService.createProfile(_profile);
+    } else {
+      await profileService.updateProfile(_profile);
+    }
   }
 
   void _navigateToDisplay(BuildContext context) {
@@ -191,7 +230,7 @@ class _ProfileEditState extends State<ProfileEditWidget> {
       _profile.userId,
       _nameController.text.trim(),
       _lastNameController.text.trim(),
-      _profile.alias,
+      _aliasController.text.trim(),
     );
   }
 
