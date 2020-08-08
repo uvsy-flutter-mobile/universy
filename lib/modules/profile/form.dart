@@ -5,8 +5,10 @@ import 'package:universy/constants/regex.dart';
 import 'package:universy/model/account.dart';
 import 'package:universy/model/lock.dart';
 import 'package:universy/modules/profile/header.dart';
+import 'package:universy/services/exceptions/profile.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/util/strings.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
@@ -31,19 +33,21 @@ class ProfileFormWidget extends StatefulWidget {
   factory ProfileFormWidget.create(String userId) {
     return ProfileFormWidget._(profile: Profile.empty(userId), create: true);
   }
+
   factory ProfileFormWidget.edit(Profile profile) {
     return ProfileFormWidget._(profile: profile, create: false);
   }
 
   @override
-  _ProfileEditState createState() => _ProfileEditState();
+  _ProfileFormState createState() => _ProfileFormState();
 }
 
-class _ProfileEditState extends State<ProfileFormWidget> {
+class _ProfileFormState extends State<ProfileFormWidget> {
   GlobalKey<FormState> _formKeyLog;
   TextEditingController _nameController;
   TextEditingController _lastNameController;
   TextEditingController _aliasController;
+  bool _aliasAvailable;
 
   Profile _profile;
   StateLock _saveLock;
@@ -54,10 +58,17 @@ class _ProfileEditState extends State<ProfileFormWidget> {
     this._saveLock = StateLock.lock(snapshot: _profile);
     this._formKeyLog = GlobalKey<FormState>();
     this._nameController = TextEditingController()..text = _profile.name;
-    this._lastNameController = TextEditingController()
-      ..text = _profile.lastName;
+    this._lastNameController = TextEditingController()..text = _profile.lastName;
     this._aliasController = TextEditingController()..text = _profile.alias;
+    this._aliasAvailable = true;
     super.initState();
+  }
+
+
+  @override
+  void didChangeDependencies() {
+    this._aliasController.addListener(() =>_checkAliasAvailability(context));
+    super.didChangeDependencies();
   }
 
   @override
@@ -70,6 +81,7 @@ class _ProfileEditState extends State<ProfileFormWidget> {
     this._lastNameController = null;
     this._aliasController.dispose();
     this._aliasController = null;
+    this._aliasAvailable = true;
     super.dispose();
   }
 
@@ -119,10 +131,8 @@ class _ProfileEditState extends State<ProfileFormWidget> {
         controller: _nameController,
         validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
           regExp: Regex.LETTERS_FORMAT_REGEX,
-          patternMessage:
-              AppText.getInstance().get("profile.input.name.notValid"),
-          emptyMessage:
-              AppText.getInstance().get("profile.input.name.required"),
+          patternMessage: AppText.getInstance().get("profile.input.name.notValid"),
+          emptyMessage: AppText.getInstance().get("profile.input.name.required"),
         ),
         decorationBuilder: TextInputDecorationBuilder(
           AppText.getInstance().get("profile.input.name.inputMessage"),
@@ -140,10 +150,8 @@ class _ProfileEditState extends State<ProfileFormWidget> {
         controller: _lastNameController,
         validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
           regExp: Regex.LETTERS_FORMAT_REGEX,
-          patternMessage:
-              AppText.getInstance().get("profile.input.lastName.notValid"),
-          emptyMessage:
-              AppText.getInstance().get("profile.input.lastName.required"),
+          patternMessage: AppText.getInstance().get("profile.input.lastName.notValid"),
+          emptyMessage: AppText.getInstance().get("profile.input.lastName.required"),
         ),
         decorationBuilder: TextInputDecorationBuilder(
           AppText.getInstance().get("profile.input.lastName.inputMessage"),
@@ -153,24 +161,52 @@ class _ProfileEditState extends State<ProfileFormWidget> {
   }
 
   Widget _buildAliasInput() {
+    return Row(children: <Widget>[
+      Expanded(child: _buildAliasTextField(), flex: 16),
+      Expanded(child: _buildAvailabilityAliasIcon(), flex: 2)
+    ]);
+  }
+
+  Widget _buildAliasTextField() {
     return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 6.0,
-      child: CustomTextFormField(
-        textCapitalization: TextCapitalization.words,
-        key: STUDENT_PROFILE_KEY_ALIAS_FIELD,
-        controller: _aliasController,
-        validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
-          regExp: Regex.ALIAS_FORMAT_REGEX,
-          patternMessage:
-          "Alias no valido", /*AppText.getInstance().get("profile.input.lastName.notValid"),*/
-          emptyMessage:
-          "Alias requerido",/* AppText.getInstance().get("profile.input.lastName.required"),*/
-        ),
-        decorationBuilder: TextInputDecorationBuilder(
-            "Ingresa un alias",/* AppText.getInstance().get("profile.input.lastName.inputMessage"),*/
-        ),
-      ),
-    );
+        paddingValue: 6.0,
+        child: CustomTextFormField(
+          textCapitalization: TextCapitalization.words,
+          key: STUDENT_PROFILE_KEY_ALIAS_FIELD,
+          controller: _aliasController,
+          validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
+            regExp: Regex.ALIAS_FORMAT_REGEX,
+            patternMessage: "Alias no valido",
+            /*AppText.getInstance().get("profile.input.lastName.notValid"),*/
+            emptyMessage:
+                "Alias requerido", /* AppText.getInstance().get("profile.input.lastName.required"),*/
+          ),
+          decorationBuilder: TextInputDecorationBuilder(
+            "Ingresa un alias", /* AppText.getInstance().get("profile.input.lastName.inputMessage"),*/
+          ),
+        ));
+  }
+
+  Widget _buildAvailabilityAliasIcon() {
+    return Icon(_aliasAvailable ? Icons.check_circle : Icons.cancel,
+        color: _aliasAvailable ? Colors.green : Colors.redAccent);
+  }
+
+  Future<void> _checkAliasAvailability(BuildContext context) async {
+    Profile profile = _getProfileProfileFromTextFields();
+    if(!stringEquals(profile.alias, widget._profile.alias) && profile.alias.isNotEmpty) {
+      var profileService = Provider.of<ServiceFactory>(context, listen: false).profileService();
+      try {
+        await profileService.checkAliasProfile(_profile, _aliasController.text);
+        setState(() {
+          _aliasAvailable = true;
+        });
+      } on AliasAlreadyExists {
+        setState(() {
+          _aliasAvailable = false;
+        });
+      }
+    }
   }
 
   Widget _buildButtons(BuildContext context) {
@@ -195,17 +231,18 @@ class _ProfileEditState extends State<ProfileFormWidget> {
         await AsyncModalBuilder()
             .perform(_saveProfile)
             .withTitle(_savingMessage())
+            .handle(AliasAlreadyExists, _showAliasConflict)
             .then(_showProfileUpdated)
             .build()
             .run(context);
+      } else {
+        _navigateToDisplay(context);
       }
-      _navigateToDisplay(context);
     }
   }
 
   Future<void> _saveProfile(BuildContext context) async {
-    var profileService =
-    Provider.of<ServiceFactory>(context, listen: false).profileService();
+    var profileService = Provider.of<ServiceFactory>(context, listen: false).profileService();
     if (widget._create) {
       await profileService.createProfile(_profile);
     } else {
@@ -218,11 +255,14 @@ class _ProfileEditState extends State<ProfileFormWidget> {
   }
 
   void _showProfileUpdated(BuildContext context) {
-    FlushBarBroker()
+    FlushBarBroker.success()
         .withMessage(AppText.getInstance().get("profile.info.profileUpdated"))
-        .withIcon(Icon(Icons.check, color: Colors.green))
-        .withDuration(3)
         .show(context);
+    _navigateToDisplay(context);
+  }
+
+  void _showAliasConflict(BuildContext context) {
+    FlushBarBroker.error().withMessage("El Alias ya está en uso").show(context);
   }
 
   Profile _getProfileProfileFromTextFields() {

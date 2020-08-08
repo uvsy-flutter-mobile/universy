@@ -25,6 +25,16 @@ class FlushBarBroker {
     this._icon = _connectionErrorIcon();
   }
 
+  FlushBarBroker.success() {
+    this._icon = _successIcon();
+    this._duration = 3;
+  }
+
+  FlushBarBroker.error() {
+    this._icon = _errorIcon();
+    this._duration = 3;
+  }
+
   FlushBarBroker withMessage(String message) {
     this._message = message;
     return this;
@@ -77,6 +87,14 @@ class FlushBarBroker {
       Icons.error_outline,
       color: Colors.redAccent,
     );
+  }
+
+  Icon _successIcon() {
+    return Icon(Icons.check, color: Colors.green);
+  }
+
+  Icon _errorIcon() {
+    return Icon(Icons.error_outline, color: Colors.redAccent);
   }
 
   String _connectionErrorMessage() =>
