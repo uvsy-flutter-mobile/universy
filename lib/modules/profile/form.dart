@@ -47,7 +47,6 @@ class _ProfileFormState extends State<ProfileFormWidget> {
   TextEditingController _nameController;
   TextEditingController _lastNameController;
   TextEditingController _aliasController;
-  bool _aliasAvailable;
 
   Profile _profile;
   StateLock _saveLock;
@@ -60,15 +59,7 @@ class _ProfileFormState extends State<ProfileFormWidget> {
     this._nameController = TextEditingController()..text = _profile.name;
     this._lastNameController = TextEditingController()..text = _profile.lastName;
     this._aliasController = TextEditingController()..text = _profile.alias;
-    this._aliasAvailable = true;
     super.initState();
-  }
-
-
-  @override
-  void didChangeDependencies() {
-    this._aliasController.addListener(() =>_checkAliasAvailability(context));
-    super.didChangeDependencies();
   }
 
   @override
@@ -81,7 +72,6 @@ class _ProfileFormState extends State<ProfileFormWidget> {
     this._lastNameController = null;
     this._aliasController.dispose();
     this._aliasController = null;
-    this._aliasAvailable = true;
     super.dispose();
   }
 
@@ -114,7 +104,7 @@ class _ProfileFormState extends State<ProfileFormWidget> {
           children: <Widget>[
             _buildNameInput(),
             _buildLastNameInput(),
-            _buildAliasInput(),
+            _buildAliasTextField(),
             _buildButtons(context),
           ],
         ),
@@ -160,13 +150,6 @@ class _ProfileFormState extends State<ProfileFormWidget> {
     );
   }
 
-  Widget _buildAliasInput() {
-    return Row(children: <Widget>[
-      Expanded(child: _buildAliasTextField(), flex: 16),
-      Expanded(child: _buildAvailabilityAliasIcon(), flex: 2)
-    ]);
-  }
-
   Widget _buildAliasTextField() {
     return SymmetricEdgePaddingWidget.vertical(
         paddingValue: 6.0,
@@ -176,37 +159,12 @@ class _ProfileFormState extends State<ProfileFormWidget> {
           controller: _aliasController,
           validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
             regExp: Regex.ALIAS_FORMAT_REGEX,
-            patternMessage: "Alias no valido",
-            /*AppText.getInstance().get("profile.input.lastName.notValid"),*/
-            emptyMessage:
-                "Alias requerido", /* AppText.getInstance().get("profile.input.lastName.required"),*/
+            patternMessage: AppText.getInstance().get("profile.input.alias.notValid"),
+            emptyMessage: AppText.getInstance().get("profile.input.alias.required"),
           ),
-          decorationBuilder: TextInputDecorationBuilder(
-            "Ingresa un alias", /* AppText.getInstance().get("profile.input.lastName.inputMessage"),*/
+          decorationBuilder: TextInputDecorationBuilder(AppText.getInstance().get("profile.input.alias.inputMessage"),
           ),
         ));
-  }
-
-  Widget _buildAvailabilityAliasIcon() {
-    return Icon(_aliasAvailable ? Icons.check_circle : Icons.cancel,
-        color: _aliasAvailable ? Colors.green : Colors.redAccent);
-  }
-
-  Future<void> _checkAliasAvailability(BuildContext context) async {
-    Profile profile = _getProfileProfileFromTextFields();
-    if(!stringEquals(profile.alias, widget._profile.alias) && profile.alias.isNotEmpty) {
-      var profileService = Provider.of<ServiceFactory>(context, listen: false).profileService();
-      try {
-        await profileService.checkAliasProfile(_profile, _aliasController.text);
-        setState(() {
-          _aliasAvailable = true;
-        });
-      } on AliasAlreadyExists {
-        setState(() {
-          _aliasAvailable = false;
-        });
-      }
-    }
   }
 
   Widget _buildButtons(BuildContext context) {
@@ -262,7 +220,7 @@ class _ProfileFormState extends State<ProfileFormWidget> {
   }
 
   void _showAliasConflict(BuildContext context) {
-    FlushBarBroker.error().withMessage("El Alias ya está en uso").show(context);
+    FlushBarBroker.error().withMessage(AppText.getInstance().get("profile.error.aliasAlreadyExists")).show(context);
   }
 
   Profile _getProfileProfileFromTextFields() {
