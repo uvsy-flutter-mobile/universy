@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:universy/model/copyable.dart';
-
-import "json.dart";
+import 'package:universy/model/json.dart';
 
 class User implements JsonConvertible {
   final String _username;

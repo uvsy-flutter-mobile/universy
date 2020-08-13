@@ -1,10 +1,10 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
 import 'package:optional/optional.dart';
-import 'package:universy/model/account.dart';
-import 'package:universy/services/exceptions/account.dart';
+import 'package:universy/model/student/account.dart';
+import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
-import 'package:universy/storage/impl/secure/account.dart';
+import 'package:universy/storage/impl/student/account.dart';
 import 'package:universy/util/logger.dart';
 import 'package:universy/util/object.dart';
 

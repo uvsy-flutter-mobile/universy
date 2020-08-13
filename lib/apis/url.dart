@@ -22,6 +22,6 @@ class UrlBuilder {
   String _buildBaseURL() {
     // TODO: Move to config
     var stage = "dev2";
-    return "https://1i2jrvfzm9.execute-api.sa-east-1.amazonaws.com/$stage/v1";
+    return "https://student-gw-$stage.universy.app";
   }
 }

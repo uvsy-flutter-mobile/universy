@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
-import 'package:universy/model/account.dart';
+import 'package:universy/model/student/account.dart';
 import 'package:universy/modules/account/account.dart';
 import 'package:universy/modules/profile/bloc/cubit.dart';
 import 'package:universy/services/factory.dart';
@@ -11,7 +10,6 @@ import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/builder/builder.dart';
 import 'package:universy/widgets/dialog/exit.dart';
-import 'package:universy/widgets/future/future_widget.dart';
 
 import 'header.dart';
 

@@ -1,9 +1,15 @@
-import 'package:universy/model/account.dart';
+import 'package:universy/model/device.dart';
+import 'package:universy/model/institution/queries.dart';
+import 'package:universy/model/student/account.dart';
+import 'package:universy/model/student/career.dart';
+import 'package:universy/model/student/session.dart';
 
+/// Base Service
 abstract class Service {
   void dispose();
 }
 
+/// Student Services
 abstract class AccountService extends Service {
   Future<Token> getAuthToken();
 
@@ -32,4 +38,28 @@ abstract class ProfileService extends Service {
   Future<Profile> getProfile();
 
   Future<void> updateProfile(Profile profile);
+}
+
+abstract class StudentCareerService extends Service {
+  Future<String> getCurrentProgram();
+
+  Future<void> setCurrentProgram(String programId);
+
+  Future<List<StudentCareer>> getCareers();
+
+  Future<StudentCareer> getCareer(String programId);
+}
+
+abstract class SessionService extends Service {
+  Future<Session> getSession();
+}
+
+/// Institution Services
+abstract class InstitutionService extends Service {
+  Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programIds);
+}
+
+/// General Services
+abstract class DeviceService extends Service {
+  Future<Device> getDevice();
 }

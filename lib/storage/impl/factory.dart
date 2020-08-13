@@ -1,5 +1,5 @@
 import 'package:universy/storage/factory.dart';
-import 'package:universy/storage/impl/secure/account.dart';
+import 'package:universy/storage/impl/student/account.dart';
 import 'package:universy/storage/manifest.dart';
 import 'package:universy/util/object.dart';
 
@@ -18,5 +18,11 @@ class DefaultStorageFactory extends StorageFactory {
   @override
   AccountStorage accountStorage() {
     return SecureAccountStorage.instance();
+  }
+
+  @override
+  StudentCareerStorage studentCareerStorage() {
+    // TODO: implement studentCareerStorage
+    throw UnimplementedError();
   }
 }

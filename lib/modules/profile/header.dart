@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:universy/model/account.dart';
+import 'package:universy/model/student/account.dart';
 import 'package:universy/system/assets.dart';
 import 'package:universy/text/formaters/profile.dart';
 import 'package:universy/widgets/decorations/box.dart';

@@ -44,6 +44,7 @@ class SecureAccountStorage extends AccountStorage {
       return storage.delete(key: key);
     } catch (e) {
       Log.getLogger().error("Error removing account info.", e);
+      return null;
     }
   }
 

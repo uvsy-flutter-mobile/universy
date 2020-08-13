@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
-import 'package:universy/model/account.dart';
+import 'package:universy/model/student/account.dart';
 import 'package:universy/model/lock.dart';
 import 'package:universy/modules/profile/header.dart';
 import 'package:universy/services/factory.dart';

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:universy/model/account.dart';
+import 'package:universy/model/student/account.dart';
 
 abstract class AccountState extends Equatable {
   AccountState([List props = const []]) : super();
