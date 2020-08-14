@@ -8,7 +8,6 @@ import 'package:universy/modules/profile/header.dart';
 import 'package:universy/services/exceptions/profile.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/util/strings.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
