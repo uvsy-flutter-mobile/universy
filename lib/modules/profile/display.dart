@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/model/account.dart';
@@ -11,7 +10,6 @@ import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/builder/builder.dart';
 import 'package:universy/widgets/dialog/exit.dart';
-import 'package:universy/widgets/future/future_widget.dart';
 
 import 'header.dart';
 
@@ -34,7 +32,7 @@ class ProfileDisplayWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ProfileHeaderWidget(this.profile),
+          ProfileHeaderWidget.display(this.profile),
           SizedBox(height: 15),
           _buildNameAndLastName(),
           SizedBox(height: 5),

@@ -46,3 +46,18 @@ class UpdateProfileRequest extends JsonConvertible {
     };
   }
 }
+
+Future<void> checkAliasProfile(String userId, String newAlias) {
+  var resource = "/alias/availability";
+
+  return api.get(
+    resource,
+    queryParams: {
+      "user_id": userId,
+      "alias": newAlias
+    }
+  );
+}
+
+
+

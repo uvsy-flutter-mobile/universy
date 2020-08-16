@@ -52,6 +52,30 @@ class DefaultProfileService extends ProfileService {
         profile.alias,
       );
       await profileApi.updateProfile(profile.userId, request);
+    } on Conflict {
+      throw AliasAlreadyExists();
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  Future<void> createProfile(Profile profile) async {
+    try {
+      await profileApi.createProfile(profile);
+    } on Conflict {
+      throw AliasAlreadyExists();
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  Future<void> checkAliasProfile(Profile profile, String newAlias) async {
+    try {
+      await profileApi.checkAliasProfile(profile.userId, newAlias);
+    } on Conflict {
+      throw AliasAlreadyExists();
     } catch (e) {
       Log.getLogger().error(e);
       throw ServiceException();

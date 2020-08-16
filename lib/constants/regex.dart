@@ -16,4 +16,8 @@ abstract class Regex {
   // ignore: non_constant_identifier_names
   static final RegExp NOT_SYMBOLS_FORMAT_REGEX =
       RegExp(r"^([a-z-A-Z]{3,8}?[0-9]{0,4})$");
+
+  // ignore: non_constant_identifier_names
+  static final RegExp ALIAS_FORMAT_REGEX =
+      RegExp(r"^[A-Za-z0-9\.*]{3,20}(?<!\.)$");
 }

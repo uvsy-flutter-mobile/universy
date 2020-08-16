@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:universy/constants/strings.dart';
 import 'package:universy/model/copyable.dart';
 
 import "json.dart";
@@ -52,6 +53,10 @@ class Profile extends Equatable implements JsonConvertible, Copyable<Profile> {
   final String _alias;
 
   Profile(this._userId, this._name, this._lastName, this._alias);
+
+  factory Profile.empty(String userId) {
+    return Profile(userId,EMPTY_STRING, EMPTY_STRING, EMPTY_STRING);
+  }
 
   String get userId => _userId;
 

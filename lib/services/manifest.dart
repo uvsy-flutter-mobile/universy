@@ -32,4 +32,8 @@ abstract class ProfileService extends Service {
   Future<Profile> getProfile();
 
   Future<void> updateProfile(Profile profile);
+
+  Future<void> createProfile(Profile profile);
+
+  Future<void> checkAliasProfile(Profile profile, String newAlias);
 }
