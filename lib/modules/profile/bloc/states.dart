@@ -27,3 +27,13 @@ class DisplayState extends ProfileState {
   @override
   List<Object> get props => [profile];
 }
+
+class NotProfileState extends ProfileState {
+  NotProfileState();
+}
+
+class CreateState extends ProfileState {
+  final userId;
+
+  CreateState(this.userId);
+}

@@ -31,6 +31,7 @@ class _AccountModuleState extends State<AccountModule> {
     return Container(
       decoration: assetImageDecoration(Assets.UNIVERSY_MAIN_BACKGROUND),
       child: ListView(
+        controller: ScrollController(),
         children: <Widget>[
           _LogoWidget(),
           _AccountCard(child: buildAccountContent()),

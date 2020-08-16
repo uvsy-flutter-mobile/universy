@@ -18,9 +18,10 @@ class _ProfileModuleState extends State<ProfileModule> {
   @override
   void didChangeDependencies() {
     if (isNull(_profileCubit)) {
-      var profileService =
-          Provider.of<ServiceFactory>(context, listen: false).profileService();
-      this._profileCubit = ProfileCubit(profileService);
+      var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+      var profileService = sessionFactory.profileService();
+      var accountService = sessionFactory.accountService();
+      this._profileCubit = ProfileCubit(profileService, accountService);
       this._profileCubit.toDisplay();
     }
     super.didChangeDependencies();

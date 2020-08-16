@@ -114,15 +114,25 @@ const Map<dynamic, dynamic> ES = {
         "required": "El apellido es requerido",
         "inputMessage": "Ingresá tu apellido",
       },
+      "alias": {
+        "notValid": "Entre 3 y 20 caracteres. Ej: miAlias2",
+        "required": "El Alias es requerido",
+        "inputMessage": "Ingresá tu alias",
+      },
     },
     "actions": {
       "closeSession": "Cerrar Sesión",
       "edit": "Editar",
+      "createProfile": "Crear Perfil"
     },
     "info": {
       "closingSession": "Cerrando Sesión",
       "profileUpdated": "Se actualizó tu perfil",
       "saving": "Guardando...",
+      "profileNotCreated": "¡ Aún no tienes creado tu perfil !",
+    },
+    "error": {
+      "aliasAlreadyExists": "¡ Ese alias se encuentra en uso !"
     }
   }
 };

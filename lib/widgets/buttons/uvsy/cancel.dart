@@ -8,8 +8,8 @@ class CancelButton extends StatelessWidget {
   const CancelButton({
     Key key,
     VoidCallback onCancel,
-    Color splashColor = Colors.amber,
-    Color iconColor = Colors.orange,
+    Color splashColor = Colors.deepPurpleAccent,
+    Color iconColor = Colors.deepPurple,
   })  : this._onCancel = onCancel,
         this._splashColor = splashColor,
         this._iconColor = iconColor,
@@ -19,7 +19,7 @@ class CancelButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       splashColor: _splashColor,
-      icon: Icon(Icons.cancel, color: _iconColor, size: 35.0),
+      icon: Icon(Icons.cancel, color: _iconColor, size: 40.0),
       onPressed: _onCancel,
     );
   }

@@ -1,42 +1,7 @@
 import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
+import 'package:universy/model/json.dart';
 import 'package:universy/model/student/account.dart';
-import 'package:universy/model/student/career.dart';
-
-import 'requests.dart';
-
-const basePath = "/stdnapi";
-
-String _createPath(String resource) {
-  return "$basePath$resource";
-}
-
-// Career
-
-Future<List<StudentCareer>> getCareers(String userId) async {
-  var resource = "/students/$userId/careers";
-  var path = _createPath(resource);
-
-  var response = await api.getList<StudentCareer>(
-    path,
-    model: (content) => StudentCareer.fromJson(content),
-  );
-
-  return response.orElse([]);
-}
-
-Future<Optional<StudentCareer>> getCareer(
-    String userId, String programId) async {
-  var resource = "/students/$userId/careers/$programId";
-  var path = _createPath(resource);
-
-  return await api.get<StudentCareer>(
-    path,
-    model: (content) => StudentCareer.fromJson(content),
-  );
-}
-
-// Profile
 
 Future<Optional<Profile>> getProfile(String userId) {
   var resource = "/profile/$userId";
@@ -63,6 +28,23 @@ Future<void> createProfile(Profile profile) {
     resource,
     payload: profile,
   );
+}
+
+class UpdateProfileRequest extends JsonConvertible {
+  final String name;
+  final String lastName;
+  final String alias;
+
+  UpdateProfileRequest(this.name, this.lastName, this.alias);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "lastName": lastName,
+      "alias": alias,
+    };
+  }
 }
 
 Future<void> checkAliasProfile(String userId, String newAlias) {

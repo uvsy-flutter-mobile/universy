@@ -32,7 +32,7 @@ class ProfileDisplayWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ProfileHeaderWidget(this.profile),
+          ProfileHeaderWidget.display(this.profile),
           SizedBox(height: 15),
           _buildNameAndLastName(),
           SizedBox(height: 5),
