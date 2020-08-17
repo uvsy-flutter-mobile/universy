@@ -70,14 +70,16 @@ class DefaultStudentCareerService extends StudentCareerService {
         return currentProgram.value;
       }
 
-      currentProgram =
-          Optional.ofNullable(careers.map((c) => c.programId).first);
+      if (careers.isNotEmpty) {
+        currentProgram = Optional.ofNullable(
+          careers.map((c) => c.programId).first,
+        );
 
-      if (currentProgram.isPresent) {
-        setCurrentProgram(currentProgram.value);
-        return currentProgram.value;
+        if (currentProgram.isPresent) {
+          setCurrentProgram(currentProgram.value);
+          return currentProgram.value;
+        }
       }
-
       throw CurrentProgramNotFound();
     } on ServiceException catch (e) {
       Log.getLogger().error(e);

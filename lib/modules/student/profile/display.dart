@@ -3,7 +3,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/model/student/account.dart';
 import 'package:universy/modules/account/account.dart';
-import 'package:universy/modules/profile/bloc/cubit.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/formaters/profile.dart';
 import 'package:universy/text/text.dart';
@@ -11,6 +10,7 @@ import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/builder/builder.dart';
 import 'package:universy/widgets/dialog/exit.dart';
 
+import 'bloc/cubit.dart';
 import 'header.dart';
 
 class ProfileDisplayWidget extends StatelessWidget {
@@ -21,27 +21,25 @@ class ProfileDisplayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: _buildBody(),
       floatingActionButton: _buildFloatingActionButton(context),
     );
   }
 
   Widget _buildBody() {
-    return Container(
-      alignment: AlignmentDirectional.topCenter,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ProfileHeaderWidget.display(this.profile),
-          SizedBox(height: 15),
-          _buildNameAndLastName(),
-          SizedBox(height: 5),
-          _buildAlias(),
-          SizedBox(height: 10),
-          Divider(color: Colors.black12),
-          SizedBox(height: 8),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        ProfileHeaderWidget.display(this.profile),
+        SizedBox(height: 15),
+        _buildNameAndLastName(),
+        SizedBox(height: 5),
+        _buildAlias(),
+        SizedBox(height: 10),
+        Divider(color: Colors.black12),
+        SizedBox(height: 8),
+      ],
     );
   }
 
@@ -96,7 +94,7 @@ class _EditDialBuilder extends ComponentBuilder<SpeedDialChild> {
     return SpeedDialChild(
       child: Icon(Icons.edit),
       backgroundColor: Theme.of(context).accentColor,
-      label: AppText.getInstance().get("profile.actions.edit"),
+      label: AppText.getInstance().get("student.profile.actions.edit"),
       labelStyle: TextStyle(fontSize: 18.0),
       onTap: editAction,
     );
@@ -109,7 +107,7 @@ class _ExitDialBuilder extends ComponentBuilder<SpeedDialChild> {
     return SpeedDialChild(
       child: Icon(Icons.exit_to_app),
       backgroundColor: Theme.of(context).accentColor,
-      label: AppText.getInstance().get("profile.actions.closeSession"),
+      label: AppText.getInstance().get("student.profile.actions.closeSession"),
       labelStyle: TextStyle(fontSize: 18.0),
       onTap: () => _confirmLogOut(context),
     );
@@ -125,7 +123,8 @@ class _ExitDialBuilder extends ComponentBuilder<SpeedDialChild> {
     if (logout) {
       await AsyncModalBuilder()
           .perform(_logOut)
-          .withTitle(AppText.getInstance().get("profile.info.closingSession"))
+          .withTitle(
+              AppText.getInstance().get("student.profile.info.closingSession"))
           .then(_restartApp)
           .build()
           .run(context);

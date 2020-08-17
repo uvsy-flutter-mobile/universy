@@ -1,4 +1,5 @@
 import 'package:universy/apis/errors.dart';
+import 'package:universy/apis/students/requests.dart';
 import 'package:universy/model/student/account.dart';
 import 'package:universy/services/exceptions/profile.dart';
 import 'package:universy/services/exceptions/service.dart';
@@ -6,7 +7,7 @@ import 'package:universy/services/manifest.dart';
 import 'package:universy/util/logger.dart';
 import 'package:universy/util/object.dart';
 
-import 'package:universy/apis/students/profile.dart' as profileApi;
+import 'package:universy/apis/students/api.dart' as studentApi;
 
 import 'account.dart';
 
@@ -31,7 +32,7 @@ class DefaultProfileService extends ProfileService {
   Future<Profile> getProfile() async {
     try {
       String userId = await DefaultAccountService.instance().getUserId();
-      var profile = await profileApi.getProfile(userId);
+      var profile = await studentApi.getProfile(userId);
       return profile.orElseThrow(() => ProfileNotFound());
     } on ServiceException {
       rethrow;
@@ -47,12 +48,12 @@ class DefaultProfileService extends ProfileService {
   Future<void> updateProfile(Profile profile) async {
     // Here we should put the handling of Conflict when alias is updated!
     try {
-      var request = profileApi.UpdateProfileRequest(
+      var request = UpdateProfileRequest(
         profile.name,
         profile.lastName,
         profile.alias,
       );
-      await profileApi.updateProfile(profile.userId, request);
+      await studentApi.updateProfile(profile.userId, request);
     } on Conflict {
       throw AliasAlreadyExists();
     } catch (e) {
@@ -63,7 +64,7 @@ class DefaultProfileService extends ProfileService {
 
   Future<void> createProfile(Profile profile) async {
     try {
-      await profileApi.createProfile(profile);
+      await studentApi.createProfile(profile);
     } on Conflict {
       throw AliasAlreadyExists();
     } catch (e) {
@@ -74,7 +75,7 @@ class DefaultProfileService extends ProfileService {
 
   Future<void> checkAliasProfile(Profile profile, String newAlias) async {
     try {
-      await profileApi.checkAliasProfile(profile.userId, newAlias);
+      await studentApi.checkAliasProfile(profile.userId, newAlias);
     } on Conflict {
       throw AliasAlreadyExists();
     } catch (e) {

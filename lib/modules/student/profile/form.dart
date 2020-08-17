@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
 import 'package:universy/model/student/account.dart';
 import 'package:universy/model/lock.dart';
-import 'package:universy/modules/profile/header.dart';
 import 'package:universy/services/exceptions/profile.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
@@ -18,6 +17,7 @@ import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 import 'bloc/cubit.dart';
+import 'header.dart';
 import 'keys.dart';
 
 class ProfileFormWidget extends StatefulWidget {
@@ -78,20 +78,19 @@ class _ProfileFormState extends State<ProfileFormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          Container(
-            alignment: AlignmentDirectional.topCenter,
-            child: Column(
-              children: <Widget>[
-                ProfileHeaderWidget.edit(this._profile),
-                _buildProfileForm(context),
-              ],
-            ),
+    return ListView(
+      children: <Widget>[
+        Container(
+          color: Colors.transparent,
+          alignment: AlignmentDirectional.topCenter,
+          child: Column(
+            children: <Widget>[
+              ProfileHeaderWidget.edit(this._profile),
+              _buildProfileForm(context),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -123,12 +122,12 @@ class _ProfileFormState extends State<ProfileFormWidget> {
         validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
           regExp: Regex.LETTERS_FORMAT_REGEX,
           patternMessage:
-              AppText.getInstance().get("profile.input.name.notValid"),
+              AppText.getInstance().get("student.profile.input.name.notValid"),
           emptyMessage:
-              AppText.getInstance().get("profile.input.name.required"),
+              AppText.getInstance().get("student.profile.input.name.required"),
         ),
         decorationBuilder: TextInputDecorationBuilder(
-          AppText.getInstance().get("profile.input.name.inputMessage"),
+          AppText.getInstance().get("student.profile.input.name.inputMessage"),
         ),
       ),
     );
@@ -143,13 +142,14 @@ class _ProfileFormState extends State<ProfileFormWidget> {
         controller: _lastNameController,
         validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
           regExp: Regex.LETTERS_FORMAT_REGEX,
-          patternMessage:
-              AppText.getInstance().get("profile.input.lastName.notValid"),
-          emptyMessage:
-              AppText.getInstance().get("profile.input.lastName.required"),
+          patternMessage: AppText.getInstance()
+              .get("student.profile.input.lastName.notValid"),
+          emptyMessage: AppText.getInstance()
+              .get("student.profile.input.lastName.required"),
         ),
         decorationBuilder: TextInputDecorationBuilder(
-          AppText.getInstance().get("profile.input.lastName.inputMessage"),
+          AppText.getInstance()
+              .get("student.profile.input.lastName.inputMessage"),
         ),
       ),
     );
@@ -164,13 +164,14 @@ class _ProfileFormState extends State<ProfileFormWidget> {
           controller: _aliasController,
           validatorBuilder: PatternNotEmptyTextFormFieldValidatorBuilder(
             regExp: Regex.ALIAS_FORMAT_REGEX,
-            patternMessage:
-                AppText.getInstance().get("profile.input.alias.notValid"),
-            emptyMessage:
-                AppText.getInstance().get("profile.input.alias.required"),
+            patternMessage: AppText.getInstance()
+                .get("student.profile.input.alias.notValid"),
+            emptyMessage: AppText.getInstance()
+                .get("student.profile.input.alias.required"),
           ),
           decorationBuilder: TextInputDecorationBuilder(
-            AppText.getInstance().get("profile.input.alias.inputMessage"),
+            AppText.getInstance()
+                .get("student.profile.input.alias.inputMessage"),
           ),
         ));
   }
@@ -223,15 +224,16 @@ class _ProfileFormState extends State<ProfileFormWidget> {
 
   void _showProfileUpdated(BuildContext context) {
     FlushBarBroker.success()
-        .withMessage(AppText.getInstance().get("profile.info.profileUpdated"))
+        .withMessage(
+            AppText.getInstance().get("student.profile.info.profileUpdated"))
         .show(context);
     _navigateToDisplay(context);
   }
 
   void _showAliasConflict(BuildContext context) {
     FlushBarBroker.error()
-        .withMessage(
-            AppText.getInstance().get("profile.error.aliasAlreadyExists"))
+        .withMessage(AppText.getInstance()
+            .get("student.profile.error.aliasAlreadyExists"))
         .show(context);
   }
 
@@ -244,5 +246,6 @@ class _ProfileFormState extends State<ProfileFormWidget> {
     );
   }
 
-  String _savingMessage() => AppText.getInstance().get("profile.info.saving");
+  String _savingMessage() =>
+      AppText.getInstance().get("student.profile.info.saving");
 }

@@ -28,14 +28,17 @@ class _AccountModuleState extends State<AccountModule> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: assetImageDecoration(Assets.UNIVERSY_MAIN_BACKGROUND),
-      child: ListView(
-        controller: ScrollController(),
-        children: <Widget>[
-          _LogoWidget(),
-          _AccountCard(child: buildAccountContent()),
-        ],
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: Container(
+        decoration: assetImageDecoration(Assets.UNIVERSY_MAIN_BACKGROUND),
+        child: ListView(
+          controller: ScrollController(),
+          children: <Widget>[
+            _LogoWidget(),
+            _AccountCard(child: buildAccountContent()),
+          ],
+        ),
       ),
     );
   }

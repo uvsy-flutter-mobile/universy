@@ -40,9 +40,10 @@ Future<Optional<StudentCareer>> getCareer(
 
 Future<Optional<Profile>> getProfile(String userId) {
   var resource = "/profile/$userId";
+  var path = _createPath(resource);
 
   return api.get<Profile>(
-    resource,
+    path,
     model: (content) => Profile.fromJson(content),
   );
 }
@@ -58,15 +59,17 @@ Future<void> updateProfile(String userId, UpdateProfileRequest request) {
 
 Future<void> createProfile(Profile profile) {
   var resource = "/profile";
+  var path = _createPath(resource);
 
   return api.post(
-    resource,
+    path,
     payload: profile,
   );
 }
 
 Future<void> checkAliasProfile(String userId, String newAlias) {
   var resource = "/alias/availability";
+  var path = _createPath(resource);
 
-  return api.get(resource, queryParams: {"user_id": userId, "alias": newAlias});
+  return api.get(path, queryParams: {"user_id": userId, "alias": newAlias});
 }

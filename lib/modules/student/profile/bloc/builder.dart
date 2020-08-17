@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/profile/display.dart';
-import 'package:universy/modules/profile/form.dart';
-import 'package:universy/modules/profile/create.dart';
+import 'package:universy/modules/student/profile/create.dart';
+import 'package:universy/modules/student/profile/display.dart';
+import 'package:universy/modules/student/profile/form.dart';
 import 'package:universy/util/bloc.dart';
 import 'package:universy/widgets/progress/circular.dart';
 

@@ -102,37 +102,57 @@ const Map<dynamic, dynamic> ES = {
       },
     }
   },
-  "profile": {
-    "input": {
-      "name": {
-        "notValid": "Entre 3 y 20 letras, sin símbolos",
-        "required": "Nombre es requerido",
-        "inputMessage": "Nombre",
+  "student": {
+    "profile": {
+      "input": {
+        "name": {
+          "notValid": "Entre 3 y 20 letras, sin símbolos",
+          "required": "Nombre es requerido",
+          "inputMessage": "Nombre",
+        },
+        "lastName": {
+          "notValid": "Entre 3 y 20 letras, sin símbolos",
+          "required": "El apellido es requerido",
+          "inputMessage": "Ingresá tu apellido",
+        },
+        "alias": {
+          "notValid": "Entre 3 y 20 caracteres. Ej: miAlias2",
+          "required": "El Alias es requerido",
+          "inputMessage": "Ingresá tu alias",
+        },
       },
-      "lastName": {
-        "notValid": "Entre 3 y 20 letras, sin símbolos",
-        "required": "El apellido es requerido",
-        "inputMessage": "Ingresá tu apellido",
+      "actions": {
+        "closeSession": "Cerrar Sesión",
+        "edit": "Editar",
+        "createProfile": "Crear Perfil"
       },
-      "alias": {
-        "notValid": "Entre 3 y 20 caracteres. Ej: miAlias2",
-        "required": "El Alias es requerido",
-        "inputMessage": "Ingresá tu alias",
+      "info": {
+        "closingSession": "Cerrando Sesión",
+        "profileUpdated": "Se actualizó tu perfil",
+        "saving": "Guardando...",
+        "profileNotCreated": "¡ Aún no tienes creado tu perfil !",
       },
+      "error": {"aliasAlreadyExists": "¡ Ese alias se encuentra en uso !"}
     },
-    "actions": {
-      "closeSession": "Cerrar Sesión",
-      "edit": "Editar",
-      "createProfile": "Crear Perfil"
+    "subjects": {
+      "notFound": {
+        "title": "Bienvenido a Universy!",
+        "subtitle": "Para ver tus materias, primero elegí una carrera",
+        "actions": {
+          "pickCareer": "Elegir carrera",
+        },
+      }
     },
-    "info": {
-      "closingSession": "Cerrando Sesión",
-      "profileUpdated": "Se actualizó tu perfil",
-      "saving": "Guardando...",
-      "profileNotCreated": "¡ Aún no tienes creado tu perfil !",
+  },
+  "institution": {
+    "subjects": {
+      "notFound": {
+        "title": "Bienvenido a Universy!",
+        "subtitle": "Para ver tus materias, primero elegí una carrera",
+        "actions": {
+          "pickCareer": "Elegir carrera",
+        },
+      }
     },
-    "error": {
-      "aliasAlreadyExists": "¡ Ese alias se encuentra en uso !"
-    }
   }
 };
