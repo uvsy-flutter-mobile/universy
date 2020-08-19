@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/paddings/edge.dart';
@@ -33,7 +34,7 @@ class _CareerNotFoundState extends State<CareerNotFoundWidget> {
   Widget _buildTitle() {
     return Text(
       AppText.getInstance().get("institution.subjects.notFound.title"),
-      textAlign: TextAlign.left,
+      textAlign: TextAlign.center,
       style: Theme.of(context).primaryTextTheme.headline2,
     );
   }
@@ -41,7 +42,7 @@ class _CareerNotFoundState extends State<CareerNotFoundWidget> {
   Widget _buildSubtitle() {
     return Text(
       AppText.getInstance().get("institution.subjects.notFound.subtitle"),
-      textAlign: TextAlign.left,
+      textAlign: TextAlign.center,
       style: Theme.of(context).primaryTextTheme.headline3,
     );
   }
@@ -58,7 +59,7 @@ class _CareerNotFoundState extends State<CareerNotFoundWidget> {
       ),
       color: Theme.of(context).buttonColor,
       radius: 10,
-      onPressed: () => {},
+      onPressed: () => Navigator.pushNamed(context, Routes.CAREER_ENROLL),
     );
   }
 }

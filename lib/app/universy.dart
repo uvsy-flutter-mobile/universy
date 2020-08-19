@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:universy/app/theme.dart';
 import 'package:universy/constants/routes.dart';
-import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/loading/loading.dart';
+import 'package:universy/modules/main/main.dart';
+import 'package:universy/modules/student/career/enroll/enroll.dart';
+import 'package:universy/services/factory.dart';
 import 'package:universy/system/config.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/system/start.dart';
@@ -31,8 +34,17 @@ class Universy extends StatelessWidget {
 
   Map<String, WidgetBuilder> _getApplicationRoutes() {
     return {
-      Routes.HOME: (context) => MainModule(),
+      Routes.HOME: (context) => wrap(context, MainModule()),
+      Routes.CAREER_ENROLL: (context) => wrap(context, CareerEnrollModule()),
     };
+  }
+
+  Widget wrap(BuildContext context, Widget widget) {
+    var serviceFactory = Provider.of<ServiceFactory>(context, listen: false);
+    return Provider<ServiceFactory>.value(
+      value: serviceFactory,
+      child: widget,
+    );
   }
 
   String _getApplicationTitle() {

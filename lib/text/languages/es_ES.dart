@@ -136,7 +136,7 @@ const Map<dynamic, dynamic> ES = {
     },
     "subjects": {
       "notFound": {
-        "title": "Bienvenido a Universy!",
+        "title": "¡Bienvenido a Universy!",
         "subtitle": "Para ver tus materias, primero elegí una carrera",
         "actions": {
           "pickCareer": "Elegir carrera",
@@ -147,7 +147,7 @@ const Map<dynamic, dynamic> ES = {
   "institution": {
     "subjects": {
       "notFound": {
-        "title": "Bienvenido a Universy!",
+        "title": "¡Bienvenido a Universy!",
         "subtitle": "Para ver tus materias, primero elegí una carrera",
         "actions": {
           "pickCareer": "Elegir carrera",

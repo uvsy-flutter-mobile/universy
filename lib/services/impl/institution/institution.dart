@@ -1,4 +1,5 @@
-import 'package:universy/apis/institutions/api.dart' as queryApi;
+import 'package:universy/apis/institutions/api.dart' as institutionsApi;
+import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/queries.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
@@ -26,7 +27,20 @@ class DefaultInstitutionService implements InstitutionService {
   Future<List<InstitutionProgramInfo>> getProgramsInfo(
       List<String> programIds) async {
     try {
-      return await queryApi.getProgramsInfo(programIds);
+      return await institutionsApi.getProgramsInfo(programIds);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<List<Institution>> getInstitutions() async {
+    try {
+      return await institutionsApi.getInstitutions();
     } on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;

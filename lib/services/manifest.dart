@@ -1,4 +1,5 @@
 import 'package:universy/model/device.dart';
+import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/queries.dart';
 import 'package:universy/model/student/account.dart';
 import 'package:universy/model/student/career.dart';
@@ -60,6 +61,7 @@ abstract class SessionService extends Service {
 
 /// Institution Services
 abstract class InstitutionService extends Service {
+  Future<List<Institution>> getInstitutions();
   Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programIds);
 }
 
