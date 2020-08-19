@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:optional/optional.dart';
 import 'package:universy/apis/status_code.dart';
 import 'package:universy/apis/url.dart';
-import 'package:universy/model/account.dart';
+import 'package:universy/model/student/account.dart';
 import 'package:universy/model/json.dart';
-import 'package:universy/services/impl/default/account.dart';
+import 'package:universy/services/impl/student/account.dart';
 
 import 'errors.dart';
 
@@ -19,8 +19,7 @@ void checkStatus(http.Response response) {
 
 Future<Optional<R>> get<R>(String resource,
     {Map<String, String> queryParams,
-    R Function(Map<String, dynamic>) model,
-    bool unwrap = true}) async {
+    R Function(Map<String, dynamic>) model}) async {
   var url = UrlBuilder(resource: resource, queryParams: queryParams).build();
   var headers = await _getHeaders();
 
@@ -34,8 +33,31 @@ Future<Optional<R>> get<R>(String resource,
   if (response.statusCode == HTTP_OK) {
     var rawBody = utf8.decode(response.bodyBytes);
     var body = json.decode(rawBody);
+    var data = body["data"];
 
-    return Optional.ofNullable(model(unwrap ? body["data"] : body));
+    return Optional.ofNullable(model(data));
+  }
+  return Optional.empty();
+}
+
+Future<Optional<List<R>>> getList<R>(String resource,
+    {Map<String, String> queryParams, R Function(dynamic) model}) async {
+  var url = UrlBuilder(resource: resource, queryParams: queryParams).build();
+  var headers = await _getHeaders();
+
+  var response = await http.get(
+    url,
+    headers: headers,
+  );
+
+  checkStatus(response);
+
+  if (response.statusCode == HTTP_OK) {
+    var rawBody = utf8.decode(response.bodyBytes);
+    var body = json.decode(rawBody);
+    var data = body["data"];
+
+    return Optional.ofNullable(data.map(model).toList().cast<R>());
   }
   return Optional.empty();
 }

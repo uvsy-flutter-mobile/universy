@@ -2,9 +2,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
-import 'package:universy/model/account.dart';
+import 'package:universy/model/student/account.dart';
 import 'package:universy/modules/account/keys.dart';
-import 'package:universy/services/exceptions/account.dart';
+import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
@@ -136,22 +136,12 @@ class SignUpWidgetState extends State<SignUpWidget> {
         .show(context);
   }
 
-  void _showParametersInvalidFlushBar(BuildContext context) {
-    FlushBarBroker()
-        .withMessage(_invalidParametersMessage())
-        .withIcon(Icon(Icons.assignment, color: Colors.redAccent))
-        .show(context);
-  }
-
   void _showUserCreated(BuildContext context) {
     FlushBarBroker()
         .withMessage(AppText.getInstance().get("signUp.info.accountCreated"))
         .withIcon(Icon(Icons.check, color: Colors.green))
         .show(context);
   }
-
-  String _invalidParametersMessage() => AppText.getInstance() //
-      .get("signUp.error.parametersInvalid");
 
   String _usernameAlreadyExistsMessage() => AppText.getInstance() //
       .get("signUp.error.usernameAlreadyExist");

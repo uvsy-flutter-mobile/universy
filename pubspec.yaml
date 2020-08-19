@@ -31,6 +31,9 @@ dependencies:
   equatable: 1.2.3
   logger: 0.9.1
 
+  # Libs for device info
+  flutter_udid: 1.0.1
+
   # Libs for HTTP
   http: 0.12.2
 
@@ -49,6 +52,7 @@ dependencies:
 
   # Libs for storage
   flutter_secure_storage: 3.3.3
+  shared_preferences: 0.5.8
 
 
 

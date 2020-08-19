@@ -4,7 +4,7 @@ import 'package:universy/util/bloc.dart';
 
 import 'bloc/cubit.dart';
 import 'bloc/states.dart';
-import 'drawer/header.dart';
+import 'drawer/header/header.dart';
 import 'drawer/items.dart';
 import 'index.dart';
 
@@ -36,7 +36,7 @@ class _Widget extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          UserDrawerHeader(),
+          MainDrawerHeader(),
           Ink(
             child:
                 StudentSubjectsItem(selected: _index == STUDENT_SUBJECT_INDEX),
