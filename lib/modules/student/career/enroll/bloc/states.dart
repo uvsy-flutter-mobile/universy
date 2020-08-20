@@ -1,36 +1,51 @@
 import 'package:equatable/equatable.dart';
+import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/enrollment.dart';
+import 'package:universy/model/institution/institution.dart';
+import 'package:universy/model/institution/program.dart';
+
+import 'steps.dart';
 
 abstract class EnrollState extends Equatable {
-  final int ordinal;
+  @override
+  List<Object> get props => [];
+}
 
-  EnrollState(this.ordinal);
+class LoadingState extends EnrollState {}
 
-  bool get isFinal => false;
+class BaseStepState extends EnrollState {
+  final int step;
 
-  bool get isInitial => false;
+  BaseStepState(this.step);
 
   @override
-  List<Object> get props => [ordinal];
+  List<Object> get props => [step];
 }
 
-class InstitutionState extends EnrollState {
-  InstitutionState() : super(0);
-
-  @override
-  bool get isInitial => true;
+class FetchingData extends BaseStepState {
+  FetchingData(int step) : super(step);
 }
 
-class CareerState extends EnrollState {
-  CareerState() : super(1);
+class InstitutionState extends BaseStepState {
+  final List<Institution> institutions;
+
+  InstitutionState(this.institutions) : super(Step.institution.index);
 }
 
-class YearState extends EnrollState {
-  YearState() : super(2);
+class CareerState extends BaseStepState {
+  final List<InstitutionCareer> careers;
+
+  CareerState(this.careers) : super(Step.career.index);
 }
 
-class ReviewState extends EnrollState {
-  ReviewState() : super(3);
+class ProgramsState extends BaseStepState {
+  final List<InstitutionProgram> programs;
 
-  @override
-  bool get isFinal => true;
+  ProgramsState(this.programs) : super(Step.program.index);
+}
+
+class ReviewState extends BaseStepState {
+  final CareerEnrollment enrollment;
+
+  ReviewState(this.enrollment) : super(Step.review.index);
 }

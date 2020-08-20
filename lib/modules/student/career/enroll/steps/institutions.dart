@@ -1,44 +1,94 @@
+import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/model/institution/institution.dart';
-import 'package:universy/services/factory.dart';
-import 'package:universy/widgets/future/future_widget.dart';
-import 'package:universy/widgets/tiles/list.dart';
+import 'package:universy/modules/student/career/enroll/bloc/cubit.dart';
+import 'package:universy/modules/student/career/enroll/steps/element_card.dart';
+import 'package:universy/modules/student/career/enroll/steps/step.dart';
+import 'package:universy/util/object.dart';
+import 'package:universy/widgets/paddings/edge.dart';
 
-class InstitutionStep extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FutureWidget(
-      fromFuture: _fetchInstitutions(context),
-      onData: (institutions) =>
-          _InstitutionStepWidget(institutions: institutions),
-    );
-  }
-
-  Future<List<Institution>> _fetchInstitutions(BuildContext context) {
-    var institutionService =
-        Provider.of<ServiceFactory>(context, listen: false) //
-            .institutionService();
-    return institutionService.getInstitutions();
-  }
-}
-
-class _InstitutionStepWidget extends StatelessWidget {
+class InstitutionStep extends StatefulWidget {
   final List<Institution> institutions;
 
-  const _InstitutionStepWidget({Key key, this.institutions}) : super(key: key);
+  const InstitutionStep({Key key, this.institutions}) : super(key: key);
+
+  @override
+  _InstitutionStepState createState() => _InstitutionStepState();
+}
+
+class _InstitutionStepState extends State<InstitutionStep> {
+  Institution _selectedInstitution;
+
+  @override
+  void initState() {
+    _selectedInstitution = null;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _selectedInstitution = null;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(institutions);
-    return ListView(
-      children: institutions
-          .map((i) => Card(
-                  child: ListTile(
-                title: Text(i.name),
-                subtitle: Text(i.codename),
-              )))
-          .toList(),
+    return EnrollStep(
+      // TODO: Apptext
+      title: "Elegi una institución",
+      child: _buildInstitutionList(),
+      onNext: notNull(_selectedInstitution) ? _selectInstitution : null,
+      onPrevious: null,
     );
+  }
+
+  Widget _buildInstitutionList() {
+    List<Widget> children = [];
+    children.add(SizedBox(height: 10));
+    children.addAll(widget.institutions.map(_createInstitutionItem).toList());
+    children.add(SizedBox(height: 40));
+    return AllEdgePaddedWidget(
+      padding: 8,
+      child: FadingEdgeScrollView.fromScrollView(
+        gradientFractionOnEnd: 0.3,
+        child: ListView(
+          controller: ScrollController(),
+          physics: BouncingScrollPhysics(),
+          children: children,
+        ),
+      ),
+    );
+  }
+
+  Widget _createInstitutionItem(Institution institution) {
+    return ElementCard(
+      title: institution.name,
+      tag: institution.codename,
+      selected: isSelected(institution),
+      onTap: () => _handleSelection(institution),
+    );
+  }
+
+  bool isSelected(Institution institution) {
+    return notNull(_selectedInstitution) &&
+        _selectedInstitution.id == institution.id;
+  }
+
+  void _handleSelection(Institution institution) {
+    if (isSelected(institution)) {
+      setState(() {
+        _selectedInstitution = null;
+      });
+    } else {
+      setState(() {
+        _selectedInstitution = institution;
+      });
+    }
+  }
+
+  void _selectInstitution() {
+    Provider.of<EnrollCubit>(context, listen: false)
+        .selectInstitution(_selectedInstitution);
   }
 }

@@ -1,62 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/student/career/enroll/steps/institutions.dart';
+import 'package:universy/modules/student/career/enroll/stepper.dart';
+import 'package:universy/modules/student/career/enroll/steps/careers.dart';
+import 'package:universy/modules/student/career/enroll/steps/programs.dart';
 import 'package:universy/util/bloc.dart';
+import 'package:universy/widgets/progress/circular.dart';
 
 import 'bloc/states.dart';
+import 'steps/institutions.dart';
+import 'steps/review.dart';
 
 class EnrollBodyBuilder extends WidgetBuilderFactory<EnrollState> {
   @override
   Widget translate(EnrollState state) {
-    return EnrollBodyWidget(current: state.ordinal);
+    var progressIndicator = CenterSizedCircularProgressIndicator();
+
+    if (state is BaseStepState) {
+      Widget child = progressIndicator;
+
+      if (state is InstitutionState) {
+        child = InstitutionStep(institutions: state.institutions);
+      } else if (state is CareerState) {
+        child = CareerStep(careers: state.careers);
+      } else if (state is ProgramsState) {
+        child = ProgramStep(programs: state.programs);
+      } else if (state is ReviewState) {
+        child = ReviewStep(enrollment: state.enrollment);
+      }
+
+      return EnrollBodyWidget(step: state.step, child: child);
+    }
+    return progressIndicator;
   }
 }
 
 class EnrollBodyWidget extends StatelessWidget {
-  final int current;
+  final int step;
+  final Widget child;
 
-  const EnrollBodyWidget({Key key, this.current}) : super(key: key);
+  const EnrollBodyWidget({Key key, this.step, this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(primaryColor: Theme.of(context).accentColor),
-      child: Stepper(
-        controlsBuilder: _controlsBuilder,
-        currentStep: current,
-        type: StepperType.horizontal,
-        steps: _getSteps(),
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(child: EnrollStepper(current: step), flex: 1),
+        Expanded(child: child, flex: 9),
+      ],
     );
-  }
-
-  Widget _controlsBuilder(BuildContext context,
-      {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
-    // The controllers are managed externally
-    return SizedBox.shrink();
-  }
-
-  List<Step> _getSteps() {
-    return [
-      _buildStep(ordinal: 0, content: InstitutionStep()),
-      _buildStep(ordinal: 1, content: Text("")),
-      _buildStep(ordinal: 2, content: Text("")),
-      _buildStep(ordinal: 3, content: Text("")),
-    ];
-  }
-
-  Step _buildStep({int ordinal, Widget content}) {
-    var state = StepState.disabled;
-
-    if (current == ordinal) {
-      state = StepState.editing;
-    } else if (current > ordinal) {
-      state = StepState.complete;
-    }
-
-    return Step(
-        title: Text(""),
-        content: content,
-        state: state,
-        isActive: current >= ordinal);
   }
 }

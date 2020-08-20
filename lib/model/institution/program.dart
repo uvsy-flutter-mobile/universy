@@ -1,5 +1,6 @@
 import 'package:universy/model/copyable.dart';
 import 'package:universy/model/json.dart';
+import 'package:universy/util/object.dart';
 
 class InstitutionProgram
     implements Copyable<InstitutionProgram>, JsonConvertible {
@@ -18,6 +19,18 @@ class InstitutionProgram
     this._hours,
     this._points,
   );
+
+  String get id => _id;
+
+  String get name => _name;
+
+  int get yearFrom => _yearFrom;
+
+  int get yearTo => _yearTo;
+
+  int get hours => _hours;
+
+  int get points => _points;
 
   @override
   InstitutionProgram copy() {
@@ -45,5 +58,9 @@ class InstitutionProgram
       "hours": _hours,
       "points": _points,
     };
+  }
+
+  bool isProgramForYear(int year) {
+    return _yearFrom <= year && (isNull(_yearTo) || year <= _yearTo);
   }
 }

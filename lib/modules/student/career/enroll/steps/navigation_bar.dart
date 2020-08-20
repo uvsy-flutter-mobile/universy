@@ -1,28 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:universy/modules/student/career/enroll/bloc/cubit.dart';
-import 'package:universy/util/bloc.dart';
+import 'package:optional/optional.dart';
+import 'package:universy/util/object.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-import 'bloc/states.dart';
+class StepNavigationBar extends StatelessWidget {
+  final VoidCallback onNext;
+  final VoidCallback onPrevious;
+  final String nextLabel;
+  final String previousLabel;
 
-class EnrollNavigationBarBuilder extends WidgetBuilderFactory<EnrollState> {
-  @override
-  Widget translate(EnrollState state) {
-    return EnrollNavigationBar(
-      isFinalStep: state.isFinal,
-      isInitialStep: state.isInitial,
-    );
-  }
-}
-
-class EnrollNavigationBar extends StatelessWidget {
-  final bool isFinalStep;
-  final bool isInitialStep;
-
-  const EnrollNavigationBar({Key key, this.isFinalStep, this.isInitialStep})
-      : super(key: key);
+  const StepNavigationBar({
+    Key key,
+    this.onNext,
+    this.onPrevious,
+    this.nextLabel,
+    this.previousLabel,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +35,24 @@ class EnrollNavigationBar extends StatelessWidget {
   }
 
   Widget _buildPreviousButton(BuildContext context) {
+    // TODO: Apptext
+    var defaultLabel = "Anterior";
     return _buildButton(
-      text: "Anterior",
+      text: Optional.ofNullable(previousLabel).orElse(defaultLabel),
       context: context,
-      onPressed: () =>
-          Provider.of<EnrollCubit>(context, listen: false).previousStep(),
-      enabled: !isInitialStep,
+      onPressed: onPrevious,
+      enabled: notNull(onPrevious),
     );
   }
 
   Widget _buildNextButton(BuildContext context) {
+    // TODO: Apptext
+    var defaultLabel = "Siguiente";
     return _buildButton(
-      text: "Siguiente",
+      text: Optional.ofNullable(nextLabel).orElse(defaultLabel),
       context: context,
-      onPressed: () =>
-          Provider.of<EnrollCubit>(context, listen: false).nextStep(),
-      enabled: !isFinalStep,
+      onPressed: onNext,
+      enabled: notNull(onNext),
     );
   }
 
