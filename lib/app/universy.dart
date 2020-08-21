@@ -34,12 +34,12 @@ class Universy extends StatelessWidget {
 
   Map<String, WidgetBuilder> _getApplicationRoutes() {
     return {
-      Routes.HOME: (context) => wrap(context, MainModule()),
-      Routes.CAREER_ENROLL: (context) => wrap(context, CareerEnrollModule()),
+      Routes.HOME: (context) => MainModule(),
+      Routes.CAREER_ENROLL: (context) => CareerEnrollModule(),
     };
   }
 
-  Widget wrap(BuildContext context, Widget widget) {
+  Widget _wrap(BuildContext context, Widget widget) {
     var serviceFactory = Provider.of<ServiceFactory>(context, listen: false);
     return Provider<ServiceFactory>.value(
       value: serviceFactory,

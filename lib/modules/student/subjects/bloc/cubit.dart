@@ -11,8 +11,9 @@ class SubjectCubit extends Cubit<SubjectState> {
 
   SubjectCubit(this._studentCareerService) : super(LoadingState());
 
-  Future<void> toDisplay() async {
+  Future<void> fetchSubjects() async {
     try {
+      emit(LoadingState());
       var userId = await _studentCareerService.getCurrentProgram();
       emit(DisplayState());
     } on CurrentProgramNotFound {
