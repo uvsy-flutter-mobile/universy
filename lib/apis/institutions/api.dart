@@ -1,5 +1,7 @@
 import 'package:universy/apis/api.dart' as api;
+import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/institution.dart';
+import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
 
 const basePath = "/instapi";
@@ -37,6 +39,36 @@ Future<List<Institution>> getInstitutions() async {
     path,
     queryParams: queryParams,
     model: (content) => Institution.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<List<InstitutionCareer>> getCareers(String institutionId) async {
+  var resource = "/institutions/$institutionId/careers";
+  var path = _createPath(resource);
+
+  var queryParams = {"onlyActive": "true"};
+
+  var response = await api.getList<InstitutionCareer>(
+    path,
+    queryParams: queryParams,
+    model: (content) => InstitutionCareer.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<List<InstitutionProgram>> getPrograms(String careerId) async {
+  var resource = "/careers/$careerId/programs";
+  var path = _createPath(resource);
+
+  var queryParams = {"onlyActive": "true"};
+
+  var response = await api.getList<InstitutionProgram>(
+    path,
+    queryParams: queryParams,
+    model: (content) => InstitutionProgram.fromJson(content),
   );
 
   return response.orElse([]);

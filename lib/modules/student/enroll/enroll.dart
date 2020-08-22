@@ -2,15 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:universy/modules/student/career/enroll/bloc/cubit.dart';
-import 'package:universy/modules/student/career/enroll/body.dart';
-import 'package:universy/modules/student/career/enroll/navigation_bar.dart';
+import 'package:universy/modules/student/enroll/bloc/cubit.dart';
+import 'package:universy/modules/student/enroll/body.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/system/assets.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
-import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/decorations/box.dart';
-import 'package:universy/widgets/paddings/edge.dart';
 
 class CareerEnrollModule extends StatefulWidget {
   @override
@@ -27,6 +25,7 @@ class _CareerEnrollModuleState extends State<CareerEnrollModule> {
       var careerService = sessionFactory.studentCareerService();
       var institutionService = sessionFactory.institutionService();
       this._enrollCubit = EnrollCubit(careerService, institutionService);
+      this._enrollCubit.fetchInstitutions();
     }
     super.didChangeDependencies();
   }
@@ -40,15 +39,11 @@ class _CareerEnrollModuleState extends State<CareerEnrollModule> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text("Elegi una carrera!"),
+            title: Text(AppText.getInstance().get("student.enroll.title")),
           ),
           body: BlocBuilder(
             cubit: _enrollCubit,
             builder: EnrollBodyBuilder().builder(),
-          ),
-          bottomNavigationBar: BlocBuilder(
-            cubit: _enrollCubit,
-            builder: EnrollNavigationBarBuilder().builder(),
           ),
         ),
       ),

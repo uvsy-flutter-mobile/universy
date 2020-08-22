@@ -16,3 +16,21 @@ class UpdateProfileRequest extends JsonConvertible {
     };
   }
 }
+
+// Student Career
+class CreateCareerRequest extends JsonConvertible {
+  final String programId;
+  final int beginYear;
+  final int endYear;
+
+  CreateCareerRequest(this.programId, this.beginYear, this.endYear);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "programId": programId,
+      "beginYear": beginYear,
+      "endYear": endYear,
+    };
+  }
+}

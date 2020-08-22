@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/student/career/enroll/steps/institutions.dart';
-import 'package:universy/util/bloc.dart';
 
-import 'bloc/states.dart';
-
-class EnrollBodyBuilder extends WidgetBuilderFactory<EnrollState> {
-  @override
-  Widget translate(EnrollState state) {
-    return EnrollBodyWidget(current: state.ordinal);
-  }
-}
-
-class EnrollBodyWidget extends StatelessWidget {
+class EnrollStepper extends StatelessWidget {
   final int current;
 
-  const EnrollBodyWidget({Key key, this.current}) : super(key: key);
+  const EnrollStepper({Key key, this.current}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +26,10 @@ class EnrollBodyWidget extends StatelessWidget {
 
   List<Step> _getSteps() {
     return [
-      _buildStep(ordinal: 0, content: InstitutionStep()),
-      _buildStep(ordinal: 1, content: Text("")),
-      _buildStep(ordinal: 2, content: Text("")),
-      _buildStep(ordinal: 3, content: Text("")),
+      _buildStep(ordinal: 0),
+      _buildStep(ordinal: 1),
+      _buildStep(ordinal: 2),
+      _buildStep(ordinal: 3),
     ];
   }
 
@@ -54,9 +43,10 @@ class EnrollBodyWidget extends StatelessWidget {
     }
 
     return Step(
-        title: Text(""),
-        content: content,
-        state: state,
-        isActive: current >= ordinal);
+      title: Text(""),
+      content: SizedBox.shrink(),
+      state: state,
+      isActive: current >= ordinal,
+    );
   }
 }
