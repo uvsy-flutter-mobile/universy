@@ -37,7 +37,9 @@ class _CareerStepState extends State<CareerStep> {
     return EnrollStep(
       // TODO: To apptext
       title: "Elegi una carrera",
-      child: _buildCareerWidget(),
+      child: widget.careers.isNotEmpty
+          ? _buildCareerWidget()
+          : _buildNoCareerWidget(),
       onNext: notNull(_selectedCareer) ? _selectCareer : null,
       onPrevious: _goToInstitution,
     );
@@ -57,6 +59,16 @@ class _CareerStepState extends State<CareerStep> {
           physics: BouncingScrollPhysics(),
           children: children,
         ),
+      ),
+    );
+  }
+
+  Widget _buildNoCareerWidget() {
+    return AllEdgePaddedWidget(
+      padding: 8,
+      child: Center(
+        // TODO: Apptext
+        child: Text("No hay carreras disponible para esta institución"),
       ),
     );
   }
