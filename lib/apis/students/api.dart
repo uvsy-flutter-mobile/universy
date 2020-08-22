@@ -65,6 +65,16 @@ Future<List<StudentCareer>> getCareers(String userId) async {
   return response.orElse([]);
 }
 
+Future<void> createCareer(String userId, CreateCareerRequest request) async {
+  var resource = "/students/$userId/careers";
+  var path = _createPath(resource);
+
+  await api.post(
+    path,
+    payload: request,
+  );
+}
+
 Future<Optional<StudentCareer>> getCareer(
     String userId, String programId) async {
   var resource = "/students/$userId/careers/$programId";

@@ -17,6 +17,8 @@ class UpdateProfileRequest extends JsonConvertible {
   }
 }
 
+// Notes
+
 class CreateNoteRequest extends JsonConvertible {
   final String title;
   final String description;
@@ -43,6 +45,24 @@ class UpdateNoteRequest extends JsonConvertible {
     return {
       "title": title,
       "description": description,
+    };
+  }
+}
+
+// Student Career
+class CreateCareerRequest extends JsonConvertible {
+  final String programId;
+  final int beginYear;
+  final int endYear;
+
+  CreateCareerRequest(this.programId, this.beginYear, this.endYear);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "programId": programId,
+      "beginYear": beginYear,
+      "endYear": endYear,
     };
   }
 }

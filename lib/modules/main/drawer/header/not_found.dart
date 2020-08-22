@@ -4,26 +4,19 @@ import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class CareerNotFoundWidget extends StatefulWidget {
-  @override
-  _CareerNotFoundState createState() => _CareerNotFoundState();
-}
-
-class _CareerNotFoundState extends State<CareerNotFoundWidget> {
+class NoCareerDrawerHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 90.0,
+    return AllEdgePaddedWidget(
+      padding: 10,
       child: Container(
         color: Colors.transparent,
         alignment: AlignmentDirectional.topCenter,
         child: Column(
           children: <Widget>[
-            SizedBox(height: 125.0),
-            _buildTitle(),
+            SizedBox(height: 2.0),
+            _buildTitle(context),
             SizedBox(height: 20.0),
-            _buildSubtitle(),
-            SizedBox(height: 50.0),
             _buildToCreateProfileButton(context),
           ],
         ),
@@ -31,19 +24,11 @@ class _CareerNotFoundState extends State<CareerNotFoundWidget> {
     );
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(BuildContext context) {
     return Text(
-      AppText.getInstance().get("student.subjects.notFound.title"),
+      AppText.getInstance().get("main.drawer.notFound.title"),
       textAlign: TextAlign.center,
-      style: Theme.of(context).primaryTextTheme.headline2,
-    );
-  }
-
-  Widget _buildSubtitle() {
-    return Text(
-      AppText.getInstance().get("student.subjects.notFound.subtitle"),
-      textAlign: TextAlign.center,
-      style: Theme.of(context).primaryTextTheme.headline3,
+      style: Theme.of(context).primaryTextTheme.headline6,
     );
   }
 
@@ -52,8 +37,7 @@ class _CareerNotFoundState extends State<CareerNotFoundWidget> {
       child: AllEdgePaddedWidget(
         padding: 12.0,
         child: Text(
-          AppText.getInstance()
-              .get("student.subjects.notFound.actions.addCareer"),
+          AppText.getInstance().get("main.drawer.notFound.actions.addCareer"),
           style: Theme.of(context).primaryTextTheme.button,
         ),
       ),

@@ -21,7 +21,7 @@ class _StudentSubjectsModuleState extends State<StudentSubjectsModule> {
       var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
       var careerService = sessionFactory.studentCareerService();
       this._subjectCubit = SubjectCubit(careerService);
-      this._subjectCubit.toDisplay();
+      this._subjectCubit.fetchSubjects();
     }
     super.didChangeDependencies();
   }
