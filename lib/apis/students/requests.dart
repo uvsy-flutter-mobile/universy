@@ -16,3 +16,33 @@ class UpdateProfileRequest extends JsonConvertible {
     };
   }
 }
+
+class CreateNoteRequest extends JsonConvertible {
+  final String title;
+  final String description;
+
+  CreateNoteRequest(this.title, this.description);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "title": title,
+      "description": description,
+    };
+  }
+}
+
+class UpdateNoteRequest extends JsonConvertible {
+  final String title;
+  final String description;
+
+  UpdateNoteRequest(this.title, this.description);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "title": title,
+      "description": description,
+    };
+  }
+}

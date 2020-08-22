@@ -49,6 +49,9 @@ class _Widget extends StatelessWidget {
             child: ProfileItem(selected: _index == PROFILE_INDEX),
           ),
           Divider(),
+          Ink(
+            child: StudentNotesItem(),
+          )
         ],
       ),
     );

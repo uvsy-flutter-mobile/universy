@@ -40,11 +40,15 @@ dependencies:
   # Libs for Auth
   amazon_cognito_identity_dart_2: 0.1.15
 
+  # Libs for Date and Time
+  intl: ^0.16.1
+
   # Libs for Widgets
   auto_size_text: 2.1.0
   flushbar: 1.10.4
   email_validator: 1.0.0
   flutter_speed_dial: 1.2.5
+  flutter_staggered_grid_view: 0.3.2
 
   # Libs for state management
   flutter_bloc: 6.0.1
