@@ -90,6 +90,16 @@ Future<void> post(String resource, {JsonConvertible payload}) async {
   checkStatus(response);
 }
 
+Future<void> delete(String resource, {Map<String, String> queryParams}) async {
+  var url = UrlBuilder(resource: resource, queryParams: queryParams).build();
+  var headers = await _getHeaders();
+  var response = await http.delete(
+    url,
+    headers: headers,
+  );
+  checkStatus(response);
+}
+
 dynamic _encodeBody(JsonConvertible payload) {
   return json.encode(payload.toJson());
 }
