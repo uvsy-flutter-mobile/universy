@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/student/career/enroll/stepper.dart';
-import 'package:universy/modules/student/career/enroll/steps/careers.dart';
-import 'package:universy/modules/student/career/enroll/steps/programs.dart';
+import 'package:universy/modules/student/enroll/stepper.dart';
+import 'package:universy/modules/student/enroll/steps/careers.dart';
+import 'package:universy/modules/student/enroll/steps/programs.dart';
 import 'package:universy/util/bloc.dart';
 import 'package:universy/widgets/progress/circular.dart';
 

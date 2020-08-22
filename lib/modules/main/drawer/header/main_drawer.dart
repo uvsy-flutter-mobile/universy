@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/institution/queries.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/dialog/confirm.dart';
 
 class MainDrawerHeader extends StatelessWidget {
@@ -32,7 +33,7 @@ class MainDrawerHeader extends StatelessWidget {
 
   List<Widget> _buildOtherPrograms(BuildContext context) {
     var programWidgets =
-        otherPrograms.map((p) => _buildProgramWidget(context, p)).toList();
+        otherPrograms.map((p) => _buildCareerWidget(context, p)).toList();
     if (programWidgets.length <= 2) {
       Widget addWidget = _buildAddCareerWidget(context);
       programWidgets.add(addWidget);
@@ -40,7 +41,7 @@ class MainDrawerHeader extends StatelessWidget {
     return programWidgets;
   }
 
-  Widget _buildProgramWidget(
+  Widget _buildCareerWidget(
       BuildContext context, InstitutionProgramInfo programInfo) {
     return GestureDetector(
       onTap: () => _handleProgramChange(context, programInfo),
@@ -49,6 +50,7 @@ class MainDrawerHeader extends StatelessWidget {
         child: Text(
           programInfo.career.codename,
           style: TextStyle(
+            color: Colors.black,
             fontSize: 16.0,
           ),
         ),
@@ -58,11 +60,13 @@ class MainDrawerHeader extends StatelessWidget {
 
   void _handleProgramChange(
       BuildContext context, InstitutionProgramInfo programInfo) async {
+    String switchCareer =
+        AppText.getInstance().get("main.drawer.career.actions.switchCareer");
     bool changeCareer = await showDialog(
           context: context,
           builder: (context) => ConfirmDialog(
             title: "",
-            content: "Cambiar al carrera ${programInfo.career.name}",
+            content: "$switchCareer ${programInfo.career.name}",
           ),
         ) ??
         false;

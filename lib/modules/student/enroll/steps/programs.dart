@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/model/institution/program.dart';
-import 'package:universy/modules/student/career/enroll/bloc/cubit.dart';
-import 'package:universy/modules/student/career/enroll/steps/step.dart';
+import 'package:universy/modules/student/enroll/bloc/cubit.dart';
+import 'package:universy/modules/student/enroll/steps/step.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -52,8 +53,7 @@ class _ProgramStepState extends State<ProgramStep> {
   @override
   Widget build(BuildContext context) {
     return EnrollStep(
-      // TODO: Apptext
-      title: "Elegi tu año de ingreso",
+      title: AppText.getInstance().get("student.enroll.input.chooseYear"),
       child: _buildProgramWidget(),
       onNext: notNull(_selectedProgram) ? _selectYear : null,
       onPrevious: _goToCareers,
@@ -75,15 +75,14 @@ class _ProgramStepState extends State<ProgramStep> {
   }
 
   Widget _buildYear(int year) {
-    print(year);
     Optional<InstitutionProgram> program = getProgramForYear(year);
     return ElementCard(
       selected: isSelected(year),
       enabled: program.isPresent,
       title: "$year",
-      // TODO: Migrate to apptext
-      subtitle:
-          program.map((p) => p.name).orElse("No hay programa para este año :/"),
+      subtitle: program
+          .map((p) => p.name)
+          .orElse(AppText.getInstance().get("student.enroll.error.noProgram")),
       onTap: () => _handleSelection(year),
     );
   }

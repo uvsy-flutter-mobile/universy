@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:universy/constants/routes.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -25,7 +26,7 @@ class NoCareerDrawerHeader extends StatelessWidget {
 
   Widget _buildTitle(BuildContext context) {
     return Text(
-      "¡Bienvenido a Universy!",
+      AppText.getInstance().get("main.drawer.notFound.title"),
       textAlign: TextAlign.center,
       style: Theme.of(context).primaryTextTheme.headline6,
     );
@@ -36,7 +37,7 @@ class NoCareerDrawerHeader extends StatelessWidget {
       child: AllEdgePaddedWidget(
         padding: 12.0,
         child: Text(
-          "Elegí una carrera",
+          AppText.getInstance().get("main.drawer.notFound.actions.addCareer"),
           style: Theme.of(context).primaryTextTheme.button,
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/paddings/edge.dart';
@@ -35,10 +36,10 @@ class StepNavigationBar extends StatelessWidget {
   }
 
   Widget _buildPreviousButton(BuildContext context) {
-    // TODO: Apptext
-    var defaultLabel = "Anterior";
+    var defaultLabel =
+        () => AppText.getInstance().get("student.enroll.actions.previous");
     return _buildButton(
-      text: Optional.ofNullable(previousLabel).orElse(defaultLabel),
+      text: Optional.ofNullable(previousLabel).orElseGet(defaultLabel),
       context: context,
       onPressed: onPrevious,
       enabled: notNull(onPrevious),
@@ -46,10 +47,10 @@ class StepNavigationBar extends StatelessWidget {
   }
 
   Widget _buildNextButton(BuildContext context) {
-    // TODO: Apptext
-    var defaultLabel = "Siguiente";
+    var defaultLabel =
+        () => AppText.getInstance().get("student.enroll.actions.next");
     return _buildButton(
-      text: Optional.ofNullable(nextLabel).orElse(defaultLabel),
+      text: Optional.ofNullable(nextLabel).orElseGet(defaultLabel),
       context: context,
       onPressed: onNext,
       enabled: notNull(onNext),

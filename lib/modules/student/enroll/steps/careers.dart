@@ -2,9 +2,10 @@ import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/model/institution/career.dart';
-import 'package:universy/modules/student/career/enroll/bloc/cubit.dart';
-import 'package:universy/modules/student/career/enroll/steps/element_card.dart';
-import 'package:universy/modules/student/career/enroll/steps/step.dart';
+import 'package:universy/modules/student/enroll/bloc/cubit.dart';
+import 'package:universy/modules/student/enroll/steps/element_card.dart';
+import 'package:universy/modules/student/enroll/steps/step.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -35,8 +36,7 @@ class _CareerStepState extends State<CareerStep> {
   @override
   Widget build(BuildContext context) {
     return EnrollStep(
-      // TODO: To apptext
-      title: "Elegi una carrera",
+      title: AppText.getInstance().get("student.enroll.input.chooseCareer"),
       child: widget.careers.isNotEmpty
           ? _buildCareerWidget()
           : _buildNoCareerWidget(),
@@ -67,8 +67,8 @@ class _CareerStepState extends State<CareerStep> {
     return AllEdgePaddedWidget(
       padding: 8,
       child: Center(
-        // TODO: Apptext
-        child: Text("No hay carreras disponible para esta institución"),
+        child:
+            Text(AppText.getInstance().get("student.enroll.error.noCareers")),
       ),
     );
   }

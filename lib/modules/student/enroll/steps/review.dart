@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/institution/enrollment.dart';
-import 'package:universy/modules/student/career/enroll/bloc/cubit.dart';
-import 'package:universy/modules/student/career/enroll/steps/step.dart';
+import 'package:universy/modules/student/enroll/bloc/cubit.dart';
+import 'package:universy/modules/student/enroll/steps/step.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/flushbar/builder.dart';
 import 'package:universy/widgets/paddings/edge.dart';
@@ -40,31 +41,36 @@ class _ReviewStepState extends State<ReviewStep> {
   @override
   Widget build(BuildContext context) {
     return EnrollStep(
-      // TODO: Apptext
-      title: "Revisa lo ingresado :)",
+      title: AppText.getInstance().get("student.enroll.input.checkInput"),
       child: _buildReviewWidget(),
       onNext: confirmed ? _handleCareerCreation : null,
-      nextLabel: "Crear Carrera",
+      nextLabel: AppText.getInstance().get("student.enroll.actions.addCareer"),
       onPrevious: _goToCareers,
     );
   }
 
   Widget _buildReviewWidget() {
+    String checkCareerLabel =
+        AppText.getInstance().get("student.enroll.info.checkCareer");
+    String checkInstitutionLabel =
+        AppText.getInstance().get("student.enroll.info.checkInstitution");
+    String checkProgramLabel =
+        AppText.getInstance().get("student.enroll.info.checkProgram");
     return AllEdgePaddedWidget(
       padding: 20,
       child: Column(
         children: <Widget>[
-          Text(
-              "Te vas a inscribir a ${widget.enrollment.institutionCareer.name} "
-              "de la institucion ${widget.enrollment.institution.name} "
-              "con el programa ${widget.enrollment.institutionProgram.name}"),
+          Text("$checkCareerLabel ${widget.enrollment.institutionCareer.name} "
+              "$checkInstitutionLabel ${widget.enrollment.institution.name} "
+              "$checkProgramLabel ${widget.enrollment.institutionProgram.name}"),
           Row(
             children: <Widget>[
               Checkbox(
                 value: confirmed,
                 onChanged: _handleCheck,
               ),
-              Text("Los datos son correctos!")
+              Text(AppText.getInstance()
+                  .get("student.enroll.input.correctInput"))
             ],
           )
         ],
@@ -79,11 +85,11 @@ class _ReviewStepState extends State<ReviewStep> {
   }
 
   void _handleCareerCreation() async {
-    // TODO: apptext
     await AsyncModalBuilder()
         .perform(_createCareer)
         .then(_navigateToHome)
-        .withTitle("Agregando Carrera")
+        .withTitle(
+            AppText.getInstance().get("student.enroll.info.addingCareer"))
         .build()
         .run(context);
   }
@@ -103,14 +109,14 @@ class _ReviewStepState extends State<ReviewStep> {
   void _navigateToHome(BuildContext context) async {
     Navigator.pop(context);
     await Navigator.pushReplacementNamed(context, Routes.HOME);
-    // TODO: apptext
     // Here an exceptions is taking place
     // At this point the state of the widget's element tree is no longer stable.
     // E/flutter ( 7353): To safely refer to a widget's ancestor in its dispose() method,
     // save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType()
     // in the widget's didChangeDependencies() method.
     FlushBarBroker()
-        .withMessage("Carrera agregada!")
+        .withMessage(
+            AppText.getInstance().get("student.enroll.info.careerAdded"))
         .withIcon(Icon(Icons.check, color: Colors.green))
         .show(context);
   }

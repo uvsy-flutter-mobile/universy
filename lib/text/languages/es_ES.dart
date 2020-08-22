@@ -24,7 +24,7 @@ const Map<dynamic, dynamic> ES = {
     "actions": {
       "submit": "Ingresar",
       "register": "¡Registrate!",
-      "signup": "Aún no tenes cuenta?"
+      "signup": "Aún no tenes cuenta?",
     },
     "info": {
       "verifying": "Verificando información",
@@ -57,7 +57,7 @@ const Map<dynamic, dynamic> ES = {
     },
     "info": {
       "creatingAccount": "Creando cuenta",
-      "accountCreated": "Se creó tu cuenta"
+      "accountCreated": "Se creó tu cuenta",
     },
     "error": {
       "parametersInvalid": "Los datos ingresados no son correctos",
@@ -87,6 +87,17 @@ const Map<dynamic, dynamic> ES = {
     }
   },
   "main": {
+    "drawer": {
+      "notFound": {
+        "title": "¡Bienvenido a Universy!",
+        "actions": {
+          "addCareer": "Agregá una carrera",
+        },
+      },
+      "career": {
+        "actions": {"switchCareer": "Cambiar a la carrera"},
+      },
+    },
     "modules": {
       "studentSubjects": {
         "title": "Mis Materias",
@@ -132,17 +143,45 @@ const Map<dynamic, dynamic> ES = {
         "saving": "Guardando...",
         "profileNotCreated": "¡ Aún no tienes creado tu perfil !",
       },
-      "error": {"aliasAlreadyExists": "¡ Ese alias se encuentra en uso !"}
+      "error": {
+        "aliasAlreadyExists": "¡ Ese alias se encuentra en uso !",
+      }
     },
     "subjects": {
       "notFound": {
         "title": "¡Bienvenido a Universy!",
         "subtitle": "Para ver tus materias, primero elegí una carrera",
         "actions": {
-          "pickCareer": "Elegir carrera",
+          "addCareer": "Agregá una carrera",
         },
       }
     },
+    "enroll": {
+      "title": "Agregá una carrera!",
+      "input": {
+        "chooseInstitution": "Elegí una institución",
+        "chooseCareer": "Elegí una carrera",
+        "chooseYear": "Elegí año de ingreso",
+        "checkInput": "Revisá lo ingresado :)",
+        "correctInput": "Los datos son correctos!",
+      },
+      "actions": {
+        "addCareer": "Agregar Carrera",
+        "next": "Siguiente",
+        "previous": "Anterior",
+      },
+      "info": {
+        "addingCareer": "Agregando Carrera...",
+        "careerAdded": "Carrera agregada!",
+        "checkCareer": "Te vas a inscribir a la carrera",
+        "checkInstitution": "de la institución",
+        "checkProgram": "con el programa",
+      },
+      "error": {
+        "noCareers": "No hay carreras disponibles para esta institución",
+        "noProgram": "No hay programa para este año :/",
+      },
+    }
   },
   "institution": {
     "subjects": {
@@ -150,7 +189,7 @@ const Map<dynamic, dynamic> ES = {
         "title": "¡Bienvenido a Universy!",
         "subtitle": "Para ver tus materias, primero elegí una carrera",
         "actions": {
-          "pickCareer": "Elegir carrera",
+          "addCareer": "Elegir carrera",
         },
       }
     },
