@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:universy/model/student/events/student-event.dart';
+import 'package:universy/model/student/event.dart';
 
 abstract class TableCalendarState extends Equatable {
   final DateTime dateSelected;

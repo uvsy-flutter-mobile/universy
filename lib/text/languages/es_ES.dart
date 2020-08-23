@@ -100,6 +100,10 @@ const Map<dynamic, dynamic> ES = {
         "title": "Perfil",
         "subtitle": "Personalizá tu usuario de Univery!",
       },
+      "calendar": {
+        "title": "Calendario",
+        "subtitle": "Gestiona tus eventos y parciales!",
+      },
     }
   },
   "student": {

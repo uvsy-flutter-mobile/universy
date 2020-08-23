@@ -48,6 +48,9 @@ class _Widget extends StatelessWidget {
           Ink(
             child: ProfileItem(selected: _index == PROFILE_INDEX),
           ),
+          Ink(
+            child: CalendarItem(),
+          ),
           Divider(),
         ],
       ),

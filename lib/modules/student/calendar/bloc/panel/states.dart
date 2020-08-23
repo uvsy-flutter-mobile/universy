@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:universy/model/student/events/student-event.dart';
+import 'package:universy/model/student/event.dart';
 
 abstract class EventsPanelState extends Equatable {
   EventsPanelState([List props = const []]) : super();

@@ -2,7 +2,7 @@ import 'package:optional/optional.dart';
 import 'package:universy/apis/errors.dart';
 import 'package:universy/apis/students/api.dart' as studentApi;
 import 'package:universy/model/student/career.dart';
-import 'package:universy/model/student/events/student-event.dart';
+import 'package:universy/model/student/event.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/manifest.dart';
@@ -103,8 +103,32 @@ class DefaultStudentCareerService extends StudentCareerService {
   }
 
   @override
-  Future<StudentEvents> getStudentEvents(
+  Future<List<StudentEvent>> getStudentEvents(
       DateTime dateFrom, DateTime dateTo) async {
+    try {} on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> saveStudentEvent(StudentEvent studentEvent) async {
+    try {
+      throw CurrentProgramNotFound();
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> deleteStudentEvent(String userId, String eventId) async {
     try {
       throw CurrentProgramNotFound();
     } on ServiceException catch (e) {

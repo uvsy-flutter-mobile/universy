@@ -3,7 +3,7 @@ import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/queries.dart';
 import 'package:universy/model/student/account.dart';
 import 'package:universy/model/student/career.dart';
-import 'package:universy/model/student/events/student-event.dart';
+import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/session.dart';
 
 /// Base Service
@@ -55,7 +55,10 @@ abstract class StudentCareerService extends Service {
 
   Future<StudentCareer> getCareer(String programId);
 
-  Future<StudentEvents> getStudentEvents(DateTime dateFrom, DateTime dateTo);
+  Future<List<StudentEvent>> getStudentEvents(
+      DateTime dateFrom, DateTime dateTo);
+
+  Future<void> deleteStudentEvent(String userId, String eventId);
 }
 
 abstract class SessionService extends Service {
@@ -65,6 +68,7 @@ abstract class SessionService extends Service {
 /// Institution Services
 abstract class InstitutionService extends Service {
   Future<List<Institution>> getInstitutions();
+
   Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programIds);
 }
 

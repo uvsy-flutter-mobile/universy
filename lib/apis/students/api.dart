@@ -73,3 +73,16 @@ Future<void> checkAliasProfile(String userId, String newAlias) {
 
   return api.get(path, queryParams: {"user_id": userId, "alias": newAlias});
 }
+
+// Events
+Future<List<StudentCareer>> getEvents(String userId) async {
+  var resource = "/students/$userId/events";
+  var path = _createPath(resource);
+
+  var response = await api.getList<StudentCareer>(
+    path,
+    model: (content) => StudentCareer.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
