@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/constants/strings.dart';
 import 'package:universy/model/student/notes.dart';
 import 'package:universy/modules/student/notes/bloc/cubit.dart';
 import 'package:universy/text/comparators/search_comparator.dart';
@@ -7,8 +8,6 @@ import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class SearchNotesBarWidget extends StatefulWidget {
-  static const EMPTY_STRING = '';
-
   final List<StudentNote> notes;
 
   const SearchNotesBarWidget({Key key, @required this.notes}) : super(key: key);
@@ -28,28 +27,20 @@ class _SearchNotesBarWidgetState extends State<SearchNotesBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentScope = FocusScope.of(context);
-        if (currentScope.hasPrimaryFocus) {
-          currentScope.unfocus();
-        }
-      },
-      child: EdgePaddingWidget(
-        EdgeInsets.all(15.0),
-        TextField(
-          onChanged: _filterSearchResults,
-          maxLength: 40,
-          controller: _searchTextEditingController,
-          decoration: _buildNameSearchBarDecoration(),
-        ),
+    return EdgePaddingWidget(
+      EdgeInsets.all(15.0),
+      TextField(
+        onChanged: _filterSearchResults,
+        maxLength: 40,
+        controller: _searchTextEditingController,
+        decoration: _buildNameSearchBarDecoration(),
       ),
     );
   }
 
   InputDecoration _buildNameSearchBarDecoration() {
     return InputDecoration(
-      counterText: SearchNotesBarWidget.EMPTY_STRING,
+      counterText: EMPTY_STRING,
       labelText: AppText.getInstance().get("student.notes.searchBar.title"),
       hintText: AppText.getInstance().get("student.notes.searchBar.input"),
       prefixIcon: Icon(Icons.search),
@@ -82,6 +73,6 @@ class _SearchNotesBarWidgetState extends State<SearchNotesBarWidget> {
   }
 
   void _filteredStudentNotesEvent(List<StudentNote> filteredNotes) {
-    BlocProvider.of<NotesCubit>(context).filterSelectedNotes(filteredNotes);
+    BlocProvider.of<NotesCubit>(context).filterNotes(filteredNotes);
   }
 }

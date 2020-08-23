@@ -44,7 +44,7 @@ class MainDrawerHeader extends StatelessWidget {
   Widget _buildCareerWidget(
       BuildContext context, InstitutionProgramInfo programInfo) {
     return GestureDetector(
-      onTap: () => _handleProgramChange(context, programInfo),
+      onTap: () => _changeProgram(context, programInfo),
       child: CircleAvatar(
         backgroundColor: Colors.white,
         child: Text(
@@ -58,25 +58,25 @@ class MainDrawerHeader extends StatelessWidget {
     );
   }
 
-  void _handleProgramChange(
-      BuildContext context, InstitutionProgramInfo programInfo) async {
-    String switchCareer =
-        AppText.getInstance().get("main.drawer.career.actions.switchCareer");
+  void _changeProgram(BuildContext ctx, InstitutionProgramInfo info) async {
+    String switchCareer = AppText.getInstance() //
+        .get("main.drawer.career.actions.switchCareer");
+
     bool changeCareer = await showDialog(
-          context: context,
+          context: ctx,
           builder: (context) => ConfirmDialog(
             title: "",
-            content: "$switchCareer ${programInfo.career.name}",
+            content: "$switchCareer ${info.career.name}",
           ),
         ) ??
         false;
 
     if (changeCareer) {
-      await Provider.of<ServiceFactory>(context, listen: false)
+      await Provider.of<ServiceFactory>(ctx, listen: false)
           .studentCareerService()
-          .setCurrentProgram(programInfo.programId);
-      Navigator.pop(context);
-      await Navigator.pushReplacementNamed(context, Routes.HOME);
+          .setCurrentProgram(info.programId);
+      Navigator.pop(ctx);
+      await Navigator.pushReplacementNamed(ctx, Routes.HOME);
     }
   }
 

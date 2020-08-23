@@ -1,13 +1,14 @@
 import 'package:universy/constants/strings.dart';
+import 'package:universy/model/copyable.dart';
 
-class StudentNote {
-  final String _title;
-  final String _description;
+class StudentNote implements Copyable<StudentNote> {
   final String _noteId;
+  String title;
+  String description;
   final DateTime _updatedAt;
   final DateTime _createdAt;
 
-  StudentNote(this._noteId, this._title, this._description, this._updatedAt,
+  StudentNote(this._noteId, this.title, this.description, this._updatedAt,
       this._createdAt);
 
   factory StudentNote.empty() {
@@ -15,29 +16,27 @@ class StudentNote {
         DateTime.now());
   }
 
-  String get title => _title;
-
-  String get description => _description;
-
   String get noteId => _noteId;
 
   DateTime get updatedAt => _updatedAt;
+
+  DateTime get createdAt => _createdAt;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is StudentNote &&
           runtimeType == other.runtimeType &&
-          _title == other._title &&
-          _description == other._description &&
+          title == other.title &&
+          description == other.description &&
           _updatedAt == other._updatedAt &&
           _createdAt == other._createdAt &&
           _noteId == other._noteId;
 
   @override
   int get hashCode =>
-      _title.hashCode ^
-      _description.hashCode ^
+      title.hashCode ^
+      description.hashCode ^
       _noteId.hashCode ^
       _createdAt.hashCode ^
       _updatedAt.hashCode;
@@ -52,5 +51,15 @@ class StudentNote {
       updatedAt,
       createdAt,
     );
+  }
+
+  @override
+  StudentNote copy() {
+    return StudentNote(
+        _noteId,
+        title,
+        description,
+        DateTime.fromMillisecondsSinceEpoch(_updatedAt.millisecondsSinceEpoch),
+        DateTime.fromMillisecondsSinceEpoch(_createdAt.millisecondsSinceEpoch));
   }
 }

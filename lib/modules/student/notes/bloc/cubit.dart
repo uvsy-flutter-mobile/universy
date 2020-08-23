@@ -2,97 +2,133 @@ import 'dart:collection';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/model/student/notes.dart';
-import 'package:universy/modules/student/notes/bloc/states.dart';
-import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
-import 'package:universy/util/logger.dart';
+
+import 'states.dart';
 
 class NotesCubit extends Cubit<NotesState> {
   final StudentNotesService _notesService;
 
   NotesCubit(this._notesService) : super(LoadingState());
 
-  Future<void> fetchStudentNotes() async {
-    try {
-      emit(LoadingState());
-      List<StudentNote> studentNotes = await _notesService.getNotes();
-      emit(FetchedNotesState(studentNotes));
-    } catch (e) {
-      Log.getLogger().error(e);
-      throw ServiceException();
+  Future<void> fetchNotes() async {
+    emit(LoadingState());
+    List<StudentNote> studentNotes = await _notesService.getNotes();
+
+    if (studentNotes.isNotEmpty) {
+      var displayedNotes = List<StudentNote>.of(studentNotes);
+      var selectedNotes = HashSet<StudentNote>();
+      emit(DisplayNotesState(studentNotes, displayedNotes, selectedNotes));
+    } else {
+      emit(NotesNotFound());
     }
   }
 
-  void filterSelectedNotes(List<StudentNote> filteredNotes) {
-    List<StudentNote> studentNotes = state.studentNotes;
+  void filterNotes(List<StudentNote> filteredNotes) {
+    if (state is DisplayNotesState) {
+      var displayState = this.state as DisplayNotesState;
 
-    List<StudentNote> displayedNotes = List<StudentNote>.of(filteredNotes);
+      List<StudentNote> studentNotes = displayState.studentNotes;
 
-    Set<StudentNote> selectedNotes = state.selectedNotes
-        .where((note) => filteredNotes.contains(note))
-        .toSet();
+      List<StudentNote> displayedNotes = List<StudentNote>.of(filteredNotes);
 
-    emit(UpdatedNotesState(studentNotes, displayedNotes, selectedNotes));
-  }
+      Set<StudentNote> selectedNotes = displayState.selectedNotes
+          .where((note) => filteredNotes.contains(note))
+          .toSet();
 
-  void addNoteToSelectedSet(StudentNote note) {
-    List<StudentNote> studentNotes = state.studentNotes;
-    List<StudentNote> displayedNotes = state.displayedNotes;
-    Set<StudentNote> selectedNotes = HashSet()..addAll(state.selectedNotes);
-
-    selectedNotes.add(note);
-    emit(UpdatedNotesState(studentNotes, displayedNotes, selectedNotes));
-  }
-
-  void removeNoteToSelectedSet(StudentNote note) {
-    List<StudentNote> studentNotes = state.studentNotes;
-    List<StudentNote> displayedNotes = state.displayedNotes;
-    Set<StudentNote> selectedNotes = HashSet()..addAll(state.selectedNotes);
-
-    selectedNotes.remove(note);
-
-    emit(UpdatedNotesState(studentNotes, displayedNotes, selectedNotes));
-  }
-
-  void removeAllSelectedNotes() {
-    List<StudentNote> studentNotes = state.studentNotes;
-    List<StudentNote> displayedNotes = state.displayedNotes;
-    Set<StudentNote> selectedNotes = HashSet();
-
-    emit(UpdatedNotesState(studentNotes, displayedNotes, selectedNotes));
-  }
-
-  Future<void> toCreate(String title, String description) async {
-    try {
-      await _notesService.createNote(title, description);
-    } catch (e) {
-      Log.getLogger().error(e);
-      throw ServiceException();
+      emit(DisplayNotesState(studentNotes, displayedNotes, selectedNotes));
     }
   }
 
-  Future<void> toUpdate(String noteId, String title, String description) async {
-    try {
-      await _notesService.updateNote(noteId, title, description);
-    } catch (e) {
-      Log.getLogger().error(e);
-      throw ServiceException();
+  void selectNote(StudentNote note) {
+    if (state is DisplayNotesState) {
+      var displayState = this.state as DisplayNotesState;
+
+      List<StudentNote> studentNotes = displayState.studentNotes;
+      List<StudentNote> displayedNotes = displayState.displayedNotes;
+      Set<StudentNote> selectedNotes = HashSet()
+        ..addAll(displayState.selectedNotes);
+
+      selectedNotes.add(note);
+      emit(DisplayNotesState(studentNotes, displayedNotes, selectedNotes));
     }
   }
 
-  Future<void> toDeleteNote(String noteId) async {
-    try {
-      await _notesService.deleteNote(noteId);
-    } catch (e) {
-      Log.getLogger().error(e);
+  void unselectNote(StudentNote note) {
+    if (state is DisplayNotesState) {
+      var displayState = this.state as DisplayNotesState;
+
+      List<StudentNote> studentNotes = displayState.studentNotes;
+      List<StudentNote> displayedNotes = displayState.displayedNotes;
+      Set<StudentNote> selectedNotes = HashSet()
+        ..addAll(displayState.selectedNotes);
+
+      selectedNotes.remove(note);
+
+      emit(DisplayNotesState(studentNotes, displayedNotes, selectedNotes));
     }
   }
 
-  Future<void> toDeleteNotes(List<StudentNote> notes) async {
-    try {
-      await _notesService.batchDeleteNotes(notes);
-    } catch (e) {
-      Log.getLogger().error(e);
+  void unselectAll() {
+    if (state is DisplayNotesState) {
+      var displayState = this.state as DisplayNotesState;
+
+      List<StudentNote> studentNotes = displayState.studentNotes;
+      List<StudentNote> displayedNotes = displayState.displayedNotes;
+      Set<StudentNote> selectedNotes = HashSet();
+
+      emit(DisplayNotesState(studentNotes, displayedNotes, selectedNotes));
+    }
+  }
+
+  void addNote() {
+    emit(AddNoteState());
+  }
+
+  void editSelectedNote() {
+    if (state is DisplayNotesState) {
+      var displayState = this.state as DisplayNotesState;
+      var selectedNotes = displayState.selectedNotes;
+
+      if (selectedNotes.length == 1) {
+        StudentNote note = selectedNotes.elementAt(0);
+        editNote(note);
+      }
+    }
+  }
+
+  void editNote(StudentNote note) {
+    emit(EditNoteState(note));
+  }
+
+  int amountSelected() {
+    if (state is DisplayNotesState) {
+      var displayState = this.state as DisplayNotesState;
+      return displayState.selectedNotes.length;
+    }
+    return 0;
+  }
+
+  Future<void> createNote(String title, String description) async {
+    await _notesService.createNote(title, description);
+  }
+
+  Future<void> updateNote(
+      String noteId, String title, String description) async {
+    await _notesService.updateNote(noteId, title, description);
+  }
+
+  Future<void> deleteNote(String noteId) async {
+    await _notesService.deleteNote(noteId);
+  }
+
+  Future<void> deleteNotes() async {
+    if (state is DisplayNotesState) {
+      var displayState = this.state as DisplayNotesState;
+      var selectedNotes = List.of(displayState.selectedNotes);
+      if (selectedNotes.isNotEmpty) {
+        await _notesService.batchDeleteNotes(selectedNotes);
+      }
     }
   }
 }

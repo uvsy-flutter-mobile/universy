@@ -162,7 +162,9 @@ const Map<dynamic, dynamic> ES = {
     },
     "notes": {
       "input": {
-        "required": "Al menos 1 campo debe estar completo",
+        "title": {
+          "required": "El título no puede estar vacío",
+        },
         "newDescription": "Anotación...",
         "newTitle": "Título",
       },

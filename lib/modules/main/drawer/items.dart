@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/main/bloc/cubit.dart';
 import 'package:universy/modules/student/notes/notes.dart';
 import 'package:universy/text/text.dart';
@@ -76,12 +77,13 @@ class StudentNotesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(AppText.getInstance().get("main.modules.notes.title")),
-      subtitle: Text(AppText.getInstance().get("main.modules.notes.subtitle")),
+    return ListTileItem(
+      title: AppText.getInstance().get("main.modules.notes.title"),
+      subtitle: AppText.getInstance().get("main.modules.notes.subtitle"),
+      selected: false,
       onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NotesModule()));
+        Navigator.pop(context);
+        Navigator.pushNamed(context, Routes.NOTES_MODULE);
       },
     );
   }
