@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/constants/strings.dart';
 import 'package:universy/model/lock.dart';
 import 'package:universy/model/student/notes.dart';
 import 'package:universy/modules/student/notes/bloc/cubit.dart';
+import 'package:universy/modules/student/notes/buttons.dart';
 import 'package:universy/modules/student/notes/note_card.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
@@ -105,11 +107,30 @@ class _NoteFormWidgetState extends State<NoteFormWidget> {
               titleController: _titleTextBoxController,
               descriptionController: _descriptionTextBoxController,
             ),
+            _buildDatesInformation(),
             _buildButtons(context),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildDatesInformation() {
+    if (!_isCreateForm) {
+      DateFormat dateFormat = DateFormat("dd/MM/yyyy hh:mm");
+      String date = dateFormat.format(widget._note.updatedAt).toString();
+      return SymmetricEdgePaddingWidget.vertical(
+        paddingValue: 15.0,
+        child: Text(
+          AppText.getInstance().get("student.notes.info.lastUpdate") +
+              date.substring(0, 16),
+          style: TextStyle(color: Colors.grey),
+          textAlign: TextAlign.right,
+        ),
+      );
+    } else {
+      return SizedBox();
+    }
   }
 
   Widget _buildButtons(BuildContext context) {
@@ -118,11 +139,21 @@ class _NoteFormWidgetState extends State<NoteFormWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          Expanded(child: _buildDeleteButton(), flex: 2),
           SaveButton(onSave: save),
-          CancelButton(onCancel: cancel),
+          CancelButton(onCancel: cancel)
         ],
       ),
     );
+  }
+
+  Widget _buildDeleteButton() {
+    if (!_isCreateForm) {
+      return Container(
+          alignment: Alignment.bottomLeft, child: DeleteIconButton());
+    } else {
+      return SizedBox();
+    }
   }
 
   void save() async {

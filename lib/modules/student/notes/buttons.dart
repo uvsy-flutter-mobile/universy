@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/modules/student/notes/bloc/cubit.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
+import 'package:universy/widgets/buttons/uvsy/delete.dart';
 import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -61,17 +62,7 @@ class EditNoteButton extends StatelessWidget {
   }
 }
 
-class DeleteNotesButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _NoteButton(
-      tag: "deleteButton",
-      color: Colors.redAccent,
-      icon: Icons.delete,
-      onPressed: () => _onPressedButton(context),
-    );
-  }
-
+abstract class DeleteNotesButton extends StatelessWidget {
   Future<void> _onPressedButton(BuildContext context) async {
     bool deleteConfirmed = await _confirmDelete(context);
     if (deleteConfirmed) {
@@ -116,6 +107,28 @@ class DeleteNotesButton extends StatelessWidget {
   }
 }
 
+class DeleteFloatingButton extends DeleteNotesButton {
+  @override
+  Widget build(BuildContext context) {
+    return _NoteButton(
+      tag: "deleteButton",
+      color: Colors.redAccent,
+      icon: Icons.delete,
+      onPressed: () => _onPressedButton(context),
+    );
+  }
+}
+
+class DeleteIconButton extends DeleteNotesButton {
+  @override
+  Widget build(BuildContext context) {
+    return DeleteButton(
+      size: 40.0,
+      onDelete: () => _onPressedButton(context),
+    );
+  }
+}
+
 class CancelSelectionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -139,7 +152,7 @@ class NotesActionButton extends StatelessWidget {
 
   factory NotesActionButton.singleSelect() {
     var buttons = [
-      DeleteNotesButton(),
+      DeleteFloatingButton(),
       SizedBox(height: 15),
       EditNoteButton(),
       SizedBox(height: 15),
@@ -150,7 +163,7 @@ class NotesActionButton extends StatelessWidget {
 
   factory NotesActionButton.multipleSelect() {
     var buttons = [
-      DeleteNotesButton(),
+      DeleteFloatingButton(),
       SizedBox(height: 15),
       CancelSelectionButton(),
     ];

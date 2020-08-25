@@ -41,7 +41,6 @@ class NoteCardWidget extends StatelessWidget {
     var borderColor = selected ? Colors.amber : Colors.grey;
     return Material(
       borderRadius: BorderRadius.circular(4.0),
-      elevation: 10,
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
