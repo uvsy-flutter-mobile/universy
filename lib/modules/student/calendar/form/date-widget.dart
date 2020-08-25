@@ -12,9 +12,8 @@ class StudentEventDateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardSettingsDatePicker(
-      label: AppText.getInstance().get("studentEvents.eventForm.eventDate"),
+      label: AppText.getInstance().get("student.calendar.form.eventDate"),
       contentAlign: TextAlign.right,
-      initialValue: initialDate,
       firstDate: initialDate.subtract(Duration(days: 365 * 3)),
       visible: true,
       onSaved: onSave,

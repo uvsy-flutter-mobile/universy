@@ -82,7 +82,8 @@ class ExistingEvent extends StatelessWidget {
   void _pressDeleteEventButton(BuildContext context) async {
     await AsyncModalBuilder()
         .perform(_deleteEvents)
-        .withTitle(AppText.getInstance().get("studentEvents.actions.deleting"))
+        .withTitle(
+            AppText.getInstance().get("student.calendar.actions.deleting"))
         .then(_refreshCalendarAndNavigateBack)
         .build()
         .run(context);
@@ -111,7 +112,7 @@ class ExistingEvent extends StatelessWidget {
 /*    FlushBarBuilder()
         .withDuration(5)
         .withIcon(Icon(Icons.spellcheck, color: Colors.green))
-        .withMessage(AppText.getInstance().get("studentEvents.actions.delete"))
+        .withMessage(AppText.getInstance().get("calendar.actions.delete"))
         .show(context);*/
   }
 }

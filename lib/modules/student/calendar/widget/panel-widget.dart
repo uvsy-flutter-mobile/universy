@@ -43,7 +43,7 @@ class EventsPanelWidget extends StatelessWidget {
       padding: EdgeInsets.only(top: 10.0),
       alignment: Alignment.topCenter,
       child: Text(
-        AppText.getInstance().get("studentEvents.events.emptyEventsDay"),
+        AppText.getInstance().get("student.calendar.events.emptyEventsDay"),
         style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
       ),
     );

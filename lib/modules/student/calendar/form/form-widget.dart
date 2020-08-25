@@ -74,8 +74,8 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   Widget _buildNewEventAppBar() {
     return AppBar(
       title: Text(_studentEvent.isNewEvent
-          ? AppText.getInstance().get("studentEvents.eventForm.title")
-          : AppText.getInstance().get("studentEvents.eventForm.editTitle")),
+          ? AppText.getInstance().get("student.calendar.form.title")
+          : AppText.getInstance().get("student.calendar.form.editTitle")),
     );
   }
 
@@ -133,7 +133,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeFrom() {
     return StudentEventTimeWidget(
-      label: AppText.getInstance().get("studentEvents.eventForm.timeFrom"),
+      label: AppText.getInstance().get("student.calendar.form.timeFrom"),
       initialTime: _timeFrom,
       onChange: _updateTimeFrom,
       onSave: _timeFromOnSave,
@@ -264,25 +264,25 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     }
   }
 
-  Future<void> _saveEvent(BuildContext context) async {
+//  Future<void> _saveEvent(BuildContext context) async {
 //    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
 //    var studentCareerService = sessionFactory.studentCareerService();
 //    await studentCareerService.saveStudentEvent(this._studentEvent);
-  }
+//  }
 
-  void _refreshCalendarAndNavigateBack(BuildContext context) {
-    widget._onSaved();
-    Navigator.pop(context);
-    _buildFlashBarOk();
-  }
+//  void _refreshCalendarAndNavigateBack(BuildContext context) {
+//    widget._onSaved();
+//    Navigator.pop(context);
+//    _buildFlashBarOk();
+//  }
 
-  void _buildFlashBarOk() {
-//    FlushBarBuilder()
-//        .withDuration(5)
-//        .withIcon(Icon(Icons.spellcheck, color: Colors.green))
-//        .withMessage(AppText.getInstance().get("studentEvents.actions.save"))
-//        .show(context);
-  }
+//  void _buildFlashBarOk() {
+////    FlushBarBuilder()
+////        .withDuration(5)
+////        .withIcon(Icon(Icons.spellcheck, color: Colors.green))
+////        .withMessage(AppText.getInstance().get("studentEvents.actions.save"))
+////        .show(context);
+//  }
 
   Widget _buildCancelButton() {
     return IconButton(

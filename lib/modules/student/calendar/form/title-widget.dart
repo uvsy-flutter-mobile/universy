@@ -26,8 +26,8 @@ class StudentEventTitleWidget extends StatelessWidget {
   }
 
   String _buildRequiredText() =>
-      AppText.getInstance().get("studentEvents.eventForm.titleRequired");
+      AppText.getInstance().get("student.calendar.form.titleRequired");
 
   String _buildHintText() =>
-      AppText.getInstance().get("studentEvents.eventForm.eventTitle");
+      AppText.getInstance().get("student.calendar.form.eventTitle");
 }

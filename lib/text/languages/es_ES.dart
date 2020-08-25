@@ -147,6 +147,23 @@ const Map<dynamic, dynamic> ES = {
         },
       }
     },
+    "calendar": {
+      "title": "Calendario",
+      "events": {
+        "emptyEventsDay": "No hay eventos",
+      },
+      "actions": {
+        "deleting": "Se borro el evento...",
+      },
+      "form": {
+        "title": "Titulo del titulo",
+        "editTitle": "Editando el titulo",
+        "titleRequired": "El título es requerido",
+        "eventTitle": "Título",
+        "timeFrom": "Desde",
+        "eventDate": "Fecha",
+      },
+    },
   },
   "institution": {
     "subjects": {
@@ -158,5 +175,5 @@ const Map<dynamic, dynamic> ES = {
         },
       }
     },
-  }
+  },
 };
