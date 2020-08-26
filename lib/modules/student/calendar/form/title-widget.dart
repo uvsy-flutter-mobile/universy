@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 
-class StudentEventTitleWidget extends StatelessWidget {
+class StudentEventTitleWidget extends StatelessWidget
+    implements CardSettingsWidget {
   final String initialValue;
   final Function(String) onSaved;
 
@@ -30,4 +31,12 @@ class StudentEventTitleWidget extends StatelessWidget {
 
   String _buildHintText() =>
       AppText.getInstance().get("student.calendar.form.eventTitle");
+
+  @override
+  // TODO: implement showMaterialonIOS
+  bool get showMaterialonIOS => throw UnimplementedError();
+
+  @override
+  // TODO: implement visible
+  bool get visible => true;
 }

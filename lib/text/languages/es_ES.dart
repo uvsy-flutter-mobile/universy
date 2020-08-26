@@ -148,20 +148,38 @@ const Map<dynamic, dynamic> ES = {
       }
     },
     "calendar": {
-      "title": "Calendario",
+      "title": "Mi Calendario",
+      "subtitle": "Mirá tu calendario y anotá tus eventos",
       "events": {
-        "emptyEventsDay": "No hay eventos",
+        "emptyEventsDay": "No hay eventos cargados en este dia",
       },
       "actions": {
-        "deleting": "Se borro el evento...",
+        "save": "¡Guardamos tu evento!",
+        "delete": "¡Evento eliminado!",
+        "saving": "Guardando evento",
+        "deleting": "Eliminando evento"
       },
       "form": {
-        "title": "Titulo del titulo",
-        "editTitle": "Editando el titulo",
-        "titleRequired": "El título es requerido",
+        "title": "Nuevo Evento",
+        "editTitle": "Editar Evento",
         "eventTitle": "Título",
-        "timeFrom": "Desde",
+        "titleRequired": "El título es requerido",
         "eventDate": "Fecha",
+        "timeFrom": "Hora inicio",
+        "timeTo": "Hora Fin",
+        "typeEvent": "Tipo de evento",
+        "description": "Descripción"
+      },
+      "eventType": {
+        "DUE_DATE": "Entrega",
+        "EXTRA_CLASS": "Clase de consulta",
+        "FINAL_EXAM": "Final",
+        "LABORATORY": "Laboratorio",
+        "NO_CLASS": "Sin clases",
+        "PRESENTATION": "Presentación",
+        "RECUP_EXAM": "Recuperatorio",
+        "REGULAR_EXAM": "Parcial",
+        "REPORT_SIGN_OFF": "Firma de libreta"
       },
     },
   },

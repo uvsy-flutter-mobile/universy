@@ -1,7 +1,9 @@
+import 'package:card_settings/widgets/card_settings_widget.dart';
 import 'package:card_settings/widgets/picker_fields/card_settings_time_picker.dart';
 import 'package:flutter/material.dart';
 
-class StudentEventTimeWidget extends StatelessWidget {
+class StudentEventTimeWidget extends StatelessWidget
+    implements CardSettingsWidget {
   final String label;
   final TimeOfDay initialTime;
   final Function(TimeOfDay) onChange;
@@ -23,4 +25,12 @@ class StudentEventTimeWidget extends StatelessWidget {
       onSaved: onSave,
     );
   }
+
+  @override
+  // TODO: implement showMaterialonIOS
+  bool get showMaterialonIOS => throw UnimplementedError();
+
+  @override
+  // TODO: implement visible
+  bool get visible => true;
 }

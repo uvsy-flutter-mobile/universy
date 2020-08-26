@@ -72,11 +72,11 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildNewEventAppBar() {
-    return AppBar(
-      title: Text(_studentEvent.isNewEvent
-          ? AppText.getInstance().get("student.calendar.form.title")
-          : AppText.getInstance().get("student.calendar.form.editTitle")),
-    );
+    var appBarText = _studentEvent.isNewEvent
+        ? AppText.getInstance().get("student.calendar.form.title")
+        : AppText.getInstance().get("student.calendar.form.editTitle");
+
+    return AppBar(title: Text(appBarText));
   }
 
   Widget _buildNewEventBody() {
@@ -90,13 +90,17 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         key: _formKey,
         child: CardSettings(
           children: <CardSettingsSection>[
-            _buildTitle(),
-            _buildDate(),
-            _buildTimeFrom(),
-            _buildTimeTo(),
-            _buildEventTypePicker(),
-            _buildDescriptionText(),
-            _buildActionButtons()
+            CardSettingsSection(
+              children: <CardSettingsWidget>[
+                _buildTitle(),
+                _buildDate(),
+                _buildTimeFrom(),
+                _buildTimeTo(),
+                _buildEventTypePicker(),
+                _buildDescriptionText(),
+//                _buildActionButtons()
+              ],
+            ),
           ],
         ),
       ),
@@ -159,7 +163,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeTo() {
     return StudentEventTimeWidget(
-      label: AppText.getInstance().get("studentEvents.eventForm.timeTo"),
+      label: AppText.getInstance().get("student.calendar.form.timeTo"),
       initialTime: _timeTo,
       onChange: _updateTimeTo,
       onSave: _timeToOnSave,
@@ -197,7 +201,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
     return CardSettingsListPicker(
       contentAlign: TextAlign.right,
-      label: AppText.getInstance().get("studentEvents.eventForm.typeEvent"),
+      label: AppText.getInstance().get("student.calendar.form.typeEvent"),
       visible: true,
       initialValue: descriptionValue,
       options: eventTypeMap.keys.toList(),
@@ -214,7 +218,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildDescriptionText() {
     return CardSettingsParagraph(
-      label: AppText.getInstance().get("studentEvents.eventForm.description"),
+      label: AppText.getInstance().get("student.calendar.form.description"),
       initialValue: _studentEvent.description,
       maxLengthEnforced: true,
       contentAlign: TextAlign.left,
