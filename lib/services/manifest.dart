@@ -5,6 +5,7 @@ import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
 import 'package:universy/model/student/account.dart';
 import 'package:universy/model/student/career.dart';
+import 'package:universy/model/student/notes.dart';
 import 'package:universy/model/student/session.dart';
 
 /// Base Service
@@ -74,4 +75,19 @@ abstract class InstitutionService extends Service {
 /// General Services
 abstract class DeviceService extends Service {
   Future<Device> getDevice();
+}
+
+/// Student Notes Services
+abstract class StudentNotesService extends Service {
+  Future<List<StudentNote>> getNotes();
+
+  Future<StudentNote> getNote(String noteId);
+
+  Future<void> createNote(String title, String description);
+
+  Future<void> updateNote(String noteId, String title, String description);
+
+  Future<void> deleteNote(String noteId);
+
+  Future<void> batchDeleteNotes(List<StudentNote> notes);
 }

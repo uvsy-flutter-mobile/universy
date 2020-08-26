@@ -73,7 +73,7 @@ class _Widget extends StatelessWidget {
         title: Text(
           AppText.getInstance().get("main.modules.profile.title"),
         ),
-      )
+      ),
     ];
   }
 }
