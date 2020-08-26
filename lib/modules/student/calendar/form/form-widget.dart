@@ -4,6 +4,7 @@ import 'package:card_settings/widgets/text_fields/card_settings_paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/model/student/event.dart';
+import 'package:universy/modules/student/calendar/form/calendar-actions.dart';
 import 'package:universy/modules/student/calendar/form/date-widget.dart';
 import 'package:universy/modules/student/calendar/form/time-widget.dart';
 import 'package:universy/modules/student/calendar/form/title-widget.dart';
@@ -98,7 +99,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
                 _buildTimeTo(),
                 _buildEventTypePicker(),
                 _buildDescriptionText(),
-//                _buildActionButtons()
+                _buildActionButtons()
               ],
             ),
           ],
@@ -232,22 +233,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildActionButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        _buildSaveButton(),
-        _buildCancelButton(),
-      ],
+    return StudentCalendarFormActionsWidget(
+      context: context,
+      pressSaveEventButton: _pressSaveEventButton,
     );
-  }
-
-  Widget _buildSaveButton() {
-    return IconButton(
-        splashColor: Colors.amber,
-        icon:
-            Icon(Icons.check_circle_outline, color: Colors.orange, size: 35.0),
-        onPressed: () => _pressSaveEventButton());
   }
 
   void _pressSaveEventButton() async {
@@ -288,13 +277,4 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 ////        .show(context);
 //  }
 
-  Widget _buildCancelButton() {
-    return IconButton(
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      splashColor: Colors.amber,
-      icon: Icon(Icons.cancel, color: Colors.orange, size: 35.0),
-    );
-  }
 }
