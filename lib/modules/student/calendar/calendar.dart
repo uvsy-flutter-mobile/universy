@@ -42,8 +42,8 @@ class _StudentCalendarModuleState extends State<StudentCalendarModule> {
   void _buildTableCalendarCubit() {
     if (_tableCalendarCubit == null) {
       var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
-      var studentCareerService = sessionFactory.studentCareerService();
-      this._tableCalendarCubit = TableCalendarCubit(studentCareerService);
+      var studentEventService = sessionFactory.studentEventService();
+      this._tableCalendarCubit = TableCalendarCubit(studentEventService);
     }
   }
 

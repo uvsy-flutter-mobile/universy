@@ -9,7 +9,7 @@ const int FIRST_DAY_OF_MONTH = 1;
 const int EXTRA_MONTH = 1;
 
 class TableCalendarCubit extends Cubit<TableCalendarState> {
-  final StudentCareerService _studentEventsService;
+  final StudentEventService _studentEventsService;
 
   TableCalendarCubit(this._studentEventsService)
       : super(TableCalendarInitialState());

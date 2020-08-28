@@ -54,11 +54,13 @@ abstract class StudentCareerService extends Service {
   Future<List<StudentCareer>> getCareers();
 
   Future<StudentCareer> getCareer(String programId);
+}
+
+abstract class StudentEventService extends Service {
+  Future<void> createEvent(StudentEvent event);
 
   Future<List<StudentEvent>> getStudentEvents(
       DateTime dateFrom, DateTime dateTo);
-
-  Future<void> deleteStudentEvent(String userId, String eventId);
 }
 
 abstract class SessionService extends Service {

@@ -2,6 +2,7 @@ import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/student/account.dart';
 import 'package:universy/model/student/career.dart';
+import 'package:universy/model/student/event.dart';
 
 import 'requests.dart';
 
@@ -75,14 +76,24 @@ Future<void> checkAliasProfile(String userId, String newAlias) {
 }
 
 // Events
-Future<List<StudentCareer>> getEvents(String userId) async {
+Future<List<StudentEvent>> getEvents(String userId) async {
   var resource = "/students/$userId/events";
   var path = _createPath(resource);
 
-  var response = await api.getList<StudentCareer>(
+  var response = await api.getList<StudentEvent>(
     path,
-    model: (content) => StudentCareer.fromJson(content),
+    model: (content) => StudentEvent.fromJson(content),
   );
 
   return response.orElse([]);
+}
+
+Future<void> createEvent(String userId, StudentEvent studentEvent) {
+  var resource = "/students/$userId/events";
+  var path = _createPath(resource);
+
+  return api.post(
+    path,
+    payload: studentEvent,
+  );
 }

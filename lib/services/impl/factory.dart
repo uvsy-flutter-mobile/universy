@@ -2,6 +2,7 @@ import 'package:universy/services/factory.dart';
 import 'package:universy/services/impl/general/device.dart';
 import 'package:universy/services/impl/student/account.dart';
 import 'package:universy/services/impl/student/career.dart';
+import 'package:universy/services/impl/student/event.dart';
 import 'package:universy/services/impl/student/profile.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/util/object.dart';
@@ -33,6 +34,11 @@ class DefaultServiceFactory extends ServiceFactory {
   @override
   StudentCareerService studentCareerService() {
     return DefaultStudentCareerService.instance();
+  }
+
+  @override
+  StudentEventService studentEventService() {
+    return DefaultStudentEventService.instance();
   }
 
   @override

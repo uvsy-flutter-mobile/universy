@@ -3,14 +3,17 @@ import 'package:card_settings/widgets/picker_fields/card_settings_list_picker.da
 import 'package:card_settings/widgets/text_fields/card_settings_paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
+import 'package:provider/provider.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/form/calendar-actions.dart';
 import 'package:universy/modules/student/calendar/form/date-widget.dart';
 import 'package:universy/modules/student/calendar/form/time-widget.dart';
 import 'package:universy/modules/student/calendar/form/title-widget.dart';
+import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/event_type.dart';
 import 'package:universy/util/time-of-day.dart';
+import 'package:universy/widgets/async/modal.dart';
 
 class StudentEventFormWidget extends StatefulWidget {
   final StudentEvent _studentEvent;
@@ -245,29 +248,30 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
       form.save();
 
 //      if (_saveLock.shouldSave(_studentEvent)) {
-//        await AsyncModalBuilder()
-//            .perform(_saveEvent)
-//            .withTitle(AppText.getInstance().get("studentEvents.actions.saving"))
-//            .then(_refreshCalendarAndNavigateBack)
-//            .build()
-//            .run(context);
+      await AsyncModalBuilder()
+          .perform(_saveEvent)
+          .withTitle(
+              AppText.getInstance().get("student.calendar.actions.saving"))
+          .then(_refreshCalendarAndNavigateBack)
+          .build()
+          .run(context);
 //      } else {
 //        Navigator.pop(context);
 //      }
     }
   }
 
-//  Future<void> _saveEvent(BuildContext context) async {
-//    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
-//    var studentCareerService = sessionFactory.studentCareerService();
-//    await studentCareerService.saveStudentEvent(this._studentEvent);
-//  }
+  Future<void> _saveEvent(BuildContext context) async {
+    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+    var studentEventService = sessionFactory.studentEventService();
+    await studentEventService.createEvent(this._studentEvent);
+  }
 
-//  void _refreshCalendarAndNavigateBack(BuildContext context) {
-//    widget._onSaved();
-//    Navigator.pop(context);
+  void _refreshCalendarAndNavigateBack(BuildContext context) {
+    widget._onSaved();
+    Navigator.pop(context);
 //    _buildFlashBarOk();
-//  }
+  }
 
 //  void _buildFlashBarOk() {
 ////    FlushBarBuilder()

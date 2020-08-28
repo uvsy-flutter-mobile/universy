@@ -35,12 +35,11 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
 
   factory StudentEvent.fromJson(Map<String, dynamic> json) {
     TimeOfDayIntConverter timeOfDayIntConverter = TimeOfDayIntConverter();
-    DateFormat dateFormat = DateFormat(DATE_FORMAT);
 
     String userId = json["userId"];
     String eventId = json["eventId"];
     String title = json["title"];
-    DateTime date = dateFormat.parse(json["date"]);
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(json["date"]);
     String eventType = json["eventType"];
     String description = json["description"];
     TimeOfDay timeTo = timeOfDayIntConverter.convertFromInt(json["timeTo"]);
@@ -74,9 +73,9 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
     var json = {
       "userId": userId,
       "title": title,
-      "date": description,
+      "date": dateFormatted,
       "eventType": eventType,
-      "description": dateFormatted,
+      "description": description,
       "timeTo": timeFromSend,
       "timeFrom": timeToSend,
     };
