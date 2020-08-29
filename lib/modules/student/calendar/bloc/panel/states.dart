@@ -14,4 +14,7 @@ class DaySelectedChangeState extends EventsPanelState {
   final List<StudentEvent> studentEvents;
 
   DaySelectedChangeState(this.studentEvents) : super([studentEvents]);
+
+  @override
+  List<Object> get props => [studentEvents];
 }
