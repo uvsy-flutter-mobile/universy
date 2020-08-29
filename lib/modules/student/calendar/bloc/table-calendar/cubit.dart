@@ -21,6 +21,19 @@ class TableCalendarCubit extends Cubit<TableCalendarState> {
     emit(TableCalendarEventsUpdatedState(dateSelected, studentEvents));
   }
 
+  Future<void> fetchStudentEvents() {
+    DateTime todayDate = DateTime.now();
+    DateTime dateSelected =
+        DateTime(todayDate.year, todayDate.month, todayDate.day);
+    DateTime dateFrom =
+        DateTime(dateSelected.year, dateSelected.month, FIRST_DAY_OF_MONTH);
+    var dateToMonth = dateSelected.month + 1;
+    DateTime dateTo =
+        DateTime(dateSelected.year, dateToMonth, FIRST_DAY_OF_MONTH);
+
+    return this.fetchStudentEventForPeriod(dateSelected, dateFrom, dateTo);
+  }
+
   Future<void> refreshTableCalendar(DateTime dateSelected) async {
     DateTime dateFrom =
         DateTime(dateSelected.year, dateSelected.month, FIRST_DAY_OF_MONTH);

@@ -44,6 +44,7 @@ class _StudentCalendarModuleState extends State<StudentCalendarModule> {
       var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
       var studentEventService = sessionFactory.studentEventService();
       this._tableCalendarCubit = TableCalendarCubit(studentEventService);
+      this._tableCalendarCubit.fetchStudentEvents();
     }
   }
 
@@ -70,12 +71,10 @@ class _StudentCalendarModuleState extends State<StudentCalendarModule> {
 
   @override
   void dispose() {
-    // this._tableCalendarBloc.dispose();
-    // this._tableCalendarBloc = null;
-    // this._eventsPanelBloc.dispose();
-    // this._eventsPanelBloc = null;
-    // this._draggableSubscription.cancel();
-    // this._draggableSubscription = null;
+    this._tableCalendarCubit = null;
+    this._eventPanelCubic = null;
+    this._draggableSubscription.cancel();
+    this._draggableSubscription = null;
     super.dispose();
   }
 

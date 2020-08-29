@@ -5,7 +5,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/bloc/panel/cubit.dart';
 import 'package:universy/modules/student/calendar/bloc/table-calendar/cubit.dart';
-import 'package:universy/modules/student/calendar/form/form-widget.dart';
+import 'package:universy/modules/student/calendar/widget/form/form-widget.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
