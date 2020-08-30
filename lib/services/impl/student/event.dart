@@ -9,6 +9,7 @@ import 'package:universy/util/object.dart';
 
 import 'account.dart';
 
+//TODO: Creates exception for this service
 class DefaultStudentEventService extends StudentEventService {
   static StudentEventService _instance;
 
@@ -45,6 +46,19 @@ class DefaultStudentEventService extends StudentEventService {
     try {
       String userId = await DefaultAccountService.instance().getUserId();
       return studentApi.getEvents(userId);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> deleteStudentEvent(String userId, String eventId) async {
+    try {
+      return studentApi.deleteEvent(userId, eventId);
     } on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;

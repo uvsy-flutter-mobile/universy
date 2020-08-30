@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/bloc/table-calendar/cubit.dart';
 import 'package:universy/modules/student/calendar/widget/form/form-widget.dart';
+import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/event_type.dart';
 import 'package:universy/widgets/async/modal.dart';
@@ -92,6 +94,11 @@ class ExistingEvent extends StatelessWidget {
 //    var studentCareerService = sessionFactory.studentCareerService();
 //    await studentCareerService.deleteStudentEvent(
 //        this.event.userId, this.event.eventId);
+
+    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+    var studentEventService = sessionFactory.studentEventService();
+    await studentEventService.deleteStudentEvent(
+        this.event.userId, this.event.eventId);
   }
 
   void _refreshCalendarAndNavigateBack(BuildContext context) {

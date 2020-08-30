@@ -168,3 +168,10 @@ Future<void> createEvent(String userId, StudentEvent studentEvent) {
     payload: studentEvent,
   );
 }
+
+Future<void> deleteEvent(String userId, String eventId) {
+  var resource = "/students/$userId/events/$eventId";
+  var path = _createPath(resource);
+
+  return api.delete(path);
+}

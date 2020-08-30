@@ -66,6 +66,8 @@ abstract class StudentEventService extends Service {
 
   Future<List<StudentEvent>> getStudentEvents(
       DateTime dateFrom, DateTime dateTo);
+
+  Future<void> deleteStudentEvent(String userId, String eventId);
 }
 
 abstract class SessionService extends Service {
