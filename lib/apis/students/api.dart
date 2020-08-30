@@ -175,3 +175,11 @@ Future<void> deleteEvent(String userId, String eventId) {
 
   return api.delete(path);
 }
+
+Future<void> updateEvent(
+    String userId, String eventId, StudentEvent studentEvent) {
+  var resource = "/students/$userId/events/$eventId";
+  var path = _createPath(resource);
+
+  return api.put(path, payload: studentEvent);
+}

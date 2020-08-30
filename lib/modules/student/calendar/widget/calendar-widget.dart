@@ -171,7 +171,7 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
       context,
       MaterialPageRoute(
         builder: (_) => StudentEventFormWidget(
-          onSaved: _refreshCalendar,
+          onConfirm: _refreshCalendar,
           daySelected: _calendarController.selectedDay,
         ),
       ),

@@ -49,7 +49,7 @@ class ExistingEvent extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (_) => StudentEventFormWidget(
-            onSaved: () => _refreshCalendar(context), studentEvent: event),
+            onConfirm: () => _refreshCalendar(context), studentEvent: event),
       ),
     );
   }
@@ -90,15 +90,9 @@ class ExistingEvent extends StatelessWidget {
   }
 
   Future _deleteEvents(BuildContext context) async {
-//    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
-//    var studentCareerService = sessionFactory.studentCareerService();
-//    await studentCareerService.deleteStudentEvent(
-//        this.event.userId, this.event.eventId);
-
     var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
     var studentEventService = sessionFactory.studentEventService();
-    await studentEventService.deleteStudentEvent(
-        this.event.userId, this.event.eventId);
+    await studentEventService.deleteStudentEvent(this.event);
   }
 
   void _refreshCalendarAndNavigateBack(BuildContext context) {

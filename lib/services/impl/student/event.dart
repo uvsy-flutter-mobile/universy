@@ -56,9 +56,23 @@ class DefaultStudentEventService extends StudentEventService {
   }
 
   @override
-  Future<void> deleteStudentEvent(String userId, String eventId) async {
+  Future<void> deleteStudentEvent(StudentEvent studentEvent) async {
     try {
-      return studentApi.deleteEvent(userId, eventId);
+      return studentApi.deleteEvent(studentEvent.userId, studentEvent.eventId);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> updateEvent(StudentEvent studentEvent) async {
+    try {
+      return studentApi.updateEvent(
+          studentEvent.userId, studentEvent.eventId, studentEvent);
     } on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;

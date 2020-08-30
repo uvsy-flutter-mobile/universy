@@ -10,6 +10,7 @@ import 'package:universy/modules/student/calendar/widget/form/date-widget.dart';
 import 'package:universy/modules/student/calendar/widget/form/time-widget.dart';
 import 'package:universy/modules/student/calendar/widget/form/title-widget.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/event_type.dart';
 import 'package:universy/util/time-of-day.dart';
@@ -18,16 +19,16 @@ import 'package:universy/widgets/async/modal.dart';
 class StudentEventFormWidget extends StatefulWidget {
   final StudentEvent _studentEvent;
   final DateTime _daySelected;
-  final Function() _onSaved;
+  final Function() _onConfirm;
 
   StudentEventFormWidget({
     Key key,
     StudentEvent studentEvent,
     DateTime daySelected,
-    @required Function() onSaved,
+    @required Function() onConfirm,
   })  : this._daySelected = daySelected,
         this._studentEvent = studentEvent,
-        this._onSaved = onSaved,
+        this._onConfirm = onConfirm,
         super(key: key);
 
   @override
@@ -42,6 +43,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   StudentEvent _studentEvent;
   TimeOfDay _timeFrom;
   TimeOfDay _timeTo;
+  StudentEventService _studentEventService;
 
 //  SaveLock<StudentEvent> _saveLock;
 
@@ -58,12 +60,20 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+    this._studentEventService = sessionFactory.studentEventService();
+    super.didChangeDependencies();
+  }
+
   void dispose() {
     this._daySelected = null;
     this._formKey = null;
     this._studentEvent = null;
     this._timeFrom = null;
     this._timeTo = null;
+    this._studentEventService = null;
     super.dispose();
   }
 
@@ -238,37 +248,43 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   Widget _buildActionButtons() {
     return StudentCalendarFormActionsWidget(
       context: context,
-      pressSaveEventButton: _pressSaveEventButton,
+      pressSaveEventButton: _pressConfirmButton,
     );
   }
 
-  void _pressSaveEventButton() async {
+  void _pressConfirmButton() async {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
 
 //      if (_saveLock.shouldSave(_studentEvent)) {
+      var confirmAction =
+          this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
+
       await AsyncModalBuilder()
-          .perform(_saveEvent)
+          .perform(confirmAction)
           .withTitle(
               AppText.getInstance().get("student.calendar.actions.saving"))
           .then(_refreshCalendarAndNavigateBack)
           .build()
           .run(context);
+
 //      } else {
 //        Navigator.pop(context);
 //      }
     }
   }
 
-  Future<void> _saveEvent(BuildContext context) async {
-    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
-    var studentEventService = sessionFactory.studentEventService();
-    await studentEventService.createEvent(this._studentEvent);
+  Future<dynamic> _saveEvent(BuildContext context) async {
+    await this._studentEventService.createEvent(this._studentEvent);
+  }
+
+  Future<dynamic> _updateEvent(BuildContext context) async {
+    await this._studentEventService.updateEvent(this._studentEvent);
   }
 
   void _refreshCalendarAndNavigateBack(BuildContext context) {
-    widget._onSaved();
+    widget._onConfirm();
     Navigator.pop(context);
 //    _buildFlashBarOk();
   }
