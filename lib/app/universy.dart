@@ -6,8 +6,9 @@ import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/loading/loading.dart';
 import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/calendar/calendar.dart';
-import 'package:universy/modules/student/career/enroll/enroll.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/modules/student/enroll/enroll.dart';
+import 'package:universy/modules/student/notes/notes.dart';
 import 'package:universy/system/config.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/system/start.dart';
@@ -35,13 +36,15 @@ class Universy extends StatelessWidget {
 
   Map<String, WidgetBuilder> _getApplicationRoutes() {
     return {
-      Routes.HOME: (context) => wrap(context, MainModule()),
-      Routes.CAREER_ENROLL: (context) => wrap(context, CareerEnrollModule()),
+      Routes.HOME: (context) => MainModule(),
+      Routes.CAREER_ENROLL: (context) => CareerEnrollModule(),
+      Routes.NOTES_MODULE: (context) => NotesModule(),
       Routes.CALENDAR_MODULE: (context) =>
           wrap(context, StudentCalendarModule()),
     };
   }
 
+  //TODO: Remove wrap function
   Widget wrap(BuildContext context, Widget widget) {
     var serviceFactory = Provider.of<ServiceFactory>(context, listen: false);
     return Provider<ServiceFactory>.value(

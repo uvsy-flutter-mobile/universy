@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/manifest.dart';
 
 import 'states.dart';
@@ -16,24 +17,26 @@ class HeaderCubit extends Cubit<HeaderState> {
     emit(LoadingState());
 
     try {
-      var careers = await _studentCareerService.getCareers();
-      if (careers.isNotEmpty) {
-        var currentProgramId = await _studentCareerService.getCurrentProgram();
-        var programsInfo = await _institutionService.getProgramsInfo(
-          careers.map((e) => e.programId).toList(),
-        );
+      var currentProgramId = await _studentCareerService.getCurrentProgram();
 
+      var careers = await _studentCareerService.getCareers();
+
+      if (careers.isNotEmpty) {
+        var programsInfo = await _institutionService.getProgramsInfo(careers
+            .map(
+              (e) => e.programId,
+            )
+            .toList());
         var currentProgram =
             programsInfo.firstWhere((p) => p.programId == currentProgramId);
         var otherProgram =
             programsInfo.where((p) => p.programId != currentProgramId).toList();
-
         emit(FetchedInfoState(currentProgram, otherProgram));
       } else {
         emit(NoCareerState());
       }
-    } catch (e) {
-      print("This has not worked....");
+    } on CurrentProgramNotFound {
+      emit(NoCareerState());
     }
   }
 }

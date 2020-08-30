@@ -1,6 +1,7 @@
 import 'package:optional/optional.dart';
 import 'package:universy/apis/errors.dart';
 import 'package:universy/apis/students/api.dart' as studentApi;
+import 'package:universy/apis/students/requests.dart';
 import 'package:universy/model/student/career.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/exceptions/student.dart';
@@ -93,6 +94,22 @@ class DefaultStudentCareerService extends StudentCareerService {
   @override
   Future<void> setCurrentProgram(String programId) async {
     try {
+      var storage = DefaultStudentCareerStorage.instance();
+      await storage.setCurrentProgram(programId);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> createCareer(String programId, int beginYear) async {
+    try {
+      String userId = await DefaultAccountService.instance().getUserId();
+
+      var request = CreateCareerRequest(programId, beginYear, null);
+      await studentApi.createCareer(userId, request);
+
       var storage = DefaultStudentCareerStorage.instance();
       await storage.setCurrentProgram(programId);
     } catch (e) {

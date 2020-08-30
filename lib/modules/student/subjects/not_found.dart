@@ -53,7 +53,7 @@ class _CareerNotFoundState extends State<CareerNotFoundWidget> {
         padding: 12.0,
         child: Text(
           AppText.getInstance()
-              .get("student.subjects.notFound.actions.pickCareer"),
+              .get("student.subjects.notFound.actions.addCareer"),
           style: Theme.of(context).primaryTextTheme.button,
         ),
       ),

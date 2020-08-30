@@ -30,6 +30,4 @@ class CareerNotFound extends ServiceException {}
 /// is not found in the system
 class CurrentProgramNotFound extends ServiceException {}
 
-/// [SessionNotFound] occurs when the user
-/// has no session created
-class SessionNotFound extends ServiceException {}
+class StudentNoteNotFound extends ServiceException {}

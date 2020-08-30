@@ -18,6 +18,11 @@ ThemeData uvsyTheme = ThemeData(
       fontSize: 24,
       fontFamily: "Roboto",
     ),
+    caption: TextStyle(
+      color: Colors.black,
+      fontSize: 12,
+      fontFamily: "Roboto",
+    ),
     subtitle1: TextStyle(
       color: Colors.grey,
       fontSize: 25,
