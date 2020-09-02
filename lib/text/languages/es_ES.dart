@@ -111,6 +111,10 @@ const Map<dynamic, dynamic> ES = {
         "title": "Perfil",
         "subtitle": "Personalizá tu usuario de Univery!",
       },
+      "notes": {
+        "title": "Mis Anotaciones",
+        "subtitle": "Escribí y editá tus anotaciones",
+      },
     }
   },
   "student": {
@@ -154,6 +158,39 @@ const Map<dynamic, dynamic> ES = {
         "actions": {
           "addCareer": "Agregá una carrera",
         },
+      }
+    },
+    "notes": {
+      "input": {
+        "title": {
+          "required": "El título no puede estar vacío",
+        },
+        "newDescription": "Anotación...",
+        "newTitle": "Título",
+      },
+      "info": {
+        "notesNotFound": "¡Disculpá no encontramos anotaciones, creá una!",
+        "deletingNote": "Eliminando anotación",
+        "deletingNotes": "Eliminando anotaciones",
+        "atention": "¡Atención!",
+        "updatingNote": "Actualizando anotación",
+        "creatingNote": "Creando anotación",
+        "noteSaved": "Se guardó la anotación!",
+        "newNoteTitle": "Nueva anotación",
+        "updateNoteTitle": "Actualizar anotación",
+        "noteWithoutTitle": "Sin título",
+        "noteWithoutDescription": "Sin descripción",
+        "lastUpdate": "Última Edición: ",
+      },
+      "actions": {
+        "confirmDeleteNote": "¿Estás seguro que deseas eliminar la anotación?",
+        "confirmDeleteNotes":
+            "¿Estás seguro que deseas eliminar las anotaciones?",
+        "deleteConfirmed": "¡Entendido!",
+      },
+      "searchBar": {
+        "title": "Buscar anotación",
+        "input": "Buscar...",
       }
     },
     "enroll": {

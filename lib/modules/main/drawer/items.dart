@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/main/bloc/cubit.dart';
+import 'package:universy/modules/student/notes/notes.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/tiles/list.dart';
 
@@ -65,6 +67,23 @@ class ProfileItem extends StatelessWidget {
       onTap: () {
         BlocProvider.of<MainCubit>(context).toProfile();
         Navigator.pop(context);
+      },
+    );
+  }
+}
+
+class StudentNotesItem extends StatelessWidget {
+  const StudentNotesItem({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTileItem(
+      title: AppText.getInstance().get("main.modules.notes.title"),
+      subtitle: AppText.getInstance().get("main.modules.notes.subtitle"),
+      selected: false,
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, Routes.NOTES_MODULE);
       },
     );
   }

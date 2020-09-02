@@ -11,12 +11,15 @@ abstract class ServiceFactory {
 
   InstitutionService institutionService();
 
+  StudentNotesService studentNotesService();
+
   List<Service> services() {
     return [
       accountService(),
       profileService(),
       studentCareerService(),
       institutionService(),
+      studentNotesService(),
     ];
   }
 }

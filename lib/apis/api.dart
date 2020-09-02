@@ -93,10 +93,12 @@ Future<void> post(String resource, {JsonConvertible payload}) async {
 Future<void> delete(String resource, {Map<String, String> queryParams}) async {
   var url = UrlBuilder(resource: resource, queryParams: queryParams).build();
   var headers = await _getHeaders();
+
   var response = await http.delete(
     url,
     headers: headers,
   );
+
   checkStatus(response);
 }
 

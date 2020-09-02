@@ -5,6 +5,7 @@ import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/loading/loading.dart';
 import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/enroll/enroll.dart';
+import 'package:universy/modules/student/notes/notes.dart';
 import 'package:universy/system/config.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/system/start.dart';
@@ -34,6 +35,7 @@ class Universy extends StatelessWidget {
     return {
       Routes.HOME: (context) => MainModule(),
       Routes.CAREER_ENROLL: (context) => CareerEnrollModule(),
+      Routes.NOTES_MODULE: (context) => NotesModule(),
     };
   }
 
