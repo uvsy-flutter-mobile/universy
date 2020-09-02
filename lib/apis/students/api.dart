@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/student/career.dart';
 import 'package:universy/model/student/notes.dart';
 import 'package:universy/model/student/subject.dart';
-import 'package:universy/modules/student/subjects/display.dart';
 
 import 'requests.dart';
 
