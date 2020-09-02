@@ -3,6 +3,7 @@ import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
+import 'package:universy/model/institution/subject.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/util/logger.dart';
@@ -69,6 +70,19 @@ class DefaultInstitutionService implements InstitutionService {
   Future<List<InstitutionProgram>> getPrograms(InstitutionCareer career) async {
     try {
       return await institutionsApi.getPrograms(career.id);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<List<InstitutionSubject>> getSubjects(String programId) async {
+    try {
+      return await institutionsApi.getSubjects(programId);
     } on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;

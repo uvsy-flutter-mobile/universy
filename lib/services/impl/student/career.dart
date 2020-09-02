@@ -3,6 +3,8 @@ import 'package:universy/apis/errors.dart';
 import 'package:universy/apis/students/api.dart' as studentApi;
 import 'package:universy/apis/students/requests.dart';
 import 'package:universy/model/student/career.dart';
+import 'package:universy/model/student/subject.dart';
+import 'package:universy/model/subject.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/manifest.dart';
@@ -114,6 +116,32 @@ class DefaultStudentCareerService extends StudentCareerService {
       await storage.setCurrentProgram(programId);
     } catch (e) {
       Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<List<StudentSubject>> getSubjects(String programId) async {
+    try {
+      String userId = await DefaultAccountService.instance().getUserId();
+      return studentApi.getSubjects(userId, programId);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  Future<void> updateSubject(Subject subject) async {
+    try {
+      String userId = await DefaultAccountService.instance().getUserId();
+
+      if (subject.milestones.isEmpty) {
+        return studentApi.deleteSubject(userId, subject.id);
+      }
+      var payload = UpdateSubjectPayload(
+          subject.programId, subject.score, subject.milestones);
+      return studentApi.updateSubject(userId, subject.id, payload);
+    } catch (e) {
       throw ServiceException();
     }
   }

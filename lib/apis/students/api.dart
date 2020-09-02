@@ -1,7 +1,9 @@
 import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/student/career.dart';
+import 'package:universy/model/student/subject.dart';
+import 'package:universy/modules/student/subjects/display.dart';
 
 import 'requests.dart';
 
@@ -46,6 +48,21 @@ Future<Optional<StudentCareer>> getCareer(
   );
 }
 
+Future<List<StudentSubject>> getSubjects(
+    String userId, String programId) async {
+  var resource = "/students/$userId/subjects";
+  var path = _createPath(resource);
+  var queryParams = {"programId": programId};
+
+  var response = await api.getList<StudentSubject>(
+    path,
+    queryParams: queryParams,
+    model: (content) => StudentSubject.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
 // Profile
 
 Future<Optional<Profile>> getProfile(String userId) {
@@ -82,4 +99,25 @@ Future<void> checkAliasProfile(String userId, String newAlias) {
   var path = _createPath(resource);
 
   return api.get(path, queryParams: {"user_id": userId, "alias": newAlias});
+}
+
+// Subjects
+Future<void> updateSubject(
+    String userId, String subjectId, UpdateSubjectPayload payload) {
+  var resource = "/students/$userId/subjects/$subjectId";
+  var path = _createPath(resource);
+
+  return api.put(
+    path,
+    payload: payload,
+  );
+}
+
+Future<void> deleteSubject(String userId, String subjectId) {
+  var resource = "/students/$userId/subjects/$subjectId";
+  var path = _createPath(resource);
+
+  return api.delete(
+    path,
+  );
 }

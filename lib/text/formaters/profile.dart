@@ -1,5 +1,5 @@
 import 'package:universy/constants/strings.dart';
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/util/strings.dart';
 

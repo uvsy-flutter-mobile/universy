@@ -3,6 +3,7 @@ import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
+import 'package:universy/model/institution/subject.dart';
 
 const basePath = "/instapi";
 
@@ -69,6 +70,18 @@ Future<List<InstitutionProgram>> getPrograms(String careerId) async {
     path,
     queryParams: queryParams,
     model: (content) => InstitutionProgram.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<List<InstitutionSubject>> getSubjects(String programId) async {
+  var resource = "/programs/$programId/subjects";
+  var path = _createPath(resource);
+
+  var response = await api.getList<InstitutionSubject>(
+    path,
+    model: (content) => InstitutionSubject.fromJson(content),
   );
 
   return response.orElse([]);

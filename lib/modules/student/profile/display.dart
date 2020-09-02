@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/modules/account/account.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/formaters/profile.dart';
