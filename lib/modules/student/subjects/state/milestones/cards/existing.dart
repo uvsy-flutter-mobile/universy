@@ -7,6 +7,7 @@ import 'package:universy/model/time.dart';
 import 'package:universy/modules/student/subjects/state/milestones/commands/command.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/text/translators/milestones.dart';
+import 'package:universy/widgets/buttons/uvsy/delete.dart';
 
 import 'card.dart';
 
@@ -177,6 +178,7 @@ class _ExistingMilestoneWidgetState extends State<ExistingMilestoneWidget> {
     return CircleAvatar(
       backgroundColor: Colors.white70,
       radius: 16.0,
+      // TODO: Change to Delete (uvsy/delete.dart) @Lore @Maxi
       child: IconButton(
         padding: EdgeInsets.all(1.0),
         icon: Icon(Icons.delete, color: Colors.red, size: 20.0),
