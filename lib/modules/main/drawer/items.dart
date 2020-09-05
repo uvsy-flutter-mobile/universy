@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/main/bloc/cubit.dart';
-import 'package:universy/modules/student/notes/notes.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/tiles/list.dart';
 

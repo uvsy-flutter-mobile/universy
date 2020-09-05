@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/routes.dart';
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/user.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';

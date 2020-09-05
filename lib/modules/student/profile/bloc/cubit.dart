@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/services/exceptions/profile.dart';
 

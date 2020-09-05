@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:optional/optional.dart';
 import 'package:universy/apis/status_code.dart';
 import 'package:universy/apis/url.dart';
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/token.dart';
 import 'package:universy/model/json.dart';
 import 'package:universy/services/impl/student/account.dart';
 

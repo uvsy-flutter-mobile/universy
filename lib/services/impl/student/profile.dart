@@ -1,6 +1,6 @@
 import 'package:universy/apis/errors.dart';
 import 'package:universy/apis/students/requests.dart';
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/services/exceptions/profile.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
