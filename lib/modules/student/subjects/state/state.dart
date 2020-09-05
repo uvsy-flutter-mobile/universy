@@ -42,7 +42,9 @@ class SubjectStateWidgetState extends State<SubjectStateWidget> {
       children: <Widget>[
         ScoreSubjectWidget(subject: _subject),
         ApprovedMilestoneWidget(
-            subject: _subject, updateTreeState: updateState),
+          subject: _subject,
+          updateTreeState: updateState,
+        ),
         RegularMilestoneWidget(subject: _subject, updateTreeState: updateState),
         TakingMilestoneWidget(subject: _subject, updateTreeState: updateState)
       ],

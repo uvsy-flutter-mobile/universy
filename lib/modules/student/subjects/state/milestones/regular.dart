@@ -5,6 +5,7 @@ import 'package:universy/business/correlatives/validator.dart';
 import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/model/time.dart';
+import 'package:universy/text/text.dart';
 
 import 'cards/existing.dart';
 import 'cards/new.dart';
@@ -58,8 +59,8 @@ class RegularMilestoneWidget extends StatelessWidget {
       );
     } else {
       return NewMilestoneWidget(
-        // TODO: Apptext
-        milestoneDisplayName: "Regularizar",
+        milestoneDisplayName: AppText.getInstance()
+            .get("student.subjects.states.actions.regularize"),
         available: isAvailable,
         onNewCommand: RegularOnNewCommand(
           subject: _subject,

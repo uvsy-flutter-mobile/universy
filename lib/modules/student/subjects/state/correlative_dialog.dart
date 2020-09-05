@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:universy/business/correlatives/validator.dart';
 import 'package:universy/modules/institution/correlatives/correlatives.dart';
+import 'package:universy/text/text.dart';
 
 class CorrelativeRestrictionDialog extends StatelessWidget {
   final CorrelativeValidation _correlativeValidation;
@@ -15,8 +16,7 @@ class CorrelativeRestrictionDialog extends StatelessWidget {
       shape: _buildShapeDialog(),
       elevation: 80.0,
       title: Text(
-        // TODO: apptext
-        "Correlativas", //AppText.getInstance().get("milestoneSubject.correlatives.titleDialog"),
+        AppText.getInstance().get("student.subjects.correlatives.title"),
         textAlign: TextAlign.center,
       ),
       contentPadding: EdgeInsets.only(top: 10.0),
@@ -120,8 +120,7 @@ class ForceButton extends StatelessWidget {
 
   Text _getChangeTextWidget() {
     return Text(
-      // TODO: Apptext
-      "Cambiar Igual", //AppText.getInstance().get("milestoneSubject.correlatives.forceButton"),
+      AppText.getInstance().get("student.subjects.correlatives.actions.force"),
       style: TextStyle(color: Colors.white),
     );
   }

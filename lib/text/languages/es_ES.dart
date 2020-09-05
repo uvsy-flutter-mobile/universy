@@ -158,7 +158,34 @@ const Map<dynamic, dynamic> ES = {
         "actions": {
           "addCareer": "Agregá una carrera",
         },
-      }
+      },
+      "empty": {
+        "title": "¡Ups!",
+        "subtitle":
+            "Parece que no hay materias cargadas en el plan de estudios",
+      },
+      "correlatives": {
+        "title": "Correlatives",
+        "actions": {
+          "force": "Cambiar igual",
+        },
+      },
+      "states": {
+        "actions": {
+          "take": "Cursar",
+          "regularize": "Regularizar",
+          "approve": "Aprobar",
+        },
+        "labels": {
+          "toTake": "Por Cursar",
+          "taking": "Cursando",
+          "regular": "Regulares",
+          "approved": "Aprobadas",
+        },
+        "info": {
+          "saved": "Se guardó correctamente",
+        },
+      },
     },
     "notes": {
       "input": {

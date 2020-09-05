@@ -9,6 +9,7 @@ import 'package:universy/model/subject.dart';
 import 'package:universy/modules/student/subjects/subject_list.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/logger.dart';
 import 'package:universy/widgets/flushbar/builder.dart';
 
@@ -103,9 +104,8 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
 
   Widget _buildApprovedList(SubjectByStateResult result) {
     return StudentSubjectList(
-      // TODO: App text
       title:
-          "Aprobadas", //AppText.getInstance().get("studentSubject.approved"),
+          AppText.getInstance().get("student.subjects.states.labels.approved"),
       subjects: result.approved,
       onUpdate: _onUpdate,
     );
@@ -113,8 +113,8 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
 
   Widget _buildRegularList(SubjectByStateResult result) {
     return StudentSubjectList(
-      // TODO: App text
-      title: "Regular", //AppText.getInstance().get("studentSubject.regular"),
+      title:
+          AppText.getInstance().get("student.subjects.states.labels.regular"),
       subjects: result.regular,
       onUpdate: _onUpdate,
     );
@@ -122,8 +122,7 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
 
   Widget _buildTakingList(SubjectByStateResult result) {
     return StudentSubjectList(
-      // TODO: App text
-      title: "Cursando", //AppText.getInstance().get("studentSubject.taking"),
+      title: AppText.getInstance().get("student.subjects.states.labels.taking"),
       subjects: result.taking,
       onUpdate: _onUpdate,
     );
@@ -131,8 +130,7 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
 
   Widget _buildToTakeList(SubjectByStateResult result) {
     return StudentSubjectList(
-      // TODO: App text
-      title: "Por cursar", //AppText.getInstance().get("studentSubject.toTake"),
+      title: AppText.getInstance().get("student.subjects.states.labels.toTake"),
       subjects: result.toTake,
       onUpdate: _onUpdate,
     );
@@ -158,8 +156,7 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
     try {
       _updateSubmitting();
       await _careerService.updateSubject(subject);
-      _subjects.removeWhere((s) => s.id == subject.id);
-      _subjects.add(subject);
+      _updateList(subject);
       _updateSubmitting();
       _refreshNavigateFocus(subject);
       _buildFlashBarOk();
@@ -168,6 +165,11 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
       _updateSubmitting(forceSubmitting: false);
       FlushBarBroker.unknownError().show(context);
     }
+  }
+
+  void _updateList(Subject subject) {
+    _subjects.removeWhere((s) => s.id == subject.id);
+    _subjects.add(subject);
   }
 
   void _updateSubmitting({bool forceSubmitting}) {
@@ -194,9 +196,8 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
     FlushBarBroker()
         .withDuration(5)
         .withIcon(Icon(Icons.spellcheck, color: Colors.green))
-        // TODO: App text
-        //AppText.getInstance().get("milestoneSubject.action.saveButton"))
-        .withMessage("Actualizado")
+        .withMessage(
+            AppText.getInstance().get("student.subjects.states.info.saved"))
         .show(context);
   }
 

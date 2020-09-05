@@ -7,14 +7,17 @@ import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/model/time.dart';
 import 'package:universy/system/locale.dart';
+import 'package:universy/text/text.dart';
 
 import 'cards/existing.dart';
 import 'cards/new.dart';
 import 'commands/approved.dart';
 
 class ApprovedMilestoneWidget extends StatelessWidget {
-  static final DateFormat dateFormat =
-      DateFormat("MMM yyyy", SystemLocale.getSystemLocale().toString());
+  static final DateFormat dateFormat = DateFormat(
+    "MMM yyyy",
+    SystemLocale.getSystemLocale().toString(),
+  );
   final Subject _subject;
   final Function() updateTreeState;
 
@@ -57,8 +60,8 @@ class ApprovedMilestoneWidget extends StatelessWidget {
       );
     } else {
       return NewMilestoneWidget(
-        // TODO: Apptext
-        milestoneDisplayName: "Aprobar",
+        milestoneDisplayName: AppText.getInstance()
+            .get("student.subjects.states.actions.approve"),
         available: isAvailable,
         onNewCommand: ApprovedOnNewCommand(
           subject: _subject,
