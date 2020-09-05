@@ -57,8 +57,9 @@ class SubjectCardWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Icon(SubjectIconResolver(correlativesValidator)
-            .getSubjectIcon(_subject)),
+        Icon(SubjectIconResolver(correlativesValidator).getSubjectIcon(
+          _subject,
+        )),
         SizedBox(height: 10),
         Container(
           child: Center(

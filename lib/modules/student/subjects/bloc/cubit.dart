@@ -10,6 +10,7 @@ import 'states.dart';
 class SubjectCubit extends Cubit<SubjectState> {
   final StudentCareerService _studentCareerService;
   final InstitutionService _institutionService;
+  final SubjectMatcher _subjectMatcher = SubjectMatcher();
 
   SubjectCubit(this._studentCareerService, this._institutionService)
       : super(LoadingState());
@@ -21,8 +22,11 @@ class SubjectCubit extends Cubit<SubjectState> {
       var institutionSubjects =
           await _institutionService.getSubjects(programId);
       var studentSubjects = await _studentCareerService.getSubjects(programId);
-      var subjects =
-          SubjectMatcher().apply(institutionSubjects, studentSubjects);
+
+      var subjects = _subjectMatcher.apply(
+        institutionSubjects,
+        studentSubjects,
+      );
 
       if (subjects.isNotEmpty) {
         emit(DisplayState(subjects));

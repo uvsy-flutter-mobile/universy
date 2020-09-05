@@ -165,7 +165,7 @@ const Map<dynamic, dynamic> ES = {
             "Parece que no hay materias cargadas en el plan de estudios",
       },
       "correlatives": {
-        "title": "Correlatives",
+        "title": "Correlativas",
         "actions": {
           "force": "Cambiar igual",
         },

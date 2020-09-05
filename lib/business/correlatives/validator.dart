@@ -23,7 +23,7 @@ class CorrelativesValidator {
 
     for (Correlative correlative in correlatives) {
       if (correlative.isToApprove()) {
-        var correlativeSubject = subjectIdMap[correlative.subjectId];
+        var correlativeSubject = subjectIdMap[correlative.correlativeSubjectId];
 
         if (correlative.isApproveCondition()) {
           correlativeCheckList.add(CorrelativeCheck(correlativeSubject,
@@ -50,16 +50,22 @@ class CorrelativesValidator {
 
     for (Correlative correlative in correlatives) {
       if (correlative.isToTake()) {
-        var correlativeSubject = subjectIdMap[correlative.subjectId];
+        var correlativeSubject = subjectIdMap[correlative.correlativeSubjectId];
 
         if (correlative.isApproveCondition()) {
-          correlativeCheckList.add(CorrelativeCheck(correlativeSubject,
-              correlativeSubject.isApproved(), CorrelativeCondition.APPROVED));
+          correlativeCheckList.add(
+            CorrelativeCheck(
+              correlativeSubject,
+              correlativeSubject.isApproved(),
+              CorrelativeCondition.APPROVED,
+            ),
+          );
         } else if (correlative.isRegularCondition()) {
           correlativeCheckList.add(CorrelativeCheck(
-              correlativeSubject,
-              correlativeSubject.hasRegularMilestone,
-              CorrelativeCondition.REGULAR));
+            correlativeSubject,
+            correlativeSubject.hasRegularMilestone,
+            CorrelativeCondition.REGULAR,
+          ));
         }
       }
     }

@@ -42,13 +42,13 @@ class InstitutionSubject {
 }
 
 class Correlative {
-  final String subjectId;
+  final String id;
   final String correlativeSubjectId;
   final CorrelativeCondition correlativeCondition;
   final CorrelativeRestriction correlativeRestriction;
 
   Correlative(
-    this.subjectId,
+    this.id,
     this.correlativeSubjectId,
     this.correlativeCondition,
     this.correlativeRestriction,
@@ -80,7 +80,7 @@ class Correlative {
       json["correlativeRestriction"],
     );
     return Correlative(
-      json["subjectId"],
+      json["id"],
       json["correlativeSubjectId"],
       condition,
       restriction,
