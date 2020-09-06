@@ -1,42 +1,41 @@
-import 'package:card_settings/card_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:universy/modules/student/calendar/widget/form/keys.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/widgets/formfield/decoration/builder.dart';
+import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
+import 'package:universy/widgets/paddings/edge.dart';
 
-class StudentEventTitleWidget extends StatelessWidget
-    implements CardSettingsWidget {
-  final String initialValue;
-  final Function(String) onSaved;
+class StudentEventTitleWidget extends StatelessWidget {
+  final TextEditingController _textEditingController;
 
-  const StudentEventTitleWidget({Key key, this.initialValue, this.onSaved})
-      : super(key: key);
+  const StudentEventTitleWidget(
+      {Key key, @required TextEditingController textEditingController})
+      : this._textEditingController = textEditingController,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CardSettingsText(
-      textCapitalization: TextCapitalization.sentences,
-      hintText: _buildHintText(),
-      label: _buildHintText(),
-      initialValue: initialValue,
-      contentAlign: TextAlign.right,
-      style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black),
-      onSaved: onSaved,
-      validator: NotEmptyTextFormFieldValidatorBuilder(_buildRequiredText())
-          .build(context),
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 6.0,
+      child: CustomTextFormField(
+        key: CALENDAR_KEY_TITLE,
+        controller: _textEditingController,
+        validatorBuilder: _getTitleInputValidator(),
+        decorationBuilder: _getTitleInputDecoration(),
+      ),
     );
+  }
+
+  InputDecorationBuilder _getTitleInputDecoration() {
+    return TextInputDecorationBuilder(
+        AppText.getInstance().get("student.calendar.form.eventTitle"));
+  }
+
+  TextFormFieldValidatorBuilder _getTitleInputValidator() {
+    return NotEmptyTextFormFieldValidatorBuilder(_buildRequiredText());
   }
 
   String _buildRequiredText() =>
       AppText.getInstance().get("student.calendar.form.titleRequired");
-
-  String _buildHintText() =>
-      AppText.getInstance().get("student.calendar.form.eventTitle");
-
-  @override
-  // TODO: implement showMaterialonIOS
-  bool get showMaterialonIOS => throw UnimplementedError();
-
-  @override
-  // TODO: implement visible
-  bool get visible => true;
 }

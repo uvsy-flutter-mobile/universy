@@ -13,6 +13,7 @@ import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/event_type.dart';
+import 'package:universy/util/save-lock.dart';
 import 'package:universy/util/time-of-day.dart';
 import 'package:universy/widgets/async/modal.dart';
 
@@ -44,8 +45,9 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   TimeOfDay _timeFrom;
   TimeOfDay _timeTo;
   StudentEventService _studentEventService;
+  TextEditingController _titleTextEditingController;
 
-//  SaveLock<StudentEvent> _saveLock;
+  SaveLock<StudentEvent> _saveLock;
 
   void initState() {
     this._daySelected = widget._daySelected;
@@ -56,7 +58,9 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         Optional.ofNullable(_studentEvent.timeFrom).orElse(TimeOfDay.now());
     this._timeTo =
         Optional.ofNullable(_studentEvent.timeTo).orElse(TimeOfDay.now());
-//    this._saveLock = SaveLock.lock(snapshot: widget._studentEvent);
+    this._saveLock = SaveLock.lock(snapshot: widget._studentEvent);
+    this._titleTextEditingController =
+        TextEditingController(text: _studentEvent.title ?? "");
     super.initState();
   }
 
@@ -74,6 +78,8 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     this._timeFrom = null;
     this._timeTo = null;
     this._studentEventService = null;
+    this._titleTextEditingController.dispose();
+    this._titleTextEditingController = null;
     super.dispose();
   }
 
@@ -102,19 +108,15 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
       ),
       child: Form(
         key: _formKey,
-        child: CardSettings(
-          children: <CardSettingsSection>[
-            CardSettingsSection(
-              children: <CardSettingsWidget>[
-                _buildTitle(),
-                _buildDate(),
-                _buildTimeFrom(),
-                _buildTimeTo(),
-                _buildEventTypePicker(),
-                _buildDescriptionText(),
-                _buildActionButtons()
-              ],
-            ),
+        child: Column(
+          children: [
+            _buildTitle(),
+//                _buildDate(),
+//                _buildTimeFrom(),
+//                _buildTimeTo(),
+//                _buildEventTypePicker(),
+//                _buildDescriptionText(),
+//                _buildActionButtons()
           ],
         ),
       ),
@@ -122,14 +124,15 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildTitle() {
+    _titleTextEditingController.addListener(_titleOnSave);
     return StudentEventTitleWidget(
-      initialValue: _studentEvent.title ?? "",
-      onSaved: _titleOnSave,
+      textEditingController: _titleTextEditingController,
+//      initialValue: _studentEvent.title ?? "",
     );
   }
 
-  void _titleOnSave(String title) {
-    this._studentEvent.title = title;
+  void _titleOnSave() {
+    this._studentEvent.title = this._titleTextEditingController.text;
   }
 
   Widget _buildDate() {
@@ -257,21 +260,20 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     if (form.validate()) {
       form.save();
 
-//      if (_saveLock.shouldSave(_studentEvent)) {
-      var confirmAction =
-          this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
+      if (_saveLock.shouldSave(_studentEvent)) {
+        var confirmAction =
+            this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
 
-      await AsyncModalBuilder()
-          .perform(confirmAction)
-          .withTitle(
-              AppText.getInstance().get("student.calendar.actions.saving"))
-          .then(_refreshCalendarAndNavigateBack)
-          .build()
-          .run(context);
-
-//      } else {
-//        Navigator.pop(context);
-//      }
+        await AsyncModalBuilder()
+            .perform(confirmAction)
+            .withTitle(
+                AppText.getInstance().get("student.calendar.actions.saving"))
+            .then(_refreshCalendarAndNavigateBack)
+            .build()
+            .run(context);
+      } else {
+        Navigator.pop(context);
+      }
     }
   }
 
