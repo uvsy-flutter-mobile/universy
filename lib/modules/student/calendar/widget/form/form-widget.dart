@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/widget/form/calendar-actions.dart';
 import 'package:universy/modules/student/calendar/widget/form/date-widget.dart';
+import 'package:universy/modules/student/calendar/widget/form/keys.dart';
 import 'package:universy/modules/student/calendar/widget/form/time-widget.dart';
 import 'package:universy/modules/student/calendar/widget/form/title-widget.dart';
 import 'package:universy/services/factory.dart';
@@ -112,8 +113,8 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
           children: [
             _buildTitle(),
 //                _buildDate(),
-//                _buildTimeFrom(),
-//                _buildTimeTo(),
+            _buildTimeFrom(),
+            _buildTimeTo(),
 //                _buildEventTypePicker(),
 //                _buildDescriptionText(),
 //                _buildActionButtons()
@@ -154,24 +155,21 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeFrom() {
     return StudentEventTimeWidget(
+      key: CALENDAR_KEY_TIME_FROM,
       label: AppText.getInstance().get("student.calendar.form.timeFrom"),
-      initialTime: _timeFrom,
+      selectedTime: _timeFrom,
       onChange: _updateTimeFrom,
-      onSave: _timeFromOnSave,
     );
   }
 
   void _updateTimeFrom(selectedTime) {
-    if (TimeOfDayComparator().isAfter(selectedTime, _timeTo)) {
-      setState(() {
-        this._timeFrom = selectedTime;
-        this._timeTo = selectedTime;
-      });
-    } else {
-      setState(() {
-        this._timeFrom = selectedTime;
-      });
-    }
+    var timeTo = TimeOfDayComparator().isAfter(selectedTime, _timeTo)
+        ? selectedTime
+        : this._timeTo;
+    setState(() {
+      this._timeFrom = selectedTime;
+      this._timeTo = timeTo;
+    });
   }
 
   void _timeFromOnSave(TimeOfDay selectedTime) {
@@ -180,10 +178,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeTo() {
     return StudentEventTimeWidget(
+      key: CALENDAR_KEY_TIME_TO,
       label: AppText.getInstance().get("student.calendar.form.timeTo"),
-      initialTime: _timeTo,
+      selectedTime: _timeTo,
       onChange: _updateTimeTo,
-      onSave: _timeToOnSave,
     );
   }
 
