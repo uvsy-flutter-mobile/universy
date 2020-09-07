@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:optional/optional_internal.dart';
 import 'package:universy/model/student/event.dart';
-import 'package:universy/text/text.dart';
-import 'package:universy/widgets/formfield/decoration/builder.dart';
-import 'package:universy/widgets/formfield/text/custom.dart';
-import 'package:universy/widgets/formfield/text/validators.dart';
-import 'package:universy/widgets/paddings/edge.dart';
 
 class StudentEventTypeWidget extends StatefulWidget {
   final Function(String) onChange;
@@ -22,7 +16,7 @@ class StudentEventTypeWidget extends StatefulWidget {
 
 class StudentEventTypeState extends State<StudentEventTypeWidget> {
   Key _key;
-  List<EventTypeDescription> _eventTypesDescription;
+  List<EventTypeItem> _eventTypesItems;
   String _eventType;
   Function(String) _onChange;
 
@@ -31,7 +25,7 @@ class StudentEventTypeState extends State<StudentEventTypeWidget> {
   @override
   void didChangeDependencies() {
     print(this._eventType);
-    this._eventTypesDescription = EventTypeDescription.getEventTypes();
+    this._eventTypesItems = EventTypeItem.getEventTypes();
     super.didChangeDependencies();
   }
 
@@ -47,11 +41,11 @@ class StudentEventTypeState extends State<StudentEventTypeWidget> {
       crossAxisCount: 2,
       scrollDirection: Axis.horizontal,
       children: List.generate(
-          _eventTypesDescription.length,
+          _eventTypesItems.length,
           (index) => EventItemWidget(
               onSelect: handleOnSelect,
-              selected: _eventTypesDescription[index].eventType == _eventType,
-              eventTypeDescription: _eventTypesDescription[index])),
+              selected: _eventTypesItems[index].eventType == _eventType,
+              eventTypeItem: _eventTypesItems[index])),
     );
   }
 
@@ -78,22 +72,22 @@ class StudentEventTypeState extends State<StudentEventTypeWidget> {
 }
 
 class EventItemWidget extends StatelessWidget {
-  final EventTypeDescription _eventTypeDescription;
+  final EventTypeItem _eventTypeItem;
   final bool _selected;
   final Function(String) _onSelect;
 
   EventItemWidget(
       {Key key,
-      @required EventTypeDescription eventTypeDescription,
+      @required EventTypeItem eventTypeItem,
       Function(String) onSelect,
       bool selected = false})
-      : this._eventTypeDescription = eventTypeDescription,
+      : this._eventTypeItem = eventTypeItem,
         this._onSelect = onSelect,
         this._selected = selected,
         super(key: key);
 
   void handleTap() {
-    _onSelect(_eventTypeDescription.eventType);
+    _onSelect(_eventTypeItem.eventType);
   }
 
   @override
@@ -110,11 +104,11 @@ class EventItemWidget extends StatelessWidget {
         child: Column(
           children: [
             Icon(
-              _eventTypeDescription.iconData,
+              _eventTypeItem.iconData,
               color: iconColor,
               size: 60.0,
             ),
-            Text(_eventTypeDescription.description, style: textStyle)
+            Text(_eventTypeItem.description, style: textStyle)
           ],
         ),
       ),

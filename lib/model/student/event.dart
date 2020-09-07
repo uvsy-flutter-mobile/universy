@@ -142,12 +142,12 @@ abstract class EventType {
   }
 }
 
-class EventTypeDescription {
+class EventTypeItem {
   final String _eventType;
   final String _description;
   final IconData _iconData;
 
-  EventTypeDescription(this._eventType, this._description, this._iconData);
+  EventTypeItem(this._eventType, this._description, this._iconData);
 
   String get description => _description;
 
@@ -155,11 +155,12 @@ class EventTypeDescription {
 
   IconData get iconData => _iconData;
 
-  static List<EventTypeDescription> getEventTypes() {
-    EventTypeTranslator eventTypeTranslator = EventTypeTranslator();
+  static List<EventTypeItem> getEventTypes() {
+    EventTypeDescriptionTranslator eventTypeTranslator =
+        EventTypeDescriptionTranslator();
     return EventType.values()
-        .map((type) => EventTypeDescription(type,
-            eventTypeTranslator.translate(type), Icons.accessible_forward))
+        .map((type) => EventTypeItem(type, eventTypeTranslator.translate(type),
+            Icons.accessible_forward))
         .toList();
   }
 }

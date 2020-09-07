@@ -38,7 +38,8 @@ class ExistingEvent extends StatelessWidget {
         ),
         child: ListTile(
           title: _buildEventTitle(context),
-          subtitle: Text(EventTypeTranslator().translate(event.eventType)),
+          subtitle:
+              Text(EventTypeDescriptionTranslator().translate(event.eventType)),
         ),
       ),
     );
