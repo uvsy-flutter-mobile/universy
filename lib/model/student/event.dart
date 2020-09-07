@@ -145,18 +145,21 @@ abstract class EventType {
 class EventTypeDescription {
   final String _eventType;
   final String _description;
+  final IconData _iconData;
 
-  EventTypeDescription(this._eventType, this._description);
+  EventTypeDescription(this._eventType, this._description, this._iconData);
 
   String get description => _description;
 
   String get eventType => _eventType;
 
+  IconData get iconData => _iconData;
+
   static List<EventTypeDescription> getEventTypes() {
     EventTypeTranslator eventTypeTranslator = EventTypeTranslator();
     return EventType.values()
-        .map((type) =>
-            EventTypeDescription(type, eventTypeTranslator.translate(type)))
+        .map((type) => EventTypeDescription(type,
+            eventTypeTranslator.translate(type), Icons.accessible_forward))
         .toList();
   }
 }

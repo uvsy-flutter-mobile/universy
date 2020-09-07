@@ -1,5 +1,4 @@
 import 'package:card_settings/card_settings.dart';
-import 'package:card_settings/widgets/picker_fields/card_settings_list_picker.dart';
 import 'package:card_settings/widgets/text_fields/card_settings_paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
@@ -7,13 +6,13 @@ import 'package:provider/provider.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/widget/form/calendar-actions.dart';
 import 'package:universy/modules/student/calendar/widget/form/date-widget.dart';
+import 'package:universy/modules/student/calendar/widget/form/event-type.dart';
 import 'package:universy/modules/student/calendar/widget/form/keys.dart';
 import 'package:universy/modules/student/calendar/widget/form/time-widget.dart';
 import 'package:universy/modules/student/calendar/widget/form/title-widget.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/text/translators/event_type.dart';
 import 'package:universy/util/save-lock.dart';
 import 'package:universy/util/time-of-day.dart';
 import 'package:universy/widgets/async/modal.dart';
@@ -109,15 +108,21 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
       ),
       child: Form(
         key: _formKey,
-        child: Column(
-          children: [
-            _buildTitle(),
+        child: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(15.0),
+          children: <Widget>[
+            Column(
+              children: [
+                _buildTitle(),
 //                _buildDate(),
-            _buildTimeFrom(),
-            _buildTimeTo(),
-//                _buildEventTypePicker(),
+                _buildTimeFrom(),
+                _buildTimeTo(),
+                _buildEventTypePicker(),
 //                _buildDescriptionText(),
 //                _buildActionButtons()
+              ],
+            )
           ],
         ),
       ),
@@ -203,32 +208,16 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildEventTypePicker() {
-    Map<String, String> eventTypeMap = Map.fromIterable(
-      EventTypeDescription.getEventTypes(),
-      key: (event) => event.description,
-      value: (event) => event.eventType,
-    );
+    return SizedBox(
+        height: 250,
+        child: StudentEventTypeWidget(
+          onChange: _onEventTypeChange,
+          eventType: _studentEvent.eventType,
+        ));
+  }
 
-    String descriptionValue = Optional.ofNullable(_studentEvent)
-        .map((event) => event.eventType)
-        .map(EventTypeTranslator().translate)
-        .orElse(eventTypeMap.keys.first);
-
-    return CardSettingsListPicker(
-      contentAlign: TextAlign.right,
-      label: AppText.getInstance().get("student.calendar.form.typeEvent"),
-      visible: true,
-      initialValue: descriptionValue,
-      options: eventTypeMap.keys.toList(),
-      onSaved: (description) =>
-          _studentEvent.eventType = eventTypeMap[description],
-      onChanged: (description) {
-        setState(() {
-          descriptionValue = description;
-          _studentEvent.eventType = eventTypeMap[description];
-        });
-      },
-    );
+  void _onEventTypeChange(String eventType) {
+    _studentEvent.eventType = eventType;
   }
 
   Widget _buildDescriptionText() {
