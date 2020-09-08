@@ -152,7 +152,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
       key: CALENDAR_KEY_TIME_FROM,
       label: AppText.getInstance().get("student.calendar.form.timeFrom"),
       selectedDate: eventDate,
-      onChange: _updateTimeFrom,
+      onChange: _updateDate,
     );
   }
 
@@ -173,16 +173,20 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     var timeTo = TimeOfDayComparator().isAfter(selectedTime, _timeTo)
         ? selectedTime
         : this._timeTo;
-    setState(() {
-      this._timeFrom = selectedTime;
-      this._timeTo = timeTo;
-    });
+    this._timeFrom = selectedTime;
+    this._timeTo = timeTo;
+  }
+
+  void _updateTimeTo(selectedTime) {
+    var timeFrom = TimeOfDayComparator().isBefore(selectedTime, _timeFrom)
+        ? selectedTime
+        : this._timeFrom;
+    this._timeFrom = selectedTime;
+    this._timeTo = timeFrom;
   }
 
   void _updateDate(selectedDate) {
-    setState(() {
-      this._daySelected = selectedDate;
-    });
+    this._daySelected = selectedDate;
   }
 
   void _timeFromOnSave(TimeOfDay selectedTime) {
@@ -196,19 +200,6 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
       selectedTime: _timeTo,
       onChange: _updateTimeTo,
     );
-  }
-
-  void _updateTimeTo(selectedTime) {
-    if (TimeOfDayComparator().isBefore(selectedTime, _timeFrom)) {
-      setState(() {
-        _timeTo = selectedTime;
-        _timeFrom = selectedTime;
-      });
-    } else {
-      setState(() {
-        _timeTo = selectedTime;
-      });
-    }
   }
 
   void _timeToOnSave(TimeOfDay selectedTime) {

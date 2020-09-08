@@ -42,23 +42,7 @@ class StudentEventDateState extends State<StudentEventDateWidget> {
 
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        DateTime picked = await showDatePicker(
-          context: context,
-          initialDate: _selectedDate,
-          firstDate: DateTime(2015, 8),
-          lastDate: DateTime(2101),
-          builder: (BuildContext context, Widget child) {
-            return MediaQuery(
-              data:
-                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-              child: child,
-            );
-          },
-        );
-        _textEditingController.text = picked.toString();
-        _selectedDate = picked;
-      },
+      onTap: handleOnTap,
       child: SymmetricEdgePaddingWidget.vertical(
         paddingValue: 6.0,
         child: CustomTextFormField(
@@ -70,6 +54,25 @@ class StudentEventDateState extends State<StudentEventDateWidget> {
         ),
       ),
     );
+  }
+
+  void handleOnTap() async {
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2015, 8),
+      lastDate: DateTime(2101),
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
+    );
+    setState(() {
+      _textEditingController.text = picked.toString();
+      _selectedDate = picked;
+    });
   }
 
   InputDecorationBuilder _getTitleInputDecoration() {

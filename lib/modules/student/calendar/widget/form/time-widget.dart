@@ -42,21 +42,7 @@ class StudentEventTimeState extends State<StudentEventTimeWidget> {
 
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        TimeOfDay picked = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.now(),
-          builder: (BuildContext context, Widget child) {
-            return MediaQuery(
-              data:
-                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-              child: child,
-            );
-          },
-        );
-        _textEditingController.text = picked.format(context);
-        _selectedTime = picked;
-      },
+      onTap: handleOnTap,
       child: SymmetricEdgePaddingWidget.vertical(
         paddingValue: 6.0,
         child: CustomTextFormField(
@@ -68,6 +54,23 @@ class StudentEventTimeState extends State<StudentEventTimeWidget> {
         ),
       ),
     );
+  }
+
+  void handleOnTap() async {
+    TimeOfDay picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child,
+        );
+      },
+    );
+    setState(() {
+      _textEditingController.text = picked.format(context);
+      _selectedTime = picked;
+    });
   }
 
   InputDecorationBuilder _getTitleInputDecoration() {
