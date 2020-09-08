@@ -115,7 +115,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
             Column(
               children: [
                 _buildTitle(),
-//                _buildDate(),
+                _buildDate(),
                 _buildTimeFrom(),
                 _buildTimeTo(),
                 _buildEventTypePicker(),
@@ -149,8 +149,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         .orElse(_daySelected);
 
     return StudentEventDateWidget(
-      initialDate: eventDate,
-      onSave: _dateOnSave,
+      key: CALENDAR_KEY_TIME_FROM,
+      label: AppText.getInstance().get("student.calendar.form.timeFrom"),
+      selectedDate: eventDate,
+      onChange: _updateTimeFrom,
     );
   }
 
@@ -174,6 +176,12 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     setState(() {
       this._timeFrom = selectedTime;
       this._timeTo = timeTo;
+    });
+  }
+
+  void _updateDate(selectedDate) {
+    setState(() {
+      this._daySelected = selectedDate;
     });
   }
 

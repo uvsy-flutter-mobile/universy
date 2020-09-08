@@ -80,25 +80,4 @@ class StudentEventTimeState extends State<StudentEventTimeWidget> {
 
   String _buildRequiredText() =>
       AppText.getInstance().get("student.calendar.form.titleRequired");
-
-//  Widget build(BuildContext context) {
-//    return GestureDetector(
-//        onTap: () async {
-//          TimeOfDay picked = await showTimePicker(
-//            context: context,
-//            initialTime: TimeOfDay.now(),
-//            builder: (BuildContext context, Widget child) {
-//              return MediaQuery(
-//                data: MediaQuery.of(context)
-//                    .copyWith(alwaysUse24HourFormat: true),
-//                child: child,
-//              );
-//            },
-//          );
-//        },
-//        child: Text(
-//          "SetTime",
-//          textAlign: TextAlign.center,
-//        ));
-//  }
 }
