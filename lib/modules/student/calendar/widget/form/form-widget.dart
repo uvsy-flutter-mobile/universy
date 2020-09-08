@@ -209,7 +209,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildEventTypePicker() {
     return SizedBox(
-        height: 250,
+        height: 185,
         child: StudentEventTypeWidget(
           onChange: _onEventTypeChange,
           eventType: _studentEvent.eventType,

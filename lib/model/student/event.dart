@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:optional/optional.dart';
+import 'package:universy/constants/event-types.dart';
 import 'package:universy/model/copyable.dart';
 import 'package:universy/model/json.dart';
 import 'package:universy/text/translators/event_type.dart';
@@ -116,32 +117,6 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
       description.hashCode;
 }
 
-abstract class EventType {
-  static const String DUE_DATE = "DUE_DATE";
-  static const String EXTRA_CLASS = "EXTRA_CLASS";
-  static const String FINAL_EXAM = "FINAL_EXAM";
-  static const String LABORATORY = "LABORATORY";
-  static const String NO_CLASS = "NO_CLASS";
-  static const String PRESENTATION = "PRESENTATION";
-  static const String RECUP_EXAM = "RECUP_EXAM";
-  static const String REGULAR_EXAM = "REGULAR_EXAM";
-  static const String REPORT_SIGN_OFF = "REPORT_SIGN_OFF";
-
-  static List<String> values() {
-    return [
-      DUE_DATE,
-      EXTRA_CLASS,
-      FINAL_EXAM,
-      LABORATORY,
-      NO_CLASS,
-      PRESENTATION,
-      RECUP_EXAM,
-      REGULAR_EXAM,
-      REPORT_SIGN_OFF,
-    ];
-  }
-}
-
 class EventTypeItem {
   final String _eventType;
   final String _description;
@@ -159,8 +134,8 @@ class EventTypeItem {
     EventTypeDescriptionTranslator eventTypeTranslator =
         EventTypeDescriptionTranslator();
     return EventType.values()
-        .map((type) => EventTypeItem(type, eventTypeTranslator.translate(type),
-            Icons.accessible_forward))
+        .map((type) => EventTypeItem(
+            type, eventTypeTranslator.translate(type), EventType.getIcon(type)))
         .toList();
   }
 }

@@ -97,20 +97,27 @@ class EventItemWidget extends StatelessWidget {
         ? TextStyle(fontWeight: FontWeight.bold)
         : TextStyle(color: Colors.grey);
 
-    return SizedBox(
-      height: 100,
-      child: InkWell(
-        onTap: handleTap,
-        child: Column(
-          children: [
-            Icon(
-              _eventTypeItem.iconData,
-              color: iconColor,
-              size: 60.0,
-            ),
-            Text(_eventTypeItem.description, style: textStyle)
-          ],
-        ),
+    return InkWell(
+      onTap: handleTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            _eventTypeItem.iconData,
+            color: iconColor,
+            size: 36.0,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Center(
+              child: Text(
+            _eventTypeItem.description,
+            style: textStyle,
+            textAlign: TextAlign.center,
+          ))
+        ],
       ),
     );
   }
