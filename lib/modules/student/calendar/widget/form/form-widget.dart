@@ -110,14 +110,18 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         key: _formKey,
         child: ListView(
           shrinkWrap: true,
-          padding: EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(30.0),
           children: <Widget>[
             Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildTitle(),
                 _buildDate(),
-                _buildTimeFrom(),
-                _buildTimeTo(),
+                _buildTimeRange(),
+                SizedBox(
+                  height: 25,
+                ),
                 _buildEventTypePicker(),
 //                _buildDescriptionText(),
 //                _buildActionButtons()
@@ -131,10 +135,11 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTitle() {
     _titleTextEditingController.addListener(_titleOnSave);
-    return StudentEventTitleWidget(
-      textEditingController: _titleTextEditingController,
-//      initialValue: _studentEvent.title ?? "",
-    );
+    return SizedBox(
+        width: 200,
+        child: StudentEventTitleWidget(
+          textEditingController: _titleTextEditingController,
+        ));
   }
 
   void _titleOnSave() {
@@ -148,12 +153,42 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         )
         .orElse(_daySelected);
 
-    return StudentEventDateWidget(
-      key: CALENDAR_KEY_TIME_FROM,
-      label: AppText.getInstance().get("student.calendar.form.timeFrom"),
-      selectedDate: eventDate,
-      onChange: _updateDate,
-    );
+    return SizedBox(
+        width: 200,
+        child: StudentEventDateWidget(
+          key: CALENDAR_KEY_TIME_FROM,
+          label: AppText.getInstance().get("student.calendar.form.timeFrom"),
+          selectedDate: eventDate,
+          onChange: _updateDate,
+        ));
+  }
+
+  Widget _buildTimeRange() {
+    return SizedBox(
+        width: 200,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 60,
+              child: _buildTimeFrom(),
+            ),
+            SizedBox(
+              width: 5,
+              child: Text(
+                '-',
+                style: TextStyle(
+                    color: Colors.amber,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 26),
+              ),
+            ),
+            SizedBox(
+              width: 60,
+              child: _buildTimeTo(),
+            ),
+          ],
+        ));
   }
 
   void _dateOnSave(DateTime selectedDate) {
@@ -207,12 +242,25 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildEventTypePicker() {
-    return SizedBox(
-        height: 185,
-        child: StudentEventTypeWidget(
-          onChange: _onEventTypeChange,
-          eventType: _studentEvent.eventType,
-        ));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Tipo',
+          textAlign: TextAlign.left,
+          style: TextStyle(color: Colors.amber, fontSize: 18),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        SizedBox(
+            height: 185,
+            child: StudentEventTypeWidget(
+              onChange: _onEventTypeChange,
+              eventType: _studentEvent.eventType,
+            ))
+      ],
+    );
   }
 
   void _onEventTypeChange(String eventType) {
