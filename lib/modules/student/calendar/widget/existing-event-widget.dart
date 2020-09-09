@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:universy/constants/event-types.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/bloc/table-calendar/cubit.dart';
 import 'package:universy/modules/student/calendar/widget/form/form-widget.dart';
@@ -9,6 +10,7 @@ import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/event_type.dart';
 import 'package:universy/widgets/async/modal.dart';
+import 'package:universy/widgets/paddings/edge.dart';
 
 class ExistingEvent extends StatelessWidget {
   final StudentEvent event;
@@ -33,14 +35,11 @@ class ExistingEvent extends StatelessWidget {
       onTap: () => _buildEditEventForm(context),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(width: 1.0),
+          border:
+              Border(bottom: BorderSide(width: 1, color: Color(0xFFC9C9C9))),
           color: Colors.white,
         ),
-        child: ListTile(
-          title: _buildEventTitle(context),
-          subtitle:
-              Text(EventTypeDescriptionTranslator().translate(event.eventType)),
-        ),
+        child: _buildListTile(context),
       ),
     );
   }
@@ -55,18 +54,38 @@ class ExistingEvent extends StatelessWidget {
     );
   }
 
+  Widget _buildListTile(BuildContext context) {
+    return ListTile(
+      leading: AllEdgePaddedWidget(
+          padding: 5,
+          child: Icon(
+            EventType.getIcon(event.eventType),
+          )),
+      title: Text(
+        EventTypeDescriptionTranslator().translate(event.eventType),
+        style: TextStyle(fontWeight: FontWeight.w500),
+      ),
+      trailing: Icon(
+        Icons.keyboard_arrow_left,
+        size: 38,
+        color: Color(0xFFC9C9C9),
+      ),
+      subtitle: _buildEventTitle(context),
+    );
+  }
+
   Widget _buildEventTitle(BuildContext context) {
     String timeFrom = event.timeFrom.format(context);
     String timeTo = event.timeTo.format(context);
-    return Text("${event.title} $timeFrom / $timeTo");
+    String message = "${event.title} $timeFrom / $timeTo";
+    return Text(message);
   }
 
   Widget _buildDeleteSlide(BuildContext context) {
     return Container(
       alignment: Alignment.topLeft,
       decoration: BoxDecoration(
-        border: Border.all(width: 1.0),
-        color: Colors.white,
+        border: Border(bottom: BorderSide(width: 1, color: Color(0xFFC9C9C9))),
       ),
       child: _buildDeleteButton(context),
     );

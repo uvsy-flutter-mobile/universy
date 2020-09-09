@@ -14,7 +14,7 @@ class EventsPanelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFFE8E8E8),
+      color: Colors.white,
       child: Column(
         children: <Widget>[
           Icon(Icons.remove, size: 25.0, color: Colors.grey),
@@ -40,11 +40,11 @@ class EventsPanelWidget extends StatelessWidget {
 
   Widget _buildEmptyEvent() {
     return Container(
-      padding: EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.only(top: 25.0),
       alignment: Alignment.topCenter,
       child: Text(
         AppText.getInstance().get("student.calendar.events.emptyEventsDay"),
-        style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 17),
       ),
     );
   }
