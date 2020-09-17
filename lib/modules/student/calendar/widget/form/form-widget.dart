@@ -118,13 +118,13 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
               children: [
                 _buildTitle(),
                 _buildDate(),
-                _buildTimeRange(),
+                _buildTimeRange(context),
                 SizedBox(
                   height: 25,
                 ),
                 _buildEventTypePicker(),
 //                _buildDescriptionText(),
-//                _buildActionButtons()
+               _buildActionButtons()
               ],
             )
           ],
@@ -163,7 +163,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         ));
   }
 
-  Widget _buildTimeRange() {
+  Widget _buildTimeRange(BuildContext context) {
     return SizedBox(
         width: 200,
         child: Row(
@@ -171,7 +171,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
           children: [
             SizedBox(
               width: 60,
-              child: _buildTimeFrom(),
+              child: _buildTimeFrom(context),
             ),
             SizedBox(
               width: 5,
@@ -185,7 +185,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
             ),
             SizedBox(
               width: 60,
-              child: _buildTimeTo(),
+              child: _buildTimeTo(context),
             ),
           ],
         ));
@@ -195,12 +195,12 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     this._studentEvent.date = selectedDate;
   }
 
-  Widget _buildTimeFrom() {
+  Widget _buildTimeFrom(BuildContext context) {
     return StudentEventTimeWidget(
-      key: CALENDAR_KEY_TIME_FROM,
       label: AppText.getInstance().get("student.calendar.form.timeFrom"),
-      selectedTime: _timeFrom,
-      onChange: _updateTimeFrom,
+      initialValue: _timeFrom,
+      context: context,
+      onSaved: _timeFromOnSave
     );
   }
 
@@ -228,12 +228,12 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     _studentEvent.timeFrom = selectedTime;
   }
 
-  Widget _buildTimeTo() {
+  Widget _buildTimeTo(BuildContext context) {
     return StudentEventTimeWidget(
-      key: CALENDAR_KEY_TIME_TO,
+      context: context,
       label: AppText.getInstance().get("student.calendar.form.timeTo"),
-      selectedTime: _timeTo,
-      onChange: _updateTimeTo,
+      initialValue: _timeTo,
+      onSaved: _timeToOnSave,
     );
   }
 
