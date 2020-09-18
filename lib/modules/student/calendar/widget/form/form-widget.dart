@@ -3,6 +3,7 @@ import 'package:card_settings/widgets/text_fields/card_settings_paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:provider/provider.dart';
+import 'package:universy/constants/event-types.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/widget/form/calendar-actions.dart';
 import 'package:universy/modules/student/calendar/widget/form/event-type.dart';
@@ -231,6 +232,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildEventTypePicker() {
+    String eventType = _studentEvent.eventType ?? EventType.FINAL_EXAM;
     String sectionTitle =
         AppText.getInstance().get("student.calendar.form.eventTypeTitle");
     return Column(
@@ -248,7 +250,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
             height: 185,
             child: StudentEventTypeWidget(
               onChange: _onEventTypeChange,
-              eventType: _studentEvent.eventType,
+              eventType: eventType,
             ))
       ],
     );
