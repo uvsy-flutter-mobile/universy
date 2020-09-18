@@ -1,8 +1,8 @@
-import 'package:card_settings/widgets/card_settings_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/buttons/uvsy/save.dart';
 
-class StudentCalendarFormActionsWidget extends StatelessWidget
-    implements CardSettingsWidget {
+class StudentCalendarFormActionsWidget extends StatelessWidget {
   final BuildContext context;
   final Function pressSaveEventButton;
 
@@ -13,38 +13,12 @@ class StudentCalendarFormActionsWidget extends StatelessWidget
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        _buildSaveButton(),
-        _buildCancelButton(),
+        SaveButton(onSave: pressSaveEventButton),
+        CancelButton(onCancel: () => Navigator.of(context).pop()),
       ],
     );
   }
-
-  Widget _buildSaveButton() {
-    return IconButton(
-        splashColor: Colors.amber,
-        icon:
-            Icon(Icons.check_circle_outline, color: Colors.orange, size: 35.0),
-        onPressed: () => pressSaveEventButton());
-  }
-
-  Widget _buildCancelButton() {
-    return IconButton(
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      splashColor: Colors.amber,
-      icon: Icon(Icons.cancel, color: Colors.orange, size: 35.0),
-    );
-  }
-
-  @override
-  // TODO: implement showMaterialonIOS
-  bool get showMaterialonIOS => throw UnimplementedError();
-
-  @override
-  // TODO: implement visible
-  bool get visible => true;
 }

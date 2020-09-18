@@ -106,6 +106,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
           labelStyle: TextStyle(color: Colors.orange, fontSize: 20.0),
         ),
       ),
+
       child: Form(
         key: _formKey,
         child: ListView(
