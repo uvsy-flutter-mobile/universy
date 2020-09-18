@@ -23,24 +23,32 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
 
   StudentEvent.empty();
 
-  StudentEvent(
-    this.userId,
-    this.eventId,
-    this.title,
-    this.date,
-    this.eventType,
-    this.description,
-    this.timeTo,
-    this.timeFrom,
-  );
+  StudentEvent(this.userId,
+      this.eventId,
+      this.title,
+      this.date,
+      this.eventType,
+      this.description,
+      this.timeTo,
+      this.timeFrom,);
 
   factory StudentEvent.fromJson(Map<String, dynamic> json) {
     TimeOfDayIntConverter timeOfDayIntConverter = TimeOfDayIntConverter();
+    DateFormat dateFormat = DateFormat(DATE_FORMAT);
+
+    DateTime dateTimeFromJson;
+    var dateFromJson = json["date"];
+
+    if (dateFromJson is int) {
+      dateTimeFromJson = DateTime.fromMillisecondsSinceEpoch(dateFromJson);
+    } else if (dateFromJson is String) {
+      dateTimeFromJson = dateFormat.parse(dateFromJson);
+    }
 
     String userId = json["userId"];
     String eventId = json["eventId"];
     String title = json["title"];
-    DateTime date = DateTime.fromMillisecondsSinceEpoch(json["date"]);
+    DateTime date = dateTimeFromJson;
     String eventType = json["eventType"];
     String description = json["description"];
     TimeOfDay timeTo = timeOfDayIntConverter.convertFromInt(json["timeTo"]);
@@ -66,7 +74,7 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
     TimeOfDayIntConverter timeOfDayIntConverter = TimeOfDayIntConverter();
 
     String description =
-        Optional.ofNullable(this.description).orElse(EMPTY_STRING);
+    Optional.ofNullable(this.description).orElse(EMPTY_STRING);
     int timeFromSend = timeOfDayIntConverter.convertFromTimeOfDay(timeFrom);
     int timeToSend = timeOfDayIntConverter.convertFromTimeOfDay(timeTo);
     String dateFormatted = dateFormat.format(date);
@@ -94,16 +102,16 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is StudentEvent &&
-          runtimeType == other.runtimeType &&
-          userId == other.userId &&
-          eventId == other.eventId &&
-          title == other.title &&
-          date == other.date &&
-          timeTo == other.timeTo &&
-          timeFrom == other.timeFrom &&
-          eventType == other.eventType &&
-          description == other.description;
+          other is StudentEvent &&
+              runtimeType == other.runtimeType &&
+              userId == other.userId &&
+              eventId == other.eventId &&
+              title == other.title &&
+              date == other.date &&
+              timeTo == other.timeTo &&
+              timeFrom == other.timeFrom &&
+              eventType == other.eventType &&
+              description == other.description;
 
   @override
   int get hashCode =>
@@ -132,9 +140,10 @@ class EventTypeItem {
 
   static List<EventTypeItem> getEventTypes() {
     EventTypeDescriptionTranslator eventTypeTranslator =
-        EventTypeDescriptionTranslator();
+    EventTypeDescriptionTranslator();
     return EventType.values()
-        .map((type) => EventTypeItem(
+        .map((type) =>
+        EventTypeItem(
             type, eventTypeTranslator.translate(type), EventType.getIcon(type)))
         .toList();
   }
