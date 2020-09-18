@@ -5,17 +5,16 @@ import 'package:optional/optional.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/widget/form/calendar-actions.dart';
-import 'package:universy/modules/student/calendar/widget/form/date-widget.dart';
 import 'package:universy/modules/student/calendar/widget/form/event-type.dart';
-import 'package:universy/modules/student/calendar/widget/form/keys.dart';
-import 'package:universy/modules/student/calendar/widget/form/time-widget.dart';
 import 'package:universy/modules/student/calendar/widget/form/title-widget.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/save-lock.dart';
-import 'package:universy/util/time-of-day.dart';
 import 'package:universy/widgets/async/modal.dart';
+import 'package:universy/widgets/formfield/picker/date-widget.dart';
+import 'package:universy/widgets/formfield/picker/time-widget.dart';
+import 'package:universy/widgets/formfield/text/validators.dart';
 
 class StudentEventFormWidget extends StatefulWidget {
   final StudentEvent _studentEvent;
@@ -152,13 +151,20 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
           (event) => event.date,
         )
         .orElse(_daySelected);
+    String requiredText =
+        AppText.getInstance().get("student.calendar.form.eventDateRequired");
+    String label = AppText.getInstance().get("student.calendar.form.eventDate");
+    void _dateOnSave(DateTime selectedDate) {
+      this._studentEvent.date = selectedDate;
+    }
 
     return SizedBox(
         width: 200,
         child: StudentEventDateWidget(
-          initialValue: DateTime.now(),
+          validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
+          initialValue: eventDate,
           context: context,
-          label: AppText.getInstance().get("student.calendar.form.timeFrom"),
+          label: label,
           onSaved: _dateOnSave,
         ));
   }
@@ -191,61 +197,47 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         ));
   }
 
-  void _dateOnSave(DateTime selectedDate) {
-    this._studentEvent.date = selectedDate;
-  }
-
   Widget _buildTimeFrom(BuildContext context) {
+    String requiredText =
+        AppText.getInstance().get("student.calendar.form.timeFromRequired");
+    String label = AppText.getInstance().get("student.calendar.form.timeFrom");
+    void _timeFromOnSave(TimeOfDay selectedTime) {
+      _studentEvent.timeFrom = selectedTime;
+    }
+
     return StudentEventTimeWidget(
-        label: AppText.getInstance().get("student.calendar.form.timeFrom"),
+        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
+        label: label,
         initialValue: _timeFrom,
         context: context,
         onSaved: _timeFromOnSave);
   }
 
-  void _updateTimeFrom(selectedTime) {
-    var timeTo = TimeOfDayComparator().isAfter(selectedTime, _timeTo)
-        ? selectedTime
-        : this._timeTo;
-    this._timeFrom = selectedTime;
-    this._timeTo = timeTo;
-  }
-
-  void _updateTimeTo(selectedTime) {
-    var timeFrom = TimeOfDayComparator().isBefore(selectedTime, _timeFrom)
-        ? selectedTime
-        : this._timeFrom;
-    this._timeFrom = selectedTime;
-    this._timeTo = timeFrom;
-  }
-
-  void _updateDate(selectedDate) {
-    this._daySelected = selectedDate;
-  }
-
-  void _timeFromOnSave(TimeOfDay selectedTime) {
-    _studentEvent.timeFrom = selectedTime;
-  }
-
   Widget _buildTimeTo(BuildContext context) {
+    String requiredText =
+        AppText.getInstance().get("student.calendar.form.timeToRequired");
+    String label = AppText.getInstance().get("student.calendar.form.timeTo");
+    void _timeToOnSave(TimeOfDay selectedTime) {
+      _studentEvent.timeTo = selectedTime;
+    }
+
     return StudentEventTimeWidget(
       context: context,
-      label: AppText.getInstance().get("student.calendar.form.timeTo"),
+      validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
+      label: label,
       initialValue: _timeTo,
       onSaved: _timeToOnSave,
     );
   }
 
-  void _timeToOnSave(TimeOfDay selectedTime) {
-    _studentEvent.timeTo = selectedTime;
-  }
-
   Widget _buildEventTypePicker() {
+    String sectionTitle =
+        AppText.getInstance().get("student.calendar.form.eventTypeTitle");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Tipo',
+          sectionTitle,
           textAlign: TextAlign.left,
           style: TextStyle(color: Colors.amber, fontSize: 18),
         ),

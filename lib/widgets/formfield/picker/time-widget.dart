@@ -1,31 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:universy/text/text.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class StudentEventDateWidget extends FormField<DateTime> {
-  StudentEventDateWidget(
-      {FormFieldSetter<DateTime> onSaved,
-      FormFieldValidator<DateTime> validator,
-      @required DateTime initialValue,
-      @required BuildContext context,
-      String label,
+class StudentEventTimeWidget extends FormField<TimeOfDay> {
+  StudentEventTimeWidget(
+      {@required BuildContext context,
+      @required TextFormFieldValidatorBuilder validatorBuilder,
+      @required FormFieldSetter<TimeOfDay> onSaved,
+      @required TimeOfDay initialValue,
+      FormFieldValidator<TimeOfDay> validator,
+      String label = '',
       bool autovalidate = false})
       : super(
             onSaved: onSaved,
             validator: validator,
             initialValue: initialValue,
             autovalidate: autovalidate,
-            builder: (FormFieldState<DateTime> state) {
+            builder: (FormFieldState<TimeOfDay> state) {
               return GestureDetector(
                 onTap: () async {
-                  DateTime selectedDate = await showDatePicker(
+                  TimeOfDay selectedTime = await showTimePicker(
                     context: context,
-                    initialDate: initialValue,
-                    firstDate: DateTime(2015, 8),
-                    lastDate: DateTime(2101),
+                    initialTime: TimeOfDay.now(),
                     builder: (BuildContext context, Widget child) {
                       return MediaQuery(
                         data: MediaQuery.of(context)
@@ -34,18 +32,17 @@ class StudentEventDateWidget extends FormField<DateTime> {
                       );
                     },
                   );
-                  state.didChange(selectedDate);
+                  state.didChange(selectedTime);
                 },
                 child: SymmetricEdgePaddingWidget.vertical(
                   paddingValue: 6.0,
                   child: CustomTextFormField(
-                      enabled: false,
-                      controller:
-                          TextEditingController(text: state.value.toString()),
-                      validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(
-                          AppText.getInstance()
-                              .get("student.calendar.form.titleRequired")),
-                      decorationBuilder: TextInputDecorationBuilder('ASD')),
+                    enabled: false,
+                    controller: TextEditingController(
+                        text: state.value.format(context)),
+                    validatorBuilder: validatorBuilder,
+                    decorationBuilder: TextInputDecorationBuilder(label),
+                  ),
                 ),
               );
             });

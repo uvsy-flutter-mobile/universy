@@ -210,13 +210,17 @@ const Map<dynamic, dynamic> ES = {
         "deleting": "Eliminando evento"
       },
       "form": {
+        "eventTypeTitle": "Tipo",
         "title": "Nuevo Evento",
         "editTitle": "Editar Evento",
         "eventTitle": "Título",
         "titleRequired": "El título es requerido",
         "eventDate": "Fecha",
+        "eventDateRequired": "La fecha es requerida",
         "timeFrom": "Hora inicio",
+        "timeFromRequired": "La hora es requerida",
         "timeTo": "Hora Fin",
+        "timeToRequired": "La hora es requerida",
         "typeEvent": "Tipo de evento",
         "description": "Descripción"
       },
