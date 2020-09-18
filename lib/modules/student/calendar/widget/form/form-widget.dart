@@ -124,7 +124,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
                 ),
                 _buildEventTypePicker(),
 //                _buildDescriptionText(),
-               _buildActionButtons()
+                _buildActionButtons()
               ],
             )
           ],
@@ -156,10 +156,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     return SizedBox(
         width: 200,
         child: StudentEventDateWidget(
-          key: CALENDAR_KEY_TIME_FROM,
+          initialValue: DateTime.now(),
+          context: context,
           label: AppText.getInstance().get("student.calendar.form.timeFrom"),
-          selectedDate: eventDate,
-          onChange: _updateDate,
+          onSaved: _dateOnSave,
         ));
   }
 
@@ -197,11 +197,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeFrom(BuildContext context) {
     return StudentEventTimeWidget(
-      label: AppText.getInstance().get("student.calendar.form.timeFrom"),
-      initialValue: _timeFrom,
-      context: context,
-      onSaved: _timeFromOnSave
-    );
+        label: AppText.getInstance().get("student.calendar.form.timeFrom"),
+        initialValue: _timeFrom,
+        context: context,
+        onSaved: _timeFromOnSave);
   }
 
   void _updateTimeFrom(selectedTime) {
