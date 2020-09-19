@@ -93,7 +93,7 @@ class ExistingEvent extends StatelessWidget {
 
   Widget _buildDeleteButton(BuildContext context) {
     return IconSlideAction(
-      color: Colors.red,
+      color: Theme.of(context).errorColor,
       icon: Icons.delete,
       onTap: () => _pressDeleteEventButton(context),
     );
@@ -117,21 +117,11 @@ class ExistingEvent extends StatelessWidget {
 
   void _refreshCalendarAndNavigateBack(BuildContext context) {
     this._refreshCalendar(context);
-    this._buildFlashBarOk(context);
   }
 
   void _refreshCalendar(BuildContext context) {
     TableCalendarCubit tableCalendarCubit =
         BlocProvider.of<TableCalendarCubit>(context);
     tableCalendarCubit.refreshTableCalendar(event.date);
-  }
-
-  void _buildFlashBarOk(BuildContext context) {
-    //TODO: Adds flushBar
-/*    FlushBarBuilder()
-        .withDuration(5)
-        .withIcon(Icon(Icons.spellcheck, color: Colors.green))
-        .withMessage(AppText.getInstance().get("calendar.actions.delete"))
-        .show(context);*/
   }
 }

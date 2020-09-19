@@ -62,6 +62,7 @@ class DescriptionWidgetState extends State<StudentEventDescriptionWidget> {
                 width: 250,
                 height: 50,
                 child: CheckboxListTile(
+                    activeColor: Theme.of(context).highlightColor,
                     contentPadding: EdgeInsets.all(0),
                     title: Text(_descriptionLabel),
                     value: _hideDescription,

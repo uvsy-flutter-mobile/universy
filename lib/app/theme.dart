@@ -3,10 +3,19 @@ import "package:flutter/material.dart";
 ThemeData uvsyTheme = ThemeData(
   primaryColor: Colors.amber,
   accentColor: Colors.deepPurple,
+  indicatorColor: Colors.tealAccent,
   highlightColor: Colors.orangeAccent,
   backgroundColor: Colors.amber[200],
   appBarTheme: AppBarTheme(color: Colors.white),
   buttonColor: Colors.deepPurple,
+  errorColor: Colors.redAccent,
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: TextStyle(
+      color: Colors.amber,
+      fontSize: 20.0,
+      fontFamily: "Roboto",
+    ),
+  ),
   primaryTextTheme: TextTheme(
     headline2: TextStyle(
       color: Colors.black,

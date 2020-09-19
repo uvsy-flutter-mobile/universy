@@ -111,11 +111,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildNewEventBody() {
     return Theme(
-      data: Theme.of(context).copyWith(
-        inputDecorationTheme: InputDecorationTheme(
-          labelStyle: TextStyle(color: Colors.orange, fontSize: 20.0),
-        ),
-      ),
+      data: Theme.of(context),
       child: Form(
         key: _formKey,
         child: ListView(
@@ -195,7 +191,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
               child: Text(
                 '-',
                 style: TextStyle(
-                    color: Colors.amber,
+                    color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 26),
               ),
@@ -251,7 +247,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         Text(
           sectionTitle,
           textAlign: TextAlign.left,
-          style: TextStyle(color: Colors.amber, fontSize: 18),
+          style: Theme.of(context).inputDecorationTheme.labelStyle,
         ),
         SizedBox(
           height: 8,
@@ -324,15 +320,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   void _refreshCalendarAndNavigateBack(BuildContext context) {
     widget._onConfirm();
     Navigator.pop(context);
-//    _buildFlashBarOk();
   }
 
-//  void _buildFlashBarOk() {
-////    FlushBarBuilder()
-////        .withDuration(5)
-////        .withIcon(Icon(Icons.spellcheck, color: Colors.green))
-////        .withMessage(AppText.getInstance().get("studentEvents.actions.save"))
-////        .show(context);
-//  }
 
 }

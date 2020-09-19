@@ -15,7 +15,6 @@ class StudentEventTypeWidget extends StatefulWidget {
 }
 
 class StudentEventTypeState extends State<StudentEventTypeWidget> {
-  Key _key;
   List<EventTypeItem> _eventTypesItems;
   String _eventType;
   Function(String) _onChange;
@@ -71,7 +70,7 @@ class EventItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var iconColor = _selected ? Colors.amber : Colors.grey;
+    var iconColor = _selected ? Theme.of(context).highlightColor : Colors.grey;
     var textStyle = _selected
         ? TextStyle(fontWeight: FontWeight.bold)
         : TextStyle(color: Colors.grey);

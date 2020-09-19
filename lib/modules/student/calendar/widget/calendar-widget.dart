@@ -42,7 +42,6 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
           _getStudentEventsMap(widget.studentEvents);
       DateTime selectedDate = widget.selectedDate;
 
-      //this._calendarController.events = HashMap.from(dateEventMap);
       this._dispatchSelectedDay(dateEventMap[selectedDate]);
     }
     super.didUpdateWidget(oldWidget);
@@ -86,7 +85,8 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
       },
       calendarStyle: _buildCalendarStyle(),
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekendStyle: TextStyle().copyWith(color: Colors.orange[600]),
+        weekendStyle:
+            TextStyle().copyWith(color: Theme.of(context).accentColor),
       ),
       headerStyle: _buildHeaderStyle(),
       builders: CalendarBuilders(markersBuilder: _buildCalendarMarkers),
@@ -109,11 +109,11 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
 
   CalendarStyle _buildCalendarStyle() {
     return CalendarStyle(
-      selectedColor: Colors.amber,
+      selectedColor: Theme.of(context).primaryColor,
       todayColor: Color(0xFFE8E8E8),
       todayStyle: TextStyle().copyWith(color: Colors.black),
       markersColor: Colors.orange,
-      weekendStyle: TextStyle().copyWith(color: Colors.orange[800]),
+      weekendStyle: TextStyle().copyWith(color: Theme.of(context).accentColor),
       outsideDaysVisible: false,
     );
   }
@@ -138,7 +138,9 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
   BoxDecoration _buildEventLengthBox(DateTime date) {
     return BoxDecoration(
       shape: BoxShape.rectangle,
-      color: _calendarController.isSelected(date) ? Colors.purple : Colors.blue,
+      color: _calendarController.isSelected(date)
+          ? Theme.of(context).accentColor
+          : Theme.of(context).indicatorColor,
     );
   }
 
@@ -158,7 +160,7 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
       child: SymmetricEdgePaddingWidget.horizontal(
         paddingValue: 20,
         child: FloatingActionButton(
-          backgroundColor: Colors.deepPurple,
+          backgroundColor: Theme.of(context).buttonColor,
           child: Icon(Icons.add),
           onPressed: () => _navigateToNewEvent(),
         ),
