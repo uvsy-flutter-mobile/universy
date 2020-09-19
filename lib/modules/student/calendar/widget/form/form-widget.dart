@@ -1,11 +1,10 @@
-import 'package:card_settings/card_settings.dart';
-import 'package:card_settings/widgets/text_fields/card_settings_paragraph.dart';
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/event-types.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/widget/form/calendar-actions.dart';
+import 'package:universy/modules/student/calendar/widget/form/description-widget.dart';
 import 'package:universy/modules/student/calendar/widget/form/event-type.dart';
 import 'package:universy/modules/student/calendar/widget/form/title-widget.dart';
 import 'package:universy/services/factory.dart';
@@ -16,6 +15,8 @@ import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/formfield/picker/date-widget.dart';
 import 'package:universy/widgets/formfield/picker/time-widget.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
+
+const EMPTY_STRING = "";
 
 class StudentEventFormWidget extends StatefulWidget {
   final StudentEvent _studentEvent;
@@ -46,6 +47,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   TimeOfDay _timeTo;
   StudentEventService _studentEventService;
   TextEditingController _titleTextEditingController;
+  TextEditingController _descriptionTextEditingController;
 
   SaveLock<StudentEvent> _saveLock;
 
@@ -60,7 +62,9 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         Optional.ofNullable(_studentEvent.timeTo).orElse(TimeOfDay.now());
     this._saveLock = SaveLock.lock(snapshot: widget._studentEvent);
     this._titleTextEditingController =
-        TextEditingController(text: _studentEvent.title ?? "");
+        TextEditingController(text: _studentEvent.title ?? EMPTY_STRING);
+    this._descriptionTextEditingController =
+        TextEditingController(text: _studentEvent.description ?? EMPTY_STRING);
     super.initState();
   }
 
@@ -68,6 +72,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   void didChangeDependencies() {
     var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
     this._studentEventService = sessionFactory.studentEventService();
+    if (this._titleTextEditingController.text == EMPTY_STRING) {
+      this._titleTextEditingController.text =
+          AppText.getInstance().get("student.calendar.form.title");
+    }
     super.didChangeDependencies();
   }
 
@@ -80,6 +88,8 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     this._studentEventService = null;
     this._titleTextEditingController.dispose();
     this._titleTextEditingController = null;
+    this._descriptionTextEditingController.dispose();
+    this._descriptionTextEditingController = null;
     super.dispose();
   }
 
@@ -106,7 +116,6 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
           labelStyle: TextStyle(color: Colors.orange, fontSize: 20.0),
         ),
       ),
-
       child: Form(
         key: _formKey,
         child: ListView(
@@ -124,7 +133,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
                   height: 25,
                 ),
                 _buildEventTypePicker(),
-//                _buildDescriptionText(),
+                _buildDescriptionText(),
                 _buildActionButtons()
               ],
             )
@@ -262,18 +271,17 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildDescriptionText() {
-    return CardSettingsParagraph(
+    _descriptionTextEditingController.addListener(_descriptionOnSave);
+    return StudentEventDescriptionWidget(
+      textEditingController: _descriptionTextEditingController,
       label: AppText.getInstance().get("student.calendar.form.description"),
-      initialValue: _studentEvent.description,
-      maxLengthEnforced: true,
-      contentAlign: TextAlign.left,
-      onSaved: (description) => _studentEvent.description = description,
-      onChanged: (description) {
-        setState(() {
-          _studentEvent.description = description;
-        });
-      },
+      descriptionLabel:
+          AppText.getInstance().get("student.calendar.form.descriptionCheck"),
     );
+  }
+
+  void _descriptionOnSave() {
+    this._studentEvent.description = _descriptionTextEditingController.text;
   }
 
   Widget _buildActionButtons() {

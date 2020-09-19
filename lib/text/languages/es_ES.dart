@@ -222,7 +222,8 @@ const Map<dynamic, dynamic> ES = {
         "timeTo": "Hora Fin",
         "timeToRequired": "La hora es requerida",
         "typeEvent": "Tipo de evento",
-        "description": "Descripción"
+        "description": "Descripción",
+        "descriptionCheck": "Sin descripción",
       },
       "eventType": {
         "DUE_DATE": "Entrega",
