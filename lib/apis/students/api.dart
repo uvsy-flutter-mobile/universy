@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
-import 'package:universy/model/student/account.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/student/career.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/notes.dart';
+import 'package:universy/model/student/subject.dart';
 
 import 'requests.dart';
 
@@ -86,6 +88,22 @@ Future<Optional<StudentCareer>> getCareer(
   );
 }
 
+Future<List<StudentSubject>> getSubjects(
+    String userId, String programId) async {
+  var resource = "/students/$userId/subjects";
+  var path = _createPath(resource);
+  var queryParams = {"programId": programId};
+
+  var response = await api.getList<StudentSubject>(
+    path,
+    queryParams: queryParams,
+    model: (content) => StudentSubject.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+// Profile
 // Notes
 Future<List<StudentNote>> getNotes(String userId) async {
   var resource = "/students/$userId/notes";
@@ -144,6 +162,27 @@ Future<void> batchDeleteNotes(String userId, List<String> noteIds) {
   var queryParams = {"noteIds": noteIds.join(",")};
 
   return api.delete(path, queryParams: queryParams);
+}
+
+// Subjects
+Future<void> updateSubject(
+    String userId, String subjectId, UpdateSubjectPayload payload) {
+  var resource = "/students/$userId/subjects/$subjectId";
+  var path = _createPath(resource);
+
+  return api.put(
+    path,
+    payload: payload,
+  );
+}
+
+Future<void> deleteSubject(String userId, String subjectId) {
+  var resource = "/students/$userId/subjects/$subjectId";
+  var path = _createPath(resource);
+
+  return api.delete(
+    path,
+  );
 }
 
 // Events

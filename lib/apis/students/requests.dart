@@ -1,4 +1,5 @@
 import 'package:universy/model/json.dart';
+import 'package:universy/model/student/subject.dart';
 
 class UpdateProfileRequest extends JsonConvertible {
   final String name;
@@ -49,7 +50,7 @@ class UpdateNoteRequest extends JsonConvertible {
   }
 }
 
-// Student Career
+// Career
 class CreateCareerRequest extends JsonConvertible {
   final String programId;
   final int beginYear;
@@ -63,6 +64,24 @@ class CreateCareerRequest extends JsonConvertible {
       "programId": programId,
       "beginYear": beginYear,
       "endYear": endYear,
+    };
+  }
+}
+
+// Subjects
+class UpdateSubjectPayload extends JsonConvertible {
+  final String programId;
+  final int score;
+  final List<Milestone> milestones;
+
+  UpdateSubjectPayload(this.programId, this.score, this.milestones);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "programId": programId,
+      "score": score,
+      "milestones": milestones.map((e) => e.toJson()).toList(),
     };
   }
 }
