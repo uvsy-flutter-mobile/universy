@@ -93,7 +93,7 @@ class ExistingEvent extends StatelessWidget {
 
   Widget _buildDeleteButton(BuildContext context) {
     return IconSlideAction(
-      color: Theme.of(context).errorColor,
+      color: Colors.red,
       icon: Icons.delete,
       onTap: () => _pressDeleteEventButton(context),
     );

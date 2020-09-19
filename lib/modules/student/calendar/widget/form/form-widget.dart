@@ -257,7 +257,8 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
             child: StudentEventTypeWidget(
               onChange: _onEventTypeChange,
               eventType: eventType,
-            ))
+            )
+        )
       ],
     );
   }
