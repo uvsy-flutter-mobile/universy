@@ -71,6 +71,23 @@ class ProfileItem extends StatelessWidget {
   }
 }
 
+class CalendarItem extends StatelessWidget {
+  const CalendarItem({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTileItem(
+      title: AppText.getInstance().get("main.modules.calendar.title"),
+      subtitle: AppText.getInstance().get("main.modules.calendar.subtitle"),
+      selected: false,
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, Routes.CALENDAR_MODULE);
+      },
+    );
+  }
+}
+
 class StudentNotesItem extends StatelessWidget {
   const StudentNotesItem({Key key}) : super(key: key);
 
