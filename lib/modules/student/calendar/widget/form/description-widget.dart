@@ -59,16 +59,17 @@ class DescriptionWidgetState extends State<StudentEventDescriptionWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 250,
-                height: 50,
-                child: CheckboxListTile(
-                    activeColor: Theme.of(context).highlightColor,
+                  width: 250,
+                  height: 50,
+                  child: ListTileTheme(
                     contentPadding: EdgeInsets.all(0),
-                    title: Text(_descriptionLabel),
-                    value: _hideDescription,
-                    onChanged: (newCheckedState) =>
-                        updateCheckedState(newCheckedState)),
-              ),
+                    child: CheckboxListTile(
+                        activeColor: Theme.of(context).highlightColor,
+                        title: Text(_descriptionLabel),
+                        value: _hideDescription,
+                        onChanged: (newCheckedState) =>
+                            updateCheckedState(newCheckedState)),
+                  )),
               Visibility(
                   visible: !_hideDescription,
                   child: TextField(
