@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:universy/modules/institution/subjects/display.dart';
 import 'package:universy/modules/institution/subjects/not_found.dart';
 import 'package:universy/util/bloc.dart';
 import 'package:universy/widgets/progress/circular.dart';
@@ -10,7 +11,8 @@ class InstitutionSubjectsStateBuilder
   @override
   Widget translate(InstitutionSubjectsState state) {
     if (state is DisplayState) {
-      return Container(child: Center(child: Text("Nada pa ve")));
+      return InstitutionSubjectDisplayWidget(
+          institutionSubjects: state.subjects);
     } else if (state is CareerNotCreatedState) {
       return CareerNotFoundWidget();
     }

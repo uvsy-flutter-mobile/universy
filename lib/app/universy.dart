@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:universy/app/theme.dart';
 import 'package:universy/constants/routes.dart';
+import 'package:universy/modules/institution/dashboard/dashboard.dart';
+import 'package:universy/modules/institution/subjects/subjects.dart';
 import 'package:universy/modules/loading/loading.dart';
 import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/enroll/enroll.dart';
@@ -36,6 +38,7 @@ class Universy extends StatelessWidget {
       Routes.HOME: (context) => MainModule(),
       Routes.CAREER_ENROLL: (context) => CareerEnrollModule(),
       Routes.NOTES_MODULE: (context) => NotesModule(),
+      Routes.SUBJECT_BOARD_MODULE: (context) => SubjectBoardModule(),
     };
   }
 
