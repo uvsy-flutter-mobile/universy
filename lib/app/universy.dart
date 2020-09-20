@@ -39,18 +39,8 @@ class Universy extends StatelessWidget {
       Routes.HOME: (context) => MainModule(),
       Routes.CAREER_ENROLL: (context) => CareerEnrollModule(),
       Routes.NOTES_MODULE: (context) => NotesModule(),
-      Routes.CALENDAR_MODULE: (context) =>
-          wrap(context, StudentCalendarModule()),
+      Routes.CALENDAR_MODULE: (context) => StudentCalendarModule(),
     };
-  }
-
-  //TODO: Remove wrap function
-  Widget wrap(BuildContext context, Widget widget) {
-    var serviceFactory = Provider.of<ServiceFactory>(context, listen: false);
-    return Provider<ServiceFactory>.value(
-      value: serviceFactory,
-      child: widget,
-    );
   }
 
   String _getApplicationTitle() {
