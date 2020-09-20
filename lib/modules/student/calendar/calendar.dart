@@ -19,8 +19,6 @@ class _StudentCalendarModuleState extends State<StudentCalendarModule> {
   TableCalendarCubit _tableCalendarCubit;
   EventPanelCubit _eventPanelCubic;
 
-//  bool _draggable;
-
   @override
   void initState() {
     super.initState();

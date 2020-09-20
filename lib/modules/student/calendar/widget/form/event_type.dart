@@ -21,11 +21,9 @@ class StudentEventTypeState extends State<StudentEventTypeWidget> {
 
   StudentEventTypeState(this._onChange, this._eventType);
 
-  @override
-  void didChangeDependencies() {
-    print(this._eventType);
+  void initState(){
     this._eventTypesItems = EventTypeItem.getEventTypes();
-    super.didChangeDependencies();
+    super.initState();
   }
 
   void handleOnSelect(String selectedEventType) {
@@ -37,14 +35,17 @@ class StudentEventTypeState extends State<StudentEventTypeWidget> {
 
   Widget build(BuildContext context) {
     return GridView.count(
+      physics: BouncingScrollPhysics(),
       crossAxisCount: 2,
       scrollDirection: Axis.horizontal,
       children: List.generate(
-          _eventTypesItems.length,
-          (index) => EventItemWidget(
-              onSelect: handleOnSelect,
-              selected: _eventTypesItems[index].eventType == _eventType,
-              eventTypeItem: _eventTypesItems[index])),
+        _eventTypesItems.length,
+        (index) => EventItemWidget(
+          onSelect: handleOnSelect,
+          selected: _eventTypesItems[index].eventType == _eventType,
+          eventTypeItem: _eventTypesItems[index],
+        ),
+      ),
     );
   }
 }
