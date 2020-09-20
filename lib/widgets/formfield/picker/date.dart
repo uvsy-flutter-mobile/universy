@@ -17,38 +17,39 @@ class StudentEventDateWidget extends FormField<DateTime> {
       int yearTo = 2100,
       bool autovalidate = false})
       : super(
-            onSaved: onSaved,
-            validator: validator,
-            initialValue: initialValue,
-            autovalidate: autovalidate,
-            builder: (FormFieldState<DateTime> state) {
-              DateFormat formatter = DateFormat('dd-MM-yyyy');
-              String dateFormatted = formatter.format(state.value);
-              return GestureDetector(
-                onTap: () async {
-                  DateTime selectedDate = await showDatePicker(
-                    context: context,
-                    initialDate: initialValue,
-                    firstDate: DateTime(yearFrom),
-                    lastDate: DateTime(yearTo),
-                    builder: (BuildContext context, Widget child) {
-                      return MediaQuery(
-                        data: MediaQuery.of(context)
-                            .copyWith(alwaysUse24HourFormat: true),
-                        child: child,
-                      );
-                    },
-                  );
-                  state.didChange(selectedDate);
-                },
-                child: SymmetricEdgePaddingWidget.vertical(
-                  paddingValue: 6.0,
-                  child: CustomTextFormField(
-                      enabled: false,
-                      controller: TextEditingController(text: dateFormatted),
-                      validatorBuilder: validatorBuilder,
-                      decorationBuilder: TextInputDecorationBuilder(label)),
-                ),
-              );
-            });
+          onSaved: onSaved,
+          validator: validator,
+          initialValue: initialValue,
+          autovalidate: autovalidate,
+          builder: (FormFieldState<DateTime> state) {
+            DateFormat formatter = DateFormat('dd-MM-yyyy');
+            String dateFormatted = formatter.format(state.value);
+            return GestureDetector(
+              onTap: () async {
+                DateTime selectedDate = await showDatePicker(
+                  context: context,
+                  initialDate: initialValue,
+                  firstDate: DateTime(yearFrom),
+                  lastDate: DateTime(yearTo),
+                  builder: (BuildContext context, Widget child) {
+                    return MediaQuery(
+                      data: MediaQuery.of(context)
+                          .copyWith(alwaysUse24HourFormat: true),
+                      child: child,
+                    );
+                  },
+                );
+                state.didChange(selectedDate);
+              },
+              child: SymmetricEdgePaddingWidget.vertical(
+                paddingValue: 6.0,
+                child: CustomTextFormField(
+                    enabled: false,
+                    controller: TextEditingController(text: dateFormatted),
+                    validatorBuilder: validatorBuilder,
+                    decorationBuilder: TextInputDecorationBuilder(label)),
+              ),
+            );
+          },
+        );
 }

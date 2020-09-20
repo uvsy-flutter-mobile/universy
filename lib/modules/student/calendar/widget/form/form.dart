@@ -154,63 +154,61 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildDate() {
     DateTime eventDate = Optional.ofNullable(_studentEvent)
-        .map(
-          (event) => event.date,
-        )
+        .map((event) => event.date) //
         .orElse(_daySelected);
     String requiredText =
         AppText.getInstance().get("student.calendar.form.eventDateRequired");
     String label = AppText.getInstance().get("student.calendar.form.eventDate");
-    void _dateOnSave(DateTime selectedDate) {
-      this._studentEvent.date = selectedDate;
-    }
 
     return SizedBox(
-        width: 200,
-        child: StudentEventDateWidget(
-          validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
-          initialValue: eventDate,
-          context: context,
-          label: label,
-          onSaved: _dateOnSave,
-        ));
+      width: 200,
+      child: StudentEventDateWidget(
+        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
+        initialValue: eventDate,
+        context: context,
+        label: label,
+        onSaved: _dateOnSave,
+      ),
+    );
+  }
+
+  void _dateOnSave(DateTime selectedDate) {
+    this._studentEvent.date = selectedDate;
   }
 
   Widget _buildTimeRange(BuildContext context) {
     return SizedBox(
-        width: 200,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              width: 60,
-              child: _buildTimeFrom(context),
+      width: 200,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          SizedBox(
+            width: 60,
+            child: _buildTimeFrom(context),
+          ),
+          SizedBox(
+            width: 5,
+            child: Text(
+              '-',
+              style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26),
             ),
-            SizedBox(
-              width: 5,
-              child: Text(
-                '-',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 26),
-              ),
-            ),
-            SizedBox(
-              width: 60,
-              child: _buildTimeTo(context),
-            ),
-          ],
-        ));
+          ),
+          SizedBox(
+            width: 60,
+            child: _buildTimeTo(context),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildTimeFrom(BuildContext context) {
     String requiredText =
         AppText.getInstance().get("student.calendar.form.timeFromRequired");
     String label = AppText.getInstance().get("student.calendar.form.timeFrom");
-    void _timeFromOnSave(TimeOfDay selectedTime) {
-      _studentEvent.timeFrom = selectedTime;
-    }
 
     return StudentEventTimeWidget(
         validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
@@ -218,6 +216,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         initialValue: _timeFrom,
         context: context,
         onSaved: _timeFromOnSave);
+  }
+
+  void _timeFromOnSave(TimeOfDay selectedTime) {
+    _studentEvent.timeFrom = selectedTime;
   }
 
   Widget _buildTimeTo(BuildContext context) {
@@ -257,8 +259,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
             child: StudentEventTypeWidget(
               onChange: _onEventTypeChange,
               eventType: eventType,
-            )
-        )
+            ))
       ],
     );
   }
@@ -322,6 +323,4 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     widget._onConfirm();
     Navigator.pop(context);
   }
-
-
 }

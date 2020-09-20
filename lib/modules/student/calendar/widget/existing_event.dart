@@ -57,10 +57,9 @@ class ExistingEvent extends StatelessWidget {
   Widget _buildListTile(BuildContext context) {
     return ListTile(
       leading: AllEdgePaddedWidget(
-          padding: 5,
-          child: Icon(
-            EventType.getIcon(event.eventType),
-          )),
+        padding: 5,
+        child: Icon(EventType.getIcon(event.eventType)),
+      ),
       title: Text(
         EventTypeDescriptionTranslator().translate(event.eventType),
         style: TextStyle(fontWeight: FontWeight.w500),
