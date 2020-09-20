@@ -111,6 +111,10 @@ const Map<dynamic, dynamic> ES = {
         "title": "Perfil",
         "subtitle": "Personalizá tu usuario de Univery!",
       },
+      "calendar": {
+        "title": "Calendario",
+        "subtitle": "Gestiona tus eventos y parciales!",
+      },
       "notes": {
         "title": "Mis Anotaciones",
         "subtitle": "Escribí y editá tus anotaciones",
@@ -220,6 +224,46 @@ const Map<dynamic, dynamic> ES = {
         "input": "Buscar...",
       }
     },
+    "calendar": {
+      "title": "Mi Calendario",
+      "subtitle": "Mirá tu calendario y anotá tus eventos",
+      "events": {
+        "emptyEventsDay": "No hay eventos cargados en este dia",
+      },
+      "actions": {
+        "save": "¡Guardamos tu evento!",
+        "delete": "¡Evento eliminado!",
+        "saving": "Guardando evento",
+        "deleting": "Eliminando evento"
+      },
+      "form": {
+        "eventTypeTitle": "Tipo",
+        "title": "Nuevo Evento",
+        "editTitle": "Editar Evento",
+        "eventTitle": "Título",
+        "titleRequired": "El título es requerido",
+        "eventDate": "Fecha",
+        "eventDateRequired": "La fecha es requerida",
+        "timeFrom": "Hora inicio",
+        "timeFromRequired": "La hora es requerida",
+        "timeTo": "Hora Fin",
+        "timeToRequired": "La hora es requerida",
+        "typeEvent": "Tipo de evento",
+        "description": "Descripción",
+        "descriptionCheck": "Sin descripción",
+      },
+      "eventType": {
+        "DUE_DATE": "Entrega",
+        "EXTRA_CLASS": "Clase de consulta",
+        "FINAL_EXAM": "Final",
+        "LABORATORY": "Laboratorio",
+        "NO_CLASS": "Sin clases",
+        "PRESENTATION": "Presentación",
+        "RECUP_EXAM": "Recuperatorio",
+        "REGULAR_EXAM": "Parcial",
+        "REPORT_SIGN_OFF": "Firma de libreta"
+      },
+    },
     "enroll": {
       "title": "Agregá una carrera!",
       "input": {
@@ -257,5 +301,5 @@ const Map<dynamic, dynamic> ES = {
         },
       }
     },
-  }
+  },
 };
