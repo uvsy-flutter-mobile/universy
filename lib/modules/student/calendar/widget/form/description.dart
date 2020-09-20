@@ -73,14 +73,13 @@ class DescriptionWidgetState extends State<StudentEventDescriptionWidget> {
               Visibility(
                   visible: !_hideDescription,
                   child: TextField(
-                    textCapitalization: TextCapitalization.sentences,
-                    minLines: 3,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 8,
-                    maxLength: 150,
-                    controller: _textEditingController,
-                    decoration: InputDecoration(labelText: _label),
-                  ))
+                      textCapitalization: TextCapitalization.sentences,
+                      minLines: 3,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 8,
+                      maxLength: 150,
+                      controller: _textEditingController,
+                      decoration: InputDecoration(labelText: _label)))
             ]));
   }
 }
