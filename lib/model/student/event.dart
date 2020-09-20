@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:optional/optional.dart';
-import 'package:universy/constants/event-types.dart';
+import 'package:universy/constants/event_types.dart';
 import 'package:universy/model/copyable.dart';
 import 'package:universy/model/json.dart';
 import 'package:universy/text/translators/event_type.dart';

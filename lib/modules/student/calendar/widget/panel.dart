@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:universy/model/student/event.dart';
-import 'package:universy/modules/student/calendar/widget/existing-event-widget.dart';
+import 'package:universy/modules/student/calendar/widget/existing_event.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 

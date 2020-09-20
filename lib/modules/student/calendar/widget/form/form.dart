@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:provider/provider.dart';
-import 'package:universy/constants/event-types.dart';
+import 'package:universy/constants/event_types.dart';
 import 'package:universy/model/student/event.dart';
-import 'package:universy/modules/student/calendar/widget/form/calendar-actions.dart';
-import 'package:universy/modules/student/calendar/widget/form/description-widget.dart';
-import 'package:universy/modules/student/calendar/widget/form/event-type.dart';
-import 'package:universy/modules/student/calendar/widget/form/title-widget.dart';
+import 'package:universy/modules/student/calendar/widget/form/calendar_actions.dart';
+import 'package:universy/modules/student/calendar/widget/form/description.dart';
+import 'package:universy/modules/student/calendar/widget/form/event_type.dart';
+import 'package:universy/modules/student/calendar/widget/form/title.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';

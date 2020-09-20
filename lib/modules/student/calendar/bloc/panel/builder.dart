@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/student/calendar/widget/panel-widget.dart';
+import 'package:universy/modules/student/calendar/widget/panel.dart';
 import 'package:universy/util/bloc.dart';
 
 import 'states.dart';
