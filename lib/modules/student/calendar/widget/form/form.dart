@@ -123,7 +123,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildTitle(),
-                _buildDate(),
+                _buildDate(context),
                 _buildTimeRange(context),
                 SizedBox(
                   height: 25,
@@ -152,7 +152,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     this._studentEvent.title = this._titleTextEditingController.text;
   }
 
-  Widget _buildDate() {
+  Widget _buildDate(BuildContext context) {
     DateTime eventDate = Optional.ofNullable(_studentEvent)
         .map(
           (event) => event.date,
@@ -168,7 +168,6 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     return SizedBox(
         width: 200,
         child: StudentEventDateWidget(
-          validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
           initialValue: eventDate,
           context: context,
           label: label,
@@ -213,7 +212,6 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     }
 
     return StudentEventTimeWidget(
-        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
         label: label,
         initialValue: _timeFrom,
         context: context,
@@ -230,7 +228,6 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
     return StudentEventTimeWidget(
       context: context,
-      validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(requiredText),
       label: label,
       initialValue: _timeTo,
       onSaved: _timeToOnSave,
@@ -257,8 +254,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
             child: StudentEventTypeWidget(
               onChange: _onEventTypeChange,
               eventType: eventType,
-            )
-        )
+            ))
       ],
     );
   }
@@ -322,6 +318,4 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     widget._onConfirm();
     Navigator.pop(context);
   }
-
-
 }
