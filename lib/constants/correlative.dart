@@ -3,3 +3,8 @@ const String CORR_TYPE_REGULAR = "REGULAR";
 
 const String CORR_RESTR_TO_TAKE = "TO_TAKE";
 const String CORR_RESTR_TO_APPROVE = "TO_APPROVE";
+
+const String TYPE_REGULAR = "REGULARES";
+const String TYPE_TO_TAKE = "POR CURSAR";
+const String TYPE_APPROVED = "APROBADAS";
+const String TYPE_TAKING = "CURSANDO";
