@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/event_types.dart';
+import 'package:universy/model/lock.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/widget/form/calendar_actions.dart';
 import 'package:universy/modules/student/calendar/widget/form/description.dart';
@@ -10,7 +11,6 @@ import 'package:universy/modules/student/calendar/widget/form/title.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/util/save-lock.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/formfield/picker/date-widget.dart';
 import 'package:universy/widgets/formfield/picker/time-widget.dart';
@@ -49,7 +49,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   TextEditingController _titleTextEditingController;
   TextEditingController _descriptionTextEditingController;
 
-  SaveLock<StudentEvent> _saveLock;
+  StateLock<StudentEvent> _stateLock;
 
   void initState() {
     this._daySelected = widget._daySelected;
@@ -60,7 +60,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         Optional.ofNullable(_studentEvent.timeFrom).orElse(TimeOfDay.now());
     this._timeTo =
         Optional.ofNullable(_studentEvent.timeTo).orElse(TimeOfDay.now());
-    this._saveLock = SaveLock.lock(snapshot: widget._studentEvent);
+    this._stateLock = StateLock.lock(snapshot: widget._studentEvent);
     this._titleTextEditingController =
         TextEditingController(text: _studentEvent.title ?? EMPTY_STRING);
     this._descriptionTextEditingController =
@@ -293,7 +293,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     if (form.validate()) {
       form.save();
 
-      if (_saveLock.shouldSave(_studentEvent)) {
+      if (_stateLock.hasChange(_studentEvent)) {
         var confirmAction =
             this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
 

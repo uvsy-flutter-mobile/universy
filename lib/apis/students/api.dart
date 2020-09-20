@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/account/profile.dart';

@@ -7,7 +7,6 @@ import 'package:universy/model/time.dart';
 import 'package:universy/modules/student/subjects/state/milestones/commands/command.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/text/translators/milestones.dart';
-import 'package:universy/widgets/buttons/uvsy/delete.dart';
 
 import 'card.dart';
 
