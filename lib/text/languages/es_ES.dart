@@ -149,10 +149,10 @@ const Map<dynamic, dynamic> ES = {
         "closingSession": "Cerrando Sesión",
         "profileUpdated": "Se actualizó tu perfil",
         "saving": "Guardando...",
-        "profileNotCreated": "¡ Aún no tienes creado tu perfil !",
+        "profileNotCreated": "¡Aún no tienes creado tu perfil!",
       },
       "error": {
-        "aliasAlreadyExists": "¡ Ese alias se encuentra en uso !",
+        "aliasAlreadyExists": "¡Ese alias se encuentra en uso!",
       }
     },
     "subjects": {

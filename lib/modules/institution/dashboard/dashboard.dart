@@ -23,8 +23,11 @@ class _SubjectBoardModuleState extends State<SubjectBoardModule> {
       var serviceFactory = Provider.of<ServiceFactory>(context, listen: false);
       var ratingsService = serviceFactory.ratingsService();
       var institutionService = serviceFactory.institutionService();
-      this._boardCubit =
-          SubjectBoardCubit(subject, ratingsService, institutionService);
+      this._boardCubit = SubjectBoardCubit(
+        subject,
+        ratingsService,
+        institutionService,
+      );
       this._boardCubit.loadBoard();
     }
     super.didChangeDependencies();
