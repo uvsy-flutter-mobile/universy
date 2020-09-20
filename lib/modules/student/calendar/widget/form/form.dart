@@ -12,8 +12,8 @@ import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
-import 'package:universy/widgets/formfield/picker/date-widget.dart';
-import 'package:universy/widgets/formfield/picker/time-widget.dart';
+import 'package:universy/widgets/formfield/picker/date.dart';
+import 'package:universy/widgets/formfield/picker/time.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 
 const EMPTY_STRING = "";
