@@ -42,8 +42,10 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
     var dateFromJson = json["date"];
 
     if (dateFromJson is int) {
-      dateTimeFromJson =
-          DateTime.fromMillisecondsSinceEpoch(dateFromJson, isUtc: true);
+      dateTimeFromJson = DateTime.fromMillisecondsSinceEpoch(
+        dateFromJson,
+        isUtc: true,
+      );
     } else if (dateFromJson is String) {
       dateTimeFromJson = dateFormat.parse(dateFromJson);
     }

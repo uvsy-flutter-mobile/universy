@@ -8,13 +8,6 @@ ThemeData uvsyTheme = ThemeData(
   backgroundColor: Colors.amber[200],
   appBarTheme: AppBarTheme(color: Colors.white),
   buttonColor: Colors.deepPurple,
-  inputDecorationTheme: InputDecorationTheme(
-    labelStyle: TextStyle(
-      color: Colors.amber,
-      fontSize: 20.0,
-      fontFamily: "Roboto",
-    ),
-  ),
   primaryTextTheme: TextTheme(
     headline2: TextStyle(
       color: Colors.black,
