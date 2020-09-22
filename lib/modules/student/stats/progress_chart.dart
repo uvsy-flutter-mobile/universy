@@ -49,7 +49,7 @@ class ProgressChart extends StatelessWidget {
 
   Widget _buildTitle(BuildContext context) {
     return Text(
-      _title, //TODO: text
+      _title,
       textAlign: TextAlign.center,
       style: Theme.of(context).primaryTextTheme.subtitle2,
     );

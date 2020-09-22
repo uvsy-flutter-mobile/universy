@@ -10,15 +10,21 @@ import 'package:universy/business/subjects/classifier/year_classifier.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/modules/student/subjects/subject/icon.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/inkwell/clipped.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class YearProgressChart extends StatefulWidget {
   final List<Subject> _subjects;
+  final CorrelativesValidator _correlativesValidator;
 
-  const YearProgressChart({Key key, List<Subject> subjects})
+  const YearProgressChart(
+      {Key key,
+      List<Subject> subjects,
+      CorrelativesValidator correlativesValidator})
       : this._subjects = subjects,
+        this._correlativesValidator = correlativesValidator,
         super(key: key);
 
   @override
@@ -28,10 +34,12 @@ class YearProgressChart extends StatefulWidget {
 class _YearProgressChartState extends State<YearProgressChart> {
   ScrollController _scrollController;
   List<Subject> _subjects;
+  CorrelativesValidator _correlativesValidator;
 
   @override
   void initState() {
     this._subjects = widget._subjects;
+    this._correlativesValidator = widget._correlativesValidator;
     this._scrollController = ScrollController();
     super.initState();
   }
@@ -40,13 +48,37 @@ class _YearProgressChartState extends State<YearProgressChart> {
   void dispose() {
     this._subjects = null;
     this._scrollController = null;
+    this._correlativesValidator = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    return Provider<CorrelativesValidator>.value(
+      value: _correlativesValidator,
+      child: Column(
+        children: <Widget>[
+          Expanded(child: _buildYearsChartTitle(), flex: 1),
+          Expanded(child: _buildYearsChartBody(), flex: 9),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildYearsChartTitle() {
+    return OnlyEdgePaddedWidget.top(
+      padding: 20.0,
+      child: Text(
+          AppText.getInstance().get("student.stats.view.yearProgress.title"),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).primaryTextTheme.headline4,
+          overflow: TextOverflow.clip),
+    );
+  }
+
+  Widget _buildYearsChartBody() {
     SubjectByYearResult subjectByYearResult =
-        SubjectByYearClassifier().classify(widget._subjects);
+        SubjectByYearClassifier().classify(_subjects);
     return Container(
       child: FadingEdgeScrollView.fromScrollView(
         child: ListView.builder(
@@ -85,7 +117,6 @@ class _YearProgressChartState extends State<YearProgressChart> {
 class ProgressYearEntry extends StatelessWidget {
   static const ITEM_BACKGROUND_COLOR = Colors.white70;
   static const EXPANDED_ITEM_BACKGROUND_COLOR = Color(0xFFf7f7f7);
-  static const PROGRESS_BAR_COLOR = Color(0xFF34ace0);
   final int year;
   final List<Subject> subjects;
   final Function(bool isExpanded) onExpansionChange;
@@ -113,7 +144,7 @@ class ProgressYearEntry extends StatelessWidget {
   }
 
   Widget _buildTitle() {
-    String yearText = "Año"; //TODO: TEXT
+    String yearText = "Año";
     String tileTitle = "$year° $yearText";
     return Row(
       children: <Widget>[
@@ -139,7 +170,8 @@ class ProgressYearEntry extends StatelessWidget {
       );
     } else {
       return Container(
-        child: Text("No subjects"), //TODO: text
+        child: Text(AppText.getInstance()
+            .get("student.stats.view.yearProgress.noSubjects")),
       );
     }
   }
@@ -156,7 +188,7 @@ class ProgressYearEntry extends StatelessWidget {
       percent: progress,
       center: Text("$progressInPercentage %"),
       linearStrokeCap: LinearStrokeCap.roundAll,
-      progressColor: PROGRESS_BAR_COLOR,
+      progressColor: Colors.amber,
     );
   }
 }
@@ -184,7 +216,7 @@ class StudentProgressCardWidget extends StatelessWidget {
         onTap: onTap(context),
         splashColor: splashColor,
         child: Container(
-          color: Colors.grey,
+          color: _getSubjectColorBackground(context),
           width: 300,
           height: 75,
           child: Row(
@@ -211,7 +243,8 @@ class StudentProgressCardWidget extends StatelessWidget {
   }
 
   Widget _getSubjectWidget(BuildContext context) {
-    var correlativesValidator = Provider.of<CorrelativesValidator>(context);
+    var correlativesValidator =
+        Provider.of<CorrelativesValidator>(context, listen: false);
     return Center(
         child: Icon(SubjectIconResolver(correlativesValidator)
             .getSubjectIcon(_subject)));
@@ -221,11 +254,13 @@ class StudentProgressCardWidget extends StatelessWidget {
     return () => _onCardTap(context, _subject);
   }
 
-/* Color _getSubjectColorBackground(BuildContext context) {
-   /* CorrelativesValidator correlativesValidator = new CorrelativesValidator.fromSubjects(_subject);
-    SubjectColorResolver subjectColorResolver = SubjectColorResolver(correlativesValidator);*/ //TODO: check this
+  Color _getSubjectColorBackground(BuildContext context) {
+    var correlativesValidator =
+        Provider.of<CorrelativesValidator>(context, listen: false);
+    SubjectColorResolver subjectColorResolver =
+        SubjectColorResolver(correlativesValidator);
     return subjectColorResolver.getColorBackground(_subject);
-  }*/
+  }
 }
 
 typedef SubjectCardTap = void Function(BuildContext context, Subject subject);

@@ -103,7 +103,8 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
       onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => StatsModule(subjects: _subjects))),
+              builder: (context) => StatsModule(
+                  subjects: _subjects, validator: _correlativesValidator))),
     );
   }
 

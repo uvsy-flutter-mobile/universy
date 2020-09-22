@@ -7,12 +7,16 @@ import 'package:universy/business/subjects/classifier/type_classifier.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/modules/student/stats/average_chart.dart';
+import 'package:universy/modules/student/stats/career_state_chart.dart';
 import 'package:universy/modules/student/stats/points_hours_charts.dart';
 import 'package:universy/modules/student/stats/progress_chart.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
 import 'package:universy/widgets/future/future_widget.dart';
 import 'package:universy/widgets/paddings/edge.dart';
+
+List<Widget> charts = [];
 
 class DisplayCharts extends StatelessWidget {
   final List<Subject> _subjects;
@@ -24,6 +28,14 @@ class DisplayCharts extends StatelessWidget {
         super(key: key);
 
   Widget build(BuildContext context) {
+    return FutureWidget(
+        fromFuture: _getProgram(context),
+        onData: (program) => _buildModule(context, program));
+  }
+
+  Widget _buildModule(BuildContext context, InstitutionProgram program) {
+    charts.clear();
+    charts = _getCharts(program);
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -31,39 +43,61 @@ class DisplayCharts extends StatelessWidget {
         OnlyEdgePaddedWidget.top(
             padding: 20.0,
             child: Text(
-              "Mi progreso general",
+              AppText.getInstance().get("student.stats.view.charts.title"),
               style: Theme.of(context).primaryTextTheme.headline4,
             )),
         _buildScoreAverageChart(),
-        Expanded(child: _buildCharts(context), flex: 9)
+        _buildCareerState(),
+        Expanded(child: _buildCharts(context, program, charts), flex: 5),
       ],
     );
   }
 
-  Widget _buildCharts(BuildContext context) {
+  Widget _buildCareerState() {
+    return CareerStateChart(subjects: _subjects);
+  }
+
+  Widget _buildCharts(
+      BuildContext context, InstitutionProgram program, List<Widget> charts) {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 12.0,
       child: StaggeredGridView.countBuilder(
         physics: BouncingScrollPhysics(),
-        crossAxisCount: 4,
         staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
         mainAxisSpacing: 2.0,
+        crossAxisCount: 4,
         crossAxisSpacing: 1.5,
-        itemCount: 4,
+        itemCount: charts.length,
         itemBuilder: _chartBuilder,
       ),
     );
   }
 
   Widget _chartBuilder(BuildContext context, int count) {
-    List<Widget> charts = [
-      _buildOptativeProgressChart(),
-      _buildMandatoryProgressChart(),
-      _buildPointsChart(context),
-      _buildHoursChart(context),
-    ];
     var _chartToBuild = charts[count];
     return _buildChartWidget(_chartToBuild);
+  }
+
+  List<Widget> _getCharts(InstitutionProgram program) {
+    SubjectByStateClassifier subjectClassifier = SubjectByStateClassifier();
+    var classifierResult = subjectClassifier.classify(_subjects);
+    SubjectCalculator subjectCalculator =
+        SubjectCalculator(classifierResult.approved);
+
+    int completedPoints = subjectCalculator.getPoints();
+    int completedHours = subjectCalculator.getHours();
+
+    charts.add(_buildOptativeProgressChart());
+    charts.add(_buildMandatoryProgressChart());
+
+    if (program.points != 0) {
+      charts.add(_buildPointsChart(completedPoints, program));
+    }
+
+    if (program.hours != 0) {
+      charts.add(_buildHoursChart(completedHours, program));
+    }
+    return charts;
   }
 
   Widget _buildChartWidget(Widget chart) {
@@ -81,11 +115,12 @@ class DisplayCharts extends StatelessWidget {
   }
 
   Widget _buildOptativeProgressChart() {
-    SubjectByTypeClassifier subjectClassifier = SubjectByTypeClassifier();
-    var classifierResult = subjectClassifier.classify(_subjects);
+    SubjectByTypeClassifier subjectByTypeClassifier = SubjectByTypeClassifier();
+    var classifierTypeResult = subjectByTypeClassifier.classify(_subjects);
     return ProgressChart(
-        subjects: classifierResult.optative,
-        title: "Avance de materias optativas aprobadas",
+        subjects: classifierTypeResult.optative,
+        title: AppText.getInstance()
+            .get("student.stats.view.charts.approvedOptativeSubjects"),
         color: Colors.lightBlue);
   }
 
@@ -94,42 +129,27 @@ class DisplayCharts extends StatelessWidget {
     var classifierResult = subjectClassifier.classify(_subjects);
     return ProgressChart(
         subjects: classifierResult.mandatory,
-        title: "Avance de materias obligatorias aprobadas",
+        title: AppText.getInstance()
+            .get("student.stats.view.charts.approvedMandatorySubjects"),
         color: Colors.amber);
   }
 
-  Widget _buildPointsChart(BuildContext context) {
-    SubjectByStateClassifier subjectClassifier = SubjectByStateClassifier();
-    var classifierResult = subjectClassifier.classify(_subjects);
-    SubjectCalculator subjectCalculator =
-        SubjectCalculator(classifierResult.approved);
-
-    int completedPoints = subjectCalculator.getPoints();
-    return FutureWidget(
-      fromFuture: _getProgram(context),
-      onData: (data) => PointsAndHoursChart(
-          program: data,
-          completed: completedPoints,
-          title: "Puntos Completados en la carrera",
-          isHoursChart: false),
-    );
+  Widget _buildPointsChart(int completedPoints, InstitutionProgram program) {
+    return PointsAndHoursChart(
+        program: program,
+        completed: completedPoints,
+        title: AppText.getInstance()
+            .get("student.stats.view.charts.completedPoints"),
+        isHoursChart: false);
   }
 
-  Widget _buildHoursChart(BuildContext context) {
-    SubjectByStateClassifier subjectClassifier = SubjectByStateClassifier();
-    var classifierResult = subjectClassifier.classify(_subjects);
-    SubjectCalculator subjectCalculator =
-        SubjectCalculator(classifierResult.approved);
-
-    int completedHours = subjectCalculator.getHours();
-    return FutureWidget(
-      fromFuture: _getProgram(context),
-      onData: (data) => PointsAndHoursChart(
-          program: data,
-          completed: completedHours,
-          title: "Horas Completados en la carrera",
-          isHoursChart: true),
-    );
+  Widget _buildHoursChart(int completedHours, InstitutionProgram program) {
+    return PointsAndHoursChart(
+        program: program,
+        completed: completedHours,
+        title: AppText.getInstance()
+            .get("student.stats.view.charts.completedHours"),
+        isHoursChart: true);
   }
 
   Future<InstitutionProgram> _getProgram(BuildContext context) async {

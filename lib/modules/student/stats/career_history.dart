@@ -4,6 +4,7 @@ import 'package:timeline_list/timeline_model.dart';
 import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/modules/student/stats/career_history_card.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class CareerHistory extends StatelessWidget {
@@ -22,7 +23,9 @@ class CareerHistory extends StatelessWidget {
         Expanded(
             child: OnlyEdgePaddedWidget.top(
               padding: 20.0,
-              child: Text("Mi historial de Carrera",
+              child: Text(
+                  AppText.getInstance()
+                      .get("student.stats.view.careerHistory.title"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).primaryTextTheme.headline4,
                   overflow: TextOverflow.clip),
@@ -58,17 +61,17 @@ class CareerHistory extends StatelessWidget {
         historicList.add(milestoneItem);
       }
     }
-    historicList.sort((b, a) => a.date.compareTo(b.date));
+    historicList.sort((a, b) => a.date.compareTo(b.date));
     return historicList;
   }
 
   Widget _buildCareerHistory() {
     List careerHistoric = _buildCareerHistoric();
     List<TimelineModel> historicItems = List();
+    historicItems.add(_buildWelcomeItem(HistoricItemCard.welcomeMessage()));
     for (HistoricItem historicItem in careerHistoric) {
       historicItems.add(_buildHistoricItem(historicItem));
     }
-    historicItems.add(_buildWelcomeItem(HistoricItemCard.welcomeMessage()));
     return Timeline(children: historicItems, position: TimelinePosition.Left);
   }
 

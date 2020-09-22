@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:universy/business/subjects/calculator/calculator.dart';
 import 'package:universy/model/subject.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class ScoreAverageChart extends StatelessWidget {
@@ -23,7 +24,9 @@ class ScoreAverageChart extends StatelessWidget {
       return AllEdgePaddedWidget(
           padding: 30.0,
           child: _buildAverageTitle(
-              context, "Debes cargar tus notas para ver tu promedio"));
+              context,
+              AppText.getInstance()
+                  .get("student.stats.view.charts.average.notNotesAdded")));
     } else {
       return _buildAverage(context, average);
     }
@@ -36,7 +39,10 @@ class ScoreAverageChart extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              _buildAverageTitle(context, "Promedio de notas"),
+              _buildAverageTitle(
+                  context,
+                  AppText.getInstance()
+                      .get("student.stats.view.charts.average.title")),
               _buildAverageValue(context, average)
             ],
           ),

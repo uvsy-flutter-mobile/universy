@@ -1,18 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:universy/business/correlatives/validator.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/modules/student/stats/career_history.dart';
 import 'package:universy/modules/student/stats/charts.dart';
 import 'package:universy/modules/student/stats/year_progress.dart';
 import 'package:universy/system/assets.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/decorations/box.dart';
 
 class StatsModule extends StatelessWidget {
   final List<Subject> _subjects;
+  final CorrelativesValidator _validator;
 
-  const StatsModule({Key key, @required List<Subject> subjects})
+  const StatsModule(
+      {Key key,
+      @required List<Subject> subjects,
+      CorrelativesValidator validator})
       : this._subjects = subjects,
+        this._validator = validator,
         super(key: key);
 
   @override
@@ -20,7 +27,7 @@ class StatsModule extends StatelessWidget {
     List<Widget> chartsList = [
       _buildStudentCharts(),
       _buildYearProgress(),
-      _buildCareerHistory()
+      _buildCareerHistory(),
     ];
     return Scaffold(
         appBar: _buildStatsBar(),
@@ -40,7 +47,7 @@ class StatsModule extends StatelessWidget {
 
   Widget _buildStatsBar() {
     return AppBar(
-      title: Text("Estadistica del alumno"),
+      title: Text(AppText.getInstance().get("student.stats.title")),
     );
   }
 
@@ -49,7 +56,8 @@ class StatsModule extends StatelessWidget {
   }
 
   Widget _buildYearProgress() {
-    return YearProgressChart(subjects: _subjects);
+    return YearProgressChart(
+        subjects: _subjects, correlativesValidator: _validator);
   }
 
   Widget _buildCareerHistory() {

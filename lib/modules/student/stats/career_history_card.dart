@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/modules/student/stats/career_history.dart';
 import 'package:universy/system/locale.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/milestones.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -51,7 +52,9 @@ class HistoricItemCard extends StatelessWidget {
           ),
           flex: 1),
       Expanded(
-          child: Text("Este es el punto de partida de tu carrera",
+          child: Text(
+              AppText.getInstance()
+                  .get("student.stats.view.careerHistory.welcomeCard"),
               textAlign: TextAlign.center),
           flex: 12)
     ];
