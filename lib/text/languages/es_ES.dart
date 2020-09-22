@@ -281,9 +281,9 @@ const Map<dynamic, dynamic> ES = {
       "info": {
         "addingCareer": "Agregando Carrera...",
         "careerAdded": "Carrera agregada!",
-        "checkCareer": "Te vas a inscribir a la carrera",
-        "checkInstitution": "de la institución",
-        "checkProgram": "con el programa",
+        "checkCareer": "Estas a punto de unirte a la carrera ",
+        "checkInstitution": "en la institución ",
+        "checkProgram": "con el programa ",
       },
       "error": {
         "noCareers": "No hay carreras disponibles para esta institución",

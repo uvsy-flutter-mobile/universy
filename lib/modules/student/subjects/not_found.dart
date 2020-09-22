@@ -50,7 +50,7 @@ class _CareerNotFoundState extends State<CareerNotFoundWidget> {
   Widget _buildToCreateProfileButton(BuildContext context) {
     return CircularRoundedRectangleRaisedButton.general(
       child: AllEdgePaddedWidget(
-        padding: 12.0,
+        padding:9.0,
         child: Text(
           AppText.getInstance()
               .get("student.subjects.notFound.actions.addCareer"),
