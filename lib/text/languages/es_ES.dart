@@ -281,7 +281,7 @@ const Map<dynamic, dynamic> ES = {
       "info": {
         "addingCareer": "Agregando Carrera...",
         "careerAdded": "Carrera agregada!",
-        "checkCareer": "Estas a punto de unirte a la carrera ",
+        "checkCareer": "Estás a punto de unirte a la carrera ",
         "checkInstitution": "en la institución ",
         "checkProgram": "con el programa ",
       },
