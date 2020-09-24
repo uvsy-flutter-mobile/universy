@@ -139,9 +139,9 @@ class DefaultAccountService extends AccountService {
   }
 
   @override
-  Future<void> confirmUser(User user, String code) async {
+  Future<void> confirmUser(String user, String code) async {
     try {
-      final cognitoUser = CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user, _userPool);
       await cognitoUser.confirmRegistration(code);
     } on CognitoClientException catch (e) {
       throw _translateCognitoClientException(e);
@@ -152,9 +152,9 @@ class DefaultAccountService extends AccountService {
   }
 
   @override
-  Future<void> resendConfirmationCode(User user) async {
+  Future<void> resendConfirmationCode(String user) async {
     try {
-      final cognitoUser = CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user, _userPool);
       await cognitoUser.resendConfirmationCode();
     } catch (e) {
       Log.getLogger().error("Error resending code.", e);
@@ -188,9 +188,9 @@ class DefaultAccountService extends AccountService {
   }
 
   @override
-  Future<void> forgotPassword(User user) async {
+  Future<void> forgotPassword(String user) async {
     try {
-      final cognitoUser = CognitoUser(user.username, _userPool);
+      final cognitoUser = CognitoUser(user, _userPool);
       await cognitoUser.forgotPassword();
     } catch (e) {
       Log.getLogger().error("Error recovering password.", e);

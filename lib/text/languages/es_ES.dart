@@ -34,6 +34,35 @@ const Map<dynamic, dynamic> ES = {
       "unexpectedError": "Ocurrió un error inesperado"
     },
   },
+  "recoverPassword": {
+    "title": "Recuperá tu cuenta",
+    "input": {
+      "user": {
+        "message": "Ingresá tu usuario",
+        "notValid": "El usuario no es válido",
+        "required": "El usuario es requerido"
+      },
+    },
+    "actions": {
+      "recover": "¡Recuperala!",
+      "continue": "Continuar",
+    },
+    "info": {
+      "forgottenPassword": "Olvidaste tu contraseña?",
+    },
+  },
+  "newPassword": {
+    "title": "Nueva contraseña",
+    "input": {
+      "user": {
+        "message": "Ingresá tu nueva contraseña",
+        "messageCheck": "Reingresá tu contraseña",
+      },
+    },
+    "actions": {
+      "confirm": "Confirmar",
+    },
+  },
   "signUp": {
     "title": "¡Regístrate!",
     "input": {
@@ -165,8 +194,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "empty": {
         "title": "¡Ups!",
-        "subtitle":
-            "Parece que no hay materias cargadas en el plan de estudios",
+        "subtitle": "Parece que no hay materias cargadas en el plan de estudios",
       },
       "correlatives": {
         "title": "Correlativas",
@@ -215,8 +243,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "actions": {
         "confirmDeleteNote": "¿Estás seguro que deseas eliminar la anotación?",
-        "confirmDeleteNotes":
-            "¿Estás seguro que deseas eliminar las anotaciones?",
+        "confirmDeleteNotes": "¿Estás seguro que deseas eliminar las anotaciones?",
         "deleteConfirmed": "¡Entendido!",
       },
       "searchBar": {

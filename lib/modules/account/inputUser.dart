@@ -19,29 +19,25 @@ import 'package:universy/widgets/text/custom.dart';
 
 import 'keys.dart';
 
-class LogInWidget extends StatefulWidget {
-  const LogInWidget({Key key}) : super(key: key);
+class InputUserWidget extends StatefulWidget {
+  const InputUserWidget({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return LoginWidgetState();
+    return InputUserWidgetState();
   }
 }
 
-class LoginWidgetState extends State<LogInWidget> {
+class InputUserWidgetState extends State<InputUserWidget> {
   GlobalKey<FormState> _formKey;
   TextEditingController _userController;
-  TextEditingController _passwordController;
-  bool _passwordHidden;
 
-  LoginWidgetState();
+  InputUserWidgetState();
 
   @override
   void initState() {
     this._formKey = GlobalKey<FormState>();
     this._userController = TextEditingController();
-    this._passwordController = TextEditingController();
-    this._passwordHidden = true;
     super.initState();
   }
 
@@ -50,9 +46,6 @@ class LoginWidgetState extends State<LogInWidget> {
     this._formKey = null;
     this._userController.dispose();
     this._userController = null;
-    this._passwordController.dispose();
-    this._passwordController = null;
-    this._passwordHidden = null;
     super.dispose();
   }
 
@@ -64,57 +57,53 @@ class LoginWidgetState extends State<LogInWidget> {
         paddingValue: 25.0,
         child: Column(
           children: <Widget>[
-            LoginTitleWidget(),
-            LoginUsernameWidget(textEditingController: _userController),
-            LoginPasswordWidget(
-                textEditingController: _passwordController,
-                obscure: _passwordHidden,
-                onPressed: _changePasswordVisibilityOnPressedAction),
-            LoginPasswordForgotten(linkAction: _navigateToRecoverPassword),
-            LoginSubmitButtonWidget(loginAction: submitButtonOnPressedAction),
-            LoginLinkToSignUp(linkAction: _navigateToSignUp)
+            InputUserTitleWidget(),
+            InputUsernameWidget(textEditingController: _userController),
+            InputUserLinkToLogin(linkAction: _navigateToLoginWidget),
+            InputUserSubmitButtonWidget(loginAction: _submitButtonOnPressedAction),
+            InputUserLinkToSignUp(linkAction: _navigateToSignUp)
           ],
         ),
       ),
     );
   }
 
-  void _changePasswordVisibilityOnPressedAction() {
-    setState(() {
-      _passwordHidden = !_passwordHidden;
-    });
-  }
-
-  void submitButtonOnPressedAction(BuildContext context) async {
+  void _submitButtonOnPressedAction(BuildContext context) async {
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
       await AsyncModalBuilder()
-          .perform(_logIn)
-          .then(_navigateToHomeScreen)
-          .handle(NotAuthorized, _showNotAuthorizedFlushBar)
-          .handle(UserNeedsConfirmation, _navigateToVerify)
+          .perform(_recoverPassword)
           .withTitle(_verifyingMessage())
+          .then(_navigateToRecoverPassword)
+          .handle(UserAlreadyExists, _showUsernameNotExistFlushBar)
           .build()
           .run(context);
     }
   }
 
-  Future<void> _logIn(BuildContext context) async {
-    User user = _getUserFromTextFields();
-    await _getAccountService(context).logIn(user);
-  }
-
-  User _getUserFromTextFields() {
-    return User(_userController.text.trim(), _passwordController.text.trim());
+  Future<void> _recoverPassword(BuildContext context) async {
+    String user = _userController.text.trim();
+    await _getAccountService(context).forgotPassword(user);
   }
 
   AccountService _getAccountService(BuildContext context) {
-    return context.read<ServiceFactory>().accountService();
+    return Provider.of<ServiceFactory>(context, listen: false).accountService();
   }
 
-  void _navigateToHomeScreen(BuildContext context) {
-    FlushBarBroker().clear();
-    Navigator.pushReplacementNamed(context, Routes.HOME);
+  void _showUsernameNotExistFlushBar(BuildContext context) {
+    FlushBarBroker()
+        .withMessage(_usernameAlreadyExistsMessage())
+        .withIcon(Icon(Icons.contacts, color: Colors.redAccent))
+        .show(context);
+  }
+
+  String _usernameAlreadyExistsMessage() => AppText.getInstance() //
+      .get("login.input.user.notValid");
+
+  String _verifyingMessage() => AppText.getInstance().get("login.info.verifying");
+
+  void _navigateToLoginWidget(BuildContext context) {
+    context.read<AccountCubit>().toLogIn();
   }
 
   void _navigateToSignUp(BuildContext context) {
@@ -122,34 +111,18 @@ class LoginWidgetState extends State<LogInWidget> {
   }
 
   void _navigateToRecoverPassword(BuildContext context) {
-    context.read<AccountCubit>().toInputUser();
+    context.read<AccountCubit>().toRecoverPassword();
   }
-
-  void _navigateToVerify(BuildContext context) {
-    User user = _getUserFromTextFields();
-    context.read<AccountCubit>().toVerify(user);
-  }
-
-  void _showNotAuthorizedFlushBar(BuildContext context) {
-    FlushBarBroker()
-        .withMessage(_notAuthorizeMessage())
-        .withIcon(Icon(Icons.block, color: Colors.redAccent))
-        .show(context);
-  }
-
-  String _notAuthorizeMessage() => AppText.getInstance().get("login.error.notAuthorized");
-
-  String _verifyingMessage() => AppText.getInstance().get("login.info.verifying");
 }
 
 /// Login Title
-class LoginTitleWidget extends StatelessWidget {
+class InputUserTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OnlyEdgePaddedWidget.top(
       padding: 12.0,
       child: EllipsisCustomText.left(
-        text: AppText.getInstance().get("login.title"),
+        text: AppText.getInstance().get("recoverPassword.title"),
         textStyle: Theme.of(context).primaryTextTheme.subtitle1,
       ),
     );
@@ -157,10 +130,10 @@ class LoginTitleWidget extends StatelessWidget {
 }
 
 /// Login user input
-class LoginUsernameWidget extends StatelessWidget {
+class InputUsernameWidget extends StatelessWidget {
   final TextEditingController _textEditingController;
 
-  const LoginUsernameWidget({Key key, @required TextEditingController textEditingController})
+  const InputUsernameWidget({Key key, @required TextEditingController textEditingController})
       : this._textEditingController = textEditingController,
         super(key: key);
 
@@ -178,67 +151,23 @@ class LoginUsernameWidget extends StatelessWidget {
   }
 
   InputDecorationBuilder _getUserInputDecoration() {
-    return TextInputDecorationBuilder(AppText.getInstance().get("login.input.user.message"));
+    return TextInputDecorationBuilder(AppText.getInstance().get("recoverPassword.input.user.message"));
   }
 
   TextFormFieldValidatorBuilder _getUserInputValidator() {
     return NotEmptyFunctionTextFormValidatorBuilder(
       validationFunction: EmailValidator.validate,
-      message: AppText.getInstance().get("login.input.user.notValid"),
-      emptyMessage: AppText.getInstance().get("login.input.user.required"),
-    );
-  }
-}
-
-/// Login password input
-class LoginPasswordWidget extends StatelessWidget {
-  final TextEditingController textEditingController;
-  final bool obscure;
-  final Function() onPressed;
-
-  const LoginPasswordWidget(
-      {Key key,
-      @required TextEditingController textEditingController,
-      @required bool obscure,
-      @required Function() onPressed})
-      : this.textEditingController = textEditingController,
-        this.obscure = obscure,
-        this.onPressed = onPressed,
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 6.0,
-      child: CustomTextFormField(
-          key: LOGIN_KEY_PASSWORD_FIELD,
-          controller: textEditingController,
-          validatorBuilder: _getPasswordValidator(),
-          decorationBuilder: _buildPasswordInput(),
-          obscure: obscure),
-    );
-  }
-
-  InputDecorationBuilder _buildPasswordInput() {
-    return IconButtonInputDecorationBuilder(
-      labelText: AppText.getInstance().get("login.input.password.message"),
-      icon: Icon(obscure ? Icons.visibility : Icons.visibility_off),
-      onPressed: onPressed,
-    );
-  }
-
-  TextFormFieldValidatorBuilder _getPasswordValidator() {
-    return NotEmptyTextFormFieldValidatorBuilder(
-      AppText.getInstance().get("login.input.password.required"),
+      message: AppText.getInstance().get("recoverPassword.input.user.notValid"),
+      emptyMessage: AppText.getInstance().get("recoverPassword.input.user.required"),
     );
   }
 }
 
 /// Login submit button
-class LoginSubmitButtonWidget extends StatelessWidget {
+class InputUserSubmitButtonWidget extends StatelessWidget {
   final Function(BuildContext context) _loginAction;
 
-  const LoginSubmitButtonWidget({Key key, @required Function(BuildContext context) loginAction})
+  const InputUserSubmitButtonWidget({Key key, @required Function(BuildContext context) loginAction})
       : this._loginAction = loginAction,
         super(key: key);
 
@@ -273,7 +202,7 @@ class LoginSubmitButtonWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Text(
-        AppText.getInstance().get("login.actions.submit"),
+        AppText.getInstance().get("recoverPassword.actions.continue"),
         style: TextStyle(color: Colors.white),
       ),
     );
@@ -288,10 +217,10 @@ class LoginSubmitButtonWidget extends StatelessWidget {
 }
 
 /// Login link for signup
-class LoginLinkToSignUp extends StatelessWidget {
+class InputUserLinkToSignUp extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const LoginLinkToSignUp({Key key, @required Function(BuildContext context) linkAction})
+  const InputUserLinkToSignUp({Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -333,47 +262,48 @@ class LoginLinkToSignUp extends StatelessWidget {
   }
 }
 
-/// Login password forgotten link
-class LoginPasswordForgotten extends StatelessWidget {
+/// SignUp link to login
+class InputUserLinkToLogin extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const LoginPasswordForgotten({Key key, @required Function(BuildContext context) linkAction})
+  const InputUserLinkToLogin({Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 8.0,
+      paddingValue: 15.0,
       child: Row(
         children: <Widget>[
-          _buildPasswordQuestionText(),
+          _buildAccountQuestionText(),
           _buildLink(context),
         ],
       ),
     );
   }
 
-  Widget _buildLink(BuildContext context) {
+  Column _buildAccountQuestionText() {
     return Column(
       children: <Widget>[
-        GestureDetector(
-            child: Text(
-              (AppText.getInstance().get("recoverPassword.actions.recover")),
-              style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
-            ),
-            onTap: () => _linkAction(context))
+        EllipsisCustomText.left(
+          text: (AppText.getInstance().get("signUp.actions.accountQuestion")),
+          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+        ),
       ],
     );
   }
 
-  Widget _buildPasswordQuestionText() {
+  Column _buildLink(BuildContext context) {
     return Column(
       children: <Widget>[
-        EllipsisCustomText.left(
-          text: (AppText.getInstance().get("recoverPassword.info.forgottenPassword")),
-          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
-        ),
+        GestureDetector(
+          child: Text(
+            AppText.getInstance().get("signUp.actions.goToLogin"),
+            style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
+          ),
+          onTap: () => _linkAction(context),
+        )
       ],
     );
   }

@@ -111,3 +111,40 @@ class NotEqualTextFormValidatorBuilder
     };
   }
 }
+
+class NotEqualTextFormValidatorBuilderPassword
+    implements TextFormFieldValidatorBuilder {
+  final RegExp pattern;
+  final String _patternMessage;
+  final String _emptyMessage;
+  final String _notEqualMessage;
+  final TextEditingController _controllerToComparate;
+
+  NotEqualTextFormValidatorBuilderPassword(
+      {@required ValidationFunction validationFunction,
+        @required String message,
+        @required RegExp regExp,
+        @required String emptyMessage,
+        @required String patternMessage,
+        @required String notEqualMessage,
+        @required TextEditingController controllerToComparate})
+      : this._emptyMessage = emptyMessage,
+        this._notEqualMessage = notEqualMessage,
+        this.pattern = regExp,
+        this._patternMessage = patternMessage,
+        this._controllerToComparate = controllerToComparate;
+
+  @override
+  FormFieldValidator<String> build(BuildContext context) {
+    return (value) {
+      if (value.isEmpty) {
+        return _emptyMessage;
+      }else if (value.trim() != _controllerToComparate.text.trim()) {
+        return _notEqualMessage;
+      }else if (!pattern.hasMatch(value)) {
+        return _patternMessage;
+      }
+      return null; // This null is required by the interface.
+    };
+  }
+}

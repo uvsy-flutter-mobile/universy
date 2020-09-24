@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account/user.dart';
+import 'package:universy/modules/account/bloc/cubit.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
@@ -15,26 +16,26 @@ import 'package:universy/widgets/paddings/edge.dart';
 import 'package:universy/widgets/text/custom.dart';
 import 'package:universy/widgets/willpop/will_pop.dart';
 
-class VerifyWidget extends StatefulWidget {
-  final User user;
+class RecoverPasswordWidget extends StatefulWidget {
+  final String user;
 
-  const VerifyWidget({Key key, this.user}) : super(key: key);
+  const RecoverPasswordWidget({Key key, this.user}) : super(key: key);
 
   @override
-  _VerifyWidgetState createState() => _VerifyWidgetState();
+  _RecoverPasswordWidgetState createState() => _RecoverPasswordWidgetState();
 }
 
-class _VerifyWidgetState extends State<VerifyWidget>
+class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
     with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _codeTextController = TextEditingController();
   AnimationController animationController;
-  User user;
+  String user;
 
   @override
   void initState() {
     super.initState();
-    this.user = widget.user;
+    this.user = user;
     this.animationController = createAnimation();
     this.animationController.reverse(from: 1.0);
   }
@@ -66,7 +67,7 @@ class _VerifyWidgetState extends State<VerifyWidget>
               child: Column(
                 children: <Widget>[
                   VerifyTitleWidget(),
-                  VerifySubTitleWidget(email: user.username),
+                  VerifySubTitleWidget(email: user),
                   VerifyCodeWidget(textEditingController: _codeTextController),
                   VerifySendButtonWidget(
                       sendButtonAction: sendVerificationCode),
@@ -110,7 +111,7 @@ class _VerifyWidgetState extends State<VerifyWidget>
     if (_formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
       await AsyncModalBuilder()
-          .perform(_performConfirmUser)
+          .perform(_confirmCode)
           .withTitle(_sendMessage())
           .then(_navigateToHomeScreen)
           .handle(ConfirmationCodeMismatch, _showCodeMismatchFlushBar)
@@ -119,12 +120,17 @@ class _VerifyWidgetState extends State<VerifyWidget>
     }
   }
 
-  Future<void> _performConfirmUser(BuildContext context) async {
+  Future<void> _confirmCode(BuildContext context) async {
     String code = _getConfirmationCode();
-    var accountService = Provider.of<ServiceFactory>(context, listen: false) //
-        .accountService();
-    await accountService.confirmUser(user.username, code);
-    await accountService.logIn(user);
+    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    await accountService.confirmUser(user, code);
+    _navigateToSetPasswordWidget(context);
+
+
+  }
+
+  void _navigateToSetPasswordWidget(BuildContext context) {
+    context.read<AccountCubit>().toSetNewPasswordState(user);
   }
 
   void _navigateToHomeScreen(BuildContext context) {
@@ -150,7 +156,7 @@ class _VerifyWidgetState extends State<VerifyWidget>
   Future<void> _resendCode(BuildContext context) async {
     var accountService =
         Provider.of<ServiceFactory>(context, listen: false).accountService();
-    //await accountService.resendConfirmationCode(user);
+    await accountService.resendConfirmationCode(user);
   }
 
   void _showCodeMismatchFlushBar(BuildContext context) {

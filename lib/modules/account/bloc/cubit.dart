@@ -19,4 +19,16 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> toVerify(User user) async {
     emit(VerifyState(user));
   }
+
+  Future<void> toRecoverPassword() async {
+    emit(RecoverPasswordState());
+  }
+
+  Future<void> toInputUser() async {
+    emit(InputUserState());
+  }
+
+  Future<void> toSetNewPasswordState(String user) async {
+    emit(SetNewPasswordState(user));
+  }
 }
