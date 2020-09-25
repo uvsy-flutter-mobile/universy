@@ -35,7 +35,7 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   @override
   void initState() {
     super.initState();
-    this.user = user;
+    this.user = widget.user;
     this.animationController = createAnimation();
     this.animationController.reverse(from: 1.0);
   }
@@ -67,10 +67,9 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
               child: Column(
                 children: <Widget>[
                   VerifyTitleWidget(),
-                  VerifySubTitleWidget(email: user),
+                  VerifySubTitleWidget(email: widget.user),
                   VerifyCodeWidget(textEditingController: _codeTextController),
-                  VerifySendButtonWidget(
-                      sendButtonAction: sendVerificationCode),
+                  VerifySendButtonWidget(sendButtonAction: sendVerificationCode),
                   Divider(),
                   _buildCreateAnimationWidget()
                 ],
@@ -91,8 +90,7 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
             Expanded(
               flex: 2,
               child: VerifyCountDownWidget(
-                  duration:
-                      animationController.duration * animationController.value),
+                  duration: animationController.duration * animationController.value),
             ),
             Expanded(
               flex: 8,
@@ -113,7 +111,7 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
       await AsyncModalBuilder()
           .perform(_confirmCode)
           .withTitle(_sendMessage())
-          .then(_navigateToHomeScreen)
+          .then(_navigateToSetPasswordWidget)
           .handle(ConfirmationCodeMismatch, _showCodeMismatchFlushBar)
           .build()
           .run(context);
@@ -123,10 +121,7 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   Future<void> _confirmCode(BuildContext context) async {
     String code = _getConfirmationCode();
     var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
-    await accountService.confirmUser(user, code);
-    _navigateToSetPasswordWidget(context);
-
-
+    await accountService.setNewPassword(user,'12345', code);
   }
 
   void _navigateToSetPasswordWidget(BuildContext context) {
@@ -154,8 +149,7 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   }
 
   Future<void> _resendCode(BuildContext context) async {
-    var accountService =
-        Provider.of<ServiceFactory>(context, listen: false).accountService();
+    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
     await accountService.resendConfirmationCode(user);
   }
 
@@ -188,14 +182,11 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
 
   String _resendMessage() => AppText.getInstance().get("verify.info.resending");
 
-  String _emailSentMessage() =>
-      AppText.getInstance().get("verify.info.codeSent");
+  String _emailSentMessage() => AppText.getInstance().get("verify.info.codeSent");
 
-  String _verifiedAccountMessage() =>
-      AppText.getInstance().get("verify.info.verified");
+  String _verifiedAccountMessage() => AppText.getInstance().get("verify.info.verified");
 
-  String _codeMismatchMessage() =>
-      AppText.getInstance().get("verify.error.codeMismatch");
+  String _codeMismatchMessage() => AppText.getInstance().get("verify.error.codeMismatch");
 }
 
 /// Verify Title
@@ -234,8 +225,7 @@ class VerifySubTitleWidget extends StatelessWidget {
 class VerifySendButtonWidget extends StatelessWidget {
   final Function(BuildContext context) _sendButtonAction;
 
-  const VerifySendButtonWidget(
-      {Key key, @required Function(BuildContext context) sendButtonAction})
+  const VerifySendButtonWidget({Key key, @required Function(BuildContext context) sendButtonAction})
       : this._sendButtonAction = sendButtonAction,
         super(key: key);
 
@@ -285,9 +275,7 @@ class VerifyReSendButtonWidget extends StatelessWidget {
   final bool _enabled;
 
   const VerifyReSendButtonWidget(
-      {Key key,
-      @required Function(BuildContext context) resendAction,
-      @required bool enabled})
+      {Key key, @required Function(BuildContext context) resendAction, @required bool enabled})
       : this._resendAction = resendAction,
         this._enabled = enabled,
         super(key: key);
@@ -357,8 +345,7 @@ class VerifyCountDownWidget extends StatelessWidget {
 class VerifyCodeWidget extends StatelessWidget {
   final TextEditingController _textEditingController;
 
-  const VerifyCodeWidget(
-      {Key key, @required TextEditingController textEditingController})
+  const VerifyCodeWidget({Key key, @required TextEditingController textEditingController})
       : this._textEditingController = textEditingController,
         super(key: key);
 
@@ -383,7 +370,6 @@ class VerifyCodeWidget extends StatelessWidget {
   }
 
   TextInputDecorationBuilder _buildNameDecorator() {
-    return TextInputDecorationBuilder(
-        AppText.getInstance().get("verify.input.code.message"));
+    return TextInputDecorationBuilder(AppText.getInstance().get("verify.input.code.message"));
   }
 }
