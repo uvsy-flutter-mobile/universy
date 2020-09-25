@@ -1,8 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:universy/constants/routes.dart';
-import 'package:universy/model/account/user.dart';
 import 'package:universy/modules/account/bloc/cubit.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/factory.dart';
@@ -111,7 +109,8 @@ class InputUserWidgetState extends State<InputUserWidget> {
   }
 
   void _navigateToRecoverPassword(BuildContext context) {
-    context.read<AccountCubit>().toRecoverPassword();
+    String user = _userController.text.trim();
+    context.read<AccountCubit>().toRecoverPassword(user);
   }
 }
 

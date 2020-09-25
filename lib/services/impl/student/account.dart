@@ -209,6 +209,20 @@ class DefaultAccountService extends AccountService {
     }
   }
 
+  Future<void> setNewPassword(String user, String newPassword, String code) async {
+    bool passwordConfirmed = false;
+    final cognitoUser = CognitoUser(user, _userPool);
+    try {
+      passwordConfirmed = await cognitoUser.confirmPassword(
+          code, newPassword);
+    } catch (e) {
+      print(e);
+    }
+    print(passwordConfirmed);
+  }
+
+
+
   @override
   void dispose() {
     _instance = null;

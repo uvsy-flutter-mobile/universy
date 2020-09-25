@@ -42,6 +42,8 @@ abstract class AccountService extends Service {
   Future<void> confirmPassword(User user, String newPassword);
 
   Future<void> logOut();
+
+  Future<void> setNewPassword(String user, String newPassword, String code);
 }
 
 abstract class ProfileService extends Service {

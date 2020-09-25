@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/modules/account/keys.dart';
 import 'package:universy/services/factory.dart';
@@ -90,51 +91,32 @@ class SetNewPasswordWidgetState extends State<SetNewPasswordWidget> {
     if (_formKeyLog.currentState.validate()) {
       FocusScope.of(context).unfocus();
       await AsyncModalBuilder()
-          .perform(_changePasswordAndLogin)
-          .withTitle(_creatingAccountMessage())
-          .then(_navigateToVerify)
+          .perform(_changePassword)
+          .then(_navigateToHomeScreen)
           .build()
           .run(context);
     }
   }
 
-  Future<void> _changePasswordAndLogin(BuildContext context) async {
-    String password = _firstPasswordController.text.trim();
-    //await _getAccountService(context)
-    await _getAccountService(context).confirmPassword(widget.user,password);
-    await _getAccountService(context).signUp(user);
+  void _navigateToHomeScreen(BuildContext context) {
+    Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
-  User _getUserFromTextFields() {
-    return User(
-      _firstPasswordController.text.trim(),
-      _passwordController.text.trim(),
-    );
+  Future<void> _changePassword(BuildContext context) async {
+    String username = widget.user;
+    String password = _firstPasswordController.text.trim();
+    User user = User(username, '12345');
+    await _getAccountService(context).changePassword(user,password);
+    await _getAccountService(context).logIn(user);
   }
 
   AccountService _getAccountService(BuildContext context) {
     return Provider.of<ServiceFactory>(context, listen: false).accountService();
   }
 
-  void _navigateToVerify(BuildContext context) {
-    _showUserCreated(context);
-    User user = _getUserFromTextFields();
-    context.read<AccountCubit>().toVerify(user);
-  }
-
   void _navigateToLoginWidget(BuildContext context) {
     context.read<AccountCubit>().toLogIn();
   }
-
-  void _showUserCreated(BuildContext context) {
-    FlushBarBroker()
-        .withMessage(AppText.getInstance().get("signUp.info.accountCreated"))
-        .withIcon(Icon(Icons.check, color: Colors.green))
-        .show(context);
-  }
-
-  String _creatingAccountMessage() => AppText.getInstance() //
-      .get("signUp.info.creatingAccount");
 }
 
 /// Signup Title
@@ -155,9 +137,8 @@ class NewPasswordTitleWidget extends StatelessWidget {
 class NewPasswordWidget extends StatelessWidget {
   final TextEditingController _textEditingController;
   final TextEditingController _secondTextEditingController;
-  final String _hint;
-  final bool _obscure;
-  final Function() _onPressed;
+  final bool obscure;
+  final Function() onPressed;
 
   const NewPasswordWidget(
       {Key key,
@@ -168,9 +149,8 @@ class NewPasswordWidget extends StatelessWidget {
       @required String hint})
       : this._textEditingController = textEditingController,
         this._secondTextEditingController = secondEmailEditingController,
-        this._hint = hint,
-        this._obscure = obscure,
-        this._onPressed = onPressed,
+        this.obscure = obscure,
+        this.onPressed = onPressed,
         super(key: key);
 
   @override
@@ -190,8 +170,8 @@ class NewPasswordWidget extends StatelessWidget {
   InputDecorationBuilder _getPasswordDecoration() {
     return IconButtonInputDecorationBuilder(
       labelText: AppText.getInstance().get("signUp.input.password.message"),
-      icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
-      onPressed: _onPressed,
+      icon: Icon(obscure ? Icons.visibility : Icons.visibility_off),
+      onPressed: onPressed,
     );
   }
 
