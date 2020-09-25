@@ -63,6 +63,7 @@ class DisplayCharts extends StatelessWidget {
       paddingValue: 12.0,
       child: StaggeredGridView.countBuilder(
         physics: BouncingScrollPhysics(),
+        shrinkWrap: true,
         staggeredTileBuilder: (int index) => StaggeredTile.fit(2),
         mainAxisSpacing: 2.0,
         crossAxisCount: 4,
