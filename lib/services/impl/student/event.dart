@@ -45,7 +45,7 @@ class DefaultStudentEventService extends StudentEventService {
       DateTime dateFrom, DateTime dateTo) async {
     try {
       String userId = await DefaultAccountService.instance().getUserId();
-      return studentApi.getEvents(userId, dateFrom, dateTo);
+      return studentApi.getEvents(userId);
     } on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;

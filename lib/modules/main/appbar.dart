@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:universy/modules/main/bloc/states.dart";
-import 'package:universy/modules/student/notifications/notification.dart';
 import "package:universy/text/text.dart";
 import "package:universy/util/bloc.dart";
 
@@ -21,15 +20,7 @@ class _Widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        children: <Widget>[
-          Expanded(
-              child: Text(
-                  AppText.getInstance().get("main.modules.$moduleName.title")),
-              flex: 6),
-          Expanded(child: NotificationsAlert(), flex: 2)
-        ],
-      ),
+      title: Text(AppText.getInstance().get("main.modules.$moduleName.title")),
       backgroundColor: Colors.white,
     );
   }
