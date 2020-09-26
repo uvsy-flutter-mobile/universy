@@ -264,6 +264,12 @@ const Map<dynamic, dynamic> ES = {
         "REPORT_SIGN_OFF": "Firma de libreta"
       },
     },
+    "notifications": {
+      "title": "Tus eventos de hoy",
+      "actions": {
+        "goToCalendar": "Ver Calendario",
+      },
+    },
     "enroll": {
       "title": "Agregá una carrera!",
       "input": {
