@@ -59,8 +59,8 @@ class DefaultAccountService extends AccountService {
       if (!session.isValid()) {
         session = await cognitoUser.refreshSession(session.refreshToken);
       }
-      return Token(session.idToken.jwtToken, session.accessToken.jwtToken,
-          session.refreshToken.toString());
+      return Token(
+          session.idToken.jwtToken, session.accessToken.jwtToken, session.refreshToken.toString());
     } on CognitoClientException catch (e) {
       throw _translateCognitoClientException(e);
     } catch (e) {
@@ -213,15 +213,23 @@ class DefaultAccountService extends AccountService {
     bool passwordConfirmed = false;
     final cognitoUser = CognitoUser(user, _userPool);
     try {
-      passwordConfirmed = await cognitoUser.confirmPassword(
-          code, newPassword);
+      passwordConfirmed = await cognitoUser.confirmPassword(code, newPassword);
     } catch (e) {
       print(e);
     }
     print(passwordConfirmed);
   }
 
-
+  Future<void> authenticateUser(User user) async {
+    try {
+      final cognitoUser = CognitoUser(user.username, _userPool);
+      final authDetails = AuthenticationDetails(username: user.username,password: user.password,);
+      await cognitoUser.authenticateUser(authDetails);
+    } catch (e) {
+      Log.getLogger().error("Error validating login.", e);
+      throw ServiceException();
+    }
+  }
 
   @override
   void dispose() {

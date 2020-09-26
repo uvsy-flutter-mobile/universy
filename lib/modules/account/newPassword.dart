@@ -10,7 +10,6 @@ import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
-import 'package:universy/widgets/flushbar/builder.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
@@ -34,7 +33,6 @@ class SetNewPasswordWidgetState extends State<SetNewPasswordWidget> {
   final _formKeyLog = GlobalKey<FormState>();
   final TextEditingController _firstPasswordController = TextEditingController();
   final TextEditingController _secondPasswordController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   bool _passwordHidden;
 
   SetNewPasswordWidgetState();
@@ -105,13 +103,9 @@ class SetNewPasswordWidgetState extends State<SetNewPasswordWidget> {
   Future<void> _changePassword(BuildContext context) async {
     String username = widget.user;
     String password = _firstPasswordController.text.trim();
-    User user = User(username, '12345');
-    await _getAccountService(context).changePassword(user,password);
-    await _getAccountService(context).logIn(user);
-  }
-
-  AccountService _getAccountService(BuildContext context) {
-    return Provider.of<ServiceFactory>(context, listen: false).accountService();
+    User user = User(username, 'Universy12345');
+    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    await accountService.changePassword(user,password);
   }
 
   void _navigateToLoginWidget(BuildContext context) {
