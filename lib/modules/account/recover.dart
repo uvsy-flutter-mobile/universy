@@ -1,5 +1,7 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:universy/constants/regex.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/modules/account/bloc/cubit.dart';
@@ -15,6 +17,8 @@ import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 import 'package:universy/widgets/text/custom.dart';
 import 'package:universy/widgets/willpop/will_pop.dart';
+
+import 'keys.dart';
 
 class RecoverPasswordWidget extends StatefulWidget {
   final String user;
@@ -32,12 +36,17 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   AnimationController animationController;
   String user;
 
+  final TextEditingController _firstPasswordController = TextEditingController();
+  final TextEditingController _secondPasswordController = TextEditingController();
+  bool _passwordHidden;
+
   @override
   void initState() {
     super.initState();
     this.user = widget.user;
     this.animationController = createAnimation();
     this.animationController.reverse(from: 1.0);
+    _passwordHidden = true;
   }
 
   @override
@@ -69,9 +78,28 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
                   VerifyTitleWidget(),
                   VerifySubTitleWidget(email: widget.user),
                   VerifyCodeWidget(textEditingController: _codeTextController),
-                  VerifySendButtonWidget(sendButtonAction: sendVerificationCode),
-                  Divider(),
-                  _buildCreateAnimationWidget()
+                  _buildCreateAnimationWidget(this.animationController),
+                  NewPasswordTitleWidget(),
+                  NewPasswordWidget(
+                    textEditingController: _firstPasswordController,
+                    secondEmailEditingController: _secondPasswordController,
+                    obscure: _passwordHidden,
+                    onPressed: _changePasswordVisibilityOnPressedAction,
+                    hint:
+                        AppText.getInstance().get("recoverPassword.newPassword.input.user.message"),
+                  ),
+                  NewPasswordWidget(
+                    textEditingController: _secondPasswordController,
+                    secondEmailEditingController: _firstPasswordController,
+                    obscure: _passwordHidden,
+                    onPressed: _changePasswordVisibilityOnPressedAction,
+                    hint: AppText.getInstance()
+                        .get("recoverPassword.newPassword.input.user.messageCheck"),
+                  ),
+                  NewPasswordConfirmButtonWidget(
+                    createButtonAction: _submitButtonOnPressedAction,
+                  ),
+                  SignUpLinkToLogin(linkAction: _navigateToLoginWidget)
                 ],
               ),
             ),
@@ -81,23 +109,59 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
     );
   }
 
-  Widget _buildCreateAnimationWidget() {
+  Future<void> _changePassword(BuildContext context) async {
+    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    String code = _getConfirmationCode();
+    String username = widget.user;
+    String password = _firstPasswordController.text.trim();
+    User user = User(username, password);
+    await accountService.setNewPassword(username, password, code);
+    await accountService.logIn(user);
+  }
+
+  void _submitButtonOnPressedAction(BuildContext context) async {
+    if (this._formKey.currentState.validate()) {
+      FocusScope.of(context).unfocus();
+      await AsyncModalBuilder()
+          .perform(_changePassword)
+          .then(_navigateToHomeScreen)
+          .handle(ConfirmationCodeMismatch, _showCodeMismatchFlushBar)
+          .build()
+          .run(context);
+    } else {
+      return;
+    }
+  }
+
+  void _showCodeMismatchFlushBar(BuildContext context) {
+    FlushBarBroker()
+        .withMessage(_codeMismatchMessage())
+        .withIcon(Icon(Icons.block, color: Colors.redAccent))
+        .show(context);
+  }
+
+  void _changePasswordVisibilityOnPressedAction() {
+    setState(() {
+      _passwordHidden = !_passwordHidden;
+    });
+  }
+
+  void _navigateToLoginWidget(BuildContext context) {
+    context.read<AccountCubit>().toLogIn();
+  }
+
+  Widget _buildCreateAnimationWidget(AnimationController animationController) {
     return AnimatedBuilder(
       animation: animationController,
       builder: (context, child) {
         return Row(
           children: <Widget>[
             Expanded(
-              flex: 2,
-              child: VerifyCountDownWidget(
-                  duration: animationController.duration * animationController.value),
-            ),
-            Expanded(
-              flex: 8,
+              flex: 10,
               child: VerifyReSendButtonWidget(
-                enabled: !animationController.isAnimating,
-                resendAction: _resendVerificationCode,
-              ),
+                  enabled: !animationController.isAnimating,
+                  resendAction: _resendVerificationCode,
+                  animationController: animationController),
             )
           ],
         );
@@ -105,36 +169,9 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
     );
   }
 
-  void sendVerificationCode(BuildContext context) async {
-    if (_formKey.currentState.validate()) {
-      FocusScope.of(context).unfocus();
-      await AsyncModalBuilder()
-          .perform(_confirmCode)
-          .withTitle(_sendMessage())
-          .then(_navigateToSetPasswordWidget)
-          .handle(ConfirmationCodeMismatch, _showCodeMismatchFlushBar)
-          .build()
-          .run(context);
-    }
-  }
-
-  Future<void> _confirmCode(BuildContext context) async {
-    String code = _getConfirmationCode();
-    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
-    await accountService.setNewPassword(user, 'Universy12345', code);
-    User userCognito = User(user, 'Universy12345');
-    await accountService.logIn(userCognito);
-    await print(accountService.isLoggedIn());
-
-  }
-
   void _navigateToHomeScreen(BuildContext context) {
     FlushBarBroker().clear();
     Navigator.pushReplacementNamed(context, Routes.HOME);
-  }
-
-  void _navigateToSetPasswordWidget(BuildContext context) {
-    context.read<AccountCubit>().toSetNewPasswordState(user);
   }
 
   void _resendVerificationCode(BuildContext context) async {
@@ -146,21 +183,10 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
         .run(context);
   }
 
-  Future _performResendCode(BuildContext context) async {
-    await _resendCode(context);
-    animationController.reverse(from: 1.0);
-  }
-
-  Future<void> _resendCode(BuildContext context) async {
+  Future<void> _performResendCode(BuildContext context) async {
     var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
-    await accountService.resendConfirmationCode(user);
-  }
-
-  void _showCodeMismatchFlushBar(BuildContext context) {
-    FlushBarBroker()
-        .withMessage(_codeMismatchMessage())
-        .withIcon(Icon(Icons.block, color: Colors.redAccent))
-        .show(context);
+    await accountService.forgotPassword(user);
+    animationController.reverse(from: 1.0);
   }
 
   void _showEmailSentFlushBar(BuildContext context) {
@@ -172,13 +198,9 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
 
   String _getConfirmationCode() => _codeTextController.text.trim();
 
-  String _sendMessage() => AppText.getInstance().get("verify.actions.submit");
-
   String _resendMessage() => AppText.getInstance().get("verify.info.resending");
 
   String _emailSentMessage() => AppText.getInstance().get("verify.info.codeSent");
-
-  String _verifiedAccountMessage() => AppText.getInstance().get("verify.info.verified");
 
   String _codeMismatchMessage() => AppText.getInstance().get("verify.error.codeMismatch");
 }
@@ -267,11 +289,16 @@ class VerifySendButtonWidget extends StatelessWidget {
 class VerifyReSendButtonWidget extends StatelessWidget {
   final Function(BuildContext context) _resendAction;
   final bool _enabled;
+  final AnimationController _animationController;
 
   const VerifyReSendButtonWidget(
-      {Key key, @required Function(BuildContext context) resendAction, @required bool enabled})
+      {Key key,
+      @required Function(BuildContext context) resendAction,
+      @required bool enabled,
+      @required AnimationController animationController})
       : this._resendAction = resendAction,
         this._enabled = enabled,
+        this._animationController = animationController,
         super(key: key);
 
   @override
@@ -283,11 +310,13 @@ class VerifyReSendButtonWidget extends StatelessWidget {
         child: CircularRoundedRectangleRaisedButton.general(
           radius: 10,
           onPressed: _enabled ? () => _resendAction(context) : null,
-          color: Colors.blue,
+          color: Colors.deepPurple,
           child: Row(
             children: <Widget>[
               _buildButtonText(),
               _buildButtonIcon(),
+              VerifyCountDownWidget(
+                  duration: _animationController.duration * _animationController.value),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
@@ -326,7 +355,7 @@ class VerifyCountDownWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       getTextForDuration(),
-      style: TextStyle(fontSize: 20.0, color: Colors.black),
+      style: TextStyle(fontSize: 20.0, color: Colors.white),
     );
   }
 
@@ -358,12 +387,237 @@ class VerifyCodeWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
-    return NotEmptyTextFormFieldValidatorBuilder(
-      AppText.getInstance().get("verify.input.code.required"),
+    return NotEmptySixCharactersCodeValidator(
+      notQuantityValid: AppText.getInstance().get("verify.input.code.minQuantity"),
+      emptyMessage: AppText.getInstance().get("verify.input.code.required"),
     );
   }
 
   TextInputDecorationBuilder _buildNameDecorator() {
     return TextInputDecorationBuilder(AppText.getInstance().get("verify.input.code.message"));
+  }
+}
+
+/// New Password Title
+class NewPasswordTitleWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var subtitle = AppText.getInstance().get("recoverPassword.newPassword.subtitle");
+    return OnlyEdgePaddedWidget.top(
+      padding: 12.0,
+      child: Text(subtitle),
+    );
+  }
+}
+
+@override
+Widget build(BuildContext context) {
+  return OnlyEdgePaddedWidget.top(
+    padding: 12.0,
+    child: EllipsisCustomText.left(
+      text: AppText.getInstance().get("newPassword.title"),
+      textStyle: Theme.of(context).primaryTextTheme.subtitle1,
+    ),
+  );
+}
+
+/// Signup controller for username
+class NewPasswordWidget extends StatelessWidget {
+  final TextEditingController _textEditingController;
+  final TextEditingController _secondTextEditingController;
+  final bool _obscure;
+  final Function() _onPressed;
+  final String _hint;
+
+  const NewPasswordWidget(
+      {Key key,
+      @required TextEditingController textEditingController,
+      @required TextEditingController secondEmailEditingController,
+      @required bool obscure,
+      @required Function() onPressed,
+      @required String hint})
+      : this._textEditingController = textEditingController,
+        this._secondTextEditingController = secondEmailEditingController,
+        this._obscure = obscure,
+        this._hint = hint,
+        this._onPressed = onPressed,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 6.0,
+      child: CustomTextFormField(
+        obscure: _obscure,
+        key: SIGNUP_KEY_USER_FIELD,
+        keyboardType: TextInputType.emailAddress,
+        controller: _textEditingController,
+        validatorBuilder: _buildPasswordValidator(),
+        decorationBuilder: _getPasswordDecoration(),
+      ),
+    );
+  }
+
+  InputDecorationBuilder _getPasswordDecoration() {
+    return IconButtonInputDecorationBuilder(
+      labelText: _hint,
+      icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+      onPressed: _onPressed,
+    );
+  }
+
+  TextFormFieldValidatorBuilder _buildPasswordValidator() {
+    return NotEqualTextFormValidatorBuilderPassword(
+      controllerToComparate: _secondTextEditingController,
+      notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),
+      validationFunction: (value) => EmailValidator.validate(value),
+      regExp: Regex.PASSWORD_FORMAT_REGEX,
+      patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
+      emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
+    );
+  }
+}
+
+/// SignUp controller for password
+class SignUpPasswordWidget extends StatelessWidget {
+  final TextEditingController _textEditingController;
+  final bool _obscure;
+  final Function() _onPressed;
+
+  const SignUpPasswordWidget(
+      {Key key,
+      @required TextEditingController textEditingController,
+      @required bool obscure,
+      @required Function() onPressed})
+      : this._textEditingController = textEditingController,
+        this._obscure = obscure,
+        this._onPressed = onPressed,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 6.0,
+      child: CustomTextFormField(
+        key: SIGNUP_KEY_PASSWORD_FIELD,
+        controller: _textEditingController,
+        validatorBuilder: _getPasswordValidator(),
+        decorationBuilder: _getPasswordDecoration(),
+        obscure: _obscure,
+      ),
+    );
+  }
+
+  InputDecorationBuilder _getPasswordDecoration() {
+    return IconButtonInputDecorationBuilder(
+      labelText: AppText.getInstance().get("signUp.input.password.message"),
+      icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
+      onPressed: _onPressed,
+    );
+  }
+
+  TextFormFieldValidatorBuilder _getPasswordValidator() {
+    return PatternNotEmptyTextFormFieldValidatorBuilder(
+      regExp: Regex.PASSWORD_FORMAT_REGEX,
+      patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
+      emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
+    );
+  }
+}
+
+/// SignUp link to login
+class SignUpLinkToLogin extends StatelessWidget {
+  final Function(BuildContext context) _linkAction;
+
+  const SignUpLinkToLogin({Key key, @required Function(BuildContext context) linkAction})
+      : this._linkAction = linkAction,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 15.0,
+      child: Row(
+        children: <Widget>[
+          _buildAccountQuestionText(),
+          _buildLink(context),
+        ],
+      ),
+    );
+  }
+
+  Column _buildAccountQuestionText() {
+    return Column(
+      children: <Widget>[
+        EllipsisCustomText.left(
+          text: (AppText.getInstance().get("signUp.actions.accountQuestion")),
+          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+        ),
+      ],
+    );
+  }
+
+  Column _buildLink(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        GestureDetector(
+          child: Text(
+            AppText.getInstance().get("signUp.actions.goToLogin"),
+            style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
+          ),
+          onTap: () => _linkAction(context),
+        )
+      ],
+    );
+  }
+}
+
+/// Signup button for account creation
+class NewPasswordConfirmButtonWidget extends StatelessWidget {
+  final Function(BuildContext context) _createButtonAction;
+
+  const NewPasswordConfirmButtonWidget(
+      {Key key, @required Function(BuildContext context) createButtonAction})
+      : this._createButtonAction = createButtonAction,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 8.0,
+      child: SizedBox(
+        width: double.infinity,
+        child: CircularRoundedRectangleRaisedButton.general(
+          key: SIGNUP_KEY_SUBMIT_BUTTON,
+          radius: 10,
+          onPressed: () => _createButtonAction(context),
+          color: Colors.deepPurple,
+          child: Row(
+            children: <Widget>[
+              _buildButtonText(),
+              _buildButtonIcon(),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonIcon() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: Icon(Icons.arrow_forward, color: Colors.white),
+    );
+  }
+
+  Widget _buildButtonText() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: Text(
+        AppText.getInstance().get("recoverPassword.newPassword.actions.confirm"),
+        style: TextStyle(color: Colors.white),
+      ),
+    );
   }
 }

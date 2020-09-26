@@ -214,8 +214,11 @@ class DefaultAccountService extends AccountService {
     final cognitoUser = CognitoUser(user, _userPool);
     try {
       passwordConfirmed = await cognitoUser.confirmPassword(code, newPassword);
+    } on CognitoClientException catch (e) {
+      throw _translateCognitoClientException(e);
     } catch (e) {
-      print(e);
+      Log.getLogger().error("Error confirming user.", e);
+      throw ServiceException();
     }
     print(passwordConfirmed);
   }
@@ -223,7 +226,10 @@ class DefaultAccountService extends AccountService {
   Future<void> authenticateUser(User user) async {
     try {
       final cognitoUser = CognitoUser(user.username, _userPool);
-      final authDetails = AuthenticationDetails(username: user.username,password: user.password,);
+      final authDetails = AuthenticationDetails(
+        username: user.username,
+        password: user.password,
+      );
       await cognitoUser.authenticateUser(authDetails);
     } catch (e) {
       Log.getLogger().error("Error validating login.", e);

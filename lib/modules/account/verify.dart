@@ -148,9 +148,8 @@ class _VerifyWidgetState extends State<VerifyWidget>
   }
 
   Future<void> _resendCode(BuildContext context) async {
-    var accountService =
-        Provider.of<ServiceFactory>(context, listen: false).accountService();
-    //await accountService.resendConfirmationCode(user);
+    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    await accountService.resendConfirmationCode(user.username);
   }
 
   void _showCodeMismatchFlushBar(BuildContext context) {
@@ -371,8 +370,9 @@ class VerifyCodeWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
-    return NotEmptyTextFormFieldValidatorBuilder(
-      AppText.getInstance().get("verify.input.code.required"),
+    return NotEmptySixCharactersCodeValidator(
+      notQuantityValid: AppText.getInstance().get("verify.input.code.minQuantity"),
+      emptyMessage: AppText.getInstance().get("verify.input.code.required"),
     );
   }
 

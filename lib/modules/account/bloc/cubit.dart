@@ -27,8 +27,4 @@ class AccountCubit extends Cubit<AccountState> {
   Future<void> toInputUser() async {
     emit(InputUserState());
   }
-
-  Future<void> toSetNewPasswordState(String user) async {
-    emit(SetNewPasswordState(user));
-  }
 }

@@ -28,9 +28,3 @@ class RecoverPasswordState extends AccountState {
 }
 
 class InputUserState extends AccountState {}
-
-class SetNewPasswordState extends AccountState {
-  final String user;
-
-  SetNewPasswordState(this.user);
-}

@@ -50,17 +50,18 @@ const Map<dynamic, dynamic> ES = {
     "info": {
       "forgottenPassword": "Olvidaste tu contraseña?",
     },
-  },
-  "newPassword": {
-    "title": "Nueva contraseña",
-    "input": {
-      "user": {
-        "message": "Ingresá tu nueva contraseña",
-        "messageCheck": "Reingresá tu contraseña",
+    "newPassword": {
+      "subtitle": "Luego, ingresá tu nueva contraseña",
+      "title": "Nueva contraseña",
+      "input": {
+        "user": {
+          "message": "Ingresá tu nueva contraseña",
+          "messageCheck": "Reingresá tu contraseña",
+        },
       },
-    },
-    "actions": {
-      "confirm": "Confirmar",
+      "actions": {
+        "confirm": "Confirmar",
+      },
     },
   },
   "signUp": {
@@ -77,6 +78,7 @@ const Map<dynamic, dynamic> ES = {
         "notValid": "Al menos 8 caracteres incluyendo 1 número",
         "required": "La contraseña es requerida",
         "message": "Ingresá tu contraseña",
+        "notEqual": "Ambas contraseñas deben ser iguales",
       },
     },
     "actions": {
@@ -98,6 +100,7 @@ const Map<dynamic, dynamic> ES = {
     "subtitle": "Un email con el código de verificación fue enviado a",
     "input": {
       "code": {
+        "minQuantity": "El código debe tener 6 dígitos",
         "message": "Ingresá el código",
         "required": "El código no puede ser vacio",
       },
