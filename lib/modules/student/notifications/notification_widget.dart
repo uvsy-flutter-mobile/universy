@@ -70,7 +70,7 @@ class NotificationEventWidget extends StatelessWidget {
     String timeFrom = _event.timeFrom.format(context);
     return Center(
         child: Text(
-      "$timeFrom",
+      "$timeFrom hs",
       style: Theme.of(context).primaryTextTheme.caption,
       textAlign: TextAlign.center,
     ));

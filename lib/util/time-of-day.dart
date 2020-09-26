@@ -3,6 +3,7 @@ import 'package:universy/util/object.dart';
 
 class TimeOfDayIntConverter {
   static const int NULL_INT = 0;
+  static const int DEFAULT_HOUR = 00;
 
   TimeOfDay convertFromInt(int timeInt) {
     if (timeInt != NULL_INT) {
@@ -10,7 +11,7 @@ class TimeOfDayIntConverter {
       int minutes = timeInt % 100;
       return TimeOfDay(hour: hours, minute: minutes);
     }
-    return null;
+    return TimeOfDay(hour: DEFAULT_HOUR, minute: DEFAULT_HOUR);
   }
 
   int convertFromTimeOfDay(TimeOfDay time) {
