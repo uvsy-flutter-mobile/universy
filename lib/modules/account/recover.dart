@@ -121,17 +121,20 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   Future<void> _confirmCode(BuildContext context) async {
     String code = _getConfirmationCode();
     var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
-    await accountService.setNewPassword(user,'12345', code);
+    await accountService.setNewPassword(user, 'Universy12345', code);
+    User userCognito = User(user, 'Universy12345');
+    await accountService.logIn(userCognito);
+    await print(accountService.isLoggedIn());
+
+  }
+
+  void _navigateToHomeScreen(BuildContext context) {
+    FlushBarBroker().clear();
+    Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
   void _navigateToSetPasswordWidget(BuildContext context) {
     context.read<AccountCubit>().toSetNewPasswordState(user);
-  }
-
-  void _navigateToHomeScreen(BuildContext context) {
-    Navigator.pushReplacementNamed(context, Routes.HOME);
-    // TODO: Should we keep this flushbar? We will go to the welcome page!
-    // _showVerifiedAccountFlushBar(context);
   }
 
   void _resendVerificationCode(BuildContext context) async {
@@ -164,15 +167,6 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
     FlushBarBroker()
         .withMessage(_emailSentMessage())
         .withIcon(Icon(Icons.mail, color: Colors.white))
-        .show(context);
-  }
-
-  // TODO: Should we show this?
-  void _showVerifiedAccountFlushBar(BuildContext context) {
-    FlushBarBroker()
-        .withMessage(_verifiedAccountMessage())
-        .withIcon(Icon(Icons.check_circle, color: Colors.green))
-        .withDuration(5)
         .show(context);
   }
 
