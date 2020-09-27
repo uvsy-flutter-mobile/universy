@@ -51,6 +51,7 @@ const Map<dynamic, dynamic> ES = {
       "forgottenPassword": "Olvidaste tu contraseña?",
     },
     "newPassword": {
+      "passwordChangedCorrectly":"Tu contraseña fue actualizada con éxito",
       "subtitle": "Luego, ingresá tu nueva contraseña",
       "changePasswordTitle": "Cambiar Contraseña",
       "title": "Nueva contraseña",

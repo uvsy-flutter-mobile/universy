@@ -186,6 +186,8 @@ class DefaultAccountService extends AccountService {
         user.password,
         newPassword,
       );
+    } on CognitoClientException catch (e) {
+      throw _translateCognitoClientException(e);
     } catch (e) {
       Log.getLogger().error("Error changing password.", e);
       throw ServiceException();

@@ -1,4 +1,3 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
@@ -30,13 +29,11 @@ class ProfileChangePasswordWidget extends StatefulWidget {
 
 class _ProfileChangePasswordWidgetState extends State<ProfileChangePasswordWidget> {
   final _formKey = GlobalKey<FormState>();
-  String user;
   String _userId;
   final TextEditingController _oldPasswordController = TextEditingController();
   final TextEditingController _firstPasswordController = TextEditingController();
   final TextEditingController _secondPasswordController = TextEditingController();
   bool _passwordHidden;
-  ScrollController _scrollController;
 
   @override
   void initState() {
@@ -47,14 +44,12 @@ class _ProfileChangePasswordWidgetState extends State<ProfileChangePasswordWidge
 
   @override
   void dispose() {
-    this.user = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      controller: _scrollController,
+    return SingleChildScrollView(
       child: Form(
         key: _formKey,
         child: SymmetricEdgePaddingWidget.horizontal(
@@ -96,9 +91,9 @@ class _ProfileChangePasswordWidgetState extends State<ProfileChangePasswordWidge
 
   Future<void> _changePassword(BuildContext context) async {
     String oldPassword = _oldPasswordController.text.trim();
+    String newPassword = _firstPasswordController.text.trim();
     User user = User(_userId, oldPassword);
     var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
-    String newPassword = _firstPasswordController.text.trim();
     await accountService.changePassword(user, newPassword);
   }
 
@@ -124,11 +119,22 @@ class _ProfileChangePasswordWidgetState extends State<ProfileChangePasswordWidge
   }
 
   String _actualPasswordIncorrect() =>
-      AppText.getInstance().get("newPassword.input.user.oldPasswordIncorrect");
+      AppText.getInstance().get("recoverPassword.newPassword.input.user.oldPasswordIncorrect");
+
+  String _passwordChangedCorrectly() =>
+      AppText.getInstance().get("recoverPassword.newPassword.passwordChangedCorrectly");
 
   void _navigateToHomeScreen(BuildContext context) {
     FlushBarBroker().clear();
+    _showPasswordChangedCorrectly(context);
     Navigator.pushReplacementNamed(context, Routes.HOME);
+  }
+
+  void _showPasswordChangedCorrectly(BuildContext context) {
+    FlushBarBroker()
+        .withMessage(_passwordChangedCorrectly())
+        .withIcon(Icon(Icons.check, color: Colors.green))
+        .show(context);
   }
 
   void _changePasswordVisibilityOnPressedAction() {
@@ -185,9 +191,8 @@ class NewPasswordWidget extends StatelessWidget {
   TextFormFieldValidatorBuilder _buildPasswordValidator() {
     return NotEqualTextFormValidatorBuilderPassword(
       controllerToComparate: _secondTextEditingController,
-      notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),
-      validationFunction: (value) => EmailValidator.validate(value),
       regExp: Regex.PASSWORD_FORMAT_REGEX,
+      notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),
       patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
       emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
     );

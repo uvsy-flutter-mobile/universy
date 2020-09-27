@@ -114,9 +114,7 @@ class NotEqualTextFormValidatorBuilderPassword implements TextFormFieldValidator
   final TextEditingController _controllerToComparate;
 
   NotEqualTextFormValidatorBuilderPassword(
-      {@required ValidationFunction validationFunction,
-      @required String message,
-      @required RegExp regExp,
+      {@required RegExp regExp,
       @required String emptyMessage,
       @required String patternMessage,
       @required String notEqualMessage,

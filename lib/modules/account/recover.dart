@@ -1,4 +1,3 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
@@ -469,9 +468,8 @@ class NewPasswordWidget extends StatelessWidget {
   TextFormFieldValidatorBuilder _buildPasswordValidator() {
     return NotEqualTextFormValidatorBuilderPassword(
       controllerToComparate: _secondTextEditingController,
-      notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),
-      validationFunction: (value) => EmailValidator.validate(value),
       regExp: Regex.PASSWORD_FORMAT_REGEX,
+      notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),
       patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
       emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
     );

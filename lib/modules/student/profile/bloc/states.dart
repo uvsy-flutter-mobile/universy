@@ -33,7 +33,7 @@ class NotProfileState extends ProfileState {
 }
 
 class ChangePasswordState extends ProfileState {
-  String userId;
+  final String userId;
 
   ChangePasswordState(this.userId);
 }
