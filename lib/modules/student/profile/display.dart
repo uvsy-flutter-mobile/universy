@@ -74,6 +74,7 @@ class ProfileDisplayWidget extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       children: [
         _EditDialBuilder(() => _navigateToEdit(context)).build(context),
+        _ChangePasswordBuilder(() => _navigateToChangePassword(context)).build(context),
         _ExitDialBuilder().build(context),
       ],
     );
@@ -81,6 +82,28 @@ class ProfileDisplayWidget extends StatelessWidget {
 
   void _navigateToEdit(BuildContext context) {
     context.read<ProfileCubit>().toEdit(this.profile);
+  }
+
+  void _navigateToChangePassword(BuildContext context) {
+    context.read<ProfileCubit>().toChangePassword(this.profile);
+  }
+}
+
+class _ChangePasswordBuilder extends ComponentBuilder<SpeedDialChild> {
+  final VoidCallback editAction;
+
+  _ChangePasswordBuilder(this.editAction);
+
+  @override
+  SpeedDialChild build(BuildContext context) {
+    return SpeedDialChild(
+      child: Icon(Icons.lock),
+      backgroundColor: Theme.of(context).accentColor,
+      label: "Cambiar contraseña",
+      //AppText.getInstance().get("student.profile.actions.edit"),
+      labelStyle: TextStyle(fontSize: 18.0),
+      onTap: editAction,
+    );
   }
 }
 

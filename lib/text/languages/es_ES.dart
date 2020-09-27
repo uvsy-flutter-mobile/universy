@@ -52,11 +52,15 @@ const Map<dynamic, dynamic> ES = {
     },
     "newPassword": {
       "subtitle": "Luego, ingresá tu nueva contraseña",
+      "changePasswordTitle": "Cambiar Contraseña",
       "title": "Nueva contraseña",
       "input": {
         "user": {
+          "oldPasswordIncorrect": "La contraseña actual es incorrecta",
+          "passwordChanged": "La contraseña se cambió correctamente",
+          "oldPassword": "Ingresá tu contraseña actual",
           "message": "Ingresá tu nueva contraseña",
-          "messageCheck": "Reingresá tu contraseña",
+          "messageCheck": "Reingresá tu nueva contraseña",
         },
       },
       "actions": {

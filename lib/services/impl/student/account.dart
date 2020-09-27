@@ -177,6 +177,11 @@ class DefaultAccountService extends AccountService {
   Future<void> changePassword(User user, String newPassword) async {
     try {
       final cognitoUser = CognitoUser(user.username, _userPool);
+      final authDetails = AuthenticationDetails(
+        username: user.username,
+        password: user.password,
+      );
+      await cognitoUser.authenticateUser(authDetails);
       await cognitoUser.changePassword(
         user.password,
         newPassword,
