@@ -22,6 +22,7 @@ class DisplayCharts extends StatelessWidget {
   final List<Subject> _subjects;
   static const AVERAGE_DECIMALS = 2;
   static const AVERAGE_DEFAULT = 0.00;
+  static const EMPTY_VALUE = 0;
 
   const DisplayCharts({Key key, @required List<Subject> subjects})
       : this._subjects = subjects,
@@ -91,11 +92,11 @@ class DisplayCharts extends StatelessWidget {
     charts.add(_buildOptativeProgressChart());
     charts.add(_buildMandatoryProgressChart());
 
-    if (program.points != 0) {
+    if (program.points != EMPTY_VALUE) {
       charts.add(_buildPointsChart(completedPoints, program));
     }
 
-    if (program.hours != 0) {
+    if (program.hours != EMPTY_VALUE) {
       charts.add(_buildHoursChart(completedHours, program));
     }
     return charts;
