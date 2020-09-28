@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/calendar.dart';
-import 'package:universy/modules/student/notifications/notification_widget.dart';
+import 'package:universy/modules/student/notifications/event_widget.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
