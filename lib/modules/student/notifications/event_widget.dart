@@ -21,7 +21,7 @@ class NotificationEventWidget extends StatelessWidget {
             border: Border.all(
               color: Colors.deepPurple,
               width: 2.0,
-            )),
+            ),),
         child: CircleAvatar(
           child: _createEventWidget(context),
           backgroundColor: Colors.white70,
@@ -73,6 +73,6 @@ class NotificationEventWidget extends StatelessWidget {
       "$timeFrom hs",
       style: Theme.of(context).primaryTextTheme.caption,
       textAlign: TextAlign.center,
-    ));
+    ),);
   }
 }

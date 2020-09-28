@@ -27,7 +27,7 @@ class _Widget extends StatelessWidget {
                 AppText.getInstance().get("main.modules.$moduleName.title")),
             flex: 6),
         Expanded(child: NotificationsAlert(), flex: 2)
-      ]),
+      ],),
       backgroundColor: Colors.white,
     );
   }
