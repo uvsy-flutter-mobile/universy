@@ -158,9 +158,10 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
             Expanded(
               flex: 10,
               child: VerifyReSendButtonWidget(
-                  enabled: !animationController.isAnimating,
-                  resendAction: _resendVerificationCode,
-                  animationController: animationController),
+                enabled: !animationController.isAnimating,
+                resendAction: _resendVerificationCode,
+                animationController: animationController,
+              ),
             )
           ],
         );
@@ -386,8 +387,9 @@ class VerifyCodeWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
-    return NotEmptySixCharactersCodeValidator(
-      notQuantityValid: AppText.getInstance().get("verify.input.code.minQuantity"),
+    return PatternNotEmptyTextFormFieldValidatorBuilder (
+      regExp: Regex.CODE_MAX_LENGHT,
+      patternMessage: AppText.getInstance().get("verify.input.code.minQuantity"),
       emptyMessage: AppText.getInstance().get("verify.input.code.required"),
     );
   }
@@ -466,7 +468,7 @@ class NewPasswordWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _buildPasswordValidator() {
-    return NotEqualTextFormValidatorBuilderPassword(
+    return NotEqualPatternTextFormValidatorBuilderPassword(
       controllerToComparate: _secondTextEditingController,
       regExp: Regex.PASSWORD_FORMAT_REGEX,
       notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),

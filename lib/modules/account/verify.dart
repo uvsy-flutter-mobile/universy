@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:universy/constants/regex.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/services/exceptions/student.dart';
@@ -370,8 +371,9 @@ class VerifyCodeWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
-    return NotEmptySixCharactersCodeValidator(
-      notQuantityValid: AppText.getInstance().get("verify.input.code.minQuantity"),
+    return PatternNotEmptyTextFormFieldValidatorBuilder(
+      regExp: Regex.CODE_MAX_LENGHT,
+      patternMessage: AppText.getInstance().get("verify.input.code.minQuantity"),
       emptyMessage: AppText.getInstance().get("verify.input.code.required"),
     );
   }

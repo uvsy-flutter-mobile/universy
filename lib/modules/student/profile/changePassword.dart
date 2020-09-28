@@ -189,7 +189,7 @@ class NewPasswordWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _buildPasswordValidator() {
-    return NotEqualTextFormValidatorBuilderPassword(
+    return NotEqualPatternTextFormValidatorBuilderPassword(
       controllerToComparate: _secondTextEditingController,
       regExp: Regex.PASSWORD_FORMAT_REGEX,
       notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),

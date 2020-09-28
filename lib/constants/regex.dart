@@ -20,4 +20,7 @@ abstract class Regex {
   // ignore: non_constant_identifier_names
   static final RegExp ALIAS_FORMAT_REGEX =
       RegExp(r"^[A-Za-z0-9\.*]{3,20}(?<!\.)$");
+
+  //ignore: non_constant_identifier_verification_code max 6 characters
+  static final RegExp CODE_MAX_LENGHT = RegExp(r"^[0-9]{6}$");
 }

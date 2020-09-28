@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/account/inputUser.dart';
+import 'package:universy/modules/account/input_user.dart';
 import 'package:universy/modules/account/login.dart';
 import 'package:universy/modules/account/recover.dart';
 import 'package:universy/modules/account/signup.dart';
@@ -18,7 +18,7 @@ class AccountStateBuilder extends WidgetBuilderFactory<AccountState> {
     } else if (state is RecoverPasswordState) {
       return RecoverPasswordWidget(user: state.user,);
     } else if (state is InputUserState) {
-      return InputUserWidget();
+      return ForgotPasswordWidget();
     }
 
     return LogInWidget();

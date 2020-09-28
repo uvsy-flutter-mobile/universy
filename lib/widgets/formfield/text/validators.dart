@@ -106,14 +106,14 @@ class NotEqualTextFormValidatorBuilder implements TextFormFieldValidatorBuilder 
   }
 }
 
-class NotEqualTextFormValidatorBuilderPassword implements TextFormFieldValidatorBuilder {
+class NotEqualPatternTextFormValidatorBuilderPassword implements TextFormFieldValidatorBuilder {
   final RegExp pattern;
   final String _patternMessage;
   final String _emptyMessage;
   final String _notEqualMessage;
   final TextEditingController _controllerToComparate;
 
-  NotEqualTextFormValidatorBuilderPassword(
+  NotEqualPatternTextFormValidatorBuilderPassword(
       {@required RegExp regExp,
       @required String emptyMessage,
       @required String patternMessage,
@@ -134,29 +134,6 @@ class NotEqualTextFormValidatorBuilderPassword implements TextFormFieldValidator
         return _notEqualMessage;
       } else if (!pattern.hasMatch(value)) {
         return _patternMessage;
-      }
-      return null; // This null is required by the interface.
-    };
-  }
-}
-
-class NotEmptySixCharactersCodeValidator implements TextFormFieldValidatorBuilder {
-  final String _notQuantityValid;
-  final String _emptyMessage;
-
-  NotEmptySixCharactersCodeValidator({
-    @required String emptyMessage,
-    @required String notQuantityValid,
-  })  : this._notQuantityValid = notQuantityValid,
-        this._emptyMessage = emptyMessage;
-
-  @override
-  FormFieldValidator<String> build(BuildContext context) {
-    return (value) {
-      if (value.trim().length != 6) {
-        return _notQuantityValid;
-      } else if (value.isEmpty) {
-        return _emptyMessage;
       }
       return null; // This null is required by the interface.
     };

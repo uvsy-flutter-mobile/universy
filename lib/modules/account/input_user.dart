@@ -17,20 +17,20 @@ import 'package:universy/widgets/text/custom.dart';
 
 import 'keys.dart';
 
-class InputUserWidget extends StatefulWidget {
-  const InputUserWidget({Key key}) : super(key: key);
+class ForgotPasswordWidget extends StatefulWidget {
+  const ForgotPasswordWidget({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return InputUserWidgetState();
+    return ForgotPasswordWidgetState();
   }
 }
 
-class InputUserWidgetState extends State<InputUserWidget> {
+class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
   GlobalKey<FormState> _formKey;
   TextEditingController _userController;
 
-  InputUserWidgetState();
+  ForgotPasswordWidgetState();
 
   @override
   void initState() {
