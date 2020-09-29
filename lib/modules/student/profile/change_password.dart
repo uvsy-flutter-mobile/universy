@@ -16,18 +16,18 @@ import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 import 'package:universy/widgets/text/custom.dart';
 
-class ProfileChangePasswordWidget extends StatefulWidget {
+class ChangePasswordWidget extends StatefulWidget {
   final String _userId;
 
-  const ProfileChangePasswordWidget(String userId, {Key key})
+  const ChangePasswordWidget(String userId, {Key key})
       : this._userId = userId,
         super(key: key);
 
   @override
-  _ProfileChangePasswordWidgetState createState() => _ProfileChangePasswordWidgetState();
+  _ChangePasswordWidgetState createState() => _ChangePasswordWidgetState();
 }
 
-class _ProfileChangePasswordWidgetState extends State<ProfileChangePasswordWidget> {
+class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   final _formKey = GlobalKey<FormState>();
   String _userId;
   final TextEditingController _oldPasswordController = TextEditingController();
