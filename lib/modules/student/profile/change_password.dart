@@ -31,8 +31,10 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   final _formKey = GlobalKey<FormState>();
   String _userId;
   final TextEditingController _oldPasswordController = TextEditingController();
-  final TextEditingController _firstPasswordController = TextEditingController();
-  final TextEditingController _secondPasswordController = TextEditingController();
+  final TextEditingController _firstPasswordController =
+      TextEditingController();
+  final TextEditingController _secondPasswordController =
+      TextEditingController();
   bool _passwordHidden;
 
   @override
@@ -61,15 +63,16 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
                 textEditingController: _oldPasswordController,
                 obscure: _passwordHidden,
                 onPressed: _changePasswordVisibilityOnPressedAction,
-                hint:
-                    AppText.getInstance().get("recoverPassword.newPassword.input.user.oldPassword"),
+                hint: AppText.getInstance()
+                    .get("recoverPassword.newPassword.input.user.oldPassword"),
               ),
               NewPasswordWidget(
                 textEditingController: _firstPasswordController,
                 secondEmailEditingController: _secondPasswordController,
                 obscure: _passwordHidden,
                 onPressed: _changePasswordVisibilityOnPressedAction,
-                hint: AppText.getInstance().get("recoverPassword.newPassword.input.user.message"),
+                hint: AppText.getInstance()
+                    .get("recoverPassword.newPassword.input.user.message"),
               ),
               NewPasswordWidget(
                 textEditingController: _secondPasswordController,
@@ -93,7 +96,8 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
     String oldPassword = _oldPasswordController.text.trim();
     String newPassword = _firstPasswordController.text.trim();
     User user = User(_userId, oldPassword);
-    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    var accountService =
+        Provider.of<ServiceFactory>(context, listen: false).accountService();
     await accountService.changePassword(user, newPassword);
   }
 
@@ -118,11 +122,11 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
         .show(context);
   }
 
-  String _actualPasswordIncorrect() =>
-      AppText.getInstance().get("recoverPassword.newPassword.input.user.oldPasswordIncorrect");
+  String _actualPasswordIncorrect() => AppText.getInstance()
+      .get("recoverPassword.newPassword.input.user.oldPasswordIncorrect");
 
-  String _passwordChangedCorrectly() =>
-      AppText.getInstance().get("recoverPassword.newPassword.passwordChangedCorrectly");
+  String _passwordChangedCorrectly() => AppText.getInstance()
+      .get("recoverPassword.newPassword.passwordChangedCorrectly");
 
   void _navigateToHomeScreen(BuildContext context) {
     FlushBarBroker().clear();
@@ -192,8 +196,10 @@ class NewPasswordWidget extends StatelessWidget {
     return NotEqualPatternTextFormValidatorBuilderPassword(
       controllerToComparate: _secondTextEditingController,
       regExp: Regex.PASSWORD_FORMAT_REGEX,
-      notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),
-      patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
+      notEqualMessage:
+          AppText.getInstance().get("signUp.input.password.notEqual"),
+      patternMessage:
+          AppText.getInstance().get("signUp.input.password.notValid"),
       emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
     );
   }
@@ -253,7 +259,7 @@ class NewPasswordTitleWidget extends StatelessWidget {
     return OnlyEdgePaddedWidget.top(
       padding: 12.0,
       child: EllipsisCustomText.left(
-        text: AppText.getInstance().get("recoverPassword.newPassword.changePasswordTitle"),
+        text: AppText.getInstance().get("recoverPassword.newPassword.title"),
         textStyle: Theme.of(context).primaryTextTheme.subtitle1,
       ),
     );
@@ -302,7 +308,8 @@ class NewPasswordConfirmButtonWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Text(
-        AppText.getInstance().get("recoverPassword.newPassword.actions.confirm"),
+        AppText.getInstance()
+            .get("recoverPassword.newPassword.actions.confirm"),
         style: TextStyle(color: Colors.white),
       ),
     );

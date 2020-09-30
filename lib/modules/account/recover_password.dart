@@ -35,8 +35,10 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   AnimationController animationController;
   String user;
 
-  final TextEditingController _firstPasswordController = TextEditingController();
-  final TextEditingController _secondPasswordController = TextEditingController();
+  final TextEditingController _firstPasswordController =
+      TextEditingController();
+  final TextEditingController _secondPasswordController =
+      TextEditingController();
   bool _passwordHidden;
 
   @override
@@ -84,16 +86,16 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
                     secondEmailEditingController: _secondPasswordController,
                     obscure: _passwordHidden,
                     onPressed: _changePasswordVisibilityOnPressedAction,
-                    hint:
-                        AppText.getInstance().get("recoverPassword.newPassword.input.user.message"),
+                    hint: AppText.getInstance()
+                        .get("recoverPassword.newPassword.input.user.message"),
                   ),
                   NewPasswordWidget(
                     textEditingController: _secondPasswordController,
                     secondEmailEditingController: _firstPasswordController,
                     obscure: _passwordHidden,
                     onPressed: _changePasswordVisibilityOnPressedAction,
-                    hint: AppText.getInstance()
-                        .get("recoverPassword.newPassword.input.user.messageCheck"),
+                    hint: AppText.getInstance().get(
+                        "recoverPassword.newPassword.input.user.messageCheck"),
                   ),
                   NewPasswordConfirmButtonWidget(
                     createButtonAction: _submitButtonOnPressedAction,
@@ -109,7 +111,8 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   }
 
   Future<void> _changePassword(BuildContext context) async {
-    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    var accountService =
+        Provider.of<ServiceFactory>(context, listen: false).accountService();
     String code = _getConfirmationCode();
     String username = widget.user;
     String password = _firstPasswordController.text.trim();
@@ -184,7 +187,8 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   }
 
   Future<void> _performResendCode(BuildContext context) async {
-    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    var accountService =
+        Provider.of<ServiceFactory>(context, listen: false).accountService();
     await accountService.forgotPassword(user);
     animationController.reverse(from: 1.0);
   }
@@ -200,9 +204,11 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
 
   String _resendMessage() => AppText.getInstance().get("verify.info.resending");
 
-  String _emailSentMessage() => AppText.getInstance().get("verify.info.codeSent");
+  String _emailSentMessage() =>
+      AppText.getInstance().get("verify.info.codeSent");
 
-  String _codeMismatchMessage() => AppText.getInstance().get("verify.error.codeMismatch");
+  String _codeMismatchMessage() =>
+      AppText.getInstance().get("verify.error.codeMismatch");
 }
 
 /// Verify Title
@@ -241,7 +247,8 @@ class VerifySubTitleWidget extends StatelessWidget {
 class VerifySendButtonWidget extends StatelessWidget {
   final Function(BuildContext context) _sendButtonAction;
 
-  const VerifySendButtonWidget({Key key, @required Function(BuildContext context) sendButtonAction})
+  const VerifySendButtonWidget(
+      {Key key, @required Function(BuildContext context) sendButtonAction})
       : this._sendButtonAction = sendButtonAction,
         super(key: key);
 
@@ -316,7 +323,8 @@ class VerifyReSendButtonWidget extends StatelessWidget {
               _buildButtonText(),
               _buildButtonIcon(),
               VerifyCountDownWidget(
-                  duration: _animationController.duration * _animationController.value),
+                  duration: _animationController.duration *
+                      _animationController.value),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
@@ -368,7 +376,8 @@ class VerifyCountDownWidget extends StatelessWidget {
 class VerifyCodeWidget extends StatelessWidget {
   final TextEditingController _textEditingController;
 
-  const VerifyCodeWidget({Key key, @required TextEditingController textEditingController})
+  const VerifyCodeWidget(
+      {Key key, @required TextEditingController textEditingController})
       : this._textEditingController = textEditingController,
         super(key: key);
 
@@ -387,15 +396,17 @@ class VerifyCodeWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
-    return PatternNotEmptyTextFormFieldValidatorBuilder (
+    return PatternNotEmptyTextFormFieldValidatorBuilder(
       regExp: Regex.CODE_MAX_LENGHT,
-      patternMessage: AppText.getInstance().get("verify.input.code.minQuantity"),
+      patternMessage:
+          AppText.getInstance().get("verify.input.code.minQuantity"),
       emptyMessage: AppText.getInstance().get("verify.input.code.required"),
     );
   }
 
   TextInputDecorationBuilder _buildNameDecorator() {
-    return TextInputDecorationBuilder(AppText.getInstance().get("verify.input.code.message"));
+    return TextInputDecorationBuilder(
+        AppText.getInstance().get("verify.input.code.message"));
   }
 }
 
@@ -403,23 +414,13 @@ class VerifyCodeWidget extends StatelessWidget {
 class NewPasswordTitleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var subtitle = AppText.getInstance().get("recoverPassword.newPassword.subtitle");
+    var subtitle =
+        AppText.getInstance().get("recoverPassword.newPassword.subtitle");
     return OnlyEdgePaddedWidget.top(
       padding: 12.0,
       child: Text(subtitle),
     );
   }
-}
-
-@override
-Widget build(BuildContext context) {
-  return OnlyEdgePaddedWidget.top(
-    padding: 12.0,
-    child: EllipsisCustomText.left(
-      text: AppText.getInstance().get("newPassword.title"),
-      textStyle: Theme.of(context).primaryTextTheme.subtitle1,
-    ),
-  );
 }
 
 /// Signup controller for username
@@ -471,8 +472,10 @@ class NewPasswordWidget extends StatelessWidget {
     return NotEqualPatternTextFormValidatorBuilderPassword(
       controllerToComparate: _secondTextEditingController,
       regExp: Regex.PASSWORD_FORMAT_REGEX,
-      notEqualMessage: AppText.getInstance().get("signUp.input.password.notEqual"),
-      patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
+      notEqualMessage:
+          AppText.getInstance().get("signUp.input.password.notEqual"),
+      patternMessage:
+          AppText.getInstance().get("signUp.input.password.notValid"),
       emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
     );
   }
@@ -519,7 +522,8 @@ class SignUpPasswordWidget extends StatelessWidget {
   TextFormFieldValidatorBuilder _getPasswordValidator() {
     return PatternNotEmptyTextFormFieldValidatorBuilder(
       regExp: Regex.PASSWORD_FORMAT_REGEX,
-      patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
+      patternMessage:
+          AppText.getInstance().get("signUp.input.password.notValid"),
       emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
     );
   }
@@ -529,7 +533,8 @@ class SignUpPasswordWidget extends StatelessWidget {
 class SignUpLinkToLogin extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const SignUpLinkToLogin({Key key, @required Function(BuildContext context) linkAction})
+  const SignUpLinkToLogin(
+      {Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -551,7 +556,8 @@ class SignUpLinkToLogin extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("signUp.actions.accountQuestion")),
-          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(
+              decoration: TextDecoration.underline, color: Colors.black),
         ),
       ],
     );
@@ -563,7 +569,8 @@ class SignUpLinkToLogin extends StatelessWidget {
         GestureDetector(
           child: Text(
             AppText.getInstance().get("signUp.actions.goToLogin"),
-            style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
+            style: TextStyle(
+                decoration: TextDecoration.underline, color: Colors.blue),
           ),
           onTap: () => _linkAction(context),
         )
@@ -615,7 +622,8 @@ class NewPasswordConfirmButtonWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Text(
-        AppText.getInstance().get("recoverPassword.newPassword.actions.confirm"),
+        AppText.getInstance()
+            .get("recoverPassword.newPassword.actions.confirm"),
         style: TextStyle(color: Colors.white),
       ),
     );

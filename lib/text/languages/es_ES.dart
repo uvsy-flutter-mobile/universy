@@ -51,10 +51,9 @@ const Map<dynamic, dynamic> ES = {
       "forgottenPassword": "Olvidaste tu contraseña?",
     },
     "newPassword": {
-      "passwordChangedCorrectly":"Tu contraseña fue actualizada con éxito",
+      "passwordChangedCorrectly": "Tu contraseña fue actualizada con éxito",
       "subtitle": "Luego, ingresá tu nueva contraseña",
-      "changePasswordTitle": "Cambiar Contraseña",
-      "title": "Nueva contraseña",
+      "title": "Cambiar Contraseña",
       "input": {
         "user": {
           "oldPasswordIncorrect": "La contraseña actual es incorrecta",
@@ -202,7 +201,8 @@ const Map<dynamic, dynamic> ES = {
       },
       "empty": {
         "title": "¡Ups!",
-        "subtitle": "Parece que no hay materias cargadas en el plan de estudios",
+        "subtitle":
+            "Parece que no hay materias cargadas en el plan de estudios",
       },
       "correlatives": {
         "title": "Correlativas",
@@ -251,7 +251,8 @@ const Map<dynamic, dynamic> ES = {
       },
       "actions": {
         "confirmDeleteNote": "¿Estás seguro que deseas eliminar la anotación?",
-        "confirmDeleteNotes": "¿Estás seguro que deseas eliminar las anotaciones?",
+        "confirmDeleteNotes":
+            "¿Estás seguro que deseas eliminar las anotaciones?",
         "deleteConfirmed": "¡Entendido!",
       },
       "searchBar": {
