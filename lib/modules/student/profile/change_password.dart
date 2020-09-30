@@ -40,12 +40,14 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   @override
   void initState() {
     super.initState();
-    _passwordHidden = true;
-    _userId = widget._userId;
+    this._passwordHidden = true;
+    this._userId = widget._userId;
   }
 
   @override
   void dispose() {
+    this._passwordHidden = null;
+    this._userId = null;
     super.dispose();
   }
 
@@ -110,8 +112,6 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
           .handle(NotAuthorized, _showActualPasswordIncorrect)
           .build()
           .run(context);
-    } else {
-      return;
     }
   }
 
