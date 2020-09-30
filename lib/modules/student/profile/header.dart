@@ -12,10 +12,12 @@ class ProfileHeaderWidget extends StatelessWidget {
     var child = Icon(Icons.priority_high, size: 80, color: Colors.grey);
     return ProfileHeaderWidget(child);
   }
+
   factory ProfileHeaderWidget.edit(Profile profile) {
-    var child = Icon(Icons.more_horiz, size: 80, color: Colors.grey);
+    var child = Icon(Icons.edit, size: 80, color: Colors.grey);
     return ProfileHeaderWidget(child);
   }
+
   factory ProfileHeaderWidget.display(Profile profile) {
     var child = Text(
       InitialsFormatter(profile).format(),
@@ -23,6 +25,12 @@ class ProfileHeaderWidget extends StatelessWidget {
     );
     return ProfileHeaderWidget(child);
   }
+
+  factory ProfileHeaderWidget.changePassword() {
+    var child = Icon(Icons.edit, size: 80, color: Colors.grey);
+    return ProfileHeaderWidget(child);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
