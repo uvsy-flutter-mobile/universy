@@ -56,7 +56,8 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         child: Column(
           children: <Widget>[
             ForgotPasswordTitleWidget(),
-            ForgotPasswordnameWidget(textEditingController: _userController),
+            ForgotPasswordUserNameWidget(
+                textEditingController: _userController),
             ForgotPasswordLinkToLogin(linkAction: _navigateToLoginWidget),
             ForgotPasswordSubmitButtonWidget(
                 loginAction: _submitButtonOnPressedAction),
@@ -131,10 +132,10 @@ class ForgotPasswordTitleWidget extends StatelessWidget {
 }
 
 /// Login user input
-class ForgotPasswordnameWidget extends StatelessWidget {
+class ForgotPasswordUserNameWidget extends StatelessWidget {
   final TextEditingController _textEditingController;
 
-  const ForgotPasswordnameWidget(
+  const ForgotPasswordUserNameWidget(
       {Key key, @required TextEditingController textEditingController})
       : this._textEditingController = textEditingController,
         super(key: key);

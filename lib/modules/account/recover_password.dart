@@ -110,17 +110,6 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
     );
   }
 
-  Future<void> _changePassword(BuildContext context) async {
-    var accountService =
-        Provider.of<ServiceFactory>(context, listen: false).accountService();
-    String code = _getConfirmationCode();
-    String username = widget.user;
-    String password = _firstPasswordController.text.trim();
-    User user = User(username, password);
-    await accountService.setNewPassword(username, password, code);
-    await accountService.logIn(user);
-  }
-
   void _submitButtonOnPressedAction(BuildContext context) async {
     if (this._formKey.currentState.validate()) {
       FocusScope.of(context).unfocus();
@@ -130,9 +119,18 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
           .handle(ConfirmationCodeMismatch, _showCodeMismatchFlushBar)
           .build()
           .run(context);
-    } else {
-      return;
     }
+  }
+
+  Future<void> _changePassword(BuildContext context) async {
+    var accountService =
+        Provider.of<ServiceFactory>(context, listen: false).accountService();
+    String code = _getConfirmationCode();
+    String username = widget.user;
+    String password = _firstPasswordController.text.trim();
+    User user = User(username, password);
+    await accountService.confirmPassword(username, password, code);
+    await accountService.logIn(user);
   }
 
   void _showCodeMismatchFlushBar(BuildContext context) {

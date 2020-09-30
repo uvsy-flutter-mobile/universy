@@ -59,8 +59,8 @@ class DefaultAccountService extends AccountService {
       if (!session.isValid()) {
         session = await cognitoUser.refreshSession(session.refreshToken);
       }
-      return Token(
-          session.idToken.jwtToken, session.accessToken.jwtToken, session.refreshToken.toString());
+      return Token(session.idToken.jwtToken, session.accessToken.jwtToken,
+          session.refreshToken.toString());
     } on CognitoClientException catch (e) {
       throw _translateCognitoClientException(e);
     } catch (e) {
@@ -205,41 +205,17 @@ class DefaultAccountService extends AccountService {
     }
   }
 
-  @override
-  Future<void> confirmPassword(User user, String newPassword) async {
-    try {
-      final cognitoUser = CognitoUser(user.username, _userPool);
-      await cognitoUser.confirmPassword(user.password, newPassword);
-    } catch (e) {
-      Log.getLogger().error("Error confirming password.", e);
-      throw ServiceException();
-    }
-  }
-
-  Future<void> setNewPassword(String user, String newPassword, String code) async {
-    bool passwordConfirmed = false;
+  Future<void> confirmPassword(
+      String user, String newPassword, String code) async {
     final cognitoUser = CognitoUser(user, _userPool);
     try {
-      passwordConfirmed = await cognitoUser.confirmPassword(code, newPassword);
+      // No need right now to check the status of return
+      // It is not used
+      await cognitoUser.confirmPassword(code, newPassword);
     } on CognitoClientException catch (e) {
       throw _translateCognitoClientException(e);
     } catch (e) {
       Log.getLogger().error("Error confirming user.", e);
-      throw ServiceException();
-    }
-    print(passwordConfirmed);
-  }
-
-  Future<void> authenticateUser(User user) async {
-    try {
-      final cognitoUser = CognitoUser(user.username, _userPool);
-      final authDetails = AuthenticationDetails(
-        username: user.username,
-        password: user.password,
-      );
-      await cognitoUser.authenticateUser(authDetails);
-    } catch (e) {
-      Log.getLogger().error("Error validating login.", e);
       throw ServiceException();
     }
   }
