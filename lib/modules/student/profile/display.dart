@@ -74,7 +74,8 @@ class ProfileDisplayWidget extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       children: [
         _EditDialBuilder(() => _navigateToEdit(context)).build(context),
-        _ChangePasswordBuilder(() => _navigateToChangePassword(context)).build(context),
+        _ChangePasswordBuilder(() => _navigateToChangePassword(context))
+            .build(context),
         _ExitDialBuilder().build(context),
       ],
     );
@@ -99,6 +100,7 @@ class _ChangePasswordBuilder extends ComponentBuilder<SpeedDialChild> {
     return SpeedDialChild(
       child: Icon(Icons.lock),
       backgroundColor: Theme.of(context).accentColor,
+      // TODO: Change to app text
       label: "Cambiar contraseña",
       //AppText.getInstance().get("student.profile.actions.edit"),
       labelStyle: TextStyle(fontSize: 18.0),

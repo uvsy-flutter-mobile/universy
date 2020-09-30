@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
-import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/modules/account/keys.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
-import 'package:universy/widgets/buttons/raised/rounded.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/flushbar/builder.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 import 'package:universy/widgets/text/custom.dart';
+
+import 'bloc/cubit.dart';
+import 'header.dart';
 
 class ChangePasswordWidget extends StatefulWidget {
   final String _userId;
@@ -53,42 +57,58 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-        key: _formKey,
-        child: SymmetricEdgePaddingWidget.horizontal(
-          paddingValue: 25.0,
+    return ListView(
+      children: <Widget>[
+        Container(
+          color: Colors.transparent,
+          alignment: AlignmentDirectional.topCenter,
           child: Column(
             children: <Widget>[
-              NewPasswordTitleWidget(),
-              OldPasswordWidget(
-                textEditingController: _oldPasswordController,
-                obscure: _passwordHidden,
-                onPressed: _changePasswordVisibilityOnPressedAction,
-                hint: AppText.getInstance()
-                    .get("recoverPassword.newPassword.input.user.oldPassword"),
-              ),
-              NewPasswordWidget(
-                textEditingController: _firstPasswordController,
-                secondEmailEditingController: _secondPasswordController,
-                obscure: _passwordHidden,
-                onPressed: _changePasswordVisibilityOnPressedAction,
-                hint: AppText.getInstance()
-                    .get("recoverPassword.newPassword.input.user.message"),
-              ),
-              NewPasswordWidget(
-                textEditingController: _secondPasswordController,
-                secondEmailEditingController: _firstPasswordController,
-                obscure: _passwordHidden,
-                onPressed: _changePasswordVisibilityOnPressedAction,
-                hint: AppText.getInstance()
-                    .get("recoverPassword.newPassword.input.user.messageCheck"),
-              ),
-              NewPasswordConfirmButtonWidget(
-                createButtonAction: _submitButtonOnPressedAction,
-              ),
+              ProfileHeaderWidget.changePassword(),
+              _buildPasswordForm(context),
             ],
           ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPasswordForm(BuildContext context) {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 75,
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            NewPasswordTitleWidget(),
+            OldPasswordWidget(
+              textEditingController: _oldPasswordController,
+              obscure: _passwordHidden,
+              onPressed: _changePasswordVisibilityOnPressedAction,
+              hint: AppText.getInstance()
+                  .get("recoverPassword.newPassword.input.user.oldPassword"),
+            ),
+            NewPasswordWidget(
+              textEditingController: _firstPasswordController,
+              secondEmailEditingController: _secondPasswordController,
+              obscure: _passwordHidden,
+              onPressed: _changePasswordVisibilityOnPressedAction,
+              hint: AppText.getInstance()
+                  .get("recoverPassword.newPassword.input.user.message"),
+            ),
+            NewPasswordWidget(
+              textEditingController: _secondPasswordController,
+              secondEmailEditingController: _firstPasswordController,
+              obscure: _passwordHidden,
+              onPressed: _changePasswordVisibilityOnPressedAction,
+              hint: AppText.getInstance()
+                  .get("recoverPassword.newPassword.input.user.messageCheck"),
+            ),
+            NewPasswordConfirmButtonWidget(
+              createButtonAction: _submitButtonOnPressedAction,
+            ),
+          ],
         ),
       ),
     );
@@ -131,7 +151,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   void _navigateToHomeScreen(BuildContext context) {
     FlushBarBroker().clear();
     _showPasswordChangedCorrectly(context);
-    Navigator.pushReplacementNamed(context, Routes.HOME);
+    BlocProvider.of<ProfileCubit>(context).toDisplay();
   }
 
   void _showPasswordChangedCorrectly(BuildContext context) {
@@ -276,42 +296,19 @@ class NewPasswordConfirmButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 8.0,
-      child: SizedBox(
-        width: double.infinity,
-        child: CircularRoundedRectangleRaisedButton.general(
-          key: SIGNUP_KEY_SUBMIT_BUTTON,
-          radius: 10,
-          onPressed: () => _createButtonAction(context),
-          color: Colors.deepPurple,
-          child: Row(
-            children: <Widget>[
-              _buildButtonText(),
-              _buildButtonIcon(),
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
-        ),
+    return OnlyEdgePaddedWidget.top(
+      padding: 20,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          SaveButton(onSave: () => _createButtonAction(context)),
+          CancelButton(onCancel: () => _navigateToDisplay(context)),
+        ],
       ),
     );
   }
 
-  Widget _buildButtonIcon() {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 10,
-      child: Icon(Icons.arrow_forward, color: Colors.white),
-    );
-  }
-
-  Widget _buildButtonText() {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 10,
-      child: Text(
-        AppText.getInstance()
-            .get("recoverPassword.newPassword.actions.confirm"),
-        style: TextStyle(color: Colors.white),
-      ),
-    );
+  void _navigateToDisplay(BuildContext context) {
+    BlocProvider.of<ProfileCubit>(context).toDisplay();
   }
 }
