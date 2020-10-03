@@ -50,27 +50,50 @@ class _ReviewStepState extends State<ReviewStep> {
   }
 
   Widget _buildReviewWidget() {
-    String checkCareerLabel =
-        AppText.getInstance().get("student.enroll.info.checkCareer");
+    String checkCareerLabel = AppText.getInstance().get("student.enroll.info.checkCareer");
     String checkInstitutionLabel =
         AppText.getInstance().get("student.enroll.info.checkInstitution");
-    String checkProgramLabel =
-        AppText.getInstance().get("student.enroll.info.checkProgram");
+    String checkProgramLabel = AppText.getInstance().get("student.enroll.info.checkProgram");
     return AllEdgePaddedWidget(
       padding: 20,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("$checkCareerLabel ${widget.enrollment.institutionCareer.name} "
-              "$checkInstitutionLabel ${widget.enrollment.institution.name} "
-              "$checkProgramLabel ${widget.enrollment.institutionProgram.name}"),
+          Text(checkCareerLabel),
+          Text(
+            widget.enrollment.institutionCareer.name,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(checkInstitutionLabel),
+              Text(
+                widget.enrollment.institution.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(checkProgramLabel),
+              Text(
+                widget.enrollment.institutionProgram.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
           Row(
             children: <Widget>[
               Checkbox(
                 value: confirmed,
                 onChanged: _handleCheck,
               ),
-              Text(AppText.getInstance()
-                  .get("student.enroll.input.correctInput"))
+              Text(
+                AppText.getInstance().get("student.enroll.input.correctInput"),
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )
             ],
           )
         ],
@@ -88,8 +111,7 @@ class _ReviewStepState extends State<ReviewStep> {
     await AsyncModalBuilder()
         .perform(_createCareer)
         .then(_navigateToHome)
-        .withTitle(
-            AppText.getInstance().get("student.enroll.info.addingCareer"))
+        .withTitle(AppText.getInstance().get("student.enroll.info.addingCareer"))
         .build()
         .run(context);
   }
@@ -115,8 +137,7 @@ class _ReviewStepState extends State<ReviewStep> {
     // save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType()
     // in the widget's didChangeDependencies() method.
     FlushBarBroker()
-        .withMessage(
-            AppText.getInstance().get("student.enroll.info.careerAdded"))
+        .withMessage(AppText.getInstance().get("student.enroll.info.careerAdded"))
         .withIcon(Icon(Icons.check, color: Colors.green))
         .show(context);
   }
