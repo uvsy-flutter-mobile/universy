@@ -6,16 +6,24 @@ import 'package:universy/widgets/decorations/box.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
   final Widget child;
+
   ProfileHeaderWidget(this.child);
 
   factory ProfileHeaderWidget.create() {
     var child = Icon(Icons.priority_high, size: 80, color: Colors.grey);
     return ProfileHeaderWidget(child);
   }
+
   factory ProfileHeaderWidget.edit(Profile profile) {
-    var child = Icon(Icons.more_horiz, size: 80, color: Colors.grey);
+    var child = Icon(Icons.edit, size: 50, color: Colors.grey);
     return ProfileHeaderWidget(child);
   }
+
+  factory ProfileHeaderWidget.changePassword() {
+    var child = Icon(Icons.lock, size: 60, color: Colors.grey);
+    return ProfileHeaderWidget(child);
+  }
+
   factory ProfileHeaderWidget.display(Profile profile) {
     var child = Text(
       InitialsFormatter(profile).format(),
@@ -23,6 +31,7 @@ class ProfileHeaderWidget extends StatelessWidget {
     );
     return ProfileHeaderWidget(child);
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
