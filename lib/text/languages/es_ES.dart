@@ -34,6 +34,36 @@ const Map<dynamic, dynamic> ES = {
       "unexpectedError": "Ocurrió un error inesperado"
     },
   },
+  "recoverPassword": {
+    "title": "Recuperá tu cuenta",
+    "input": {
+      "user": {
+        "message": "Ingresá tu usuario",
+        "notValid": "El usuario no es válido",
+        "required": "El usuario es requerido"
+      },
+    },
+    "actions": {
+      "recover": "¡Recuperala!",
+      "continue": "Continuar",
+    },
+    "info": {
+      "forgottenPassword": "Olvidaste tu contraseña?",
+    },
+    "newPassword": {
+      "subtitle": "Luego, ingresá tu nueva contraseña",
+      "title": "Nueva contraseña",
+      "input": {
+        "user": {
+          "message": "Ingresá tu nueva contraseña",
+          "messageCheck": "Reingresá tu contraseña",
+        },
+      },
+      "actions": {
+        "confirm": "Confirmar",
+      },
+    },
+  },
   "signUp": {
     "title": "¡Regístrate!",
     "input": {
@@ -48,6 +78,7 @@ const Map<dynamic, dynamic> ES = {
         "notValid": "Al menos 8 caracteres incluyendo 1 número",
         "required": "La contraseña es requerida",
         "message": "Ingresá tu contraseña",
+        "notEqual": "Ambas contraseñas deben ser iguales",
       },
     },
     "actions": {
@@ -69,6 +100,7 @@ const Map<dynamic, dynamic> ES = {
     "subtitle": "Un email con el código de verificación fue enviado a",
     "input": {
       "code": {
+        "minQuantity": "El código debe tener 6 dígitos",
         "message": "Ingresá el código",
         "required": "El código no puede ser vacio",
       },
@@ -165,8 +197,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "empty": {
         "title": "¡Ups!",
-        "subtitle":
-            "Parece que no hay materias cargadas en el plan de estudios",
+        "subtitle": "Parece que no hay materias cargadas en el plan de estudios",
       },
       "correlatives": {
         "title": "Correlativas",
@@ -215,8 +246,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "actions": {
         "confirmDeleteNote": "¿Estás seguro que deseas eliminar la anotación?",
-        "confirmDeleteNotes":
-            "¿Estás seguro que deseas eliminar las anotaciones?",
+        "confirmDeleteNotes": "¿Estás seguro que deseas eliminar las anotaciones?",
         "deleteConfirmed": "¡Entendido!",
       },
       "searchBar": {

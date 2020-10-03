@@ -20,3 +20,11 @@ class VerifyState extends AccountState {
   @override
   List<Object> get props => [user.hashCode];
 }
+
+class RecoverPasswordState extends AccountState {
+  final String user;
+
+  RecoverPasswordState(this.user);
+}
+
+class InputUserState extends AccountState {}

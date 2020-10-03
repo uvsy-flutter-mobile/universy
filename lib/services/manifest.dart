@@ -31,17 +31,21 @@ abstract class AccountService extends Service {
 
   Future<void> signUp(User user);
 
-  Future<void> confirmUser(User user, String code);
+  Future<void> confirmUser(String user, String code);
 
-  Future<void> resendConfirmationCode(User user);
+  Future<void> resendConfirmationCode(String user);
 
   Future<void> changePassword(User user, String newPassword);
 
-  Future<void> forgotPassword(User user);
+  Future<void> forgotPassword(String user);
 
   Future<void> confirmPassword(User user, String newPassword);
 
   Future<void> logOut();
+
+  Future<void> setNewPassword(String user, String newPassword, String code);
+
+  Future<void> authenticateUser(User user);
 }
 
 abstract class ProfileService extends Service {
