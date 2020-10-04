@@ -70,6 +70,7 @@ class LoginWidgetState extends State<LogInWidget> {
                 textEditingController: _passwordController,
                 obscure: _passwordHidden,
                 onPressed: _changePasswordVisibilityOnPressedAction),
+            LoginPasswordForgotten(linkAction: _navigateToRecoverPassword),
             LoginSubmitButtonWidget(loginAction: submitButtonOnPressedAction),
             LoginLinkToSignUp(linkAction: _navigateToSignUp)
           ],
@@ -120,6 +121,10 @@ class LoginWidgetState extends State<LogInWidget> {
     context.read<AccountCubit>().toSingUp();
   }
 
+  void _navigateToRecoverPassword(BuildContext context) {
+    context.read<AccountCubit>().toInputUser();
+  }
+
   void _navigateToVerify(BuildContext context) {
     User user = _getUserFromTextFields();
     context.read<AccountCubit>().toVerify(user);
@@ -132,11 +137,9 @@ class LoginWidgetState extends State<LogInWidget> {
         .show(context);
   }
 
-  String _notAuthorizeMessage() =>
-      AppText.getInstance().get("login.error.notAuthorized");
+  String _notAuthorizeMessage() => AppText.getInstance().get("login.error.notAuthorized");
 
-  String _verifyingMessage() =>
-      AppText.getInstance().get("login.info.verifying");
+  String _verifyingMessage() => AppText.getInstance().get("login.info.verifying");
 }
 
 /// Login Title
@@ -157,8 +160,7 @@ class LoginTitleWidget extends StatelessWidget {
 class LoginUsernameWidget extends StatelessWidget {
   final TextEditingController _textEditingController;
 
-  const LoginUsernameWidget(
-      {Key key, @required TextEditingController textEditingController})
+  const LoginUsernameWidget({Key key, @required TextEditingController textEditingController})
       : this._textEditingController = textEditingController,
         super(key: key);
 
@@ -176,8 +178,7 @@ class LoginUsernameWidget extends StatelessWidget {
   }
 
   InputDecorationBuilder _getUserInputDecoration() {
-    return TextInputDecorationBuilder(
-        AppText.getInstance().get("login.input.user.message"));
+    return TextInputDecorationBuilder(AppText.getInstance().get("login.input.user.message"));
   }
 
   TextFormFieldValidatorBuilder _getUserInputValidator() {
@@ -237,8 +238,7 @@ class LoginPasswordWidget extends StatelessWidget {
 class LoginSubmitButtonWidget extends StatelessWidget {
   final Function(BuildContext context) _loginAction;
 
-  const LoginSubmitButtonWidget(
-      {Key key, @required Function(BuildContext context) loginAction})
+  const LoginSubmitButtonWidget({Key key, @required Function(BuildContext context) loginAction})
       : this._loginAction = loginAction,
         super(key: key);
 
@@ -291,8 +291,7 @@ class LoginSubmitButtonWidget extends StatelessWidget {
 class LoginLinkToSignUp extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const LoginLinkToSignUp(
-      {Key key, @required Function(BuildContext context) linkAction})
+  const LoginLinkToSignUp({Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -315,8 +314,7 @@ class LoginLinkToSignUp extends StatelessWidget {
         GestureDetector(
             child: Text(
               (AppText.getInstance().get("login.actions.register")),
-              style: TextStyle(
-                  decoration: TextDecoration.underline, color: Colors.blue),
+              style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
             ),
             onTap: () => _linkAction(context))
       ],
@@ -328,8 +326,53 @@ class LoginLinkToSignUp extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("login.actions.signup")),
-          textStyle: TextStyle(
-              decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+        ),
+      ],
+    );
+  }
+}
+
+/// Login password forgotten link
+class LoginPasswordForgotten extends StatelessWidget {
+  final Function(BuildContext context) _linkAction;
+
+  const LoginPasswordForgotten({Key key, @required Function(BuildContext context) linkAction})
+      : this._linkAction = linkAction,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 8.0,
+      child: Row(
+        children: <Widget>[
+          _buildPasswordQuestionText(),
+          _buildLink(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLink(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        GestureDetector(
+            child: Text(
+              (AppText.getInstance().get("recoverPassword.actions.recover")),
+              style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
+            ),
+            onTap: () => _linkAction(context))
+      ],
+    );
+  }
+
+  Widget _buildPasswordQuestionText() {
+    return Column(
+      children: <Widget>[
+        EllipsisCustomText.left(
+          text: (AppText.getInstance().get("recoverPassword.info.forgottenPassword")),
+          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
         ),
       ],
     );

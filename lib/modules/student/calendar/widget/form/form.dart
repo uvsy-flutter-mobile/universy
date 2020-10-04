@@ -14,7 +14,6 @@ import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/formfield/picker/date.dart';
 import 'package:universy/widgets/formfield/picker/time.dart';
-import 'package:universy/widgets/formfield/text/validators.dart';
 
 const EMPTY_STRING = "";
 
@@ -72,11 +71,18 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   void didChangeDependencies() {
     var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
     this._studentEventService = sessionFactory.studentEventService();
-    if (this._titleTextEditingController.text == EMPTY_STRING) {
-      this._titleTextEditingController.text =
-          AppText.getInstance().get("student.calendar.form.title");
-    }
+    initializeStudentEvent();
     super.didChangeDependencies();
+  }
+
+  void initializeStudentEvent() {
+    if (this._studentEvent.isNewEvent) {
+      String title = AppText.getInstance().get("student.calendar.form.title");
+      this._titleTextEditingController.text = title;
+      this._studentEvent.title = title;
+      this._studentEvent.eventType =
+          _studentEvent.eventType ?? EventType.FINAL_EXAM;
+    }
   }
 
   void dispose() {
@@ -140,16 +146,12 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildTitle() {
-    _titleTextEditingController.addListener(_titleOnSave);
+    _titleTextEditingController.addListener(_updateTitle);
     return SizedBox(
         width: 200,
         child: StudentEventTitleWidget(
           textEditingController: _titleTextEditingController,
         ));
-  }
-
-  void _titleOnSave() {
-    this._studentEvent.title = this._titleTextEditingController.text;
   }
 
   Widget _buildDate(BuildContext context) {
@@ -158,12 +160,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
           (event) => event.date,
         )
         .orElse(_daySelected);
-    String requiredText =
-        AppText.getInstance().get("student.calendar.form.eventDateRequired");
     String label = AppText.getInstance().get("student.calendar.form.eventDate");
-    void _dateOnSave(DateTime selectedDate) {
-      this._studentEvent.date = selectedDate;
-    }
 
     return SizedBox(
         width: 200,
@@ -171,7 +168,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
           initialValue: eventDate,
           context: context,
           label: label,
-          onSaved: _dateOnSave,
+          onSaved: _updateDate,
         ));
   }
 
@@ -204,38 +201,27 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildTimeFrom(BuildContext context) {
-    String requiredText =
-        AppText.getInstance().get("student.calendar.form.timeFromRequired");
     String label = AppText.getInstance().get("student.calendar.form.timeFrom");
-    void _timeFromOnSave(TimeOfDay selectedTime) {
-      _studentEvent.timeFrom = selectedTime;
-    }
 
     return StudentEventTimeWidget(
         label: label,
         initialValue: _timeFrom,
         context: context,
-        onSaved: _timeFromOnSave);
+        onSaved: _updateTimeFrom);
   }
 
   Widget _buildTimeTo(BuildContext context) {
-    String requiredText =
-        AppText.getInstance().get("student.calendar.form.timeToRequired");
     String label = AppText.getInstance().get("student.calendar.form.timeTo");
-    void _timeToOnSave(TimeOfDay selectedTime) {
-      _studentEvent.timeTo = selectedTime;
-    }
 
     return StudentEventTimeWidget(
       context: context,
       label: label,
       initialValue: _timeTo,
-      onSaved: _timeToOnSave,
+      onSaved: _updateTimeTo,
     );
   }
 
   Widget _buildEventTypePicker() {
-    String eventType = _studentEvent.eventType ?? EventType.FINAL_EXAM;
     String sectionTitle =
         AppText.getInstance().get("student.calendar.form.eventTypeTitle");
     return Column(
@@ -252,19 +238,15 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         SizedBox(
             height: 185,
             child: StudentEventTypeWidget(
-              onChange: _onEventTypeChange,
-              eventType: eventType,
+              onChange: _updateEventType,
+              eventType: _studentEvent.eventType,
             ))
       ],
     );
   }
 
-  void _onEventTypeChange(String eventType) {
-    _studentEvent.eventType = eventType;
-  }
-
   Widget _buildDescriptionText() {
-    _descriptionTextEditingController.addListener(_descriptionOnSave);
+    _descriptionTextEditingController.addListener(_updateDescription);
     return StudentEventDescriptionWidget(
       textEditingController: _descriptionTextEditingController,
       label: AppText.getInstance().get("student.calendar.form.description"),
@@ -273,15 +255,35 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     );
   }
 
-  void _descriptionOnSave() {
-    this._studentEvent.description = _descriptionTextEditingController.text;
-  }
-
   Widget _buildActionButtons() {
     return StudentCalendarFormActionsWidget(
       context: context,
       pressSaveEventButton: _pressConfirmButton,
     );
+  }
+
+  void _updateEventType(String eventType) {
+    _studentEvent.eventType = eventType;
+  }
+
+  void _updateDescription() {
+    this._studentEvent.description = _descriptionTextEditingController.text;
+  }
+
+  void _updateTimeTo(TimeOfDay selectedTime) {
+    _studentEvent.timeTo = selectedTime;
+  }
+
+  void _updateTitle() {
+    this._studentEvent.title = this._titleTextEditingController.text;
+  }
+
+  void _updateDate(DateTime selectedDate) {
+    this._studentEvent.date = selectedDate;
+  }
+
+  void _updateTimeFrom(TimeOfDay selectedTime) {
+    _studentEvent.timeFrom = selectedTime;
   }
 
   void _pressConfirmButton() async {
