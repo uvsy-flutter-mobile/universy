@@ -75,7 +75,7 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
 
   Widget _buildPasswordForm(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 75,
+      paddingValue: 60,
       child: Form(
         key: _formKey,
         child: Column(

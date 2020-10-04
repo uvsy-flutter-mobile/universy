@@ -38,12 +38,10 @@ class _Widget extends StatelessWidget {
         children: <Widget>[
           MainDrawerHeader(),
           Ink(
-            child:
-                StudentSubjectsItem(selected: _index == STUDENT_SUBJECT_INDEX),
+            child: StudentSubjectsItem(selected: _index == STUDENT_SUBJECT_INDEX),
           ),
           Ink(
-            child: InstitutionSubjectsItem(
-                selected: _index == INSTITUTION_SUBJECT_INDEX),
+            child: InstitutionSubjectsItem(selected: _index == INSTITUTION_SUBJECT_INDEX),
           ),
           Ink(
             child: ProfileItem(selected: _index == PROFILE_INDEX),
@@ -54,6 +52,9 @@ class _Widget extends StatelessWidget {
           Divider(),
           Ink(
             child: StudentNotesItem(),
+          ),
+          Ink(
+            child: ForumItem(),
           )
         ],
       ),

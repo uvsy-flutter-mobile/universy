@@ -58,9 +58,9 @@ const Map<dynamic, dynamic> ES = {
         "user": {
           "oldPasswordIncorrect": "La contraseña actual es incorrecta",
           "passwordChanged": "La contraseña se cambió correctamente",
-          "oldPassword": "Ingresá tu contraseña actual",
-          "message": "Ingresá tu nueva contraseña",
-          "messageCheck": "Reingresá tu nueva contraseña",
+          "oldPassword": "Contraseña actual",
+          "message": "Nueva contraseña",
+          "messageCheck": "Confirmar contraseña",
         },
       },
       "actions": {
