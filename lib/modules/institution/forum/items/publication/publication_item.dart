@@ -5,12 +5,12 @@ import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-import 'institution-detail-publication.dart';
+import 'publication_detail.dart';
 
-class InstitutionPublicationItem extends StatelessWidget {
+class PublicationItemWidget extends StatelessWidget {
   final ForumPublication _forumPublication;
 
-  InstitutionPublicationItem({Key key, ForumPublication forumPublication})
+  PublicationItemWidget({Key key, ForumPublication forumPublication})
       : this._forumPublication = forumPublication,
         super(key: key);
 
@@ -48,7 +48,7 @@ class InstitutionPublicationItem extends StatelessWidget {
         child: Column(
           children: <Widget>[
             _buildPublicationComments(),
-            DateItem(date:this._forumPublication.date,withTime: false,),
+            DateItemWidget(date:this._forumPublication.date,withTime: false,),
           ],
         ),
       ),
@@ -150,7 +150,7 @@ class InstitutionPublicationItem extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InstitutionDetailPublication(forumPublication: forumPublication)),
+          builder: (context) => PublicationDetailWidget(forumPublication: forumPublication)),
     );
   }
 }

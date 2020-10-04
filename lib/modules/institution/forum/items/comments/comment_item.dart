@@ -4,10 +4,10 @@ import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class InstitutionCommentItem extends StatelessWidget {
+class CommentItemWidget extends StatelessWidget {
   final Comment _comment;
 
-  InstitutionCommentItem({Key key, Comment comment})
+  CommentItemWidget({Key key, Comment comment})
       : this._comment = comment,
         super(key: key);
 
@@ -28,7 +28,7 @@ class InstitutionCommentItem extends StatelessWidget {
     return SymmetricEdgePaddingWidget.horizontal(
         paddingValue: 5,
         child: SymmetricEdgePaddingWidget.vertical(
-            paddingValue: 5, child: DateItem(date: _comment.date,withTime: true,)));
+            paddingValue: 5, child: DateItemWidget(date: _comment.date,withTime: true,)));
   }
 
   Widget _buildDescription() {

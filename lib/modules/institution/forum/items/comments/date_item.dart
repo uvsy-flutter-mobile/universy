@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class DateItem extends StatelessWidget {
+class DateItemWidget extends StatelessWidget {
   final DateTime _date;
   final bool _withTime;
 
-  DateItem({Key key, DateTime date, bool withTime})
+  DateItemWidget({Key key, DateTime date, bool withTime})
       : this._date = date,
         this._withTime = withTime,
         super(key: key);

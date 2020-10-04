@@ -5,18 +5,18 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class InstitutionForumFilterView extends StatefulWidget {
+class FiltersViewWidget extends StatefulWidget {
   final Function(Filters) _callBack;
 
-  const InstitutionForumFilterView({Key key, Function(Filters) callBack})
+  const FiltersViewWidget({Key key, Function(Filters) callBack})
       : this._callBack = callBack,
         super(key: key);
 
   @override
-  _InstitutionForumFilterViewState createState() => _InstitutionForumFilterViewState();
+  _FiltersViewWidgetState createState() => _FiltersViewWidgetState();
 }
 
-class _InstitutionForumFilterViewState extends State<InstitutionForumFilterView> {
+class _FiltersViewWidgetState extends State<FiltersViewWidget> {
   TextEditingController _searchTagsEditingController;
   int _selectedLevel;
   String _selectedType;

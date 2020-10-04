@@ -1,11 +1,14 @@
 import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
-import 'package:universy/modules/institution/forum/items/filters/institution-forum-filter-button.dart';
-import 'package:universy/modules/institution/forum/items/publication/institution-publication-item.dart';
-import 'package:universy/modules/institution/forum/items/publication/institutiton-new-publication.dart';
+import 'package:universy/modules/institution/forum/items/filters/filter_button.dart';
+import 'package:universy/modules/institution/forum/items/publication/publication_item.dart';
+import 'package:universy/modules/institution/forum/items/publication/new_publication.dart';
+import 'package:universy/services/factory.dart';
+import 'package:universy/services/manifest.dart';
 import 'package:universy/system/assets.dart';
 import 'package:universy/widgets/decorations/box.dart';
 import 'package:universy/widgets/paddings/edge.dart';
@@ -43,8 +46,16 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
     _listTags.add("AM1");
     _listTags.add("AM2");
     _listTags.add("AM3");
-    ForumPublication publication1 = new ForumPublication(1, "Donde curso Diseño?", student,
-        "Tengo una consulta sobre la materia ..Tengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una ..", DateTime.now(), list, 3, "Final", _listTags);
+    ForumPublication publication1 = new ForumPublication(
+        1,
+        "Donde curso Diseño?",
+        student,
+        "Tengo una consulta sobre la materia ..Tengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una consulta sobre la materiaTengo una ..",
+        DateTime.now(),
+        list,
+        3,
+        "Final",
+        _listTags);
     ForumPublication publication2 = new ForumPublication(2, "Sorocotongo", student,
         "Que ondera Superior ? Te rompen el toto ?", DateTime(2014), list, 2, "Final", _listTags);
     _listOfPublications.add(publication1);
@@ -83,11 +94,17 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
     );
   }
 
-  void _onFloatingPressed(BuildContext context) {
+  void _onFloatingPressed(BuildContext context) async {
+    var sessionFactory = await Provider.of<ServiceFactory>(context, listen: false);
+    var careerService = await sessionFactory.studentCareerService();
+    var institutionService = sessionFactory.institutionService();
+    var programId = await careerService.getCurrentProgram();
+    var institutionSubjects = await institutionService.getSubjects(programId);
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => InstitutionNewPublication(
+          builder: (context) => NewPublicationWidget(
+                subjects: institutionSubjects,
                 callBack: (forumPublication) {
                   _onCallBack(forumPublication);
                 },
@@ -130,7 +147,7 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
           Expanded(flex: 4, child: _getDropDown()),
           Expanded(
             flex: 3,
-            child: InstitutionForumFilterButton(
+            child: FilterButtonWidget(
               callBack: _fetchFilters,
             ),
           ),
@@ -263,6 +280,6 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
   }
 
   Widget _buildStudentNoteCardWidget(ForumPublication forumPublication, index) {
-    return InstitutionPublicationItem(forumPublication: forumPublication);
+    return PublicationItemWidget(forumPublication: forumPublication);
   }
 }

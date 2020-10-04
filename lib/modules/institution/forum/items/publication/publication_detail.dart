@@ -3,25 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
-import 'package:universy/modules/institution/forum/items/comments/institution-comments-list-publication.dart';
+import 'package:universy/modules/institution/forum/items/comments/comments-list.dart';
 import 'package:universy/system/assets.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/decorations/box.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class InstitutionDetailPublication extends StatefulWidget {
+class PublicationDetailWidget extends StatefulWidget {
   final ForumPublication _forumPublication;
 
-  InstitutionDetailPublication({Key key, ForumPublication forumPublication})
+  PublicationDetailWidget({Key key, ForumPublication forumPublication})
       : this._forumPublication = forumPublication,
         super(key: key);
 
   @override
-  _InstitutionDetailPublicationState createState() => _InstitutionDetailPublicationState();
+  _PublicationDetailWidgetState createState() => _PublicationDetailWidgetState();
 }
 
-class _InstitutionDetailPublicationState extends State<InstitutionDetailPublication> {
+class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   ScrollController _scrollController = ScrollController();
 
   bool _newComment;
@@ -141,7 +141,7 @@ class _InstitutionDetailPublicationState extends State<InstitutionDetailPublicat
   }
 
   Widget _buildComments() {
-    return InstitutionCommentsPublication(
+    return CommentsListWidget(
       forumPublication: this.widget._forumPublication,
     );
   }
@@ -203,7 +203,7 @@ class _InstitutionDetailPublicationState extends State<InstitutionDetailPublicat
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           _buildTags(),
-          Expanded(flex: 5,child: DateItem(date: widget._forumPublication.date,withTime: true,)),
+          Expanded(flex: 5,child: DateItemWidget(date: widget._forumPublication.date,withTime: true,)),
         ],
       ),
     );

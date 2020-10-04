@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:universy/model/institution/forum.dart';
-import 'package:universy/modules/institution/forum/items/comments/institution-comment-item.dart';
+import 'package:universy/modules/institution/forum/items/comments/comment_item.dart';
 import 'package:universy/modules/student/subjects/state/correlative_dialog.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class InstitutionCommentsPublication extends StatelessWidget {
+class CommentsListWidget extends StatelessWidget {
   final ForumPublication _forumPublication;
 
-  InstitutionCommentsPublication({Key key, ForumPublication forumPublication})
+  CommentsListWidget({Key key, ForumPublication forumPublication})
       : this._forumPublication = forumPublication,
         super(key: key);
 
@@ -37,7 +37,7 @@ class InstitutionCommentsPublication extends StatelessWidget {
     int x = 0;
     while (this._forumPublication.comments.length > x) {
       Comment comment = this._forumPublication.comments[x];
-      column.add(InstitutionCommentItem(comment: comment));
+      column.add(CommentItemWidget(comment: comment));
       x = x + 1;
     }
     return Column(children: column);
@@ -67,7 +67,7 @@ class InstitutionCommentsPublication extends StatelessWidget {
   }
 
   Widget _buildCommentWidget(Comment comment) {
-    return InstitutionCommentItem(
+    return CommentItemWidget(
       comment: comment,
     );
   }
