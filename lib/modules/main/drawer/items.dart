@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/constants/routes.dart';
-import 'package:universy/model/institution/forum.dart';
-import 'package:universy/modules/institution/forum/institution-forum-main.dart';
 import 'package:universy/modules/main/bloc/cubit.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/tiles/list.dart';
@@ -102,25 +100,6 @@ class StudentNotesItem extends StatelessWidget {
       onTap: () {
         Navigator.pop(context);
         Navigator.pushNamed(context, Routes.NOTES_MODULE);
-      },
-    );
-  }
-}
-
-class ForumItem extends StatelessWidget {
-  const ForumItem({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTileItem(
-      title: "Foro",
-      //AppText.getInstance().get("main.modules.calendar.title"),
-      subtitle: "Revisá tu foro papá!!",
-      //AppText.getInstance().get("main.modules.calendar.subtitle"),
-      selected: false,
-      onTap: () {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, Routes.FORUM_MODULE);
       },
     );
   }
