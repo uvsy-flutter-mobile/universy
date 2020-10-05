@@ -9,6 +9,7 @@ import 'package:universy/model/institution/queries.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/career.dart';
 import 'package:universy/model/student/notes.dart';
+import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/session.dart';
 import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
@@ -30,17 +31,17 @@ abstract class AccountService extends Service {
 
   Future<void> signUp(User user);
 
-  Future<void> confirmUser(User user, String code);
+  Future<void> confirmUser(String user, String code);
 
-  Future<void> resendConfirmationCode(User user);
+  Future<void> resendConfirmationCode(String user);
 
   Future<void> changePassword(User user, String newPassword);
 
-  Future<void> forgotPassword(User user);
-
-  Future<void> confirmPassword(User user, String newPassword);
+  Future<void> forgotPassword(String user);
 
   Future<void> logOut();
+
+  Future<void> confirmPassword(String user, String newPassword, String code);
 }
 
 abstract class ProfileService extends Service {
@@ -67,6 +68,17 @@ abstract class StudentCareerService extends Service {
   Future<List<StudentSubject>> getSubjects(String programId);
 
   Future<void> updateSubject(Subject subject);
+}
+
+abstract class StudentEventService extends Service {
+  Future<void> createEvent(StudentEvent event);
+
+  Future<List<StudentEvent>> getStudentEvents(
+      DateTime dateFrom, DateTime dateTo);
+
+  Future<void> updateEvent(StudentEvent studentEvent);
+
+  Future<void> deleteStudentEvent(StudentEvent studentEvent);
 }
 
 abstract class SessionService extends Service {

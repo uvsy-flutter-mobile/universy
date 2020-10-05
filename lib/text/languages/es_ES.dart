@@ -34,6 +34,40 @@ const Map<dynamic, dynamic> ES = {
       "unexpectedError": "Ocurrió un error inesperado"
     },
   },
+  "recoverPassword": {
+    "title": "Recuperá tu cuenta",
+    "input": {
+      "user": {
+        "message": "Ingresá tu usuario",
+        "notValid": "El usuario no es válido",
+        "required": "El usuario es requerido"
+      },
+    },
+    "actions": {
+      "recover": "¡Recuperala!",
+      "continue": "Continuar",
+    },
+    "info": {
+      "forgottenPassword": "Olvidaste tu contraseña?",
+    },
+    "newPassword": {
+      "passwordChangedCorrectly": "Tu contraseña fue actualizada con éxito",
+      "subtitle": "Luego, ingresá tu nueva contraseña",
+      "title": "Cambiar Contraseña",
+      "input": {
+        "user": {
+          "oldPasswordIncorrect": "La contraseña actual es incorrecta",
+          "passwordChanged": "La contraseña se cambió correctamente",
+          "oldPassword": "Ingresá tu contraseña actual",
+          "message": "Ingresá tu nueva contraseña",
+          "messageCheck": "Reingresá tu nueva contraseña",
+        },
+      },
+      "actions": {
+        "confirm": "Confirmar",
+      },
+    },
+  },
   "signUp": {
     "title": "¡Regístrate!",
     "input": {
@@ -48,6 +82,7 @@ const Map<dynamic, dynamic> ES = {
         "notValid": "Al menos 8 caracteres incluyendo 1 número",
         "required": "La contraseña es requerida",
         "message": "Ingresá tu contraseña",
+        "notEqual": "Ambas contraseñas deben ser iguales",
       },
     },
     "actions": {
@@ -69,6 +104,7 @@ const Map<dynamic, dynamic> ES = {
     "subtitle": "Un email con el código de verificación fue enviado a",
     "input": {
       "code": {
+        "minQuantity": "El código debe tener 6 dígitos",
         "message": "Ingresá el código",
         "required": "El código no puede ser vacio",
       },
@@ -109,7 +145,11 @@ const Map<dynamic, dynamic> ES = {
       },
       "profile": {
         "title": "Perfil",
-        "subtitle": "Personalizá tu usuario de Univery!",
+        "subtitle": "Personalizá tu usuario de Universy!",
+      },
+      "calendar": {
+        "title": "Calendario",
+        "subtitle": "Gestiona tus eventos y parciales!",
       },
       "notes": {
         "title": "Mis Anotaciones",
@@ -248,6 +288,51 @@ const Map<dynamic, dynamic> ES = {
           "title": "Mi historial de carrera",
           "welcomeCard": "Este es el punto de partida de tu carrera",
         },
+      }, 
+    "calendar": {
+      "title": "Mi Calendario",
+      "subtitle": "Mirá tu calendario y anotá tus eventos",
+      "events": {
+        "emptyEventsDay": "No hay eventos cargados en este dia",
+      },
+      "actions": {
+        "save": "¡Guardamos tu evento!",
+        "delete": "¡Evento eliminado!",
+        "saving": "Guardando evento",
+        "deleting": "Eliminando evento"
+      },
+      "form": {
+        "eventTypeTitle": "Tipo",
+        "title": "Nuevo Evento",
+        "editTitle": "Editar Evento",
+        "eventTitle": "Título",
+        "titleRequired": "El título es requerido",
+        "eventDate": "Fecha",
+        "eventDateRequired": "La fecha es requerida",
+        "timeFrom": "Hora inicio",
+        "timeFromRequired": "La hora es requerida",
+        "timeTo": "Hora Fin",
+        "timeToRequired": "La hora es requerida",
+        "typeEvent": "Tipo de evento",
+        "description": "Descripción",
+        "descriptionCheck": "Sin descripción",
+      },
+      "eventType": {
+        "DUE_DATE": "Entrega",
+        "EXTRA_CLASS": "Clase de consulta",
+        "FINAL_EXAM": "Final",
+        "LABORATORY": "Laboratorio",
+        "NO_CLASS": "Sin clases",
+        "PRESENTATION": "Presentación",
+        "RECUP_EXAM": "Recuperatorio",
+        "REGULAR_EXAM": "Parcial",
+        "REPORT_SIGN_OFF": "Firma de libreta"
+      },
+    },
+    "notifications": {
+      "title": "Tus eventos de hoy",
+      "actions": {
+        "goToCalendar": "Ver Calendario",
       },
     },
     "enroll": {
@@ -267,9 +352,9 @@ const Map<dynamic, dynamic> ES = {
       "info": {
         "addingCareer": "Agregando Carrera...",
         "careerAdded": "Carrera agregada!",
-        "checkCareer": "Te vas a inscribir a la carrera",
-        "checkInstitution": "de la institución",
-        "checkProgram": "con el programa",
+        "checkCareer": "Estás a punto de unirte a la carrera ",
+        "checkInstitution": "en la institución ",
+        "checkProgram": "con el programa ",
       },
       "error": {
         "noCareers": "No hay carreras disponibles para esta institución",
@@ -287,5 +372,5 @@ const Map<dynamic, dynamic> ES = {
         },
       }
     },
-  }
+  },
 };

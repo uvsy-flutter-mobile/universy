@@ -7,6 +7,7 @@ class CustomTextFormField extends StatelessWidget {
   final TextFormFieldValidatorBuilder _validatorBuilder;
   final InputDecorationBuilder _decorationBuilder;
   final bool _obscure;
+  final bool _enabled;
   final Key _key;
   final TextCapitalization _textCapitalization;
   final TextInputType _keyboardType;
@@ -16,6 +17,7 @@ class CustomTextFormField extends StatelessWidget {
       @required TextFormFieldValidatorBuilder validatorBuilder,
       @required InputDecorationBuilder decorationBuilder,
       bool obscure = false,
+      bool enabled = true,
       TextCapitalization textCapitalization = TextCapitalization.none,
       TextInputType keyboardType = TextInputType.text,
       Key key})
@@ -23,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
         this._validatorBuilder = validatorBuilder,
         this._decorationBuilder = decorationBuilder,
         this._obscure = obscure,
+        this._enabled = enabled,
         this._textCapitalization = textCapitalization,
         this._keyboardType = keyboardType,
         this._key = key;
@@ -33,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: _keyboardType,
         textCapitalization: _textCapitalization,
         key: _key,
+        enabled: _enabled,
         controller: _controller,
         decoration: _decorationBuilder.build(context),
         validator: _validatorBuilder.build(context),

@@ -1,7 +1,9 @@
+import 'package:intl/intl.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/student/career.dart';
+import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/notes.dart';
 import 'package:universy/model/student/subject.dart';
 
@@ -181,4 +183,49 @@ Future<void> deleteSubject(String userId, String subjectId) {
   return api.delete(
     path,
   );
+}
+
+// Events
+Future<List<StudentEvent>> getEvents(
+    String userId, DateTime dateFrom, DateTime dateTo) async {
+  DateFormat dateFormat = DateFormat("dd-MMM-yyyy");
+  String newDateFrom = dateFormat.format(dateFrom).toString();
+  String newDateTo = dateFormat.format(dateTo).toString();
+
+  var resource = "/students/$userId/events";
+  var path = _createPath(resource);
+  var queryParams = {"dateFrom": newDateFrom, "dateTo": newDateTo};
+
+  var response = await api.getList<StudentEvent>(
+    path,
+    queryParams: queryParams,
+    model: (content) => StudentEvent.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<void> createEvent(String userId, StudentEvent studentEvent) {
+  var resource = "/students/$userId/events";
+  var path = _createPath(resource);
+
+  return api.post(
+    path,
+    payload: studentEvent,
+  );
+}
+
+Future<void> deleteEvent(String userId, String eventId) {
+  var resource = "/students/$userId/events/$eventId";
+  var path = _createPath(resource);
+
+  return api.delete(path);
+}
+
+Future<void> updateEvent(
+    String userId, String eventId, StudentEvent studentEvent) {
+  var resource = "/students/$userId/events/$eventId";
+  var path = _createPath(resource);
+
+  return api.put(path, payload: studentEvent);
 }

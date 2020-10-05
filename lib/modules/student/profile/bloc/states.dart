@@ -32,6 +32,12 @@ class NotProfileState extends ProfileState {
   NotProfileState();
 }
 
+class ChangePasswordState extends ProfileState {
+  final String userId;
+
+  ChangePasswordState(this.userId);
+}
+
 class CreateState extends ProfileState {
   final userId;
 

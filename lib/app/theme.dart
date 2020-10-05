@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 ThemeData uvsyTheme = ThemeData(
   primaryColor: Colors.amber,
   accentColor: Colors.deepPurple,
+  indicatorColor: Colors.lightBlue,
   highlightColor: Colors.orangeAccent,
   backgroundColor: Colors.amber[200],
   appBarTheme: AppBarTheme(color: Colors.white),
