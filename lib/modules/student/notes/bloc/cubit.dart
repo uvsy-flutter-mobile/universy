@@ -129,6 +129,10 @@ class NotesCubit extends Cubit<NotesState> {
       if (selectedNotes.isNotEmpty) {
         await _notesService.batchDeleteNotes(selectedNotes);
       }
+    } else if (state is EditNoteState) {
+      var displayState = this.state as EditNoteState;
+      var deletedNote = displayState.note;
+      await _notesService.deleteNote(deletedNote.noteId);
     }
   }
 }
