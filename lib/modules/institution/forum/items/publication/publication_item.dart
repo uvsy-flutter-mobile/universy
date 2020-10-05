@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/institution/forum.dart';
+import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -18,7 +20,7 @@ class PublicationItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _onPublicationTap(context, _forumPublication);
+        _onPublicationTap(context);
       },
       child: Card(
         elevation: 5,
@@ -146,11 +148,7 @@ class PublicationItemWidget extends StatelessWidget {
     );
   }
 
-  void _onPublicationTap(BuildContext context, ForumPublication forumPublication) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => PublicationDetailWidget(forumPublication: forumPublication)),
-    );
+  void _onPublicationTap(BuildContext context) {
+    BlocProvider.of<InstitutionForumCubit>(context).selectForumPublication(this._forumPublication);
   }
 }

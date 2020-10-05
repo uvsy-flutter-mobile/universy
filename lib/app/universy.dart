@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:universy/app/theme.dart';
 import 'package:universy/constants/routes.dart';
-import 'package:universy/modules/institution/forum/institution-forum-main.dart';
+import 'package:universy/modules/institution/forum/forum.dart';
 import 'package:universy/modules/loading/loading.dart';
 import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/calendar/calendar.dart';

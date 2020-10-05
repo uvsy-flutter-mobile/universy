@@ -25,8 +25,6 @@ class ForumPublication {
   String _description;
   DateTime _date;
   List<Comment> _comments;
-  int _level;
-  String _type;
   List<String> _tags;
 
   int get idPublication => _idPublication;
@@ -43,19 +41,16 @@ class ForumPublication {
 
   List<String> get tags => _tags;
 
-  int get level => _level;
-
-  String get type => _type;
 
   ForumPublication(this._idPublication, this._title, this._profile, this._description, this._date,
-      this._comments, this._level, this._type,this._tags);
+      this._comments,this._tags);
 
   factory ForumPublication.fromJson(Map<String, dynamic> json) {
     List<Comment> listComment = (json['comments'] as List ?? []).map((comment) => Comment.fromJson(comment)).toList();
     List<String> listTags = (json['tags'] as List ?? []).map((tag) => tag.toList());
     Profile profile = Profile.fromJson(json['student']);
     return ForumPublication(json["id"], json["title"], profile, json['description'], json['date'],
-        listComment, json['level'], json['type'],listTags);
+        listComment,listTags);
   }
 
   @override

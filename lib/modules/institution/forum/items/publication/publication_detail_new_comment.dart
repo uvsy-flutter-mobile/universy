@@ -11,10 +11,11 @@ import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class PublicationDetailWidget extends StatefulWidget {
+class PublicationDetailNewCommentWidget extends StatefulWidget {
   final ForumPublication _forumPublication;
 
-  PublicationDetailWidget({Key key, ForumPublication forumPublication})
+  PublicationDetailNewCommentWidget(
+      {Key key, ForumPublication forumPublication, VoidCallback onPressed})
       : this._forumPublication = forumPublication,
         super(key: key);
 
@@ -22,14 +23,15 @@ class PublicationDetailWidget extends StatefulWidget {
   _PublicationDetailWidgetState createState() => _PublicationDetailWidgetState();
 }
 
-class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
+class _PublicationDetailWidgetState extends State<PublicationDetailNewCommentWidget> {
   ScrollController _scrollController = ScrollController();
-
   bool _newComment;
+
 
   @override
   void initState() {
-    _newComment = false;
+    //_scrollController.animateTo(      500,      curve: Curves.easeOut,      duration: const Duration(milliseconds: 1000),    );
+    _newComment = true;
     super.initState();
   }
 
@@ -121,11 +123,11 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       );
     });
     _onCancelPressed(context);
-
   }
 
   void _onCancelPressed(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).emit(DisplayForumPublicationState(widget._forumPublication));
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .emit(DisplayForumPublicationState(widget._forumPublication));
   }
 
   Widget _buildComments() {
@@ -241,16 +243,5 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         },
       ),
     );
-  }
-
-  void onPressed() {
-    setState(() {
-      _newComment = true;
-      _scrollController.animateTo(
-        500,
-        curve: Curves.easeOut,
-        duration: const Duration(milliseconds: 1000),
-      );
-    });
   }
 }
