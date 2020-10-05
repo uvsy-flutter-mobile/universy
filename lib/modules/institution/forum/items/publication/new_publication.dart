@@ -1,20 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
+import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class NewPublicationWidget extends StatefulWidget {
-  final Function(ForumPublication) _callBack;
   final List<InstitutionSubject> _subjects;
+  final Profile _profile;
 
   NewPublicationWidget(
-      {Key key, Function(ForumPublication) callBack, List<InstitutionSubject> subjects})
-      : this._callBack = callBack,
+      {Key key,
+      Function(ForumPublication) callBack,
+      List<InstitutionSubject> subjects,
+      Profile profile})
+      : this._profile = profile,
         this._subjects = subjects,
         super(key: key);
 
@@ -24,11 +29,12 @@ class NewPublicationWidget extends StatefulWidget {
 
 class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   List<InstitutionSubject> _subjects;
+  Profile _profile;
 
-  //List<DropdownMenuItem> _subjects = List<DropdownMenuItem>();
   List<DropdownMenuItem> _courses = List<DropdownMenuItem>();
-  InstitutionSubject _selectedLevel;
+  InstitutionSubject _selectedSubject;
   DropdownMenuItem _selectedType;
+
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _searchTagsEditingController = TextEditingController();
@@ -39,6 +45,8 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
 
   @override
   void initState() {
+    _subjects = widget._subjects;
+    _profile = widget._profile;
     _scrollController = ScrollController();
     _maxTags = false;
     _uploadTags = [];
@@ -55,45 +63,34 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return AppBar(
-      title: Text("Crear Publicación"),
-      elevation: 4,
-      backgroundColor: Colors.white,
-    );
-  }
-
-  Widget _buildBody() {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 10,
       child: SymmetricEdgePaddingWidget.horizontal(
         paddingValue: 10,
         child: Card(
-          child: ListView(
-            controller: _scrollController,
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            children: <Widget>[
-              _buildHeader(),
-              Divider(),
-              _buildTextTitle(),
-              Divider(),
-              _buildTextDescription(),
-              Divider(),
-              _buildTags(),
-              _buildAddTagsSection(),
-              Divider(),
-              _buildConfirmAndCancelButtons()
-            ],
-          ),
+          child: _buildListView(),
         ),
       ),
+    );
+  }
+
+  ListView _buildListView() {
+    return ListView(
+      controller: _scrollController,
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      children: <Widget>[
+        _buildHeader(),
+        Divider(),
+        _buildTextTitle(),
+        Divider(),
+        _buildTextDescription(),
+        Divider(),
+        _buildTags(),
+        _buildAddTagsSection(),
+        Divider(),
+        _buildConfirmAndCancelButtons()
+      ],
     );
   }
 
@@ -102,17 +99,26 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       paddingValue: 10,
       child: Visibility(
         visible: !_maxTags,
-        replacement: SymmetricEdgePaddingWidget.vertical(
-            paddingValue: 10,
-            child: Text(
-              "Has llegado al máximo de tags permitidos, pagá la versión PREMIUM, o eliminá algún TAG.",
-              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-            )),
-        child: TextField(
-            enabled: !_maxTags,
-            onChanged: _filterTag,
-            controller: _searchTagsEditingController,
-            decoration: _buildTagAddDecoration()),
+        replacement: _buildErrorMessage(),
+        child: _buildInputTagsField(),
+      ),
+    );
+  }
+
+  TextField _buildInputTagsField() {
+    return TextField(
+        enabled: !_maxTags,
+        onChanged: _filterTag,
+        controller: _searchTagsEditingController,
+        decoration: _buildTagAddDecoration());
+  }
+
+  Widget _buildErrorMessage() {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 10,
+      child: Text(
+        "Has llegado al máximo de tags permitidos, pagá la versión PREMIUM, o eliminá algún TAG.",
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -187,13 +193,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: Icon(
-            Icons.perm_identity,
-            size: 35,
-          ),
-        ),
+        _buildUserIcon(),
         Expanded(
           flex: 5,
           child: SymmetricEdgePaddingWidget.vertical(
@@ -202,17 +202,31 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Text(
-                  "Guido Henry",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
-                ),
+                _buildUserInfo(),
                 _buildLevelAndTypeSelector(),
               ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Text _buildUserInfo() {
+    return Text(
+      _profile.name + " " + _profile.lastName,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Expanded _buildUserIcon() {
+    return Expanded(
+      flex: 1,
+      child: Icon(
+        Icons.perm_identity,
+        size: 35,
+      ),
     );
   }
 
@@ -223,7 +237,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         SaveButton(
           onSave: _savePublication,
         ),
-        CancelButton()
+        CancelButton( onCancel: _cancelNewPublication,)
       ],
     );
   }
@@ -231,22 +245,19 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   void _savePublication() async {
     if ((_titleController.text.trim() != null) && (_descriptionController.text.trim() != null)) {
       String title = _titleController.text.trim();
-      //Student student = await Services.of(context).profileService().getStudentProfile();
-      Profile profile = Profile("1234555", "Guido", "Henry", "Pololo");
       String description = _descriptionController.text.trim();
       DateTime date = DateTime.now();
-      print(_selectedType.value);
-      //print(_selectedLevel.value);
-      List<String> listTags = ["asd", "asd"];
-      //ForumPublication forumPublication = ForumPublication(1, title, profile, description, date, [],          _selectedLevel.value, _selectedType.value, listTags);
-      //await Services.of(context).institutionForumService().saveForumPublication(forumPublication);
-      setState(() {
-        //print(forumPublication.title);
-        //widget._callBack(forumPublication);
-        Navigator.pop(context);
-      });
+      _uploadTags.add(_selectedSubject.name);
+      _uploadTags.add(_selectedSubject.name);
+      ForumPublication forumPublication =
+          ForumPublication(1, title, this._profile, description, date, [], _uploadTags);
+      // PEGARLE AL SERVICIO PARA GUARDAR LA PUBLICACION, MOSTRAR FLUSHBAR y de ahí llevarlo al VIEW del FORO.
     }
   }
+
+  void _cancelNewPublication(){
+      BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
+    }
 
   Widget _buildTextDescription() {
     return SymmetricEdgePaddingWidget.horizontal(
@@ -282,7 +293,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownSubject,
-      items: widget._subjects.map((x) {
+      items: _subjects.map((x) {
         return new DropdownMenuItem<InstitutionSubject>(
           value: x,
           child: SizedBox(
@@ -298,7 +309,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
 
   void _onChangeDropDownSubject(InstitutionSubject newValue) {
     return setState(() {
-      this._selectedLevel = newValue;
+      this._selectedSubject = newValue;
     });
   }
 
