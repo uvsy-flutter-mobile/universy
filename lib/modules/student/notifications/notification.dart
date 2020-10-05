@@ -6,7 +6,7 @@ import 'package:universy/modules/student/notifications/notification_dialog.dart'
 import 'package:universy/services/factory.dart';
 import 'package:universy/widgets/future/future_widget.dart';
 
-const int NO_NOTIFICATION = 0;
+const String NO_NOTIFICATION = '0';
 
 class NotificationsAlert extends StatelessWidget {
   @override

@@ -288,7 +288,8 @@ const Map<dynamic, dynamic> ES = {
           "title": "Mi historial de carrera",
           "welcomeCard": "Este es el punto de partida de tu carrera",
         },
-      }, 
+      },
+    },
     "calendar": {
       "title": "Mi Calendario",
       "subtitle": "Mirá tu calendario y anotá tus eventos",
