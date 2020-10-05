@@ -260,6 +260,35 @@ const Map<dynamic, dynamic> ES = {
         "input": "Buscar...",
       }
     },
+    "stats": {
+      "title": "Estadisticas del alumno",
+      "view": {
+        "yearProgress": {
+          "title": "Mi Progreso por año",
+          "noSubjects": "No hay materias cargadas",
+        },
+        "charts": {
+          "title": "Mi progreso general",
+          "approvedOptativeSubjects": "Avance de materias optativas aprobadas",
+          "approvedMandatorySubjects":
+              "Avance de materias obligatorias aprobadas",
+          "completedPoints": "Puntos Completados en la carrera",
+          "completedHours": "Horas Completados en la carrera",
+          "subjectsRegular": "Materias regulares",
+          "subjectsToTake": "Materias por cursar",
+          "subjectsTaking": "Materias cursando",
+          "optativeTaking": "Materias optativas cursando",
+          "optativeRegular": "Materias optativas regulares",
+          "average": {
+            "notNotesAdded": "Debes cargar tus notas para ver tu promedio",
+            "title": "Promedio de notas",
+          },
+        },
+        "careerHistory": {
+          "title": "Mi historial de carrera",
+          "welcomeCard": "Este es el punto de partida de tu carrera",
+        },
+      }, 
     "calendar": {
       "title": "Mi Calendario",
       "subtitle": "Mirá tu calendario y anotá tus eventos",

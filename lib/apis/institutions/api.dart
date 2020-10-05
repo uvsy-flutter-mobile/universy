@@ -1,3 +1,4 @@
+import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/institution.dart';
@@ -73,6 +74,16 @@ Future<List<InstitutionProgram>> getPrograms(String careerId) async {
   );
 
   return response.orElse([]);
+}
+
+Future<Optional<InstitutionProgram>> getProgram(String programId) async {
+  var resource = "/programs/$programId";
+  var path = _createPath(resource);
+
+  return await api.get<InstitutionProgram>(
+    path,
+    model: (content) => InstitutionProgram.fromJson(content),
+  );
 }
 
 Future<List<InstitutionSubject>> getSubjects(String programId) async {

@@ -29,3 +29,13 @@ class SubjectByYearResult {
     return yearsWithSubjects.keys.reduce(max);
   }
 }
+
+class SubjectByTypeResult {
+  final List<Subject> optative;
+  final List<Subject> mandatory;
+
+  SubjectByTypeResult(
+    this.optative,
+    this.mandatory,
+  );
+}
