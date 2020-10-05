@@ -21,13 +21,15 @@ class _Widget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(children: <Widget>[
-        Expanded(
-            child: Text(
-                AppText.getInstance().get("main.modules.$moduleName.title")),
-            flex: 6),
-        Expanded(child: NotificationsAlert(), flex: 2)
-      ],),
+      title: Row(
+        children: <Widget>[
+          Expanded(
+              child: Text(
+                  AppText.getInstance().get("main.modules.$moduleName.title")),
+              flex: 6),
+          Expanded(child: NotificationsAlert(), flex: 2)
+        ],
+      ),
       backgroundColor: Colors.white,
     );
   }

@@ -44,7 +44,7 @@ class EnrollBodyWidget extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Expanded(child: EnrollStepper(current: step), flex: 1),
+        Expanded(child: EnrollStepper(current: step), flex: 2),
         Expanded(child: child, flex: 9),
       ],
     );

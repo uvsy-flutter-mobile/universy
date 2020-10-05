@@ -1,4 +1,3 @@
-import 'package:intl/intl.dart';
 import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/account/profile.dart';
@@ -186,19 +185,12 @@ Future<void> deleteSubject(String userId, String subjectId) {
 }
 
 // Events
-Future<List<StudentEvent>> getEvents(
-    String userId, DateTime dateFrom, DateTime dateTo) async {
-  DateFormat dateFormat = DateFormat("dd-MMM-yyyy");
-  String newDateFrom = dateFormat.format(dateFrom).toString();
-  String newDateTo = dateFormat.format(dateTo).toString();
-
+Future<List<StudentEvent>> getEvents(String userId) async {
   var resource = "/students/$userId/events";
   var path = _createPath(resource);
-  var queryParams = {"dateFrom": newDateFrom, "dateTo": newDateTo};
 
   var response = await api.getList<StudentEvent>(
     path,
-    queryParams: queryParams,
     model: (content) => StudentEvent.fromJson(content),
   );
 

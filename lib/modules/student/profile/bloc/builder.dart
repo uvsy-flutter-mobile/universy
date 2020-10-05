@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:universy/modules/student/profile/change_password.dart';
 import 'package:universy/modules/student/profile/create.dart';
 import 'package:universy/modules/student/profile/display.dart';
-import 'package:universy/modules/student/profile/form.dart';
+import 'package:universy/modules/student/profile/update.dart';
 import 'package:universy/util/bloc.dart';
 import 'package:universy/widgets/progress/circular.dart';
 
@@ -18,6 +19,8 @@ class ProfileStateBuilder extends WidgetBuilderFactory<ProfileState> {
       return ProfileNotCreateWidget();
     } else if (state is CreateState) {
       return ProfileFormWidget.create(state.userId);
+    } else if (state is ChangePasswordState) {
+      return ChangePasswordWidget(state.userId);
     }
     return CenterSizedCircularProgressIndicator();
   }
