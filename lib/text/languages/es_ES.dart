@@ -145,7 +145,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "profile": {
         "title": "Perfil",
-        "subtitle": "Personalizá tu usuario de Univery!",
+        "subtitle": "Personalizá tu usuario de Universy!",
       },
       "calendar": {
         "title": "Calendario",
@@ -298,6 +298,12 @@ const Map<dynamic, dynamic> ES = {
         "RECUP_EXAM": "Recuperatorio",
         "REGULAR_EXAM": "Parcial",
         "REPORT_SIGN_OFF": "Firma de libreta"
+      },
+    },
+    "notifications": {
+      "title": "Tus eventos de hoy",
+      "actions": {
+        "goToCalendar": "Ver Calendario",
       },
     },
     "enroll": {

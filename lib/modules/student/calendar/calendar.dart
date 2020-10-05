@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:universy/constants/routes.dart';
+import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/calendar/bloc/panel/builder.dart';
 import 'package:universy/modules/student/calendar/bloc/panel/cubit.dart';
 import 'package:universy/services/factory.dart';
@@ -67,7 +69,8 @@ class _StudentCalendarModuleState extends State<StudentCalendarModule> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-            title: Text(AppText.getInstance().get("student.calendar.title"))),
+            title: Text(AppText.getInstance().get("student.calendar.title")),
+            leading: _returnToMain()),
         body: SlidingUpPanel(
           backdropEnabled: false,
           isDraggable: true,
@@ -84,6 +87,15 @@ class _StudentCalendarModuleState extends State<StudentCalendarModule> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _returnToMain() {
+    return BackButton(
+      onPressed: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, Routes.HOME);
+      },
     );
   }
 }
