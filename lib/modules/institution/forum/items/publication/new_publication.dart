@@ -313,30 +313,6 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     });
   }
 
-  Widget _getDropDownComision() {
-    GlobalKey key = GlobalKey();
-    DropdownMenuItem dropdownValue;
-    return DropdownButton<DropdownMenuItem>(
-      key: key,
-      hint: Text("Comisión"),
-      value: dropdownValue,
-      style: TextStyle(color: Colors.black),
-      onChanged: _onChangeDropDownType,
-      items: this._courses.map<DropdownMenuItem<DropdownMenuItem>>((DropdownMenuItem value) {
-        return DropdownMenuItem<DropdownMenuItem>(
-          value: value,
-          child: value.child,
-        );
-      }).toList(),
-    );
-  }
-
-  void _onChangeDropDownType(DropdownMenuItem newValue) {
-    return setState(() {
-      this._selectedType = newValue;
-    });
-  }
-
   Widget _buildTextTitle() {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
