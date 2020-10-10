@@ -1,17 +1,23 @@
 import 'dart:core';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/filters/filter_button.dart';
 import 'package:universy/modules/institution/forum/items/publication/publication_item.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
+import 'bloc/cubit.dart';
+
 class ForumViewWidget extends StatefulWidget {
   final List<ForumPublication> _listPublications;
+  final Profile _profile;
 
-  const ForumViewWidget({Key key, @required List<ForumPublication> forumPublications})
+  const ForumViewWidget(
+      {Key key, @required List<ForumPublication> forumPublications, Profile profile})
       : this._listPublications = forumPublications,
+        this._profile = profile,
         super(key: key);
 
   @override
@@ -40,10 +46,13 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 6,
-      child: Column(
-        children: <Widget>[_buildSearchField(), _buildOrderBy(), _buildPublications()],
+    return Scaffold(
+      floatingActionButton: _buildFloatingActionButton(context),
+      body: SymmetricEdgePaddingWidget.horizontal(
+        paddingValue: 6,
+        child: Column(
+          children: <Widget>[_buildSearchField(), _buildOrderBy(), _buildPublications()],
+        ),
       ),
     );
   }
@@ -127,21 +136,13 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   void _fetchFilters(Filters filters) {
     print(filters.selectedLevel);
-    print(filters.selectedType);
+    print(filters.selectedSubject);
     print(filters.dateFrom);
     print(filters.dateTo);
     Filters newFilter = filters;
     setState(() {
       //widget._callBack(newFilter);
     });
-  }
-
-  Widget _buildAppBar() {
-    return AppBar(
-      title: Text("Foro"),
-      elevation: 4,
-      backgroundColor: Colors.white,
-    );
   }
 
   Widget _buildSearchField() {
@@ -184,6 +185,31 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
   }
 
   Widget _buildStudentNoteCardWidget(ForumPublication forumPublication, index) {
-    return PublicationItemWidget(forumPublication: forumPublication);
+    bool isOwner = false;
+    if (forumPublication.profile.userId == widget._profile.userId) {
+      isOwner = true;
+    }
+    return PublicationItemWidget(
+      forumPublication: forumPublication,
+      isOwner: isOwner,
+    );
+  }
+
+  Widget _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        _onFloatingPressed(context);
+      },
+      child: Icon(
+        Icons.add,
+        color: Colors.white,
+        size: 40,
+      ),
+      backgroundColor: Colors.amber,
+    );
+  }
+
+  void _onFloatingPressed(BuildContext context) async {
+    BlocProvider.of<InstitutionForumCubit>(context).createNewForumPublication();
   }
 }
