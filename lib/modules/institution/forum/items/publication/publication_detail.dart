@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
-import 'package:universy/modules/institution/forum/bloc/cubit.dart';
-import 'package:universy/modules/institution/forum/bloc/states.dart';
 import 'package:universy/modules/institution/forum/items/comments/comments-list.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
@@ -13,9 +11,11 @@ import 'package:universy/widgets/paddings/edge.dart';
 
 class PublicationDetailWidget extends StatefulWidget {
   final ForumPublication _forumPublication;
+  final Profile _profile;
 
-  PublicationDetailWidget({Key key, ForumPublication forumPublication})
+  PublicationDetailWidget({Key key, ForumPublication forumPublication, Profile profile})
       : this._forumPublication = forumPublication,
+        this._profile = profile,
         super(key: key);
 
   @override
@@ -24,7 +24,6 @@ class PublicationDetailWidget extends StatefulWidget {
 
 class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   ScrollController _scrollController = ScrollController();
-
   bool _newComment;
 
   @override
@@ -35,13 +34,9 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 10,
-      child: SymmetricEdgePaddingWidget.vertical(
-          paddingValue: 10,
-          child: Container(
-            child: _buildBody(context),
-          )),
+    return Scaffold(
+      body: _buildBody(context),
+      floatingActionButton: _buildFloatingActionButton(),
     );
   }
 
@@ -49,12 +44,51 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       controller: _scrollController,
-      child: Column(
+      child: SymmetricEdgePaddingWidget.vertical(paddingValue: 10,
+        child: SymmetricEdgePaddingWidget.horizontal(paddingValue: 10,
+          child: Column(
+            children: <Widget>[
+              _buildPublication(),
+              _buildExtraInfoComments(),
+              _buildComments(),
+              _buildNewCommentBox(),
+              _buildActionButtons(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildFloatingActionButton() {
+    if (_newComment != true) {
+      return FloatingActionButton(
+        onPressed: onPressed,
+        child: Icon(Icons.add_comment, color: Colors.white, size: 30),
+      );
+    } else {
+      SizedBox.shrink();
+    }
+  }
+
+  Widget _buildExtraInfoComments() {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 10,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          _buildPublication(),
-          _buildComments(),
-          _buildNewCommentBox(),
-          _buildActionButtons(),
+          Icon(
+            Icons.comment,
+            size: 30,
+            color: Colors.grey,
+          ),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: 10,
+              child: Text(
+                "${widget._forumPublication.comments.length.toString()}" + " Comentarios",
+                style: TextStyle(color: Colors.grey, fontSize: 18),
+              )),
         ],
       ),
     );
@@ -120,17 +154,12 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         duration: const Duration(milliseconds: 1000),
       );
     });
-    _onCancelPressed(context);
-
-  }
-
-  void _onCancelPressed(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).emit(DisplayForumPublicationState(widget._forumPublication));
   }
 
   Widget _buildComments() {
     return CommentsListWidget(
-      forumPublication: this.widget._forumPublication,
+      forumPublication: widget._forumPublication,
+      profile: widget._profile,
     );
   }
 

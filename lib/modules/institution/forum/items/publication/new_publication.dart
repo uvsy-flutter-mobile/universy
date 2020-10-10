@@ -29,11 +29,11 @@ class NewPublicationWidget extends StatefulWidget {
 
 class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   List<InstitutionSubject> _subjects;
+  InstitutionSubject _selectedSubject;
   Profile _profile;
 
   List<DropdownMenuItem> _courses = List<DropdownMenuItem>();
-  InstitutionSubject _selectedSubject;
-  DropdownMenuItem _selectedType;
+
 
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _titleController = TextEditingController();

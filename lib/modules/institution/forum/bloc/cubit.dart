@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
@@ -43,8 +40,10 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     listOfPublications.add(publication2);
     //List<ForumPublication> forumPublications = await _institutionService.getNotes();
 
+    var profile1 = await _profileService.getProfile();
+
     if (listOfPublications.isNotEmpty) {
-      emit(DisplayState(listOfPublications));
+      emit(DisplayState(listOfPublications, profile1));
     } else {
       emit(ForumPublicationsNotFoundState());
     }
@@ -58,15 +57,16 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     emit(CreateForumPublicationState(institutionSubjects, profile));
   }
 
-  void selectForumPublication(ForumPublication forumPublication) {
-    emit(DisplayForumPublicationState(forumPublication));
-  }
-
-  void addNewComment(ForumPublication forumPublication) async{
+  void selectForumPublication(ForumPublication forumPublication) async {
     var profile = await _profileService.getProfile();
-    emit(AddCommentForumPublicationState(forumPublication,profile));
+    emit(DisplayForumPublicationState(forumPublication, profile));
   }
 
+  void filterForumPublications() async {
+    var programId = await this._careerService.getCurrentProgram();
+    List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
+    emit(FilterForumPublicationsState(institutionSubjects));
+  }
 
 //  void editNote(StudentNote note) {
 //   emit(EditNoteState(note));

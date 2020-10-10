@@ -1,5 +1,5 @@
-import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/account/profile.dart';
+import 'package:universy/model/institution/subject.dart';
 
 class ListForumPublication {
   final List<ForumPublication> _listForumPublication;
@@ -100,18 +100,20 @@ class Comment {
 
 class Filters {
   int _selectedLevel;
-  String _selectedType;
+  InstitutionSubject _selectedSubject;
   DateTime _dateFrom;
   DateTime _dateTo;
   List<String> _uploadTags;
 
   int get selectedLevel => _selectedLevel;
 
-  String get selectedType => _selectedType;
+  InstitutionSubject get selectedSubject => _selectedSubject;
 
   DateTime get dateFrom => _dateFrom;
 
   DateTime get dateTo => _dateTo;
 
-  Filters(this._selectedLevel, this._selectedType, this._dateFrom, this._dateTo, this._uploadTags);
+  List<String> get uploadTags => _uploadTags;
+
+  Filters(this._selectedLevel, this._selectedSubject, this._dateFrom, this._dateTo, this._uploadTags);
 }

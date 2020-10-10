@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:universy/model/institution/forum.dart';
+import 'package:universy/model/institution/subject.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class FiltersViewWidget extends StatefulWidget {
   final Function(Filters) _callBack;
+  final List<InstitutionSubject> _subjects;
 
-  const FiltersViewWidget({Key key, Function(Filters) callBack})
+  const FiltersViewWidget({Key key, Function(Filters) callBack,List<InstitutionSubject> subjects})
       : this._callBack = callBack,
+        this._subjects = subjects,
         super(key: key);
 
   @override
@@ -19,111 +22,219 @@ class FiltersViewWidget extends StatefulWidget {
 class _FiltersViewWidgetState extends State<FiltersViewWidget> {
   TextEditingController _searchTagsEditingController;
   int _selectedLevel;
-  String _selectedType;
   DateTime _selectedDateFrom;
   DateTime _selectedDateTo;
   List<String> _uploadTags = [];
+  List<InstitutionSubject> _subjects;
+  InstitutionSubject _selectedSubject;
+  bool _maxTags;
+  ScrollController _scrollController;
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _subjects = widget._subjects;
     _searchTagsEditingController = TextEditingController();
     super.initState();
+    _maxTags = false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
-      backgroundColor: Colors.white,
-      body: Container(
-          child: ListView(
-        shrinkWrap: true,
-        children: <Widget>[_buildBody()],
-      )),
+      floatingActionButton: _buildFloatingActionButton() ,
+        body: _buildBody());
+  }
+
+  _buildFloatingActionButton(){
+    return FloatingActionButton(
+      backgroundColor: Colors.deepPurple,
+      onPressed: _createAndSendFilter,
+      child: Icon(
+        Icons.search,
+        color: Colors.white,
+        size: 40,
+      ),
     );
   }
 
   Widget _buildBody() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[
-        _buildTitle("Nivel"),
-        _buildLevelButtonsRow(),
-        _buildTitle("Tipo de Publicación"),
-        _buildTypeButtonsRow(),
-        _buildTitle("Fecha de Publicación"),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildDatePicker(false),
-            _buildDatePicker(true),
-          ],
-        ),
-        _buildTitle("Tags"),
-        _buildTags(),
-        _buildTagAddField(),
-        _buildApplyButton()
-      ],
-    );
-  }
-
-  void _createAndSendFilter() {
-    Filters newFilter =
-        Filters(_selectedLevel, _selectedType, _selectedDateFrom, _selectedDateTo, _uploadTags);
-    setState(() {
-      widget._callBack(newFilter);
-    });
-    Navigator.pop(context);
-  }
-
-  Widget _buildApplyButton() {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 6,
-      child: SymmetricEdgePaddingWidget.horizontal(
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: SymmetricEdgePaddingWidget.vertical(
         paddingValue: 10,
-        child: GestureDetector(
-          onTap: () {
-            _createAndSendFilter();
-          },
-          child: Container(
-            decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(10)),
-            width: double.infinity,
-            height: 50,
-            child: Center(
-                child: Text(
-              "Aplicar",
-              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
-            )),
+        child: SymmetricEdgePaddingWidget.horizontal(
+          paddingValue: 10,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildTitle("Nivel"),
+              _buildLevelButtonsRow(),
+              _buildTitle("Materia"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildSubjectDropDown(),
+                ],
+              ),
+              _buildTitle("Comision"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildSubjectDropDown(),
+                ],
+              ),
+              _buildTitle("Fecha"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _buildDatePicker(false),
+                  _buildDatePicker(true),
+                ],
+              ),
+              _buildTitle("Etiquetas"),
+              _buildTags(),
+              _buildAddTagsSection(),
+            ],
           ),
         ),
       ),
     );
   }
 
+  Widget _buildSubjectDropDown() {
+    GlobalKey key = GlobalKey();
+    InstitutionSubject dropdownValue;
+    return DropdownButton<InstitutionSubject>(
+      key: key,
+      hint: Text(
+        "Materia",
+        textAlign: TextAlign.center,
+      ),
+      value: dropdownValue,
+      elevation: 6,
+      style: TextStyle(color: Colors.black),
+      onChanged: _onChangeDropDownSubject,
+      items: _subjects.map((x) {
+        return new DropdownMenuItem<InstitutionSubject>(
+          value: x,
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width / 2.5,
+              child: new Text(
+                x.name,
+                textAlign: TextAlign.center,
+              )),
+        );
+      }).toList(),
+    );
+  }
+
+  void _onChangeDropDownSubject(InstitutionSubject newValue) {
+    return setState(() {
+      this._selectedSubject = newValue;
+    });
+  }
+
+  void _createAndSendFilter() {
+    Filters newFilter =
+        Filters(_selectedLevel, _selectedSubject, _selectedDateFrom, _selectedDateTo, _uploadTags);
+    setState(() {
+      widget._callBack(newFilter);
+    });
+    Navigator.pop(context);
+  }
+
+  Widget _buildAddTagsSection() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: Visibility(
+        visible: !_maxTags,
+        replacement: _buildErrorMessage(),
+        child: _buildInputTagsField(),
+      ),
+    );
+  }
+
+  TextField _buildInputTagsField() {
+    return TextField(
+        enabled: !_maxTags,
+        onChanged: _filterTag,
+        controller: _searchTagsEditingController,
+        decoration: _buildTagAddDecoration());
+  }
+
+  Widget _buildErrorMessage() {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 10,
+      child: Text(
+        "Has llegado al máximo de tags permitidos, pagá la versión PREMIUM, o eliminá algún TAG.",
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  InputDecoration _buildTagAddDecoration() {
+    return InputDecoration.collapsed(
+      hintStyle: TextStyle(color: Colors.grey),
+      hintText: "Agregá a tu búsqueda #",
+    );
+  }
+
+  void _filterTag(String query) {
+    if (query.isNotEmpty) {
+      if (query.trim().length > 0) {
+        if (query.endsWith(" ")) {
+          if (_uploadTags.length != 9) {
+            setState(() {
+              String cleanQuery = query.trimLeft();
+              String cleanQuery2 = cleanQuery.trimRight();
+              _uploadTags.add(cleanQuery2);
+              _searchTagsEditingController.clear();
+            });
+          } else {
+            setState(() {
+              String cleanQuery = query.trimLeft();
+              String cleanQuery2 = cleanQuery.trimRight();
+              _uploadTags.add(cleanQuery2);
+              _searchTagsEditingController.clear();
+              _scrollController.animateTo(
+                00.0,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 1000),
+              );
+              _maxTags = true;
+            });
+          }
+        }
+      }
+    }
+  }
+
   Widget _buildTags() {
-    return Tags(
-      itemCount: _uploadTags.length,
-      itemBuilder: (int index) {
-        return ItemTags(
-          removeButton: ItemTagsRemoveButton(
-            icon: Icons.clear,
-            onRemoved: () {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: Tags(
+        alignment: WrapAlignment.start,
+        itemCount: _uploadTags.length,
+        itemBuilder: (int index) {
+          return ItemTags(
+            onPressed: (x) {
               setState(() {
                 _uploadTags.removeAt(index);
+                _maxTags = false;
               });
             },
-          ),
-          key: Key(index.toString()),
-          index: index,
-          title: "${_uploadTags[index]}",
-          pressEnabled: false,
-          textStyle: TextStyle(
-            fontSize: 14,
-          ),
-          combine: ItemTagsCombine.withTextBefore,
-        );
-      },
+            key: Key(index.toString()),
+            index: index,
+            title: "${_uploadTags[index]}",
+            pressEnabled: true,
+            textStyle: TextStyle(
+              fontSize: 14,
+            ),
+            combine: ItemTagsCombine.withTextBefore,
+          );
+        },
+      ),
     );
   }
 
@@ -194,46 +305,22 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     }
   }
 
-  Widget _buildTypeButtonsRow() {
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildTypeButton("Parcial", 100, 50),
-            _buildTypeButton("Final", 100, 50),
-          ],
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildTypeButton("Discusión", 100, 50),
-            _buildTypeButton("Cursado", 100, 50),
-          ],
-        ),
-      ],
-    );
-  }
-
   Widget _buildLevelButtonsRow() {
     return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
-        _buildLevelButton("1", 50, 50),
-        _buildLevelButton("2", 50, 50),
-        _buildLevelButton("3", 50, 50),
-        _buildLevelButton("4", 50, 50),
-        _buildLevelButton("5", 50, 50),
+        _buildButton("1"),
+        _buildButton("2"),
+        _buildButton("3"),
+        _buildButton("4"),
+        _buildButton("5"),
       ],
     );
   }
 
   Widget _buildTitle(String text) {
     return SymmetricEdgePaddingWidget.vertical(
-        paddingValue: 4,
+        paddingValue: 6,
         child: Text(
           text,
           textAlign: TextAlign.left,
@@ -241,60 +328,26 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         ));
   }
 
-  Widget _buildAppBar() {
-    return AppBar(
-      title: Text("Filtros"),
-      elevation: 4,
-      backgroundColor: Colors.amber,
-    );
-  }
-
-  Widget _buildTypeButton(String text, double width, double height) {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 3,
-      child: SymmetricEdgePaddingWidget.horizontal(
-        paddingValue: 5,
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              if (_selectedType == text) {
-                _selectedType = null;
-              } else {
-                _selectedType = text;
-              }
-            });
-          },
-          child: Container(
-            decoration: _buildButtonTypeDecoration(text),
-            width: width,
-            height: height,
-            child: _buildContentTypeButton(text),
+  Widget _buildButton(String text) {
+    return FloatingActionButton(
+      backgroundColor: _selectedLevel == int.parse(text) ? Colors.amber : Colors.white,
+      shape: RoundedRectangleBorder(
+          side: BorderSide(
+            color: _selectedLevel != int.parse(text) ? Colors.amber : Colors.transparent,
           ),
-        ),
+          borderRadius: BorderRadius.all(Radius.circular(30.0))),
+      child: Container(
+        child: _buildContentLevelButton(text),
       ),
-    );
-  }
-
-  Widget _buildLevelButton(String text, double width, double height) {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 5,
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            if (_selectedLevel == int.parse(text)) {
-              _selectedLevel = null;
-            } else {
-              _selectedLevel = int.parse(text);
-            }
-          });
-        },
-        child: Container(
-          decoration: _buildButtonLevelDecoration(text),
-          width: width,
-          height: height,
-          child: _buildContentLevelButton(text),
-        ),
-      ),
+      onPressed: () {
+        setState(() {
+          if (_selectedLevel == int.parse(text)) {
+            _selectedLevel = null;
+          } else {
+            _selectedLevel = int.parse(text);
+          }
+        });
+      },
     );
   }
 
@@ -306,70 +359,5 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
           color: _selectedLevel == int.parse(text) ? Colors.white : Colors.amber,
           fontWeight: FontWeight.bold),
     ));
-  }
-
-  Center _buildContentTypeButton(String text) {
-    return Center(
-        child: Text(
-      text,
-      style: TextStyle(
-          color: _selectedType == text ? Colors.white : Colors.amber, fontWeight: FontWeight.bold),
-    ));
-  }
-
-  BoxDecoration _buildButtonLevelDecoration(String text) {
-    return BoxDecoration(
-      color: _selectedLevel == int.parse(text) ? Colors.amber : Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(
-          width: 2, color: _selectedLevel == int.parse(text) ? Colors.white : Colors.amber),
-    );
-  }
-
-  BoxDecoration _buildButtonTypeDecoration(String text) {
-    return BoxDecoration(
-      color: _selectedType == text ? Colors.amber : Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      border: Border.all(width: 2, color: _selectedType == text ? Colors.white : Colors.amber),
-    );
-  }
-
-  Widget _buildTagAddField() {
-    return Container(
-      child: EdgePaddingWidget(
-          EdgeInsets.all(10.0),
-          TextField(
-              onChanged: _filterTag,
-              controller: _searchTagsEditingController,
-              decoration: _buildNameSearchBarDecoration())),
-    );
-  }
-
-  InputDecoration _buildNameSearchBarDecoration() {
-    return InputDecoration(
-      labelText: "Agregá un tag",
-      hintText: "Cada tag se separa con ,",
-      prefixIcon: Icon(Icons.add),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(25.0),
-        ),
-      ),
-    );
-  }
-
-  void _filterTag(String query) {
-    if (query.isNotEmpty) {
-      if (query.trim().length > 0) {
-        if (query.endsWith(" ")) {
-          setState(() {
-            String cleanQuery = query.trimLeft();
-            String cleanQuery2 = cleanQuery.trimRight();
-            _uploadTags.add(cleanQuery2);
-            _searchTagsEditingController.clear();
-          });
-        }
-      }
-    }
   }
 }

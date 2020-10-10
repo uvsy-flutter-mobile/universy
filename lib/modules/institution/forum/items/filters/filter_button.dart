@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/model/institution/forum.dart';
-import 'package:universy/modules/institution/forum/items/filters/filters_view.dart';
+import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class FilterButtonWidget extends StatefulWidget {
@@ -37,15 +38,7 @@ class _FilterButtonWidgetState extends State<FilterButtonWidget> {
   }
 
   void _onTap() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => FiltersViewWidget(
-                callBack: (filters) {
-                  _fetchFilters(filters);
-                },
-              )),
-    );
+    BlocProvider.of<InstitutionForumCubit>(context).filterForumPublications();
   }
 
   void _fetchFilters(Filters filters) {

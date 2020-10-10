@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/comments/comment_item.dart';
-import 'package:universy/modules/student/subjects/state/correlative_dialog.dart';
-import 'package:universy/widgets/buttons/uvsy/save.dart';
-import 'package:universy/widgets/paddings/edge.dart';
 
 class CommentsListWidget extends StatelessWidget {
   final ForumPublication _forumPublication;
+  final Profile _profile;
 
-  CommentsListWidget({Key key, ForumPublication forumPublication})
+  CommentsListWidget({Key key, ForumPublication forumPublication, Profile profile})
       : this._forumPublication = forumPublication,
+        this._profile = profile,
         super(key: key);
 
   @override
@@ -33,85 +33,19 @@ class CommentsListWidget extends StatelessWidget {
 
   Widget _buildForumPublicationsList() {
     List<Widget> column = List<Widget>();
-    column.add(_buildQuantityOfComments());
     int x = 0;
     while (this._forumPublication.comments.length > x) {
       Comment comment = this._forumPublication.comments[x];
-      column.add(CommentItemWidget(comment: comment));
+      bool isOwner = _determinateOwner(comment);
+      column.add(CommentItemWidget(comment: comment,isOwner:isOwner));
       x = x + 1;
     }
     return Column(children: column);
   }
 
-  Widget _buildQuantityOfComments() {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 10,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            Icons.comment,
-            size: 30,
-            color: Colors.grey,
-          ),
-          SymmetricEdgePaddingWidget.horizontal(
-              paddingValue: 10,
-              child: Text(
-                "${this._forumPublication.comments.length.toString()}" + " Comentarios",
-                style: TextStyle(color: Colors.grey, fontSize: 18),
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCommentWidget(Comment comment) {
-    return CommentItemWidget(
-      comment: comment,
-    );
-  }
-
-  Future<void> _addNewComment(context) async {
-    TextEditingController textEditingController = TextEditingController();
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return ListView(shrinkWrap: true, children: <Widget>[
-          AlertDialog(
-            title: Text('Nuevo Comentario'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Divider(),
-                TextField(controller: textEditingController, maxLines: 6, maxLength: 200),
-                Text("ACLARACION: Una vez publicado el comentario no se permite eliminarlo."),
-              ],
-            ),
-            actions: <Widget>[
-              SaveButton(
-                onSave: () {
-                  _onSaved(textEditingController);
-                  Navigator.pop(context);
-                },
-              ),
-              CancelButton()
-            ],
-          ),
-        ]);
-      },
-    );
-  }
-
-  void _onSaved(TextEditingController textEditingController) async {
-    if (textEditingController.text.trim().length != 0) {
-      //Profile profile = await Services.of(context).profileService().getStudentProfile();
-      //Comment comment = Comment(widget._forumPublication.idPublication,profile, textEditingController.text, DateTime.now());
-      //await Services.of(context).institutionForumService().updateForumPublication(widget._forumPublication.idPublication,comment);
-      //setState(() {
-        //widget._forumPublication.comments.add(comment);
-      //});
-    }
+  bool _determinateOwner(Comment comment){
+    if(comment.profile==this._profile){
+      return true;
+    }else{return false;}
   }
 }

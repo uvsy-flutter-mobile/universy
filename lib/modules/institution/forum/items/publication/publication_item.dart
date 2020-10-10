@@ -1,23 +1,46 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
+import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/paddings/edge.dart';
-
-import 'publication_detail.dart';
 
 class PublicationItemWidget extends StatelessWidget {
   final ForumPublication _forumPublication;
+  final bool _isOwner;
 
-  PublicationItemWidget({Key key, ForumPublication forumPublication})
+  PublicationItemWidget({Key key, ForumPublication forumPublication,bool isOwner})
       : this._forumPublication = forumPublication,
+        this._isOwner = isOwner,
         super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
+    if(this._isOwner){
+      return _buildOwnerPublicationItem(context);
+    }else{
+      return _buildNotOwnerPublicationItem(context);
+    }
+  }
+
+
+  Widget _buildOwnerPublicationItem(BuildContext context) {
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      enabled: true,
+      actionExtentRatio: 0.25,
+      child: _buildNotOwnerPublicationItem(context),
+      secondaryActions: <Widget>[_buildDeleteSlide(context)],
+    );
+  }
+
+
+  Widget _buildNotOwnerPublicationItem(BuildContext context) {
     return GestureDetector(
       onTap: () {
         _onPublicationTap(context);
@@ -33,6 +56,45 @@ class PublicationItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _buildDeleteSlide(BuildContext context) {
+    return Container(
+      alignment: Alignment.topLeft,
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(width: 1, color: Color(0xFFC9C9C9))),
+      ),
+      child: _buildDeleteButton(context),
+    );
+  }
+
+  Widget _buildDeleteButton(BuildContext context) {
+    return IconSlideAction(
+      color: Colors.red,
+      icon: Icons.delete,
+      onTap: () => _pressDeletePublicationForumButton(context),
+    );
+  }
+
+  void _pressDeletePublicationForumButton(BuildContext context) async {
+    await AsyncModalBuilder()
+        .perform(_deleteEvents)
+        .withTitle(
+        "Eliminando Publicación")
+        .then(_refreshForum)
+        .build()
+        .run(context);
+  }
+
+  Future _deleteEvents(BuildContext context) async {
+    ///ELIMINAR PUBLICACION
+    //var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+    //var studentEventService = sessionFactory.studentEventService();
+    //await studentEventService.deleteStudentEvent(this.event);
+  }
+
+  void _refreshForum(BuildContext context) {
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
   }
 
   Widget _buildRowContent() {

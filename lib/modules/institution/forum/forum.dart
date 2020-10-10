@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/modules/institution/forum/bloc/builders/builder.dart';
-import 'package:universy/modules/institution/forum/bloc/builders/button.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/system/assets.dart';
@@ -40,7 +39,6 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
             backgroundColor: Colors.transparent,
             appBar: _buildAppBar(),
             body: _buildBody(),
-            floatingActionButton: _buildFloatingActionButton(),
           ),
         ),
       ),
@@ -61,13 +59,6 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
     return BlocBuilder(
       cubit: _forumCubit,
       builder: InstitutionForumStateBuilder().builder(),
-    );
-  }
-
-  Widget _buildFloatingActionButton() {
-    return BlocBuilder(
-      cubit: _forumCubit,
-      builder: InstitutionForumStateButtonBuilder().builder(),
     );
   }
 }
