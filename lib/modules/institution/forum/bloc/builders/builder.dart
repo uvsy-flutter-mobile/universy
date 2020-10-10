@@ -15,7 +15,7 @@ class InstitutionForumStateBuilder extends WidgetBuilderFactory<InstitutionForum
       return ForumViewWidget(forumPublications: state.forumPublications, profile: state.profile);
     } else if (state is ForumPublicationsNotFoundState) {
       return ForumPublicationNotFoundWidget();
-    } else if (state is DisplayForumPublicationState) {
+    } else if (state is DisplayForumPublicationDetailState) {
       return PublicationDetailWidget(
           forumPublication: state.forumPublication, profile: state.profile);
     } else if (state is CreateForumPublicationState) {

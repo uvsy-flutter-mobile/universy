@@ -19,8 +19,8 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     List<ForumPublication> listOfPublications = new List<ForumPublication>();
     List<Comment> list = List<Comment>();
     List<String> listTags = new List<String>();
-    Profile profile = Profile("1521515", "Guido", "Henry", "Pepe");
-    Comment comment = Comment(1, profile, "La verdad que me parece agradable", DateTime.now());
+    Profile profile1 = Profile("1521515", "Guido", "Henry", "Pepe");
+    Comment comment = Comment(1, profile1, "La verdad que me parece agradable", DateTime.now());
     list.add(comment);
     list.add(comment);
     list.add(comment);
@@ -29,9 +29,9 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     listTags.add("AM1");
     listTags.add("AM2");
     listTags.add("AM3");
-    ForumPublication publication1 = new ForumPublication(1, "Donde curso Diseño?", profile,
+    ForumPublication publication1 = new ForumPublication(1, "Donde curso Diseño?", profile1,
         "Tengo una consulta sobre la materia ..ateriaTengo una ..", DateTime.now(), list, listTags);
-    ForumPublication publication2 = new ForumPublication(2, "Sorocotongo", profile,
+    ForumPublication publication2 = new ForumPublication(2, "Sorocotongo", profile1,
         "Que ondera Superior ? Te rompen el toto ?", DateTime(2014), list, listTags);
     listOfPublications.add(publication1);
     listOfPublications.add(publication2);
@@ -40,32 +40,34 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     listOfPublications.add(publication2);
     //List<ForumPublication> forumPublications = await _institutionService.getNotes();
 
-    var profile1 = await _profileService.getProfile();
+    var profile = await _profileService.getProfile();
+    var programId = await this._careerService.getCurrentProgram();
+    List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
 
     if (listOfPublications.isNotEmpty) {
-      emit(DisplayState(listOfPublications, profile1));
+      redirectionToDisplayPublications(listOfPublications, profile,institutionSubjects);
     } else {
       emit(ForumPublicationsNotFoundState());
     }
   }
 
+  void redirectionToDisplayPublications(listOfPublications, profile,institutionSubjects) async {
+    emit(DisplayState(listOfPublications, profile,institutionSubjects));
+  }
+
   void createNewForumPublication() async {
-    var programId = await this._careerService.getCurrentProgram();
-    var profile = await _profileService.getProfile();
-    List<InstitutionSubject> institutionSubjects =
-        await this._institutionService.getSubjects(programId);
-    emit(CreateForumPublicationState(institutionSubjects, profile));
+    var displayState = this.state as DisplayState;
+    emit(CreateForumPublicationState(displayState.institutionSubjects, displayState.profile));
   }
 
   void selectForumPublication(ForumPublication forumPublication) async {
-    var profile = await _profileService.getProfile();
-    emit(DisplayForumPublicationState(forumPublication, profile));
+    var displayState = this.state as DisplayState;
+    emit(DisplayForumPublicationDetailState(forumPublication, displayState.profile));
   }
 
   void filterForumPublications() async {
-    var programId = await this._careerService.getCurrentProgram();
-    List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
-    emit(FilterForumPublicationsState(institutionSubjects));
+    var displayState = this.state as DisplayState;
+    emit(FilterForumPublicationsState(displayState.institutionSubjects,displayState.profile));
   }
 
 //  void editNote(StudentNote note) {

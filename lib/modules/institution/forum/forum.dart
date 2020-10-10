@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/modules/institution/forum/bloc/builders/builder.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
+import 'package:universy/modules/institution/forum/bloc/states.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/system/assets.dart';
 import 'package:universy/util/object.dart';
@@ -22,7 +23,7 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
       var careerService = sessionFactory.studentCareerService();
       var institutionService = sessionFactory.institutionService();
       var profileService = sessionFactory.profileService();
-      this._forumCubit = InstitutionForumCubit(careerService, institutionService,profileService);
+      this._forumCubit = InstitutionForumCubit(careerService, institutionService, profileService);
       this._forumCubit.fetchPublications();
     }
     super.didChangeDependencies();
@@ -37,7 +38,7 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
           decoration: assetImageDecoration(Assets.UNIVERSY_CITY_BACKGROUND),
           child: Scaffold(
             backgroundColor: Colors.transparent,
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar(context),
             body: _buildBody(),
           ),
         ),
@@ -45,14 +46,26 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text("FORO"
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () => {_arrowBackOnPressed(context)},
+      ),
+      title: Text("Foro"
           //      AppText.getInstance().get("main.modules.notes.title"      )
           ),
       elevation: 10.0,
       automaticallyImplyLeading: true,
     );
+  }
+
+  void _arrowBackOnPressed(BuildContext context) {
+    if (_forumCubit.state is DisplayState) {
+      Navigator.pop(context);
+    } else {
+      _forumCubit.fetchPublications();
+    }
   }
 
   Widget _buildBody() {

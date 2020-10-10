@@ -14,36 +14,37 @@ class LoadingState extends InstitutionForumState {}
 
 class DisplayState extends InstitutionForumState {
   final List<ForumPublication> forumPublications;
+  final List<InstitutionSubject> institutionSubjects;
   final Profile profile;
 
-  DisplayState(this.forumPublications,this.profile);
+  DisplayState(this.forumPublications, this.profile, this.institutionSubjects);
 
-  List<Object> get props => [forumPublications];
+  Profile get myProfile => profile;
+
+  List<InstitutionSubject> get stateForumSubjects => institutionSubjects;
+
+  List<ForumPublication> get stateForumPublications => forumPublications;
 }
 
-class DisplayForumPublicationState extends InstitutionForumState {
+class DisplayForumPublicationDetailState extends InstitutionForumState {
   final ForumPublication forumPublication;
   final Profile profile;
 
-  DisplayForumPublicationState(this.forumPublication,this.profile);
-
-  List<Object> get props => [forumPublication];
+  DisplayForumPublicationDetailState(this.forumPublication, this.profile);
 }
 
 class CreateForumPublicationState extends InstitutionForumState {
   final List<InstitutionSubject> institutionSubjects;
   final Profile profile;
 
-  CreateForumPublicationState(this.institutionSubjects,this.profile);
-
-  List<Object> get props => [institutionSubjects];
+  CreateForumPublicationState(this.institutionSubjects, this.profile);
 }
 
 class ForumPublicationsNotFoundState extends InstitutionForumState {}
 
 class FilterForumPublicationsState extends InstitutionForumState {
   final List<InstitutionSubject> institutionSubjects;
+  final Profile profile;
 
-  FilterForumPublicationsState(this.institutionSubjects);
-
+  FilterForumPublicationsState(this.institutionSubjects, this.profile);
 }
