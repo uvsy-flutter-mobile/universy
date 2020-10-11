@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:universy/system/assets.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/widgets/decorations/box.dart';
+import 'package:universy/widgets/buttons/outlined/custom_icon.dart';
+import 'package:universy/widgets/buttons/raised/rounded.dart';
 
 const NO_SCHEDULES_AMOUNT = 0;
 const ONLY_ONE_SCHEDULE_AMOUNT = 1;
@@ -9,25 +9,43 @@ const ONLY_ONE_SCHEDULE_AMOUNT = 1;
 class StudentScheduleListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(45),
-      child: Column(
-        children: <Widget>[
-          Text(
-            AppText.getInstance().get("student.schedule.heroText"),
-            style: Theme.of(context).primaryTextTheme.headline3,
+    return ListView(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(45),
+          child: Column(
+            children: <Widget>[
+              Text(
+                AppText.getInstance().get("student.schedule.heroText"),
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  _getSchedulesAmountMessage(),
+                  textAlign: TextAlign.end,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              SizedBox(height: 15),
+              Placeholder(),
+              SizedBox(height: 15),
+              SizedBox(
+                width: double.infinity,
+                child: CustomOutlinedButtonIcon(
+                  iconData: Icons.add,
+                  onPressed: () => {},
+                  labelText: AppText.getInstance()
+                      .get("student.schedule.addNewSchedule"),
+                  buttonTextStyle: Theme.of(context).textTheme.button,
+                  color: Theme.of(context).buttonColor,
+                ),
+              )
+            ],
           ),
-          SizedBox(height: 20),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              _getSchedulesAmountMessage(),
-              textAlign: TextAlign.end,
-              style: Theme.of(context).primaryTextTheme.subtitle2,
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 
