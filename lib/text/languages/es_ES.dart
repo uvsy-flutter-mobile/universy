@@ -155,6 +155,10 @@ const Map<dynamic, dynamic> ES = {
         "title": "Mis Anotaciones",
         "subtitle": "Escribí y editá tus anotaciones",
       },
+      "schedule": {
+        "title": "Mis Horarios",
+        "subtitle": "Crea borradores para tus horarios de cursado",
+      },
     }
   },
   "student": {
@@ -361,6 +365,9 @@ const Map<dynamic, dynamic> ES = {
         "noCareers": "No hay carreras disponibles para esta institución",
         "noProgram": "No hay programa para este año :/",
       },
+    },
+    "schedule": {
+      "title": "Mis Horarios",
     }
   },
   "institution": {

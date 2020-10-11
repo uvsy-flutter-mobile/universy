@@ -51,6 +51,9 @@ class _Widget extends StatelessWidget {
           Ink(
             child: CalendarItem(),
           ),
+          Ink(
+            child: ScheduleItem(),
+          ),
           Divider(),
           Ink(
             child: StudentNotesItem(),

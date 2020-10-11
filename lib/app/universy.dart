@@ -7,6 +7,7 @@ import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/calendar/calendar.dart';
 import 'package:universy/modules/student/enroll/enroll.dart';
 import 'package:universy/modules/student/notes/notes.dart';
+import 'package:universy/modules/student/schedule/schedule.dart';
 import 'package:universy/system/config.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/system/start.dart';
@@ -38,6 +39,7 @@ class Universy extends StatelessWidget {
       Routes.CAREER_ENROLL: (context) => CareerEnrollModule(),
       Routes.NOTES_MODULE: (context) => NotesModule(),
       Routes.CALENDAR_MODULE: (context) => StudentCalendarModule(),
+      Routes.SCHEDULE_MODULE: (context) => StudentScheduleModule(),
     };
   }
 
