@@ -25,10 +25,14 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     list.add(comment);
     list.add(comment);
     list.add(comment);
-    listTags.add("MATSUP");
+    listTags.add("Matematica Discreta");
     listTags.add("AM1");
     listTags.add("AM2");
     listTags.add("AM3");
+    listTags.add("AM3");
+    listTags.add("AM3");
+    listTags.add("AM5");
+    listTags.add("AM7");
     ForumPublication publication1 = new ForumPublication(1, "Donde curso Diseño?", profile1,
         "Tengo una consulta sobre la materia ..ateriaTengo una ..", DateTime.now(), list, listTags);
     ForumPublication publication2 = new ForumPublication(2, "Sorocotongo", profile1,
@@ -68,6 +72,11 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
   void filterForumPublications() async {
     var displayState = this.state as DisplayState;
     emit(FilterForumPublicationsState(displayState.institutionSubjects,displayState.profile));
+  }
+
+  void updateForumPublication(ForumPublication forumPublication) async {
+    var displayState = this.state as DisplayState;
+    emit(UpdateForumPublicationState(displayState.institutionSubjects,displayState.profile,forumPublication));
   }
 
 //  void editNote(StudentNote note) {

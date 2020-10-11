@@ -40,6 +40,14 @@ class CreateForumPublicationState extends InstitutionForumState {
   CreateForumPublicationState(this.institutionSubjects, this.profile);
 }
 
+class UpdateForumPublicationState extends InstitutionForumState {
+  final ForumPublication forumPublication;
+  final List<InstitutionSubject> institutionSubjects;
+  final Profile profile;
+
+  UpdateForumPublicationState(this.institutionSubjects, this.profile,this.forumPublication);
+}
+
 class ForumPublicationsNotFoundState extends InstitutionForumState {}
 
 class FilterForumPublicationsState extends InstitutionForumState {

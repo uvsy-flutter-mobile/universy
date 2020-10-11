@@ -181,7 +181,15 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
                 _buildPublicationDescription(),
               ],
             ),
-            _buildTagsAndDate()
+            SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: 15,
+              child: Row(
+                children: <Widget>[
+                  _buildTags(),
+                  _buildDate(),
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -212,22 +220,14 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     );
   }
 
-  Widget _buildTagsAndDate() {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 20,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          _buildTags(),
-          Expanded(
-              flex: 5,
-              child: DateItemWidget(
-                date: widget._forumPublication.date,
-                withTime: true,
-              )),
-        ],
-      ),
+  Widget _buildDate() {
+    return Column(
+      children: <Widget>[
+        DateItemWidget(
+          date: widget._forumPublication.date,
+          withTime: true,
+        ),
+      ],
     );
   }
 
@@ -249,8 +249,8 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildTags() {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 7.0,
+    return Expanded(
+      flex: 1,
       child: Tags(
         spacing: 1.0,
         runSpacing: 1.5,

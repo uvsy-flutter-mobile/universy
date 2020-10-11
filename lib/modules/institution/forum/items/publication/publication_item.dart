@@ -35,7 +35,7 @@ class PublicationItemWidget extends StatelessWidget {
       enabled: true,
       actionExtentRatio: 0.25,
       child: _buildNotOwnerPublicationItem(context),
-      secondaryActions: <Widget>[_buildDeleteSlide(context)],
+      secondaryActions: <Widget>[_buildDeleteSlide(context),_buildUpdateSlide(context)],
     );
   }
 
@@ -68,11 +68,29 @@ class PublicationItemWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildUpdateSlide(BuildContext context) {
+    return Container(
+      alignment: Alignment.topRight,
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(width: 1, color: Colors.grey)),
+      ),
+      child: _buildUpdateButton(context),
+    );
+  }
+
   Widget _buildDeleteButton(BuildContext context) {
     return IconSlideAction(
       color: Colors.red,
       icon: Icons.delete,
       onTap: () => _pressDeletePublicationForumButton(context),
+    );
+  }
+
+  Widget _buildUpdateButton(BuildContext context) {
+    return IconSlideAction(
+      color: Colors.grey,
+      icon: Icons.edit,
+      onTap: () => _pressUpdatePublicationForumButton(context),
     );
   }
 
@@ -84,6 +102,10 @@ class PublicationItemWidget extends StatelessWidget {
         .then(_refreshForum)
         .build()
         .run(context);
+  }
+
+  void _pressUpdatePublicationForumButton(BuildContext context) async {
+    BlocProvider.of<InstitutionForumCubit>(context).updateForumPublication(this._forumPublication);
   }
 
   Future _deleteEvents(BuildContext context) async {
