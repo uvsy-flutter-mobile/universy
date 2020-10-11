@@ -368,6 +368,12 @@ const Map<dynamic, dynamic> ES = {
     },
     "schedule": {
       "title": "Mis Horarios",
+      "heroText": "Crea borradores para tus horarios de cursado",
+      "amounts": {
+        "onlyOne": "horario",
+        "zero": "Sin horarios",
+        "many": "horarios"
+      }
     }
   },
   "institution": {
