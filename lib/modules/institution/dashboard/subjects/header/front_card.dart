@@ -153,8 +153,9 @@ class SubjectHeaderFrontCard extends StatelessWidget {
 
   Widget _buildTotalRatings() {
     int amountOfRatings = this._amountOfRatings;
-    String ratedBy = AppText.getInstance()
-        .get("institution.dashboard.subject.label.ratedBy");
+    String ratedBy = AppText.getInstance().get(
+      "institution.dashboard.subject.label.ratedBy",
+    );
     String studentResource = amountOfRatings > 1 ? "students" : "student";
     String student = AppText.getInstance().get(
       "institution.dashboard.subject.label.$studentResource",
