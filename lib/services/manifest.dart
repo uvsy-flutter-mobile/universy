@@ -111,7 +111,7 @@ abstract class RatingsService extends Service {
 
   Future<void> saveStudentCourseRating(StudentCourseRating courseRating);
 
-  Future<void> saveStudentSubjectRating(StudentSubjectRating subjectRating);
+  Future<void> saveStudentSubjectRating(String subjectId, int rating);
 }
 
 /// Student Notes Services

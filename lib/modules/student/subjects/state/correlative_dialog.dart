@@ -58,7 +58,7 @@ class CorrelativeRestrictionDialog extends StatelessWidget {
 
   Widget _buildCorrelativesBody() {
     List correlatives = _correlativeValidation.correlatives;
-    correlatives.sort((a, b) => a.subject.level.compareTo(b.subject.level));
+    correlatives.sort((a, b) => a._subject.level.compareTo(b._subject.level));
     return Container(
       height: 200.0,
       child: ListView(

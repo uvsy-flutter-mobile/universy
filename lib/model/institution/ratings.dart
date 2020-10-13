@@ -1,6 +1,33 @@
 class SubjectRating {
-  String subjectId;
-  Map<String, int> ratings;
+  final String subjectId;
+  final Map<String, dynamic> ratings;
+
+  SubjectRating._(this.subjectId, this.ratings);
+
+  factory SubjectRating.empty(String subjectId) {
+    return SubjectRating._(
+      subjectId,
+      Map(),
+    );
+  }
+
+  factory SubjectRating.fromJson(Map<String, dynamic> json) {
+    return SubjectRating._(
+      json["subjectId"],
+      json["ratings"],
+    );
+  }
+
+  double calculateAverage() {
+    return ratings.keys
+            .map((key) => int.parse(key) * ratings[key])
+            .reduce((a, b) => a + b) /
+        totalRatings();
+  }
+
+  int totalRatings() {
+    return ratings.values.reduce((a, b) => a + b);
+  }
 }
 
 class CourseRating {
