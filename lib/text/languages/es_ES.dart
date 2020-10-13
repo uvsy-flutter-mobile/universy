@@ -337,5 +337,21 @@ const Map<dynamic, dynamic> ES = {
         },
       }
     },
+    "dashboard": {
+      "subject": {
+        "title": "Ver Cátedra",
+        "info": {
+          "saving": "Guardando",
+          "saved": "Se guardó tu valoración",
+        },
+        "label": {
+          "rate": "¿Qué te pareció la materia?",
+          "student": "estudiante",
+          "students": "estudiantes",
+          "ratedBy": "Valorada por",
+          "noRating": "¡Sé el primero en valorar!"
+        },
+      }
+    },
   },
 };

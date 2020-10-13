@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/model/student/ratings.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
@@ -65,12 +66,12 @@ class _SubjectHeaderBackCardState extends State<SubjectHeaderBackCard> {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 2,
       child: Text(
-        //TODO: Apptext
-        "Que te parecio esta materia", //AppText.getInstance().get("subjectBoard.whatYouThink"),
+        AppText.getInstance().get("institution.dashboard.subject.label.rate"),
         style: TextStyle(
-            fontStyle: FontStyle.italic,
-            fontSize: 20,
-            fontWeight: FontWeight.bold),
+          fontStyle: FontStyle.italic,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -102,7 +103,7 @@ class _SubjectHeaderBackCardState extends State<SubjectHeaderBackCard> {
   void _onSave() async {
     await AsyncModalBuilder()
         .perform(_saveStudentSubjectRate)
-        .withTitle("Guardando valoración") //TODO: apptext
+        .withTitle(_savingText())
         .then(_buildFlashBarOk)
         .build()
         .run(context);
@@ -123,9 +124,13 @@ class _SubjectHeaderBackCardState extends State<SubjectHeaderBackCard> {
     FlushBarBroker()
         .withDuration(5)
         .withIcon(Icon(Icons.spellcheck, color: Colors.green))
-        .withMessage(
-            // TODO: APPtext
-            "Se guardo la evaluacion") //AppText.getInstance().get("subjectBoard.rates.evaluationSaved"))
+        .withMessage(_savedText())
         .show(context);
   }
+
+  String _savingText() =>
+      AppText.getInstance().get("institution.dashboard.subject.info.saving");
+
+  String _savedText() =>
+      AppText.getInstance().get("institution.dashboard.subject.info.saved");
 }

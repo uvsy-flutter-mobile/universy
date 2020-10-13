@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:universy/model/institution/subject.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 import 'header.dart';
@@ -9,7 +10,9 @@ class SubjectBoardModule extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: Text("Ver Cátedra")),
+      appBar: AppBar(
+          title: Text(AppText.getInstance()
+              .get("institution.dashboard.subject.title"))),
       body: buildBoard(context),
     );
   }

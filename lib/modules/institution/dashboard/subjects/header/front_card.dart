@@ -3,6 +3,7 @@ import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/institution/ratings.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/text/formaters/subject.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 const DEFAULT_RATING = 0.0;
@@ -152,17 +153,23 @@ class SubjectHeaderFrontCard extends StatelessWidget {
 
   Widget _buildTotalRatings() {
     int amountOfRatings = this._amountOfRatings;
+    String ratedBy = AppText.getInstance()
+        .get("institution.dashboard.subject.label.ratedBy");
+    String studentResource = amountOfRatings > 1 ? "students" : "student";
+    String student = AppText.getInstance().get(
+      "institution.dashboard.subject.label.$studentResource",
+    );
+
     return RichText(
       text: TextSpan(
         style: TextStyle(fontSize: 18, color: Colors.black),
         children: <TextSpan>[
-          TextSpan(text: "Valorada por "),
-          //AppText.getInstance().get("subjectBoard.ratings.ratingd")),
+          TextSpan(text: ratedBy),
           TextSpan(
-              text: "$amountOfRatings",
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: "estudiantes"),
-          //AppText.getInstance().get("subjectBoard.ratings.students"))
+            text: " $amountOfRatings ",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextSpan(text: student),
         ],
       ),
     );
@@ -171,8 +178,8 @@ class SubjectHeaderFrontCard extends StatelessWidget {
   Widget _buildNoExistingRating() {
     return RichText(
       text: TextSpan(
-        text: "¡Sé el primero en valorar!",
-        //AppText.getInstance().get("subjectBoard.ratings.ratingsNotExist"),
+        text: AppText.getInstance()
+            .get("institution.dashboard.subject.label.noRating"),
         style: TextStyle(
           fontSize: 18,
           color: Colors.black,
