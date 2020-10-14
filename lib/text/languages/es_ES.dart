@@ -343,13 +343,17 @@ const Map<dynamic, dynamic> ES = {
         "info": {
           "saving": "Guardando",
           "saved": "Se guardó tu valoración",
+          "coursesNotFound": "No se encuentran comisiones disponibles",
+          "correlativeNotFound": "Sin correlativas"
         },
         "label": {
           "rate": "¿Qué te pareció la materia?",
           "student": "estudiante",
           "students": "estudiantes",
           "ratedBy": "Valorada por",
-          "noRating": "¡Sé el primero en valorar!"
+          "noRating": "¡Sé el primero en valorar!",
+          "toTake": "Para Cursar",
+          "toApprove": "Para Rendir",
         },
       }
     },

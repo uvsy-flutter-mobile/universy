@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -32,9 +33,8 @@ class EmptyCoursesWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         AutoSizeText(
-          //TODO: apptext
-          "Esta materia no tiene cursos",
-          //AppText.getInstance().get("subjectBoard.carousel.noComissionAvaiable"),
+          AppText.getInstance()
+              .get("institution.dashboard.subject.info.coursesNotFound"),
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 6),

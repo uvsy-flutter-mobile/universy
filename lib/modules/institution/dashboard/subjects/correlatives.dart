@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:universy/business/subjects/classifier/correlative_classifier.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/correlatives/correlatives.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -45,13 +46,14 @@ class SubjectBoardCorrelatives extends StatelessWidget {
 
   Widget _buildCorrelativeToTakeTitle() {
     return _buildCorrelativeTitle(
-      "Para cursar", //AppText.getInstance().get("subjectBoard.correlatives.toTake.title"),
+      AppText.getInstance().get("institution.dashboard.subject.label.toTake"),
     );
   }
 
   Widget _buildCorrelativeToApproveTitle() {
     return _buildCorrelativeTitle(
-      "Para rendir", //AppText.getInstance().get("subjectBoard.correlatives.toApprove.title"),
+      AppText.getInstance()
+          .get("institution.dashboard.subject.label.toApprove"),
     );
   }
 
@@ -81,7 +83,8 @@ class SubjectBoardCorrelatives extends StatelessWidget {
   Widget _buildNoCorrelativesText() {
     return Container(
       child: Text(
-        "No hay correlativas", //AppText.getInstance().get("subjectBoard.correlatives.notFound"),
+        AppText.getInstance()
+            .get("institution.dashboard.subject.info.correlativeNotFound"),
         style: TextStyle(fontSize: 15.0),
       ),
       alignment: Alignment.center,
