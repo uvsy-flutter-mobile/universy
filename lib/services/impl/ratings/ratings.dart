@@ -24,19 +24,36 @@ class DefaultRatingsService extends RatingsService {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _instance = null;
   }
 
   @override
-  Future<CourseRating> getCourseRating(String courseId) {
-    // TODO: implement getCourseRating
-    throw UnimplementedError();
+  Future<CourseRating> getCourseRating(String courseId) async {
+    try {
+      var career = await ratingsApi.getCourseRating(courseId);
+      return career.orElseThrow(() => RatingNotFound());
+    } on NotFound catch (e) {
+      Log.getLogger().error(e);
+      throw RatingNotFound();
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
   }
 
   @override
-  Future<StudentCourseRating> getStudentCourseRating(String courseId) {
-    // TODO: implement getStudentCourseRating
-    throw UnimplementedError();
+  Future<StudentCourseRating> getStudentCourseRating(String courseId) async {
+    try {
+      String userId = await DefaultAccountService.instance().getUserId();
+      var career = await ratingsApi.getStudentCourseRating(userId, courseId);
+      return career.orElseThrow(() => RatingNotFound());
+    } on NotFound catch (e) {
+      Log.getLogger().error(e);
+      throw RatingNotFound();
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
   }
 
   @override
@@ -69,9 +86,20 @@ class DefaultRatingsService extends RatingsService {
   }
 
   @override
-  Future<void> saveStudentCourseRating(StudentCourseRating courseRating) {
-    // TODO: implement saveStudentCourseRating
-    throw UnimplementedError();
+  Future<void> saveStudentCourseRating(StudentCourseRating courseRating) async {
+    try {
+      String userId = await DefaultAccountService.instance().getUserId();
+      var payload = StudentCourseRatingPayload(
+          courseRating.overall,
+          courseRating.difficulty,
+          courseRating.wouldTakeAgain,
+          courseRating.tags);
+      await ratingsApi.saveStudentCourseRating(
+          userId, courseRating.courseId, payload);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
   }
 
   @override

@@ -177,7 +177,6 @@ class _ExistingMilestoneWidgetState extends State<ExistingMilestoneWidget> {
     return CircleAvatar(
       backgroundColor: Colors.white70,
       radius: 16.0,
-      // TODO: Change to Delete (uvsy/delete.dart) @Lore @Maxi
       child: IconButton(
         padding: EdgeInsets.all(1.0),
         icon: Icon(Icons.delete, color: Colors.red, size: 20.0),

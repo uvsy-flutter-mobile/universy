@@ -13,6 +13,8 @@ class HeaderFrontCardStateBuilder
       return SubjectHeaderFrontCard.from(state.subject, state.subjectRating);
     } else if (state is SubjectRatingNotFound) {
       return SubjectHeaderFrontCard.empty(state.subject);
+    } else if (state is EmptySubjectRating) {
+      return SubjectHeaderFrontCard.empty(state.subject);
     }
     return CenterSizedCircularProgressIndicator();
   }

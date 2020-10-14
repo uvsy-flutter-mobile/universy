@@ -12,7 +12,7 @@ class HeaderFrontCardCubit extends Cubit<SubjectHeaderState> {
   final RatingsService ratingsService;
 
   HeaderFrontCardCubit(this.subject, this.ratingsService)
-      : super(LoadingState());
+      : super(EmptySubjectRating(subject));
 
   Future<void> fetchRating() async {
     SubjectRating rating;

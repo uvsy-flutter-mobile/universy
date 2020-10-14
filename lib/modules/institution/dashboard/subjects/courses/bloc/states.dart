@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/subject.dart';
 

@@ -1,5 +1,6 @@
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';

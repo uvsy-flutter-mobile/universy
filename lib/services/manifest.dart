@@ -2,6 +2,7 @@ import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/account/token.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';

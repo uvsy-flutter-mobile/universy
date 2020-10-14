@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/institution/dashboard/subjects/courses/display.dart';
+import 'package:universy/modules/institution/dashboard/subjects/courses/courses_list.dart';
 import 'package:universy/modules/institution/dashboard/subjects/courses/empty.dart';
 import 'package:universy/util/bloc.dart';
 import 'package:universy/widgets/progress/circular.dart';

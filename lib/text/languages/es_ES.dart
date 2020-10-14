@@ -355,7 +355,43 @@ const Map<dynamic, dynamic> ES = {
           "toTake": "Para Cursar",
           "toApprove": "Para Rendir",
         },
+      },
+      "course": {
+        "title": "Comisión",
+        "info": {
+          "saving": "Guardando valoración",
+          "saved": "Se guardó valoración",
+        },
+        "actions": {
+          "rate": "Valorar",
+        },
+        "labels": {
+          "noProfessors": "No se encontraron profesores",
+          "classroom": "Aula",
+          "professors": "Profesores",
+          "general": "Valoración General",
+          "difficulty": "Dificultad",
+          "wouldTakeAgain": "Recomienda esta comisión",
+          "overallTitle": "Valoración general",
+          "wouldTakeAgainTitle": "¿Recomendás esta comisión?",
+          "dificultyTitle": "Dificultad",
+          "noRating": "¡Sé el primero en valorar!",
+        }
       }
     },
   },
+  "enums": {
+    "tags": {
+      "HARD_PRACTICAL": "Práctico áspero",
+      "HARD_THEORETICAL": "Teórico áspero",
+      "MANDATORY_CLASS": "Tenés que ir a clases",
+      "HARD_TO_UNDERSTAND": "No se entiende nada",
+      "PROMOTIONABLE": "Promocionable",
+      "DONT_GO_THERE": "No te metas ahí",
+      "MIND_BLOWING": "Mindblowing",
+      "BE_READY_FOR_PW": "Preparate para hacer tps",
+      "TO_MUCH_EXTRA_TIME": "Mucho tiempo extra",
+      "SUMMARIES_AVAILABLE": "Hay resúmenes",
+    },
+  }
 };

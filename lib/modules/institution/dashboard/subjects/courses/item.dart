@@ -1,16 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:universy/constants/routes.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/subject.dart';
+import 'package:universy/modules/institution/dashboard/course/dashboard.dart';
 import 'package:universy/widgets/inkwell/clipped.dart';
 
 class CourseItemWidget extends StatelessWidget {
   final double _itemSize;
   final Color _color;
   final Color _textColor;
-  final Commission _commission;
-  final Course _course;
-  final InstitutionSubject _institutionSubject;
+  final Commission commission;
+  final Course course;
+  final InstitutionSubject subject;
 
   CourseItemWidget(
       {Key key,
@@ -23,9 +26,9 @@ class CourseItemWidget extends StatelessWidget {
       : this._itemSize = itemSize,
         this._color = color,
         this._textColor = textColor,
-        this._course = course,
-        this._commission = commission,
-        this._institutionSubject = institutionSubject,
+        this.course = course,
+        this.commission = commission,
+        this.subject = institutionSubject,
         super(key: key);
 
   @override
@@ -42,7 +45,7 @@ class CourseItemWidget extends StatelessWidget {
           alignment: AlignmentDirectional.center,
           child: Center(
             child: AutoSizeText(
-              _commission.name,
+              commission.name,
               style: TextStyle(fontSize: 28.0, color: _textColor),
               textAlign: TextAlign.center,
             ),
@@ -53,11 +56,8 @@ class CourseItemWidget extends StatelessWidget {
   }
 
   void _navigateToSubjectBoardView(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Container(),
-      ),
-    );
+    var arguments = CourseBoardModuleArguments(subject, commission, course);
+    Navigator.pushNamed(context, Routes.COURSE_BOARD_MODULE,
+        arguments: arguments);
   }
 }

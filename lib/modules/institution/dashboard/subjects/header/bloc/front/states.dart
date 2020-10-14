@@ -12,8 +12,20 @@ class SubjectRatingFetchedState extends SubjectHeaderState {
   List<Object> get props => [subject, subjectRating];
 }
 
+class EmptySubjectRating extends SubjectHeaderState {
+  final InstitutionSubject subject;
+
+  EmptySubjectRating(this.subject);
+
+  @override
+  List<Object> get props => [subject];
+}
+
 class SubjectRatingNotFound extends SubjectHeaderState {
   final InstitutionSubject subject;
 
   SubjectRatingNotFound(this.subject);
+
+  @override
+  List<Object> get props => [subject];
 }
