@@ -35,6 +35,8 @@ class Subject implements Copyable<Subject> {
 
   StudentSubject get studentSubject => _studentSubject;
 
+  InstitutionSubject get institutionSubject => _institutionSubject;
+
   bool isApproved() {
     if (notNull(_studentSubject)) {
       return getApprovedMilestone().isPresent;

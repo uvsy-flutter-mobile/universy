@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:universy/model/institution/subject.dart';
+import 'package:universy/modules/institution/dashboard/subjects/correlatives.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
+import 'courses.dart';
 import 'header.dart';
 
 class SubjectBoardModule extends StatelessWidget {
@@ -25,7 +27,7 @@ class SubjectBoardModule extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(child: _buildHeader(subject), flex: 6),
-          Expanded(child: _getCoursesAndCorrelatives(context), flex: 14),
+          Expanded(child: _getCoursesAndCorrelatives(subject), flex: 14),
         ],
       ),
     );
@@ -35,21 +37,21 @@ class SubjectBoardModule extends StatelessWidget {
     return SubjectBoardHeader(subject: subject);
   }
 
-  Widget _getCoursesAndCorrelatives(BuildContext context) {
+  Widget _getCoursesAndCorrelatives(InstitutionSubject subject) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(child: _buildCourseColumn(context), flex: 25),
-        Expanded(child: _getCorrelatives(), flex: 80),
+        Expanded(child: _buildCourseColumn(subject), flex: 25),
+        Expanded(child: _getCorrelatives(subject), flex: 80),
       ],
     );
   }
 
-  Widget _buildCourseColumn(BuildContext context) {
-    return Container();
+  Widget _buildCourseColumn(InstitutionSubject subject) {
+    return SubjectBoardCourses(subject: subject);
   }
 
-  Widget _getCorrelatives() {
-    return Container();
+  Widget _getCorrelatives(InstitutionSubject subject) {
+    return SubjectBoardCorrelatives(subject: subject);
   }
 }

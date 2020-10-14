@@ -98,7 +98,7 @@ class CorrelativeRestrictionDialog extends StatelessWidget {
 
   Widget _buildCorrelativeSubject(CorrelativeCheck correlativeCheck) {
     return CorrelativeSubjectWidget(
-      subject: correlativeCheck.subject,
+      subject: correlativeCheck.subject.institutionSubject,
       condition: correlativeCheck.condition,
     );
   }

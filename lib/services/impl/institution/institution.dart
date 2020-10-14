@@ -1,5 +1,6 @@
 import 'package:universy/apis/institutions/api.dart' as institutionsApi;
 import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
@@ -83,6 +84,32 @@ class DefaultInstitutionService implements InstitutionService {
   Future<List<InstitutionSubject>> getSubjects(String programId) async {
     try {
       return await institutionsApi.getSubjects(programId);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<List<Course>> getCourses(String subjectId) async {
+    try {
+      return await institutionsApi.getCourses(subjectId);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<List<Commission>> getCommissions(String programId) async {
+    try {
+      return await institutionsApi.getCommissions(programId);
     } on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;
