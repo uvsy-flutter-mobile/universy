@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:universy/business/correlatives/validator.dart';
-import 'package:universy/modules/institution/correlatives/correlatives.dart';
+import 'package:universy/model/institution/subject.dart';
+import 'package:universy/modules/institution/dashboard/subjects/correlatives/correlative.dart';
 import 'package:universy/text/text.dart';
 
 class CorrelativeRestrictionDialog extends StatelessWidget {
@@ -57,8 +58,8 @@ class CorrelativeRestrictionDialog extends StatelessWidget {
   }
 
   Widget _buildCorrelativesBody() {
-    List correlatives = _correlativeValidation.correlatives;
-    correlatives.sort((a, b) => a._subject.level.compareTo(b._subject.level));
+    List<CorrelativeCheck> correlatives = _correlativeValidation.correlatives;
+    correlatives.sort((a, b) => a.subject.level.compareTo(b.subject.level));
     return Container(
       height: 200.0,
       child: ListView(
@@ -97,9 +98,13 @@ class CorrelativeRestrictionDialog extends StatelessWidget {
   }
 
   Widget _buildCorrelativeSubject(CorrelativeCheck correlativeCheck) {
+    var correlative = CorrelativeItem(
+      correlativeCheck.subject.name,
+      correlativeCheck.subject.level,
+      correlativeCheck.condition,
+    );
     return CorrelativeSubjectWidget(
-      subject: correlativeCheck.subject.institutionSubject,
-      condition: correlativeCheck.condition,
+      correlativeItem: correlative,
     );
   }
 }

@@ -1,42 +1,50 @@
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/subject.dart';
-import 'package:universy/util/object.dart';
 import 'package:universy/util/strings.dart';
 
-class SubjectLevelFormatter {
+abstract class LevelFormatter {
   static const String ORDINAL_SIGN = "º";
   static const String NO_LEVEL = "-";
+
+  String format() {
+    if (notNullOrEmpty(level)) {
+      return "$level$ORDINAL_SIGN";
+    }
+    return NO_LEVEL;
+  }
+
+  String get level;
+}
+
+class SubjectLevelFormatter extends LevelFormatter {
   final Subject _subject;
 
   SubjectLevelFormatter(this._subject);
 
-  String format() {
-    if (notNull(_subject)) {
-      String level = _subject.level.toString();
-
-      if (notNullOrEmpty(level)) {
-        return "$level$ORDINAL_SIGN";
-      }
-    }
-    return NO_LEVEL;
+  @override
+  String get level {
+    return _subject?.level?.toString();
   }
 }
 
-class InstitutionSubjectLevelFormatter {
-  static const String ORDINAL_SIGN = "º";
-  static const String NO_LEVEL = "-";
+class InstitutionSubjectLevelFormatter extends LevelFormatter {
   final InstitutionSubject _institutionSubject;
 
   InstitutionSubjectLevelFormatter(this._institutionSubject);
 
-  String format() {
-    if (notNull(_institutionSubject)) {
-      String level = _institutionSubject.level.toString();
+  @override
+  String get level {
+    return _institutionSubject?.level?.toString();
+  }
+}
 
-      if (notNullOrEmpty(level)) {
-        return "$level$ORDINAL_SIGN";
-      }
-    }
-    return NO_LEVEL;
+class CorrelativeItemLevelFormatter extends LevelFormatter {
+  final CorrelativeItem _correlativeItem;
+
+  CorrelativeItemLevelFormatter(this._correlativeItem);
+
+  @override
+  String get level {
+    return _correlativeItem?.level?.toString();
   }
 }

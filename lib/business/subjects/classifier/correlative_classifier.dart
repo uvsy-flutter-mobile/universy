@@ -1,6 +1,6 @@
 import 'package:universy/model/institution/subject.dart';
 
-class InstitutionSubjectCorrelativeClassifier {
+class SubjectCorrelativeClassifier {
   InstitutionSubjectCorrelativeResult classify(
       InstitutionSubject institutionSubject) {
     var correlativeList = institutionSubject.correlatives;
@@ -18,7 +18,9 @@ class InstitutionSubjectCorrelativeClassifier {
         .toList();
 
     return InstitutionSubjectCorrelativeResult(
-        correlativesToApprove, correlativesToTake);
+      correlativesToApprove,
+      correlativesToTake,
+    );
   }
 }
 
