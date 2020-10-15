@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/items/empty.dart';
 
 class EmptyInstitutionSubjectsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EmptyItemsWidget(
-      title:
-          "¡Ups!", //AppText.getInstance().get("student.subjects.empty.title"),
+      title: AppText.getInstance().get("institution.subjects.noResults.title"),
       message:
-          "No encontramos la materia que estas buscando :(", //AppText.getInstance().get("student.subjects.empty.subtitle"),
+          AppText.getInstance().get("institution.subjects.noResults.subtitle"),
     );
   }
 }

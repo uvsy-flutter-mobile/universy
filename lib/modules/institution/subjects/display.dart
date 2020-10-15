@@ -83,13 +83,14 @@ class _InstitutionSubjectDisplayWidgetState
   InputDecoration _buildNameSearchBarDecoration() {
     return InputDecoration(
       counterText: EMPTY_STRING,
-      labelText: "Buscar Cátedra",
-      //AppText.getInstance().get('institutionSubject.searchBar.title'),
-      hintText: "Nombre",
-      //AppText.getInstance().get('institutionSubject.searchBar.hint'),
+      labelText: AppText.getInstance().get('institution.searchBar.title'),
+      hintText: AppText.getInstance().get('institution.searchBar.hint'),
       prefixIcon: Icon(Icons.search),
       border: OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(25.0))),
+        borderRadius: BorderRadius.all(
+          Radius.circular(25.0),
+        ),
+      ),
     );
   }
 

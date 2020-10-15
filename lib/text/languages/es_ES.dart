@@ -335,7 +335,15 @@ const Map<dynamic, dynamic> ES = {
         "actions": {
           "addCareer": "Elegir carrera",
         },
-      }
+      },
+      "searchBar": {
+        "title": "Buscar Cátedra",
+        "hint": "Nombre",
+      },
+      "noResults": {
+        "title": "¡Ups!",
+        "subtitle": "No encontramos la materia que estas buscando :(",
+      },
     },
     "dashboard": {
       "subject": {
