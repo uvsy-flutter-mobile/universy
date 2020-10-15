@@ -145,7 +145,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "profile": {
         "title": "Perfil",
-        "subtitle": "Personalizá tu usuario de Univery!",
+        "subtitle": "Personalizá tu usuario de Universy!",
       },
       "calendar": {
         "title": "Calendario",
@@ -260,6 +260,36 @@ const Map<dynamic, dynamic> ES = {
         "input": "Buscar...",
       }
     },
+    "stats": {
+      "title": "Estadisticas del alumno",
+      "view": {
+        "yearProgress": {
+          "title": "Mi Progreso por año",
+          "noSubjects": "No hay materias cargadas",
+        },
+        "charts": {
+          "title": "Mi progreso general",
+          "approvedOptativeSubjects": "Avance de materias optativas aprobadas",
+          "approvedMandatorySubjects":
+              "Avance de materias obligatorias aprobadas",
+          "completedPoints": "Puntos Completados en la carrera",
+          "completedHours": "Horas Completados en la carrera",
+          "subjectsRegular": "Materias regulares",
+          "subjectsToTake": "Materias por cursar",
+          "subjectsTaking": "Materias cursando",
+          "optativeTaking": "Materias optativas cursando",
+          "optativeRegular": "Materias optativas regulares",
+          "average": {
+            "notNotesAdded": "Debes cargar tus notas para ver tu promedio",
+            "title": "Promedio de notas",
+          },
+        },
+        "careerHistory": {
+          "title": "Mi historial de carrera",
+          "welcomeCard": "Este es el punto de partida de tu carrera",
+        },
+      },
+    },
     "calendar": {
       "title": "Mi Calendario",
       "subtitle": "Mirá tu calendario y anotá tus eventos",
@@ -298,6 +328,12 @@ const Map<dynamic, dynamic> ES = {
         "RECUP_EXAM": "Recuperatorio",
         "REGULAR_EXAM": "Parcial",
         "REPORT_SIGN_OFF": "Firma de libreta"
+      },
+    },
+    "notifications": {
+      "title": "Tus eventos de hoy",
+      "actions": {
+        "goToCalendar": "Ver Calendario",
       },
     },
     "enroll": {

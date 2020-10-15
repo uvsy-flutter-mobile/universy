@@ -5,7 +5,9 @@ import 'package:universy/business/correlatives/validator.dart';
 import 'package:universy/business/subjects/classifier/classifier.dart';
 import 'package:universy/business/subjects/classifier/result.dart';
 import 'package:universy/business/subjects/classifier/state_classifier.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/model/subject.dart';
+import 'package:universy/modules/student/stats/stats.dart';
 import 'package:universy/modules/student/subjects/subject_list.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
@@ -97,7 +99,11 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
       heroTag: "progress_tag",
       backgroundColor: Colors.deepPurple,
       child: Icon(Icons.equalizer),
-      onPressed: () => {},
+      onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StatsModule(
+                  subjects: _subjects, validator: _correlativesValidator))),
     );
   }
 

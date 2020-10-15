@@ -103,6 +103,8 @@ abstract class InstitutionService extends Service {
   Future<List<Course>> getCourses(String subjectId);
 
   Future<List<Commission>> getCommissions(String programId);
+
+  Future<InstitutionProgram> getProgram(String programId);
 }
 
 /// Ratings Service

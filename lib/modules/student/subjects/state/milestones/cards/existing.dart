@@ -7,7 +7,8 @@ import 'package:universy/model/time.dart';
 import 'package:universy/modules/student/subjects/state/milestones/commands/command.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/text/translators/milestones.dart';
-
+import 'package:universy/widgets/buttons/uvsy/delete.dart';
+import 'package:universy/widgets/paddings/edge.dart';
 import 'card.dart';
 
 class ExistingMilestoneWidget extends StatefulWidget {
@@ -176,11 +177,10 @@ class _ExistingMilestoneWidgetState extends State<ExistingMilestoneWidget> {
   Widget _buildDeleteButton() {
     return CircleAvatar(
       backgroundColor: Colors.white70,
-      radius: 16.0,
-      child: IconButton(
-        padding: EdgeInsets.all(1.0),
-        icon: Icon(Icons.delete, color: Colors.red, size: 20.0),
-        onPressed: _deleteMilestone,
+      radius: 21.0,
+      child: DeleteButton(
+        size: 20.0,
+        onDelete: _deleteMilestone,
       ),
     );
   }

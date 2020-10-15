@@ -19,6 +19,12 @@ ThemeData uvsyTheme = ThemeData(
       fontSize: 24,
       fontFamily: "Roboto",
     ),
+    //for subtitles
+    headline4: TextStyle(
+      color: Colors.black,
+      fontSize: 20,
+      fontFamily: "Roboto",
+    ),
     caption: TextStyle(
       color: Colors.black,
       fontSize: 12,
@@ -27,6 +33,11 @@ ThemeData uvsyTheme = ThemeData(
     subtitle1: TextStyle(
       color: Colors.grey,
       fontSize: 25,
+      fontFamily: "Roboto",
+    ),
+    subtitle2: TextStyle(
+      color: Colors.grey,
+      fontSize: 20,
       fontFamily: "Roboto",
     ),
     //button will be used for buttons text
