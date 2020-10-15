@@ -4,6 +4,7 @@ import 'package:universy/business/converters/time.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/notifications/notification_dialog.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/util/object.dart';
 import 'package:universy/widgets/future/future_widget.dart';
 
 const String NO_NOTIFICATION = '0';
@@ -21,7 +22,8 @@ class NotificationsAlert extends StatelessWidget {
   }
 
   Widget _buildIconAlert(BuildContext context, List<StudentEvent> events) {
-    List<StudentEvent> eventsToday = _buildEventsSorted(events);
+    List<StudentEvent> eventsToday =
+        _validateNotEventsList(events) ? [] : _buildEventsSorted(events);
     return Stack(
       overflow: Overflow.visible,
       children: <Widget>[
@@ -46,11 +48,20 @@ class NotificationsAlert extends StatelessWidget {
     return IconButton(
         icon: Icon(Icons.notifications, size: 35.0, color: Colors.grey),
         splashColor: Colors.amberAccent,
-        onPressed: () => showDialog(
-            context: context,
-            builder: (context) => eventsToday.isEmpty
-                ? {}
-                : NotificationsDialog(events: eventsToday)));
+        onPressed: () => _validateNotEventsList(eventsToday)
+            ? {}
+            : showDialog(
+                context: context,
+                builder: (context) =>
+                    NotificationsDialog(events: eventsToday)));
+  }
+
+  bool _validateNotEventsList(List<StudentEvent> events) {
+    if (isNull(events) || events.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Widget _buildQuantityNotification(List<StudentEvent> eventsToday) {
@@ -59,9 +70,12 @@ class NotificationsAlert extends StatelessWidget {
       right: 23,
       child: CircleAvatar(
         radius: 14.0,
-        backgroundColor: eventsToday.isEmpty ? Colors.grey : Colors.amber,
+        backgroundColor:
+            _validateNotEventsList(eventsToday) ? Colors.grey : Colors.amber,
         child: Text(
-          eventsToday.isEmpty ? NO_NOTIFICATION : eventsToday.length.toString(),
+          _validateNotEventsList(eventsToday)
+              ? NO_NOTIFICATION
+              : eventsToday.length.toString(),
           style: TextStyle(color: Colors.white, fontSize: 18.0),
         ),
       ),
