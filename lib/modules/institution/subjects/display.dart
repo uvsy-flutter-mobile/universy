@@ -83,8 +83,10 @@ class _InstitutionSubjectDisplayWidgetState
   InputDecoration _buildNameSearchBarDecoration() {
     return InputDecoration(
       counterText: EMPTY_STRING,
-      labelText: AppText.getInstance().get('institution.searchBar.title'),
-      hintText: AppText.getInstance().get('institution.searchBar.hint'),
+      labelText:
+          AppText.getInstance().get('institution.subjects.searchBar.title'),
+      hintText:
+          AppText.getInstance().get('institution.subjects.searchBar.hint'),
       prefixIcon: Icon(Icons.search),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.all(

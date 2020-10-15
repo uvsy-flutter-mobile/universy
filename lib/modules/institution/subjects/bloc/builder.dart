@@ -12,7 +12,8 @@ class InstitutionSubjectsStateBuilder
   Widget translate(InstitutionSubjectsState state) {
     if (state is DisplayState) {
       return InstitutionSubjectDisplayWidget(
-          institutionSubjects: state.subjects);
+        institutionSubjects: state.subjects,
+      );
     } else if (state is CareerNotCreatedState) {
       return CareerNotFoundWidget();
     }
