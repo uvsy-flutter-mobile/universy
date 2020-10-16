@@ -20,9 +20,13 @@ class _InstitutionSubjectsModuleState extends State<InstitutionSubjectsModule> {
   void didChangeDependencies() {
     if (isNull(_subjectCubit)) {
       var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
-      var careerService = sessionFactory.studentCareerService();
-      this._subjectCubit = InstitutionSubjectsCubit(careerService);
-      this._subjectCubit.toDisplay();
+      var studentCareerService = sessionFactory.studentCareerService();
+      var institutionService = sessionFactory.institutionService();
+      this._subjectCubit = InstitutionSubjectsCubit(
+        studentCareerService,
+        institutionService,
+      );
+      this._subjectCubit.fetchSubjects();
     }
     super.didChangeDependencies();
   }

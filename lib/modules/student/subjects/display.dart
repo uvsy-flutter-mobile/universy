@@ -41,7 +41,6 @@ class _SubjectsDisplayWidgetState extends State<SubjectsDisplayWidget> {
   PageController _pageController;
   bool _submitting;
   StudentCareerService _careerService;
-
   @override
   void initState() {
     this._subjects = widget._subjects;

@@ -3,12 +3,6 @@ import 'package:universy/text/translator.dart';
 
 class DayTextTranslator implements Translator<String> {
   String translate(String dayOfWeek) {
-    return AppText.getInstance().get("dayOfWeek.$dayOfWeek");
-  }
-}
-
-class DayTextTranslatorNumber implements Translator<String> {
-  String translate(String dayOfWeek) {
-    return AppText.getInstance().get("dayOfWeekNumber.$dayOfWeek");
+    return AppText.getInstance().get("enums.dayOfWeek.$dayOfWeek");
   }
 }

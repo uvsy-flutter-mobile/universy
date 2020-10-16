@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/institution/subject.dart';
-import 'package:universy/model/subject.dart';
 import 'package:universy/text/formaters/subject.dart';
 import 'package:universy/text/translators/correlatives.dart';
 
 class CorrelativeSubjectWidget extends StatelessWidget {
-  final Subject _subject;
-  final CorrelativeCondition _condition;
+  final CorrelativeItem _correlativeItem;
 
-  const CorrelativeSubjectWidget(
-      {Key key, Subject subject, CorrelativeCondition condition})
-      : _subject = subject,
-        _condition = condition,
+  const CorrelativeSubjectWidget({Key key, CorrelativeItem correlativeItem})
+      : _correlativeItem = correlativeItem,
         super(key: key);
 
   @override
@@ -23,7 +19,7 @@ class CorrelativeSubjectWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(_subject.name, textAlign: TextAlign.center),
+          Text(_correlativeItem.name, textAlign: TextAlign.center),
           _buildCorrelativesTags(),
         ],
       ),
@@ -31,9 +27,10 @@ class CorrelativeSubjectWidget extends StatelessWidget {
   }
 
   Widget _buildCorrelativesTags() {
-    String level = SubjectLevelFormatter(_subject).format();
-    String restriction = getConditionDisplayName(_condition);
-    List _correlativeTags = [level, restriction];
+    String level = CorrelativeItemLevelFormatter(_correlativeItem).format();
+    String condition =
+        getConditionDisplayName(_correlativeItem.correlativeCondition);
+    List _correlativeTags = [level, condition];
     return Tags(
       itemCount: _correlativeTags.length,
       itemBuilder: (int index) {

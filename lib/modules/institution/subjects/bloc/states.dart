@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:universy/model/institution/subject.dart';
 
 abstract class InstitutionSubjectsState extends Equatable {
   InstitutionSubjectsState([List props = const []]) : super();
@@ -9,6 +10,12 @@ abstract class InstitutionSubjectsState extends Equatable {
 
 class LoadingState extends InstitutionSubjectsState {}
 
-class DisplayState extends InstitutionSubjectsState {}
+class DisplayState extends InstitutionSubjectsState {
+  final List<InstitutionSubject> subjects;
+
+  DisplayState(this.subjects);
+}
+
+class EmptyState extends InstitutionSubjectsState {}
 
 class CareerNotCreatedState extends InstitutionSubjectsState {}
