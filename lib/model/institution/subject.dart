@@ -88,6 +88,18 @@ class Correlative {
   }
 }
 
+class CorrelativeItem {
+  final String name;
+  final int level;
+  final CorrelativeCondition correlativeCondition;
+
+  CorrelativeItem(
+    this.name,
+    this.level,
+    this.correlativeCondition,
+  );
+}
+
 enum CorrelativeCondition { APPROVED, REGULAR }
 
 enum CorrelativeRestriction { TO_TAKE, TO_APPROVE }

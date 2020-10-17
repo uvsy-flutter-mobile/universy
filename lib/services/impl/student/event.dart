@@ -1,7 +1,6 @@
 import 'package:universy/apis/errors.dart';
 import 'package:universy/apis/students/api.dart' as studentApi;
 import 'package:universy/model/student/event.dart';
-import 'package:universy/services/exceptions/profile.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/util/logger.dart';
@@ -32,8 +31,6 @@ class DefaultStudentEventService extends StudentEventService {
     try {
       String userId = await DefaultAccountService.instance().getUserId();
       await studentApi.createEvent(userId, event);
-    } on Conflict {
-      throw AliasAlreadyExists();
     } catch (e) {
       Log.getLogger().error(e);
       throw ServiceException();

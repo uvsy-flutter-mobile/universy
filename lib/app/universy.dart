@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:universy/app/theme.dart';
 import 'package:universy/constants/routes.dart';
+import 'package:universy/modules/institution/dashboard/course/dashboard.dart';
+import 'package:universy/modules/institution/dashboard/subjects/dashboard.dart';
+import 'package:universy/modules/institution/subjects/subjects.dart';
 import 'package:universy/modules/loading/loading.dart';
 import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/calendar/calendar.dart';
@@ -39,6 +42,8 @@ class Universy extends StatelessWidget {
       Routes.CAREER_ENROLL: (context) => CareerEnrollModule(),
       Routes.NOTES_MODULE: (context) => NotesModule(),
       Routes.CALENDAR_MODULE: (context) => StudentCalendarModule(),
+      Routes.SUBJECT_BOARD_MODULE: (context) => SubjectBoardModule(),
+      Routes.COURSE_BOARD_MODULE: (context) => CourseBoardModule(),
       Routes.SCHEDULE_MODULE: (context) => StudentScheduleModule(),
     };
   }

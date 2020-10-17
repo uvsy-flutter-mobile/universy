@@ -29,9 +29,10 @@ Future<Optional<Profile>> getProfile(String userId) {
 
 Future<void> updateProfile(String userId, UpdateProfileRequest request) {
   var resource = "/profile/$userId";
+  var path = _createPath(resource);
 
   return api.put(
-    resource,
+    path,
     payload: request,
   );
 }

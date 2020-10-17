@@ -189,10 +189,10 @@ const Map<dynamic, dynamic> ES = {
         "closingSession": "Cerrando Sesión",
         "profileUpdated": "Se actualizó tu perfil",
         "saving": "Guardando...",
-        "profileNotCreated": "¡ Aún no tienes creado tu perfil !",
+        "profileNotCreated": "¡Aún no tienes creado tu perfil!",
       },
       "error": {
-        "aliasAlreadyExists": "¡ Ese alias se encuentra en uso !",
+        "aliasAlreadyExists": "¡Ese alias se encuentra en uso!",
       }
     },
     "subjects": {
@@ -385,7 +385,94 @@ const Map<dynamic, dynamic> ES = {
         "actions": {
           "addCareer": "Elegir carrera",
         },
+      },
+      "searchBar": {
+        "title": "Buscar Cátedra",
+        "hint": "Nombre",
+      },
+      "noResults": {
+        "title": "¡Ups!",
+        "subtitle": "No encontramos la materia que estas buscando :(",
+      },
+    },
+    "dashboard": {
+      "subject": {
+        "title": "Ver Cátedra",
+        "info": {
+          "saving": "Guardando",
+          "saved": "Se guardó tu valoración",
+          "coursesNotFound": "No se encuentran comisiones disponibles",
+          "correlativeNotFound": "Sin correlativas"
+        },
+        "label": {
+          "rate": "¿Qué te pareció la materia?",
+          "student": "estudiante",
+          "students": "estudiantes",
+          "ratedBy": "Valorada por",
+          "noRating": "¡Sé el primero en valorar!",
+          "toTake": "Para Cursar",
+          "toApprove": "Para Rendir",
+        },
+      },
+      "course": {
+        "title": "Comisión",
+        "info": {
+          "saving": "Guardando valoración",
+          "saved": "Se guardó valoración",
+        },
+        "actions": {
+          "rate": "Valorar",
+        },
+        "labels": {
+          "noProfessors": "No se encontraron profesores",
+          "classroom": "Aula",
+          "professors": "Profesores",
+          "general": "Valoración General",
+          "difficulty": "Dificultad",
+          "wouldTakeAgain": "Recomienda esta comisión",
+          "overallTitle": "Valoración general",
+          "wouldTakeAgainTitle": "¿Recomendás esta comisión?",
+          "dificultyTitle": "Dificultad",
+          "noRating": "¡Sé el primero en valorar!",
+        }
       }
     },
   },
+  "enums": {
+    "tags": {
+      "HARD_PRACTICAL": "Práctico áspero",
+      "HARD_THEORETICAL": "Teórico áspero",
+      "MANDATORY_CLASS": "Tenés que ir a clases",
+      "HARD_TO_UNDERSTAND": "No se entiende nada",
+      "PROMOTIONABLE": "Promocionable",
+      "DONT_GO_THERE": "No te metas ahí",
+      "MIND_BLOWING": "Mindblowing",
+      "BE_READY_FOR_PW": "Preparate para hacer tps",
+      "TO_MUCH_EXTRA_TIME": "Mucho tiempo extra",
+      "SUMMARIES_AVAILABLE": "Hay resúmenes",
+    },
+    "dayOfWeek": {
+      "MONDAY": "Lunes",
+      "TUESDAY": "Martes",
+      "WEDNESDAY": "Miércoles",
+      "THURSDAY": "Jueves",
+      "FRIDAY": "Viernes",
+      "SATURDAY": "Sábado",
+      "SUNDAY": "Domingo",
+    },
+    "month": {
+      "JANUARY": "Enero",
+      "FEBRUARY": "Febrero",
+      "MARCH": "Marzo",
+      "APRIL": "Abril",
+      "MAY": "Mayo",
+      "JUNE": "Junio",
+      "JULY": "Julio",
+      "AUGUST": "Agosto",
+      "SEPTEMBER": "Septiembre",
+      "OCTOBER": "Octubre",
+      "NOVEMBER": "Noviembre",
+      "DECEMBER": "Diciembre",
+    },
+  }
 };
