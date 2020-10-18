@@ -1,5 +1,7 @@
 import 'package:universy/model/json.dart';
+import 'package:universy/model/student/schedule.dart';
 import 'package:universy/model/student/subject.dart';
+import 'package:universy/modules/student/schedule/bloc/states.dart';
 
 class UpdateProfileRequest extends JsonConvertible {
   final String name;
@@ -82,6 +84,44 @@ class UpdateSubjectPayload extends JsonConvertible {
       "programId": programId,
       "score": score,
       "milestones": milestones.map((e) => e.toJson()).toList(),
+    };
+  }
+}
+
+// Schedule Scratches
+
+class CreateScratchPayload extends JsonConvertible {
+  final StudentScheduleScratch studentScheduleScratch;
+
+  CreateScratchPayload(this.studentScheduleScratch);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "name": studentScheduleScratch.name,
+      "beginTime": studentScheduleScratch.beginTime,
+      "endTime": studentScheduleScratch.endTime,
+      "selectedCourses": studentScheduleScratch.selectedCourses
+          .map((e) => e.toJson())
+          .toList(),
+    };
+  }
+}
+
+class UpdateScratchPayload extends JsonConvertible {
+  final StudentScheduleScratch studentScheduleScratch;
+
+  UpdateScratchPayload(this.studentScheduleScratch);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "name": studentScheduleScratch.name,
+      "beginTime": studentScheduleScratch.beginTime,
+      "endTime": studentScheduleScratch.endTime,
+      "selectedCourses": studentScheduleScratch.selectedCourses
+          .map((e) => e.toJson())
+          .toList(),
     };
   }
 }

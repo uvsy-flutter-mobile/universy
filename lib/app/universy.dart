@@ -44,7 +44,7 @@ class Universy extends StatelessWidget {
       Routes.CALENDAR_MODULE: (context) => StudentCalendarModule(),
       Routes.SUBJECT_BOARD_MODULE: (context) => SubjectBoardModule(),
       Routes.COURSE_BOARD_MODULE: (context) => CourseBoardModule(),
-      Routes.SCHEDULE_MODULE: (context) => StudentScheduleModule(),
+      Routes.SCHEDULE_MODULE: (context) => ScheduleModule(),
     };
   }
 

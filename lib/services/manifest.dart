@@ -3,7 +3,7 @@ import 'package:universy/model/account/token.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
@@ -13,6 +13,7 @@ import 'package:universy/model/student/career.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/notes.dart';
 import 'package:universy/model/student/ratings.dart';
+import 'package:universy/model/student/schedule.dart';
 import 'package:universy/model/student/session.dart';
 import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
@@ -135,4 +136,15 @@ abstract class StudentNotesService extends Service {
   Future<void> deleteNote(String noteId);
 
   Future<void> batchDeleteNotes(List<StudentNote> notes);
+}
+
+// Student Schedule Services
+abstract class StudentScheduleService extends Service {
+  Future<List<StudentScheduleScratch>> getScratches();
+
+  Future<void> createScratch(StudentScheduleScratch scheduleScratch);
+
+  Future<void> updateScratch(StudentScheduleScratch scheduleScratch);
+
+  Future<void> deleteScratch(String scheduleScratchId);
 }

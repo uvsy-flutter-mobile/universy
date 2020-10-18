@@ -7,8 +7,6 @@ import "package:universy/model/json.dart";
 class StudentScheduleScratch
     implements JsonConvertible, Copyable<StudentScheduleScratch> {
   String scheduleScratchId;
-  String userId;
-  String careerId;
   String name;
   int beginTime;
   int endTime;
@@ -16,16 +14,8 @@ class StudentScheduleScratch
   DateTime updatedAt;
   DateTime createdAt;
 
-  StudentScheduleScratch(
-      this.scheduleScratchId,
-      this.userId,
-      this.careerId,
-      this.name,
-      this.beginTime,
-      this.endTime,
-      this.selectedCourses,
-      this.updatedAt,
-      this.createdAt);
+  StudentScheduleScratch(this.scheduleScratchId, this.name, this.beginTime,
+      this.endTime, this.selectedCourses, this.updatedAt, this.createdAt);
 
   // ignore: missing_return
   factory StudentScheduleScratch.fromJson(Map<String, dynamic> json) {
@@ -48,8 +38,6 @@ class StudentScheduleScratch
       identical(this, other) ||
       other is StudentScheduleScratch &&
           scheduleScratchId == other.scheduleScratchId &&
-          userId == other.userId &&
-          careerId == other.careerId &&
           name == other.name &&
           beginTime == other.beginTime &&
           endTime == other.endTime &&
@@ -60,8 +48,6 @@ class StudentScheduleScratch
   @override
   int get hashCode =>
       scheduleScratchId.hashCode ^
-      userId.hashCode ^
-      careerId.hashCode ^
       name.hashCode ^
       beginTime.hashCode ^
       endTime.hashCode ^

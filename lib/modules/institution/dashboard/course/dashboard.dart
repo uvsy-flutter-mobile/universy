@@ -4,7 +4,7 @@ import 'package:optional/optional.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/ratings.dart';
 import 'package:universy/services/factory.dart';

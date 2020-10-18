@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/cards/rectangular.dart';

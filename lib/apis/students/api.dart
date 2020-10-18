@@ -5,6 +5,7 @@ import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/student/career.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/notes.dart';
+import 'package:universy/model/student/schedule.dart';
 import 'package:universy/model/student/subject.dart';
 
 import 'requests.dart';
@@ -229,4 +230,51 @@ Future<void> updateEvent(
   var path = _createPath(resource);
 
   return api.put(path, payload: studentEvent);
+}
+
+// Schedule Scratches
+Future<List<StudentScheduleScratch>> getScratches(
+    String userId, String programId) async {
+  var resource =
+      "/students/$userId/programs/$programId/schedule"; //TODO: check with gon
+  var path = _createPath(resource);
+
+  var response = await api.getList<StudentScheduleScratch>(
+    path,
+    model: (content) => StudentScheduleScratch.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<void> createScheduleScratch(
+    String userId, String programId, CreateScratchPayload payload) {
+  var resource = "/students/$userId/programs/$programId"; //TODO check with gon
+  var path = _createPath(resource);
+
+  return api.post(
+    path,
+    payload: payload,
+  );
+}
+
+Future<void> updateScheduleScratch(String userId, String programId,
+    String scratchId, UpdateScratchPayload payload) {
+  var resource =
+      "/students/$userId/programs/$programId/scratchs/$scratchId"; //TODO check with gon
+  var path = _createPath(resource);
+
+  return api.put(
+    path,
+    payload: payload,
+  );
+}
+
+Future<void> deleteScheduleScratch(
+    String userId, String programId, String scratchId) {
+  var resource =
+      "/students/$userId/programs/$programId/scratchs/$scratchId"; //TODO check with gon
+  var path = _createPath(resource);
+
+  return api.delete(path);
 }

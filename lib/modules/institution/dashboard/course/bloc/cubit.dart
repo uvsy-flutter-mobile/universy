@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/ratings.dart';
 import 'package:universy/model/student/ratings.dart';
 import 'package:universy/services/exceptions/student.dart';
