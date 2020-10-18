@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:universy/modules/student/schedule/commons.dart';
+import 'package:universy/modules/student/schedule/widgets/add_scratch_button.dart';
+import 'package:universy/modules/student/schedule/widgets/schedule_title.dart';
 import 'package:universy/modules/student/schedule/schedule_list.dart';
 import 'package:universy/text/text.dart';
 
