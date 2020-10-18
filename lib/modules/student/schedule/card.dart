@@ -31,7 +31,7 @@ class ScheduleCard extends StatelessWidget {
       child: InkWell(
         onTap: () => this._onTap(this._studentScheduleScratch),
         child: AllEdgePaddedWidget(
-          padding: 9.0,
+          padding: 10.0,
           child: Row(
             children: <Widget>[
               SizedBox(

@@ -374,7 +374,17 @@ const Map<dynamic, dynamic> ES = {
         "onlyOne": "borrador",
         "zero": "Sin borradores",
         "many": "borradores"
-      }
+      },
+      "deleteDialog": {
+        "alertTitle": "Borrar horario",
+        "alertMessage": "Estas a punto de borrar:",
+        "confirmMessage": "¿ Estás de acuerdo ?",
+      },
+      "saveWithoutSavingDialog": {
+        "alertTitle": "Atención",
+        "alertMessage": "No guardaste los cambios del horario:",
+        "confirmMessage": "¿ Estas seguro que deseas salir  sin guardar ?",
+      },
     }
   },
   "institution": {

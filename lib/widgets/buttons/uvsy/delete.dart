@@ -9,7 +9,7 @@ class DeleteButton extends StatelessWidget {
     Key key,
     VoidCallback onDelete,
     Color splashColor = Colors.redAccent,
-    double size,
+    double size = 40.0,
   })  : this._onDelete = onDelete,
         this._splashColor = splashColor,
         this._size = size,
@@ -18,9 +18,12 @@ class DeleteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       splashColor: _splashColor,
-      icon: Icon(Icons.delete, color: Color(0xFFF0446C)),
+      icon: Icon(
+        Icons.delete,
+        color: Color(0xFFF0446C),
+        size: _size,
+      ),
       onPressed: _onDelete,
-      iconSize: _size,
     );
   }
 }
