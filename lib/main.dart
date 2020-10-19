@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/system/locale.dart';
 import 'package:flutter/services.dart';
-import 'package:time_machine/time_machine.dart';
 
 import 'app/universy.dart';
 import 'services/impl/factory.dart';
@@ -13,7 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemLocale.setSystemLocale(SPANISH);
   //await SystemConfig.instance().load();
-  await TimeMachine.initialize({'rootBundle': rootBundle});
 
   // TODO: Should we keep this portrait?
 
