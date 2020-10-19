@@ -380,6 +380,11 @@ const Map<dynamic, dynamic> ES = {
         "alertMessage": "Estas a punto de borrar:",
         "confirmMessage": "¿ Estás de acuerdo ?",
       },
+      "notFound": {
+        "title": "¡Bienvenido a Universy!",
+        "subtitle": "Para armar tus horarios, primero elegí una carrera",
+        "actions": {"addCareer": "Elegir carrera"},
+      },
       "saveWithoutSavingDialog": {
         "alertTitle": "Atención",
         "alertMessage": "No guardaste los cambios del horario:",

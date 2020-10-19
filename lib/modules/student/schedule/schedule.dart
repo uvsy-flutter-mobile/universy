@@ -22,11 +22,10 @@ class _ScheduleModuleState extends State<ScheduleModule> {
   @override
   void didChangeDependencies() {
     if (isNull(_scheduleCubit)) {
-      /*var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+      var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
       var studentScheduleService = sessionFactory.studentScheduleService();
-      this._scheduleCubit = ScheduleCubit(studentScheduleService);*/
-      this._scheduleCubit = ScheduleCubit();
-      this._scheduleCubit.fetchNotes();
+      this._scheduleCubit = ScheduleCubit(studentScheduleService);
+      this._scheduleCubit.fetchScratches();
     }
     super.didChangeDependencies();
   }

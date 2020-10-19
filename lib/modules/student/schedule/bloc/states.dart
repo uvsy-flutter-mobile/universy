@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:universy/model/student/schedule.dart';
 
 abstract class ScheduleState extends Equatable {
   List<Object> get props => [];
@@ -8,8 +9,12 @@ class LoadingState extends ScheduleState {}
 
 class ScratchesNotFound extends ScheduleState {}
 
-class DisplayScratchesState extends ScheduleState {}
+class DisplayScratchesState extends ScheduleState {
+  final List<StudentScheduleScratch> scratches;
 
-class EditScratchState extends ScheduleState {}
+  DisplayScratchesState(this.scratches);
 
-class AddScratchState extends ScheduleState {}
+  List<Object> get props => [scratches];
+}
+
+class CareerNotCreatedState extends ScheduleState {}

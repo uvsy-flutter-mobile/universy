@@ -140,7 +140,7 @@ abstract class StudentNotesService extends Service {
 
 // Student Schedule Services
 abstract class StudentScheduleService extends Service {
-  Future<List<StudentScheduleScratch>> getScratches();
+  Future<List<StudentScheduleScratch>> getScratches(String programId);
 
   Future<void> createScratch(StudentScheduleScratch scheduleScratch);
 

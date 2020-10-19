@@ -8,7 +8,7 @@ class AddScratchButton extends StatelessWidget {
       width: double.infinity,
       child: CustomOutlinedButtonIcon(
         iconData: Icons.add,
-        onPressed: () => {},
+        onPressed: () => {}, //TODO: modal crear un nuevo borrador
         labelText: AppText.getInstance().get("student.schedule.addNewSchedule"),
         buttonTextStyle: Theme.of(context).textTheme.button,
         color: Theme.of(context).buttonColor,

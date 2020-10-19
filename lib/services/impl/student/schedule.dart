@@ -27,11 +27,9 @@ class DefaultStudentScheduleService extends StudentScheduleService {
   }
 
   @override
-  Future<List<StudentScheduleScratch>> getScratches() async {
+  Future<List<StudentScheduleScratch>> getScratches(String programId) async {
     try {
       String userId = await DefaultAccountService.instance().getUserId();
-      String programId =
-          await DefaultStudentCareerService.instance().getCurrentProgram();
       return studentApi.getScratches(userId, programId);
     } catch (e) {
       Log.getLogger().error(e);

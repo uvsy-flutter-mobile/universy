@@ -1,4 +1,5 @@
 import "package:collection/collection.dart";
+import 'package:universy/constants/strings.dart';
 import "package:universy/model/copyable.dart";
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/coursing_period.dart';
@@ -20,6 +21,12 @@ class StudentScheduleScratch
   // ignore: missing_return
   factory StudentScheduleScratch.fromJson(Map<String, dynamic> json) {
     //TODO: implement fromJson
+  }
+
+  factory StudentScheduleScratch.empty(
+      String name, int beginTime, int endTime) {
+    return StudentScheduleScratch(EMPTY_STRING, name, beginTime, endTime, [],
+        DateTime.now(), DateTime.now());
   }
 
   @override
