@@ -1,5 +1,7 @@
+import 'package:calendar_views/calendar_views.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_timetable_view/flutter_timetable_view.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
@@ -51,13 +53,13 @@ class _ScratchViewState extends State<ScratchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: ListView(
-          children: <Widget>[
-            _buildScratchHeader(context),
-            _buildScratchSchedule()
-          ],
-        ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(child: _buildScratchHeader(context), flex: 2),
+          Expanded(child: _buildScratchSchedule(), flex: 10)
+        ],
       ),
       floatingActionButton:
           _create ? ScheduleActionButton.create() : ScheduleActionButton.edit(),
@@ -67,7 +69,118 @@ class _ScratchViewState extends State<ScratchView> {
   Widget _buildScratchSchedule() {
     DateTime now = DateTime.now();
     DateTime date = DateTime(now.year, now.month, now.day);
-    return Container();
+    return _buildTimeTable();
+  }
+
+  Widget _buildTimeTable2() {
+    return DayViewEssentials(
+      properties: new DayViewProperties(
+        days: <DateTime>[
+          new DateTime.now(),
+          DateTime.now().toUtc().add(new Duration(days: 1)).toLocal(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimeTable() {
+    return TimetableView(
+      timetableStyle: TimetableStyle(
+          cornerColor: Colors.amber,
+          timelineColor: Colors.amber,
+          timeItemTextColor: Colors.black,
+          startHour: 7,
+          endHour: 25,
+          laneWidth: 70.0,
+          timelineItemColor: Colors.amber,
+          timelineBorderColor: Colors.grey),
+      laneEventsList: [
+        LaneEvents(
+            lane: Lane(
+                name: "Lunes",
+                width: 70.0,
+                textStyle: TextStyle(color: Colors.black)),
+            events: [
+              TableEvent(
+                title: "1k2 - MAD",
+                decoration: BoxDecoration(color: Colors.deepPurple),
+                start: TableEventTime(hour: 8, minute: 0),
+                end: TableEventTime(hour: 11, minute: 20),
+              )
+            ]),
+        LaneEvents(
+            lane: Lane(
+                name: "Martes",
+                width: 70.0,
+                textStyle: TextStyle(color: Colors.black)),
+            events: [
+              TableEvent(
+                title: "1k2 - SOR",
+                decoration: BoxDecoration(color: Colors.amber),
+                start: TableEventTime(hour: 12, minute: 0),
+                end: TableEventTime(hour: 13, minute: 20),
+              )
+            ]),
+        LaneEvents(
+            lane: Lane(
+                name: "Miercoles",
+                width: 80.0,
+                textStyle: TextStyle(color: Colors.black)),
+            events: [
+              TableEvent(
+                title: "1k2 - SOR",
+                decoration: BoxDecoration(color: Colors.amber),
+                start: TableEventTime(hour: 08, minute: 30),
+                end: TableEventTime(hour: 13, minute: 20),
+              ),
+              TableEvent(
+                title: "1k2 - PAV",
+                decoration: BoxDecoration(color: Colors.deepPurple),
+                start: TableEventTime(hour: 08, minute: 45),
+                end: TableEventTime(hour: 13, minute: 50),
+              )
+            ]),
+        LaneEvents(
+            lane: Lane(
+                name: "Jueves",
+                width: 60.0,
+                textStyle: TextStyle(color: Colors.black)),
+            events: [
+              TableEvent(
+                title: "1k2 - SOR",
+                decoration: BoxDecoration(color: Colors.amber),
+                start: TableEventTime(hour: 12, minute: 0),
+                end: TableEventTime(hour: 13, minute: 20),
+              )
+            ]),
+        LaneEvents(
+            lane: Lane(
+                name: "Viernes",
+                width: 60.0,
+                textStyle: TextStyle(color: Colors.black)),
+            events: [
+              TableEvent(
+                title: "2k2 - AMII",
+                decoration: BoxDecoration(color: Colors.lightBlue),
+                start: TableEventTime(hour: 12, minute: 0),
+                end: TableEventTime(hour: 13, minute: 20),
+              )
+            ]),
+        LaneEvents(
+            lane: Lane(
+                name: "Sabado",
+                width: 60.0,
+                textStyle: TextStyle(color: Colors.black)),
+            events: [
+              TableEvent(
+                title: "2k2 - AMII",
+                decoration: BoxDecoration(color: Colors.lightBlue),
+                start: TableEventTime(hour: 23, minute: 0),
+                end: TableEventTime(hour: 23, minute: 50),
+              )
+            ]),
+      ],
+    );
   }
 
   Widget _buildScratchHeader(BuildContext context) {
