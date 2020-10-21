@@ -53,12 +53,13 @@ class _ScratchViewState extends State<ScratchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Expanded(child: _buildScratchHeader(context), flex: 2),
-          Expanded(child: _buildScratchSchedule(), flex: 10)
+          _buildScratchHeader(context),
+          Expanded(child: _buildScratchSchedule()),
         ],
       ),
       floatingActionButton:
@@ -89,11 +90,14 @@ class _ScratchViewState extends State<ScratchView> {
           cornerColor: Colors.amber,
           timelineColor: Colors.amber,
           timeItemTextColor: Colors.black,
+          mainBackgroundColor: Colors.white,
           startHour: 7,
           endHour: 25,
           laneWidth: 70.0,
-          timelineItemColor: Colors.amber,
-          timelineBorderColor: Colors.grey),
+          laneHeight: 45,
+          timeItemWidth: 45,
+          timelineItemColor: Colors.white,
+          timelineBorderColor: Colors.grey[300]),
       laneEventsList: [
         LaneEvents(
             lane: Lane(
@@ -124,7 +128,7 @@ class _ScratchViewState extends State<ScratchView> {
         LaneEvents(
             lane: Lane(
                 name: "Miercoles",
-                width: 80.0,
+                width: 70.0,
                 textStyle: TextStyle(color: Colors.black)),
             events: [
               TableEvent(
@@ -143,7 +147,7 @@ class _ScratchViewState extends State<ScratchView> {
         LaneEvents(
             lane: Lane(
                 name: "Jueves",
-                width: 60.0,
+                width: 70.0,
                 textStyle: TextStyle(color: Colors.black)),
             events: [
               TableEvent(
@@ -156,7 +160,7 @@ class _ScratchViewState extends State<ScratchView> {
         LaneEvents(
             lane: Lane(
                 name: "Viernes",
-                width: 60.0,
+                width: 70.0,
                 textStyle: TextStyle(color: Colors.black)),
             events: [
               TableEvent(
@@ -169,7 +173,7 @@ class _ScratchViewState extends State<ScratchView> {
         LaneEvents(
             lane: Lane(
                 name: "Sabado",
-                width: 60.0,
+                width: 70.0,
                 textStyle: TextStyle(color: Colors.black)),
             events: [
               TableEvent(
@@ -184,14 +188,17 @@ class _ScratchViewState extends State<ScratchView> {
   }
 
   Widget _buildScratchHeader(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        _buildHeaderTitles(),
-        SizedBox(width: 15),
-        _buildEditButton(),
-      ],
+    return Container(
+      color: Colors.grey[100],
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          _buildHeaderTitles(),
+          _buildEditButton(),
+        ],
+      ),
     );
   }
 
@@ -206,9 +213,8 @@ class _ScratchViewState extends State<ScratchView> {
   Widget _buildHeaderTitles() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 15),
         _buildPeriodTitle(context),
         SizedBox(height: 5),
         _buildPeriodSubtitle(context)
