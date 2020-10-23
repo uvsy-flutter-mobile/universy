@@ -19,10 +19,10 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       /* var scheduleScratches = await _scheduleService.getScratches(programId);*/
       var scheduleScratches = [];
       if (scheduleScratches.isNotEmpty) {
-        emit(ScratchesNotFound());
+        emit(DisplayScratchesState([]));
         /* emit(DisplayScratchesState(displayScratches));*/
       } else {
-        emit(ScratchesNotFound());
+        emit(DisplayScratchesState([]));
       }
     } on CurrentProgramNotFound {
       emit(CareerNotCreatedState());

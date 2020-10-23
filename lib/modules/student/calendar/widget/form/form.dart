@@ -164,7 +164,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
     return SizedBox(
         width: 200,
-        child: StudentEventDateWidget(
+        child: DatePickerWidget(
           initialValue: eventDate,
           context: context,
           label: label,
