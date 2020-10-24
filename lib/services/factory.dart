@@ -9,9 +9,9 @@ abstract class ServiceFactory {
 
   StudentCareerService studentCareerService();
 
-  StudentEventService studentEventService();
+  RatingsService ratingsService();
 
-  DeviceService deviceService();
+  StudentEventService studentEventService();
 
   InstitutionService institutionService();
 
@@ -22,6 +22,7 @@ abstract class ServiceFactory {
       accountService(),
       profileService(),
       studentCareerService(),
+      ratingsService(),
       studentEventService(),
       institutionService(),
       studentNotesService(),

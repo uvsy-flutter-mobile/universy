@@ -1,5 +1,8 @@
+import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/commission.dart';
+import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
@@ -74,6 +77,16 @@ Future<List<InstitutionProgram>> getPrograms(String careerId) async {
   return response.orElse([]);
 }
 
+Future<Optional<InstitutionProgram>> getProgram(String programId) async {
+  var resource = "/programs/$programId";
+  var path = _createPath(resource);
+
+  return await api.get<InstitutionProgram>(
+    path,
+    model: (content) => InstitutionProgram.fromJson(content),
+  );
+}
+
 Future<List<InstitutionSubject>> getSubjects(String programId) async {
   var resource = "/programs/$programId/subjects";
   var path = _createPath(resource);
@@ -81,6 +94,30 @@ Future<List<InstitutionSubject>> getSubjects(String programId) async {
   var response = await api.getList<InstitutionSubject>(
     path,
     model: (content) => InstitutionSubject.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<List<Course>> getCourses(String subjectId) async {
+  var resource = "/subjects/$subjectId/courses";
+  var path = _createPath(resource);
+
+  var response = await api.getList<Course>(
+    path,
+    model: (content) => Course.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<List<Commission>> getCommissions(String programId) async {
+  var resource = "/programs/$programId/commissions";
+  var path = _createPath(resource);
+
+  var response = await api.getList<Commission>(
+    path,
+    model: (content) => Commission.fromJson(content),
   );
 
   return response.orElse([]);

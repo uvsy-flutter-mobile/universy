@@ -1,6 +1,6 @@
 import 'package:universy/services/exceptions/service.dart';
 
-// Student services
+// Account
 
 /// [NotAuthorized] occurs when the user has no permissions
 /// over a resource/action
@@ -18,9 +18,23 @@ class UserNeedsConfirmation extends ServiceException {}
 /// does not match the one sent
 class ConfirmationCodeMismatch extends ServiceException {}
 
+// Profile
+
 /// [ProfileNotFound] occurs when the user has no profiles
 /// created
 class ProfileNotFound extends ServiceException {}
+
+/// [AliasAlreadyExists] occurs when the user tries
+/// to have an an alias already in use
+class AliasAlreadyExists extends ServiceException {}
+
+// Notes
+
+/// [StudentNoteNotFound] occurs the an specific note
+/// is not found
+class StudentNoteNotFound extends ServiceException {}
+
+// Career
 
 /// [CareerNotFound] occurs when an specific career
 /// could not be found
@@ -30,4 +44,8 @@ class CareerNotFound extends ServiceException {}
 /// is not found in the system
 class CurrentProgramNotFound extends ServiceException {}
 
-class StudentNoteNotFound extends ServiceException {}
+// Ratings
+
+/// [RatingNotFound] occurs there is not a rating
+/// for a given request
+class RatingNotFound extends ServiceException {}

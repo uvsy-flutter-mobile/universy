@@ -6,7 +6,7 @@ import 'package:universy/model/copyable.dart';
 import 'package:universy/model/json.dart';
 import 'package:universy/text/translators/event_type.dart';
 import 'package:universy/util/object.dart';
-import 'package:universy/util/time-of-day.dart';
+import 'package:universy/util/time_of_day.dart';
 
 const DATE_FORMAT = "dd-MMM-yyyy";
 const String EMPTY_STRING = "";

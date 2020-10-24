@@ -1,16 +1,19 @@
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/account/token.dart';
 import 'package:universy/model/account/user.dart';
-import 'package:universy/model/device.dart';
 import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/commission.dart';
+import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
+import 'package:universy/model/institution/ratings.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/career.dart';
-import 'package:universy/model/student/notes.dart';
 import 'package:universy/model/student/event.dart';
+import 'package:universy/model/student/notes.dart';
+import 'package:universy/model/student/ratings.dart';
 import 'package:universy/model/student/session.dart';
 import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
@@ -97,11 +100,26 @@ abstract class InstitutionService extends Service {
 
   Future<List<InstitutionSubject>> getSubjects(String programId);
 
+  Future<List<Course>> getCourses(String subjectId);
+
+  Future<List<Commission>> getCommissions(String programId);
+
+  Future<InstitutionProgram> getProgram(String programId);
 }
 
-/// General Services
-abstract class DeviceService extends Service {
-  Future<Device> getDevice();
+/// Ratings Service
+abstract class RatingsService extends Service {
+  Future<CourseRating> getCourseRating(String courseId);
+
+  Future<SubjectRating> getSubjectRating(String subjectId);
+
+  Future<StudentCourseRating> getStudentCourseRating(String courseId);
+
+  Future<StudentSubjectRating> getStudentSubjectRating(String subjectId);
+
+  Future<void> saveStudentCourseRating(StudentCourseRating courseRating);
+
+  Future<void> saveStudentSubjectRating(String subjectId, int rating);
 }
 
 /// Student Notes Services

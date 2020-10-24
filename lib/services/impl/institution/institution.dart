@@ -1,10 +1,13 @@
 import 'package:universy/apis/institutions/api.dart' as institutionsApi;
 import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/commission.dart';
+import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/services/exceptions/service.dart';
+import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/util/logger.dart';
 import 'package:universy/util/object.dart';
@@ -79,10 +82,49 @@ class DefaultInstitutionService implements InstitutionService {
     }
   }
 
+  Future<InstitutionProgram> getProgram(String programId) async {
+    try {
+      var studentProgram = await institutionsApi.getProgram(programId);
+      return studentProgram.orElseThrow(() => CurrentProgramNotFound());
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
   @override
   Future<List<InstitutionSubject>> getSubjects(String programId) async {
     try {
       return await institutionsApi.getSubjects(programId);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<List<Course>> getCourses(String subjectId) async {
+    try {
+      return await institutionsApi.getCourses(subjectId);
+    } on ServiceException catch (e) {
+      Log.getLogger().error(e);
+      rethrow;
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<List<Commission>> getCommissions(String programId) async {
+    try {
+      return await institutionsApi.getCommissions(programId);
     } on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;

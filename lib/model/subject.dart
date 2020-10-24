@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'dart:core';
 
 import 'package:optional/optional.dart';
 import 'package:universy/model/student/subject.dart';
@@ -31,9 +32,17 @@ class Subject implements Copyable<Subject> {
 
   int get score => _studentSubject?.score;
 
+  bool get optative => _institutionSubject.optative;
+
+  int get points => _institutionSubject.points;
+
+  int get hours => _institutionSubject.hours;
+
   set score(int score) => _studentSubject.score = score;
 
   StudentSubject get studentSubject => _studentSubject;
+
+  InstitutionSubject get institutionSubject => _institutionSubject;
 
   bool isApproved() {
     if (notNull(_studentSubject)) {
@@ -64,6 +73,13 @@ class Subject implements Copyable<Subject> {
       return _studentSubject.milestones.isEmpty;
     }
     return true;
+  }
+
+  bool isOptative() {
+    if (notNull(optative)) {
+      return optative;
+    }
+    return false;
   }
 
   Optional<Milestone> getTakingMilestone() {

@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/lock.dart';
-import 'package:universy/services/exceptions/profile.dart';
+import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
