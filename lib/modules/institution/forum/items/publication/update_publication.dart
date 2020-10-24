@@ -253,8 +253,7 @@ class _UpdatePublicationWidgetState extends State<UpdatePublicationWidget> {
       String description = _descriptionController.text.trim();
       DateTime date = DateTime.now();
       _uploadTags.first = (_selectedSubject.name);
-      ForumPublication forumPublication =
-          ForumPublication(1, title, this._profile, description, date, [], _uploadTags);
+      //ForumPublication forumPublication =          ForumPublication("1", title, this._profile.userId, description, date, _uploadTags);
       // PEGARLE AL SERVICIO PARA GUARDAR LA PUBLICACION, MOSTRAR FLUSHBAR y de ahí llevarlo al VIEW del FORO.
     }
   }

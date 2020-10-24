@@ -28,9 +28,10 @@ class DisplayState extends InstitutionForumState {
 
 class DisplayForumPublicationDetailState extends InstitutionForumState {
   final ForumPublication forumPublication;
+  final List<Comment> listComment;
   final Profile profile;
 
-  DisplayForumPublicationDetailState(this.forumPublication, this.profile);
+  DisplayForumPublicationDetailState(this.forumPublication, this.profile,this.listComment);
 }
 
 class CreateForumPublicationState extends InstitutionForumState {
@@ -48,7 +49,13 @@ class UpdateForumPublicationState extends InstitutionForumState {
   UpdateForumPublicationState(this.institutionSubjects, this.profile,this.forumPublication);
 }
 
-class ForumPublicationsNotFoundState extends InstitutionForumState {}
+class ForumPublicationsNotFoundState extends InstitutionForumState {
+  final List<ForumPublication> forumPublications;
+  final List<InstitutionSubject> institutionSubjects;
+  final Profile profile;
+
+  ForumPublicationsNotFoundState(this.forumPublications,this.profile,this.institutionSubjects);
+}
 
 class FilterForumPublicationsState extends InstitutionForumState {
   final List<InstitutionSubject> institutionSubjects;

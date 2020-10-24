@@ -125,7 +125,7 @@ class CommentItemWidget extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Text(
-                _comment.profile.name,
+                _comment.userAlias,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],

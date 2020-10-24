@@ -3,6 +3,7 @@ import 'package:universy/model/account/token.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/model/device.dart';
 import 'package:universy/model/institution/career.dart';
+import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
@@ -73,8 +74,7 @@ abstract class StudentCareerService extends Service {
 abstract class StudentEventService extends Service {
   Future<void> createEvent(StudentEvent event);
 
-  Future<List<StudentEvent>> getStudentEvents(
-      DateTime dateFrom, DateTime dateTo);
+  Future<List<StudentEvent>> getStudentEvents(DateTime dateFrom, DateTime dateTo);
 
   Future<void> updateEvent(StudentEvent studentEvent);
 
@@ -96,6 +96,7 @@ abstract class InstitutionService extends Service {
   Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programIds);
 
   Future<List<InstitutionSubject>> getSubjects(String programId);
+
 }
 
 /// General Services
@@ -116,4 +117,12 @@ abstract class StudentNotesService extends Service {
   Future<void> deleteNote(String noteId);
 
   Future<void> batchDeleteNotes(List<StudentNote> notes);
+}
+
+abstract class ForumService extends Service {
+  Future<List<ForumPublication>> getForumPublications(String programId);
+
+  Future<void> createForumPublication(String title, String description, List<String> tags);
+
+  Future<List<Comment>> searchCommentsPublication(String idPublication);
 }

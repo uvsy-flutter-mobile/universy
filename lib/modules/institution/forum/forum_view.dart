@@ -127,7 +127,7 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
         break;
       case 2:
         {
-          orderedPublications.sort((a, b) => b.comments.length.compareTo(a.comments.length));
+          //orderedPublications.sort((a, b) => b.comments.length.compareTo(a.comments.length));
         }
     }
     setState(() {
@@ -187,7 +187,7 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   Widget _buildStudentNoteCardWidget(ForumPublication forumPublication, index) {
     bool isOwner = false;
-    if (forumPublication.profile.userId == widget._profile.userId) {
+    if (forumPublication.userId == widget._profile.userId) {
       isOwner = true;
     }
     return PublicationItemWidget(

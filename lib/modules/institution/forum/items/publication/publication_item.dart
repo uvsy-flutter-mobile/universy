@@ -152,7 +152,7 @@ class PublicationItemWidget extends StatelessWidget {
         ),
         SymmetricEdgePaddingWidget.horizontal(
           paddingValue: 2,
-          child: Text(this._forumPublication.comments.length.toString(),
+          child: Text(this._forumPublication.comments.toString(),
               style: TextStyle(fontSize: 17)),
         ),
       ],
@@ -224,7 +224,7 @@ class PublicationItemWidget extends StatelessWidget {
         children: <Widget>[
           Icon(Icons.perm_identity),
           Text(
-            this._forumPublication.profile.name,
+            this._forumPublication.userAlias,
             overflow: TextOverflow.ellipsis,
           ),
         ],

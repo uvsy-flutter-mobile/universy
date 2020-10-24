@@ -23,7 +23,8 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
       var careerService = sessionFactory.studentCareerService();
       var institutionService = sessionFactory.institutionService();
       var profileService = sessionFactory.profileService();
-      this._forumCubit = InstitutionForumCubit(careerService, institutionService, profileService);
+      var forumService = sessionFactory.forumService();
+      this._forumCubit = InstitutionForumCubit(careerService, institutionService, profileService,forumService);
       this._forumCubit.fetchPublications();
     }
     super.didChangeDependencies();
@@ -61,7 +62,7 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
   }
 
   void _arrowBackOnPressed(BuildContext context) {
-    if (_forumCubit.state is DisplayState) {
+    if (_forumCubit.state is DisplayState || _forumCubit.state is ForumPublicationsNotFoundState ) {
       Navigator.pop(context);
     } else {
       _forumCubit.fetchPublications();

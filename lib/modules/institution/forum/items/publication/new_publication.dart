@@ -34,9 +34,8 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
 
   List<DropdownMenuItem> _courses = List<DropdownMenuItem>();
 
-
-  TextEditingController _descriptionController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
   TextEditingController _searchTagsEditingController = TextEditingController();
   List<String> _uploadTags = [];
   bool _maxTags;
@@ -68,13 +67,13 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       child: SymmetricEdgePaddingWidget.horizontal(
         paddingValue: 10,
         child: Card(
-          child: _buildListView(),
+          child: _buildListView(context),
         ),
       ),
     );
   }
 
-  ListView _buildListView() {
+  ListView _buildListView(BuildContext context) {
     return ListView(
       controller: _scrollController,
       shrinkWrap: true,
@@ -84,12 +83,12 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         Divider(),
         _buildTextTitle(),
         Divider(),
-        _buildTextDescription(),
+        _buildTextDescription(context),
         Divider(),
         _buildTags(),
         _buildAddTagsSection(),
         Divider(),
-        _buildConfirmAndCancelButtons()
+        _buildConfirmAndCancelButtons(context)
       ],
     );
   }
@@ -230,36 +229,37 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     );
   }
 
-  Widget _buildConfirmAndCancelButtons() {
+  Widget _buildConfirmAndCancelButtons(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         SaveButton(
-          onSave: _savePublication,
+          onSave: () =>{_buildNewPublication(context)},
         ),
-        CancelButton( onCancel: _cancelNewPublication,)
+        CancelButton( onCancel:() =>{ _cancelNewPublication(context)},)
       ],
     );
   }
 
-  void _savePublication() async {
+  void _buildNewPublication(BuildContext context){
     if ((_titleController.text.trim() != null) && (_descriptionController.text.trim() != null)) {
       String title = _titleController.text.trim();
       String description = _descriptionController.text.trim();
-      DateTime date = DateTime.now();
       _uploadTags.add(_selectedSubject.name);
-      _uploadTags.add(_selectedSubject.name);
-      ForumPublication forumPublication =
-          ForumPublication(1, title, this._profile, description, date, [], _uploadTags);
-      // PEGARLE AL SERVICIO PARA GUARDAR LA PUBLICACION, MOSTRAR FLUSHBAR y de ahí llevarlo al VIEW del FORO.
+      _savePublication(title,description,_uploadTags,context);
     }
   }
 
-  void _cancelNewPublication(){
+  void _savePublication(String title,String description,List<String> _uploadTags,BuildContext context) async {
+    BlocProvider.of<InstitutionForumCubit>(context).addNewForumPublication(title,description,_uploadTags);
+    }
+
+
+  void _cancelNewPublication(BuildContext context){
       BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
     }
 
-  Widget _buildTextDescription() {
+  Widget _buildTextDescription(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: TextField(
@@ -289,7 +289,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         "Materia",
         textAlign: TextAlign.center,
       ),
-      value: dropdownValue,
+      value: (this._selectedSubject==null) ? dropdownValue:this._selectedSubject,
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownSubject,

@@ -1,4 +1,5 @@
 import 'package:universy/services/factory.dart';
+import 'package:universy/services/impl/forum/forum.dart';
 import 'package:universy/services/impl/general/device.dart';
 import 'package:universy/services/impl/student/account.dart';
 import 'package:universy/services/impl/student/career.dart';
@@ -54,5 +55,10 @@ class DefaultServiceFactory extends ServiceFactory {
 
   StudentNotesService studentNotesService() {
     return DefaultStudentNotesService.instance();
+  }
+
+  @override
+  ForumService forumService() {
+    return DefaultForumService.instance();
   }
 }

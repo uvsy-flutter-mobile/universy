@@ -11,11 +11,13 @@ import 'package:universy/widgets/paddings/edge.dart';
 
 class PublicationDetailWidget extends StatefulWidget {
   final ForumPublication _forumPublication;
+  final List<Comment> _listComments;
   final Profile _profile;
 
-  PublicationDetailWidget({Key key, ForumPublication forumPublication, Profile profile})
+  PublicationDetailWidget({Key key, ForumPublication forumPublication, Profile profile, List<Comment> listComments})
       : this._forumPublication = forumPublication,
         this._profile = profile,
+        this._listComments = listComments,
         super(key: key);
 
   @override
@@ -72,6 +74,8 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildExtraInfoComments() {
+    int comments=0;
+    if(widget._listComments != null){comments=widget._listComments.length;}
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 10,
       child: Row(
@@ -86,7 +90,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           SymmetricEdgePaddingWidget.horizontal(
               paddingValue: 10,
               child: Text(
-                "${widget._forumPublication.comments.length.toString()}" + " Comentarios",
+                "${comments}" + " Comentarios",
                 style: TextStyle(color: Colors.grey, fontSize: 18),
               )),
         ],
@@ -111,7 +115,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
                 SymmetricEdgePaddingWidget.vertical(
                     paddingValue: 5,
                     child: Text(
-                      widget._forumPublication.profile.name,
+                      widget._forumPublication.userAlias,
                       style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
                     )),
                 TextField(
@@ -158,7 +162,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
 
   Widget _buildComments() {
     return CommentsListWidget(
-      forumPublication: widget._forumPublication,
+      commentsList: widget._listComments,
       profile: widget._profile,
     );
   }
@@ -197,6 +201,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildUserName() {
+    print(this.widget._forumPublication.userAlias);
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Column(
@@ -204,7 +209,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         children: <Widget>[
           Icon(Icons.perm_identity),
           Text(
-            this.widget._forumPublication.profile.name,
+            this.widget._forumPublication.userAlias,
             overflow: TextOverflow.ellipsis,
           ),
         ],
