@@ -21,14 +21,20 @@ class InstitutionForumStateBuilder extends WidgetBuilderFactory<InstitutionForum
           forumPublication: state.forumPublication, profile: state.profile);
     } else if (state is UpdateForumPublicationState) {
       return UpdatePublicationWidget(
-          forumPublication: state.forumPublication, profile: state.profile,subjects: state.institutionSubjects,);
+          forumPublication: state.forumPublication,
+          profile: state.profile,
+          subjects: state.institutionSubjects,
+          commissions: state.listCommissions);
     } else if (state is CreateForumPublicationState) {
       return NewPublicationWidget(
         subjects: state.institutionSubjects,
         profile: state.profile,
+        commissions: state.listCommissions,
       );
     } else if (state is FilterForumPublicationsState) {
-      return FiltersViewWidget(subjects: state.institutionSubjects,);
+      return FiltersViewWidget(
+        subjects: state.institutionSubjects,
+      );
     }
     return CenterSizedCircularProgressIndicator();
   }

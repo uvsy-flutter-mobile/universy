@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/account/profile.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
@@ -12,15 +13,18 @@ import 'package:universy/widgets/paddings/edge.dart';
 
 class NewPublicationWidget extends StatefulWidget {
   final List<InstitutionSubject> _subjects;
+  final List<Commission> _commissions;
   final Profile _profile;
 
   NewPublicationWidget(
       {Key key,
       Function(ForumPublication) callBack,
       List<InstitutionSubject> subjects,
+      List<Commission> commissions,
       Profile profile})
       : this._profile = profile,
         this._subjects = subjects,
+        this._commissions = commissions,
         super(key: key);
 
   @override
@@ -29,7 +33,9 @@ class NewPublicationWidget extends StatefulWidget {
 
 class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   List<InstitutionSubject> _subjects;
+  List<Commission> _commissions;
   InstitutionSubject _selectedSubject;
+  Commission _selectedCommission;
   Profile _profile;
 
   List<DropdownMenuItem> _courses = List<DropdownMenuItem>();
@@ -45,6 +51,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   @override
   void initState() {
     _subjects = widget._subjects;
+    _commissions = widget._commissions;
     _profile = widget._profile;
     _scrollController = ScrollController();
     _maxTags = false;
@@ -194,7 +201,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       children: <Widget>[
         _buildUserIcon(),
         Expanded(
-          flex: 5,
+          flex: 3,
           child: SymmetricEdgePaddingWidget.vertical(
             paddingValue: 10,
             child: Column(
@@ -202,7 +209,8 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 _buildUserInfo(),
-                _buildLevelAndTypeSelector(),
+                _getDropDownSubject(),
+                _getDropDownCommission(),
               ],
             ),
           ),
@@ -234,30 +242,34 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         SaveButton(
-          onSave: () =>{_buildNewPublication(context)},
+          onSave: () => {_buildNewPublication(context)},
         ),
-        CancelButton( onCancel:() =>{ _cancelNewPublication(context)},)
+        CancelButton(
+          onCancel: () => {_cancelNewPublication(context)},
+        )
       ],
     );
   }
 
-  void _buildNewPublication(BuildContext context){
+  void _buildNewPublication(BuildContext context) {
     if ((_titleController.text.trim() != null) && (_descriptionController.text.trim() != null)) {
       String title = _titleController.text.trim();
       String description = _descriptionController.text.trim();
       _uploadTags.add(_selectedSubject.name);
-      _savePublication(title,description,_uploadTags,context);
+      _uploadTags.add(_selectedCommission.name);
+      _savePublication(title, description, _uploadTags, context);
     }
   }
 
-  void _savePublication(String title,String description,List<String> _uploadTags,BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).addNewForumPublication(title,description,_uploadTags);
-    }
+  void _savePublication(
+      String title, String description, List<String> _uploadTags, BuildContext context) async {
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .addNewForumPublication(title, description, _uploadTags);
+  }
 
-
-  void _cancelNewPublication(BuildContext context){
-      BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
-    }
+  void _cancelNewPublication(BuildContext context) {
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
+  }
 
   Widget _buildTextDescription(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
@@ -271,15 +283,6 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     );
   }
 
-  Widget _buildLevelAndTypeSelector() {
-    return Row(
-      children: <Widget>[
-        _getDropDownSubject(),
-        //SymmetricEdgePaddingWidget.horizontal(paddingValue: 10, child: _getDropDownComision()),
-      ],
-    );
-  }
-
   Widget _getDropDownSubject() {
     GlobalKey key = GlobalKey();
     InstitutionSubject dropdownValue;
@@ -289,7 +292,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         "Materia",
         textAlign: TextAlign.center,
       ),
-      value: (this._selectedSubject==null) ? dropdownValue:this._selectedSubject,
+      value: (this._selectedSubject == null) ? dropdownValue : this._selectedSubject,
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownSubject,
@@ -310,6 +313,39 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   void _onChangeDropDownSubject(InstitutionSubject newValue) {
     return setState(() {
       this._selectedSubject = newValue;
+    });
+  }
+
+  Widget _getDropDownCommission() {
+    GlobalKey key = GlobalKey();
+    Commission dropdownValue;
+    return DropdownButton<Commission>(
+      key: key,
+      hint: Text(
+        "Comisión",
+        textAlign: TextAlign.center,
+      ),
+      value: (this._selectedCommission == null) ? dropdownValue : this._selectedCommission,
+      elevation: 6,
+      style: TextStyle(color: Colors.black),
+      onChanged: _onChangeDropDownCommission,
+      items: _commissions.map((x) {
+        return new DropdownMenuItem<Commission>(
+          value: x,
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width / 2.5,
+              child: new Text(
+                x.name,
+                textAlign: TextAlign.center,
+              )),
+        );
+      }).toList(),
+    );
+  }
+
+  void _onChangeDropDownCommission(Commission newValue) {
+    return setState(() {
+      this._selectedCommission = newValue;
     });
   }
 

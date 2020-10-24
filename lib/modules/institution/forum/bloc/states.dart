@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:universy/model/account/profile.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
 
@@ -15,9 +16,10 @@ class LoadingState extends InstitutionForumState {}
 class DisplayState extends InstitutionForumState {
   final List<ForumPublication> forumPublications;
   final List<InstitutionSubject> institutionSubjects;
+  final List<Commission> listCommissions;
   final Profile profile;
 
-  DisplayState(this.forumPublications, this.profile, this.institutionSubjects);
+  DisplayState(this.forumPublications, this.profile, this.institutionSubjects,this.listCommissions);
 
   Profile get myProfile => profile;
 
@@ -36,30 +38,34 @@ class DisplayForumPublicationDetailState extends InstitutionForumState {
 
 class CreateForumPublicationState extends InstitutionForumState {
   final List<InstitutionSubject> institutionSubjects;
+  final List<Commission> listCommissions;
   final Profile profile;
 
-  CreateForumPublicationState(this.institutionSubjects, this.profile);
+  CreateForumPublicationState(this.institutionSubjects, this.profile,this.listCommissions);
 }
 
 class UpdateForumPublicationState extends InstitutionForumState {
   final ForumPublication forumPublication;
   final List<InstitutionSubject> institutionSubjects;
+  final List<Commission> listCommissions;
   final Profile profile;
 
-  UpdateForumPublicationState(this.institutionSubjects, this.profile,this.forumPublication);
+  UpdateForumPublicationState(this.institutionSubjects, this.profile,this.forumPublication,this.listCommissions);
 }
 
 class ForumPublicationsNotFoundState extends InstitutionForumState {
   final List<ForumPublication> forumPublications;
   final List<InstitutionSubject> institutionSubjects;
+  final List<Commission> listCommissions;
   final Profile profile;
 
-  ForumPublicationsNotFoundState(this.forumPublications,this.profile,this.institutionSubjects);
+  ForumPublicationsNotFoundState(this.forumPublications,this.profile,this.institutionSubjects,this.listCommissions);
 }
 
 class FilterForumPublicationsState extends InstitutionForumState {
   final List<InstitutionSubject> institutionSubjects;
+  final List<Commission> listCommissions;
   final Profile profile;
 
-  FilterForumPublicationsState(this.institutionSubjects, this.profile);
+  FilterForumPublicationsState(this.institutionSubjects, this.profile,this.listCommissions);
 }

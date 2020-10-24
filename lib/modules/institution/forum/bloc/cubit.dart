@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/services/manifest.dart';
@@ -21,26 +22,25 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     var profile = await _profileService.getProfile();
     var programId = await this._careerService.getCurrentProgram();
 
-    List<ForumPublication> forumPublications =
-        await this._forumService.getForumPublications(programId);
-    List<InstitutionSubject> institutionSubjects =
-        await this._institutionService.getSubjects(programId);
+    List<ForumPublication> forumPublications = await this._forumService.getForumPublications(programId);
+    List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
+    List<Commission> listCommissions = await this._institutionService.getCommissions(programId);
 
     if (forumPublications.isNotEmpty) {
-      emit(DisplayState(forumPublications, profile, institutionSubjects));
+      emit(DisplayState(forumPublications, profile, institutionSubjects,listCommissions));
     } else {
-      emit(ForumPublicationsNotFoundState(forumPublications, profile, institutionSubjects));
+      emit(ForumPublicationsNotFoundState(forumPublications, profile, institutionSubjects,listCommissions));
     }
   }
 
   void createNewForumPublication() async {
     var displayState = this.state as DisplayState;
-    emit(CreateForumPublicationState(displayState.institutionSubjects, displayState.profile));
+    emit(CreateForumPublicationState(displayState.institutionSubjects, displayState.profile,displayState.listCommissions));
   }
 
   void createNewForumPublicationFromNotFoundState() async {
     var displayState = this.state as ForumPublicationsNotFoundState;
-    emit(CreateForumPublicationState(displayState.institutionSubjects, displayState.profile));
+    emit(CreateForumPublicationState(displayState.institutionSubjects, displayState.profile,displayState.listCommissions));
   }
 
   void addNewForumPublication(String title, String description, List<String> uploadTags) async {
@@ -58,13 +58,13 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
 
   void filterForumPublications() async {
     var displayState = this.state as DisplayState;
-    emit(FilterForumPublicationsState(displayState.institutionSubjects, displayState.profile));
+    emit(FilterForumPublicationsState(displayState.institutionSubjects, displayState.profile,displayState.listCommissions));
   }
 
   void updateForumPublication(ForumPublication forumPublication) async {
     var displayState = this.state as DisplayState;
     emit(UpdateForumPublicationState(
-        displayState.institutionSubjects, displayState.profile, forumPublication));
+        displayState.institutionSubjects, displayState.profile, forumPublication,displayState.listCommissions));
   }
 
 //  void editNote(StudentNote note) {

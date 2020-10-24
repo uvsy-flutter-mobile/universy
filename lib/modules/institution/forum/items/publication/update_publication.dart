@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/account/profile.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
@@ -13,17 +14,20 @@ import 'package:universy/widgets/paddings/edge.dart';
 class UpdatePublicationWidget extends StatefulWidget {
   final List<InstitutionSubject> _subjects;
   final ForumPublication _forumPublication;
+  final List<Commission> _commissions;
   final Profile _profile;
 
   UpdatePublicationWidget(
       {Key key,
       Function(ForumPublication) callBack,
       List<InstitutionSubject> subjects,
+      List<Commission> commissions,
       ForumPublication forumPublication,
       Profile profile})
       : this._profile = profile,
         this._subjects = subjects,
         this._forumPublication = forumPublication,
+        this._commissions = commissions,
         super(key: key);
 
   @override
@@ -32,6 +36,7 @@ class UpdatePublicationWidget extends StatefulWidget {
 
 class _UpdatePublicationWidgetState extends State<UpdatePublicationWidget> {
   List<InstitutionSubject> _subjects;
+  List<Commission> _commissions;
   InstitutionSubject _selectedSubject;
   Profile _profile;
 
@@ -53,6 +58,7 @@ class _UpdatePublicationWidgetState extends State<UpdatePublicationWidget> {
     _uploadTags = widget._forumPublication.tags;
 
     _subjects = widget._subjects;
+    _commissions = widget._commissions;
     _profile = widget._profile;
     _scrollController = ScrollController();
     if (widget._forumPublication.tags.length > 10) {
