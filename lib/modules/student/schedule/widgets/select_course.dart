@@ -8,6 +8,9 @@ import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
+import 'package:universy/widgets/paddings/edge.dart';
+
+import 'course_info_card.dart';
 
 const double SEPARATOR_SPACE = 15;
 const int FIRST_ELEMENT_INDEX = 0;
@@ -121,8 +124,31 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
           SizedBox(
             height: 15,
           ),
-          Placeholder()
+          _buildScratchCoursesList()
         ],
+      ),
+    );
+  }
+
+  Widget _buildScratchCoursesList() {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemBuilder: (context, position) {
+        return _buildCourseInfoCard(_scratchCoursesOnDisplay[position]);
+      },
+      itemCount: _scratchCoursesOnDisplay.length,
+    );
+  }
+
+  Widget _buildCourseInfoCard(ScheduleScratchCourse scheduleScratchCourse) {
+    bool isCourseSelected = scheduleScratchCourse == _selectedScratchCourse;
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 15,
+      child: CourseInfoCardWidget(
+        scratchCourse: scheduleScratchCourse,
+        onTap: _selectScratchCourse,
+        isSelected: isCourseSelected,
       ),
     );
   }
