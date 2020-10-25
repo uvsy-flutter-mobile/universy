@@ -71,6 +71,9 @@ class ScheduleScratchCourse
   Commission commission;
   CoursingPeriod period;
 
+  ScheduleScratchCourse(this.courseId, this.subjectId, this.subjectName,
+      this.commission, this.period);
+
   @override
   // ignore: missing_return
   Map<String, String> toJson() {
