@@ -5,16 +5,19 @@ import 'package:flutter_timetable_view/flutter_timetable_view.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
+import 'package:universy/modules/student/schedule/widgets/scratch_form.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/dialog/title.dart';
 
 class ScratchView extends StatefulWidget {
   final StudentScheduleScratch _scratch;
   final bool _create;
 
   const ScratchView(
-      {Key key,
-      @required StudentScheduleScratch scratch,
-      @required bool create})
+      {Key key, StudentScheduleScratch scratch, @required bool create})
       : this._scratch = scratch,
         this._create = create,
         super(key: key);
@@ -196,17 +199,32 @@ class _ScratchViewState extends State<ScratchView> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           _buildHeaderTitles(),
-          _buildEditButton(),
+          _buildEditButton(context),
         ],
       ),
     );
   }
 
-  Widget _buildEditButton() {
+  Widget _buildEditButton(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.edit),
-      onPressed: () => {},
+      onPressed: () => _editScratchTitle(context),
       color: Colors.amber,
+    );
+  }
+
+  void _editScratchTitle(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => TitleDialog(
+        title: AppText.getInstance()
+            .get("student.schedule.createScratchDialog.alertTitle"),
+        content: ScratchForm(),
+        actions: <Widget>[
+          SaveButton(),
+          CancelButton(onCancel: () => Navigator.of(context).pop())
+        ],
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:universy/modules/student/schedule/scratch_view.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_form.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/outlined/custom_icon.dart';
@@ -12,8 +13,7 @@ class AddScratchButton extends StatelessWidget {
       width: double.infinity,
       child: CustomOutlinedButtonIcon(
         iconData: Icons.add,
-        onPressed: () =>
-            _openNewScratch(context), //TODO: modal crear un nuevo borrador
+        onPressed: () => _openNewScratch(context),
         labelText: AppText.getInstance().get("student.schedule.addNewSchedule"),
         buttonTextStyle: Theme.of(context).textTheme.button,
         color: Theme.of(context).buttonColor,
@@ -28,7 +28,10 @@ class AddScratchButton extends StatelessWidget {
         title: AppText.getInstance()
             .get("student.schedule.createScratchDialog.alertTitle"),
         content: ScratchForm(),
-        actions: <Widget>[SaveButton(), CancelButton()],
+        actions: <Widget>[
+          SaveButton(onSave: () => ScratchView(create: true)),
+          CancelButton(onCancel: () => Navigator.of(context).pop())
+        ],
       ),
     );
   }
