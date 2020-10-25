@@ -375,6 +375,11 @@ const Map<dynamic, dynamic> ES = {
         "zero": "Sin borradores",
         "many": "borradores"
       },
+      "addCourseDialog": {
+        "alertTitle": "Selecciona el curso que deseas agregar",
+        "level": "Año",
+        "subject": "Materia",
+      },
       "createScratchDialog": {
         "alertTitle": "Creá un nuevo borrador",
         "scratchTitle": "Título",
