@@ -1,12 +1,12 @@
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/coursing_period.dart';
+import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
-import 'package:universy/model/subject.dart';
 import 'package:universy/util/object.dart';
 
 class ScheduleScratchCourseListGenerator {
-  final List<Subject> _subjects;
+  final List<InstitutionSubject> _subjects;
   final List<Commission> _commissions;
   final Course _course;
 
@@ -15,8 +15,8 @@ class ScheduleScratchCourseListGenerator {
 
   List<ScheduleScratchCourse> generate() {
     if (notNull(_course.periods) && _course.periods.length > 0) {
-      Subject courseSubject = _subjects
-          .firstWhere((Subject subject) => subject.id == _course.subjectId);
+      InstitutionSubject courseSubject = _subjects.firstWhere(
+          (InstitutionSubject subject) => subject.id == _course.subjectId);
       Commission courseCommission = _commissions.firstWhere(
           (Commission commission) => commission.id == _course.commissionId);
       List<ScheduleScratchCourse> scheduleScratchCourses = [];

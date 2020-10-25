@@ -4,30 +4,48 @@ import 'package:flutter/rendering.dart';
 import 'package:universy/business/schedule_scratch/course_list_generator.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
+import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 
 const double SEPARATOR_SPACE = 15;
+const List<int> LEVELS_MOCK = [1, 2, 3, 4, 5];
+
+List<InstitutionSubject> subjectsMock = [
+  InstitutionSubject('subject_1', 'this.name', 'this.codename', 1,
+      'this.programId', 1, 1, false, []),
+  InstitutionSubject('subject_2', 'this.name', 'this.codename', 1,
+      'this.programId', 1, 1, false, []),
+];
+List<Course> coursesMocks = [
+  Course('this._courseId', 'commission_1', 'subject_1', []),
+  Course('this._courseId', 'commission_2', 'subject_2', []),
+];
+List<Commission> commissionsMocks = [
+  Commission('commission_1,', 'this.name', 'this.programId', 1),
+  Commission('commission_2,', 'this.name', 'this.programId', 1),
+];
 
 class SelectCourseWidget extends StatefulWidget {
   final List<int> _levels;
-  final List<Subject> _subjects;
+  final List<InstitutionSubject> _subjects;
   final List<Course> _courses;
   final List<Commission> _commissions;
   final Function(ScheduleScratchCourse) _onSelectedScratchCourse;
 
+  //TODO: Remove mocks
   SelectCourseWidget({
     @required List<int> levels,
-    @required List<Subject> subjects,
+    @required List<InstitutionSubject> subjects,
     @required List<Course> courses,
     @required List<Commission> commissions,
     @required Function(ScheduleScratchCourse) onSelectedScratchCourse,
-  })  : this._levels = levels,
-        this._subjects = subjects,
-        this._courses = courses,
-        this._commissions = commissions,
+  })  : this._levels = LEVELS_MOCK,
+        this._subjects = subjectsMock,
+        this._courses = coursesMocks,
+        this._commissions = commissionsMocks,
         this._onSelectedScratchCourse = onSelectedScratchCourse,
         super();
 
@@ -40,13 +58,13 @@ class SelectCourseWidget extends StatefulWidget {
 
 class SelectCourseWidgetState extends State<SelectCourseWidget> {
   List<int> _levels;
-  List<Subject> _subjects;
+  List<InstitutionSubject> _subjects;
   List<Course> _courses;
   List<Commission> _commissions;
   List<ScheduleScratchCourse> _scratchCourses;
   ScheduleScratchCourse _selectedScratchCourse;
   int _selectedLevel;
-  Subject _selectedSubject;
+  InstitutionSubject _selectedSubject;
   Function(ScheduleScratchCourse) _onSelectedScratchCourse;
 
   SelectCourseWidgetState(this._levels, this._subjects, this._courses,
@@ -126,8 +144,9 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
             .get("student.schedule.selectCourseDialog.level"),
       ),
       onChanged: _onSubjectDropdownChange,
-      items: _subjects.map<DropdownMenuItem<Subject>>((Subject subject) {
-        return DropdownMenuItem<Subject>(
+      items: _subjects.map<DropdownMenuItem<InstitutionSubject>>(
+          (InstitutionSubject subject) {
+        return DropdownMenuItem<InstitutionSubject>(
           value: subject,
           child: Text(subject.name),
         );
@@ -135,7 +154,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
     ));
   }
 
-  void _onSubjectDropdownChange(Subject newSubject) {
+  void _onSubjectDropdownChange(InstitutionSubject newSubject) {
     setState(() {
       _selectedSubject = newSubject;
     });

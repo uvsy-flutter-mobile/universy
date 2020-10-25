@@ -4,10 +4,10 @@ class Commission {
   final String programId;
   final int level;
 
-  Commission._(this.id, this.name, this.programId, this.level);
+  Commission(this.id, this.name, this.programId, this.level);
 
   factory Commission.fromJson(Map<String, dynamic> json) {
-    return Commission._(
+    return Commission(
       json["id"],
       json["name"],
       json["programId"],
