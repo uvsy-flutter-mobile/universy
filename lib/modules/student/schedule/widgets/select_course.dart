@@ -6,13 +6,13 @@ import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
-import 'package:universy/model/subject.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 
 const double SEPARATOR_SPACE = 15;
-const List<int> LEVELS_MOCK = [1, 2, 3, 4, 5];
+const int FIRST_ELEMENT_INDEX = 0;
 
+const List<int> LEVELS_MOCK = [1, 2, 3, 4, 5];
 List<InstitutionSubject> subjectsMock = [
   InstitutionSubject('subject_1', 'this.name', 'this.codename', 1,
       'this.programId', 1, 1, false, []),
@@ -59,9 +59,11 @@ class SelectCourseWidget extends StatefulWidget {
 class SelectCourseWidgetState extends State<SelectCourseWidget> {
   List<int> _levels;
   List<InstitutionSubject> _subjects;
+  List<InstitutionSubject> _subjectsOnDisplay;
   List<Course> _courses;
   List<Commission> _commissions;
   List<ScheduleScratchCourse> _scratchCourses;
+  List<ScheduleScratchCourse> _scratchCoursesOnDisplay;
   ScheduleScratchCourse _selectedScratchCourse;
   int _selectedLevel;
   InstitutionSubject _selectedSubject;
@@ -73,8 +75,9 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   @override
   void initState() {
     _generateScratchCourses();
-    _selectedLevel = _levels[0];
-    _selectedSubject = _subjects[0];
+    _selectedLevel = _levels[FIRST_ELEMENT_INDEX];
+    _generateSubjectsOnDisplay(_selectedLevel);
+    _selectedSubject = _subjectsOnDisplay[FIRST_ELEMENT_INDEX];
     super.initState();
   }
 
@@ -86,6 +89,25 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
       if (notNull(scratchCourseListFragment)) {
         _scratchCourses.addAll(scratchCourseListFragment);
       }
+    });
+    _scratchCoursesOnDisplay = [..._scratchCourses];
+  }
+
+  void _generateSubjectsOnDisplay(int level) {
+    var filteredSubjects =
+        _subjects.where((InstitutionSubject subject) => subject.level == level);
+
+    setState(() {
+      _subjectsOnDisplay = filteredSubjects;
+      _selectedSubject = _subjectsOnDisplay[FIRST_ELEMENT_INDEX];
+    });
+    _selectScratchCourse(null);
+  }
+
+  void _selectScratchCourse(ScheduleScratchCourse scheduleScratchCourse) {
+    setState(() {
+      _selectedScratchCourse = scheduleScratchCourse;
+      _onSelectedScratchCourse(scheduleScratchCourse);
     });
   }
 
@@ -131,10 +153,12 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   }
 
   void _onLevelDropdownChange(int newLevel) {
-    setState(() {
-      _selectedLevel = newLevel;
-    });
-    //TODO: _updateList(_selectedLevel, _selectedSubject)
+    if (newLevel != _selectedLevel) {
+      setState(() {
+        _selectedLevel = newLevel;
+      });
+      _generateSubjectsOnDisplay(newLevel);
+    }
   }
 
   Widget _buildSubjectDropDown() {
@@ -158,6 +182,17 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
     setState(() {
       _selectedSubject = newSubject;
     });
-    //TODO: _updateList(_selectedLevel, _selectedSubject)
+    _updateCoursesOnDisplay(newSubject);
+  }
+
+  void _updateCoursesOnDisplay(InstitutionSubject newSubject) {
+    List<ScheduleScratchCourse> filteredScratchCourses = _scratchCourses.where(
+        (ScheduleScratchCourse scheduleScratchCourse) =>
+            scheduleScratchCourse.subjectId == newSubject.id);
+
+    setState(() {
+      _scratchCoursesOnDisplay = filteredScratchCourses;
+    });
+    _selectScratchCourse(filteredScratchCourses[FIRST_ELEMENT_INDEX]);
   }
 }
