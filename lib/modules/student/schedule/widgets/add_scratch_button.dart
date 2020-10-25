@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_form.dart';
-import 'package:universy/modules/student/subjects/state/correlative_dialog.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/outlined/custom_icon.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/dialog/title.dart';
 
@@ -26,7 +26,7 @@ class AddScratchButton extends StatelessWidget {
       context: context,
       builder: (dialogContext) => TitleDialog(
         title: AppText.getInstance()
-            .get("student.schedule.deleteDialog.alertTitle"),
+            .get("student.schedule.createScratchDialog.alertTitle"),
         content: ScratchForm(),
         actions: <Widget>[SaveButton(), CancelButton()],
       ),

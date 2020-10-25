@@ -5,15 +5,18 @@ import 'package:universy/model/student/schedule.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/picker/date.dart';
+import 'package:universy/widgets/formfield/picker/month.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 const double SEPARATOR_SPACE = 15;
+const int DEFAULT_TIME = 1603494929000; //TODO: change this
 
 class ScratchForm extends StatelessWidget {
   final StudentScheduleScratch _studentScheduleScratch;
   final TextEditingController _textEditingController;
+
   ScratchForm({
     StudentScheduleScratch studentScheduleScratch,
   })  : this._studentScheduleScratch = studentScheduleScratch,
@@ -58,41 +61,53 @@ class ScratchForm extends StatelessWidget {
 
   Widget _buildTimeRange(BuildContext context) {
     return SizedBox(
-        width: 200,
+        width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 60,
+            Expanded(
+              flex: 40,
               child: _buildDate(
-                  context, _studentScheduleScratch?.beginTime ?? 1603494929),
+                context: context,
+                time: _studentScheduleScratch?.endTime ?? DEFAULT_TIME,
+                label: AppText.getInstance()
+                    .get("student.schedule.createScratchDialog.dateFrom"),
+              ),
             ),
-            SizedBox(
-              width: 5,
+            Expanded(
+              flex: 20,
               child: Text(
                 '-',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold,
                     fontSize: 26),
               ),
             ),
-            SizedBox(
-              width: 60,
+            Expanded(
+              flex: 40,
               child: _buildDate(
-                  context, _studentScheduleScratch?.endTime ?? 1603494929),
+                context: context,
+                time: _studentScheduleScratch?.endTime ?? DEFAULT_TIME,
+                label: AppText.getInstance()
+                    .get("student.schedule.createScratchDialog.dateTo"),
+              ),
             ),
           ],
         ));
   }
 
-  Widget _buildDate(BuildContext context, double time) {
-    DateTime eventDate = DateTime.fromMillisecondsSinceEpoch(1603494929000);
-    String label = AppText.getInstance().get("student.calendar.form.eventDate");
+  Widget _buildDate(
+      {@required BuildContext context,
+      @required int time,
+      @required String label}) {
+    DateTime eventDate = DateTime.fromMillisecondsSinceEpoch(time);
 
     return SizedBox(
         width: 200,
-        child: DatePickerWidget(
+        child: MonthPickerWidget(
           initialValue: eventDate,
           context: context,
           label: label,

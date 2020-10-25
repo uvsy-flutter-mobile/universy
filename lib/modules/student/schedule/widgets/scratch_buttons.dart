@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universy/modules/student/schedule/bloc/cubit.dart';
-import 'package:universy/modules/student/schedule/widgets/confirm_message.dart';
-import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class _ScheduleButton extends StatelessWidget {

@@ -375,10 +375,11 @@ const Map<dynamic, dynamic> ES = {
         "zero": "Sin borradores",
         "many": "borradores"
       },
-      "deleteDialog": {
-        "alertTitle": "Borrar horario",
-        "alertMessage": "Estas a punto de borrar:",
-        "confirmMessage": "¿ Estás de acuerdo ?",
+      "createScratchDialog": {
+        "alertTitle": "Creá un nuevo borrador",
+        "scratchTitle": "Título",
+        "dateFrom": "Desde",
+        "dateTo": "Hasta",
       },
       "notFound": {
         "title": "¡Bienvenido a Universy!",
