@@ -5,7 +5,7 @@ import 'package:flutter_timetable_view/flutter_timetable_view.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
-import 'package:universy/modules/student/schedule/widgets/scratch_form.dart';
+import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
@@ -219,7 +219,7 @@ class _ScratchViewState extends State<ScratchView> {
       builder: (dialogContext) => TitleDialog(
         title: AppText.getInstance()
             .get("student.schedule.createScratchDialog.alertTitle"),
-        content: ScratchForm(),
+        content: ScratchFormDialog(),
         actions: <Widget>[
           SaveButton(),
           CancelButton(onCancel: () => Navigator.of(context).pop())

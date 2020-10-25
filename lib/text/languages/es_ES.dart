@@ -380,8 +380,9 @@ const Map<dynamic, dynamic> ES = {
         "level": "Año",
         "subject": "Materia",
       },
-      "createScratchDialog": {
-        "alertTitle": "Creá un nuevo borrador",
+      "scratchFormDialog": {
+        "newScratchTitle": "Creá un nuevo borrador",
+        "editScratchTitle": "Modificá tu borrador",
         "scratchTitle": "Título",
         "dateFrom": "Desde",
         "dateTo": "Hasta",

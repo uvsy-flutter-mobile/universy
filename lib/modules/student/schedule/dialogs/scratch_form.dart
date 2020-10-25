@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/util/object.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/dialog/title.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/picker/date.dart';
 import 'package:universy/widgets/formfield/picker/month.dart';
@@ -10,14 +14,16 @@ import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
+import '../scratch_view.dart';
+
 const double SEPARATOR_SPACE = 15;
 const int DEFAULT_TIME = 1603494929000; //TODO: change this
 
-class ScratchForm extends StatelessWidget {
+class ScratchFormDialog extends StatelessWidget {
   final StudentScheduleScratch _studentScheduleScratch;
   final TextEditingController _textEditingController;
 
-  ScratchForm({
+  ScratchFormDialog({
     StudentScheduleScratch studentScheduleScratch,
   })  : this._studentScheduleScratch = studentScheduleScratch,
         this._textEditingController = TextEditingController(),
@@ -25,14 +31,27 @@ class ScratchForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(5),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[_buildNameInput(), _buildTimeRange(context)],
+    String title = notNull(this._studentScheduleScratch)
+        ? AppText.getInstance()
+            .get("student.schedule.scratchFormDialog.editScratchTitle")
+        : AppText.getInstance()
+            .get("student.schedule.scratchFormDialog.newScratchTitle");
+
+    return TitleDialog(
+      title: title,
+      content: Container(
+        padding: EdgeInsets.all(5),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[_buildNameInput(), _buildTimeRange(context)],
+        ),
       ),
+      actions: <Widget>[
+        SaveButton(onSave: () => ScratchView(create: true)),
+        CancelButton(onCancel: () => Navigator.of(context).pop())
+      ],
     );
   }
 
@@ -72,7 +91,7 @@ class ScratchForm extends StatelessWidget {
                 context: context,
                 time: _studentScheduleScratch?.endTime ?? DEFAULT_TIME,
                 label: AppText.getInstance()
-                    .get("student.schedule.createScratchDialog.dateFrom"),
+                    .get("student.schedule.scratchFormDialog.dateFrom"),
               ),
             ),
             Expanded(
@@ -92,7 +111,7 @@ class ScratchForm extends StatelessWidget {
                 context: context,
                 time: _studentScheduleScratch?.endTime ?? DEFAULT_TIME,
                 label: AppText.getInstance()
-                    .get("student.schedule.createScratchDialog.dateTo"),
+                    .get("student.schedule.scratchFormDialog.dateTo"),
               ),
             ),
           ],
