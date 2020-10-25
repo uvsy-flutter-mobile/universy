@@ -33,7 +33,7 @@ class ScheduleScratchCourseListGenerator {
 
       return scheduleScratchCourses;
     } else {
-      return [];
+      return null;
     }
   }
 }
