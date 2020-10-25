@@ -386,6 +386,11 @@ const Map<dynamic, dynamic> ES = {
         "dateFrom": "Desde",
         "dateTo": "Hasta",
       },
+      "selectCourseDialog": {
+        "alertTitle": "Selecciona el curso que deseas agregar",
+        "level": "Año",
+        "subject": "Materia",
+      },
       "notFound": {
         "title": "¡Bienvenido a Universy!",
         "subtitle": "Para armar tus horarios, primero elegí una carrera",
