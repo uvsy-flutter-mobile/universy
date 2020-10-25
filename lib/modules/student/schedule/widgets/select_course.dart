@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:universy/business/schedule_scratch/course_list_generator.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
+import 'package:universy/model/institution/coursing_period.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/text/text.dart';
@@ -22,13 +23,21 @@ List<InstitutionSubject> subjectsMock = [
   InstitutionSubject('subject_2', 'this.name', 'this.codename', 1,
       'this.programId', 1, 1, false, []),
 ];
+
+List<CoursingPeriod> coursingPeriodsMock = [
+  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
+  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
+  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
+  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
+];
+
 List<Course> coursesMocks = [
-  Course('this._courseId', 'commission_1', 'subject_1', []),
-  Course('this._courseId', 'commission_2', 'subject_2', []),
+  Course('this._courseId', 'commission_1', 'subject_1', coursingPeriodsMock),
+  Course('this._courseId', 'commission_2', 'subject_2', coursingPeriodsMock),
 ];
 List<Commission> commissionsMocks = [
-  Commission('commission_1,', 'this.name', 'this.programId', 1),
-  Commission('commission_2,', 'this.name', 'this.programId', 1),
+  Commission('commission_1', 'this.name', 'this.programId', 1),
+  Commission('commission_2', 'this.name', 'this.programId', 1),
 ];
 
 class SelectCourseWidget extends StatefulWidget {
@@ -80,29 +89,34 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
     _generateScratchCourses();
     _selectedLevel = _levels[FIRST_ELEMENT_INDEX];
     _generateSubjectsOnDisplay(_selectedLevel);
-    _selectedSubject = _subjectsOnDisplay[FIRST_ELEMENT_INDEX];
     super.initState();
   }
 
   void _generateScratchCourses() {
+    List<ScheduleScratchCourse> newScratchCourses = [];
     _courses.forEach((Course course) {
       var generator =
           ScheduleScratchCourseListGenerator(_subjects, _commissions, course);
       var scratchCourseListFragment = generator.generate();
       if (notNull(scratchCourseListFragment)) {
-        _scratchCourses.addAll(scratchCourseListFragment);
+        newScratchCourses.addAll(scratchCourseListFragment);
       }
     });
-    _scratchCoursesOnDisplay = [..._scratchCourses];
+    setState(() {
+      _scratchCourses = newScratchCourses;
+      _scratchCoursesOnDisplay = [...newScratchCourses];
+    });
   }
 
   void _generateSubjectsOnDisplay(int level) {
-    var filteredSubjects =
-        _subjects.where((InstitutionSubject subject) => subject.level == level);
-
+    var filteredSubjects = _subjects
+        .where((InstitutionSubject subject) => subject.level == level)
+        .toList();
     setState(() {
       _subjectsOnDisplay = filteredSubjects;
-      _selectedSubject = _subjectsOnDisplay[FIRST_ELEMENT_INDEX];
+      if (filteredSubjects.length > 0) {
+        _selectedSubject = filteredSubjects[FIRST_ELEMENT_INDEX];
+      }
     });
     _selectScratchCourse(null);
   }
@@ -117,28 +131,34 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(26),
+      padding: EdgeInsets.all(8),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           _buildDropDowns(),
           SizedBox(
             height: 15,
           ),
-          _buildScratchCoursesList()
+          Expanded(
+            child: _buildScratchCoursesList(),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildScratchCoursesList() {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemBuilder: (context, position) {
-        return _buildCourseInfoCard(_scratchCoursesOnDisplay[position]);
-      },
-      itemCount: _scratchCoursesOnDisplay.length,
-    );
+    return Container(
+        height: 300.0, // Change as per your requirement
+        width: 300.0, // Change as per your requirement
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (context, position) {
+            return _buildCourseInfoCard(_scratchCoursesOnDisplay[position]);
+          },
+          itemCount: _scratchCoursesOnDisplay.length,
+        ));
   }
 
   Widget _buildCourseInfoCard(ScheduleScratchCourse scheduleScratchCourse) {
@@ -156,8 +176,17 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   Widget _buildDropDowns() {
     return (Row(
       children: <Widget>[
-        _buildLevelDropDown(),
-        _buildSubjectDropDown(),
+        Expanded(
+          child: _buildLevelDropDown(),
+          flex: 45,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Expanded(
+          child: _buildSubjectDropDown(),
+          flex: 45,
+        ),
       ],
     ));
   }
@@ -169,6 +198,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
             .get("student.schedule.selectCourseDialog.level"),
       ),
       onChanged: _onLevelDropdownChange,
+      value: _selectedLevel,
       items: _levels.map<DropdownMenuItem<int>>((int level) {
         return DropdownMenuItem<int>(
           value: level,
@@ -191,10 +221,11 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
     return (DropdownButtonFormField(
       decoration: InputDecoration(
         labelText: AppText.getInstance()
-            .get("student.schedule.selectCourseDialog.level"),
+            .get("student.schedule.selectCourseDialog.subject"),
       ),
       onChanged: _onSubjectDropdownChange,
-      items: _subjects.map<DropdownMenuItem<InstitutionSubject>>(
+      value: _selectedSubject,
+      items: _subjectsOnDisplay.map<DropdownMenuItem<InstitutionSubject>>(
           (InstitutionSubject subject) {
         return DropdownMenuItem<InstitutionSubject>(
           value: subject,
@@ -212,13 +243,16 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   }
 
   void _updateCoursesOnDisplay(InstitutionSubject newSubject) {
-    List<ScheduleScratchCourse> filteredScratchCourses = _scratchCourses.where(
-        (ScheduleScratchCourse scheduleScratchCourse) =>
-            scheduleScratchCourse.subjectId == newSubject.id);
+    List<ScheduleScratchCourse> filteredScratchCourses = _scratchCourses
+        .where((ScheduleScratchCourse scheduleScratchCourse) =>
+            scheduleScratchCourse.subjectId == newSubject.id)
+        .toList();
 
     setState(() {
       _scratchCoursesOnDisplay = filteredScratchCourses;
     });
-    _selectScratchCourse(filteredScratchCourses[FIRST_ELEMENT_INDEX]);
+    if (filteredScratchCourses.length > 0) {
+      _selectScratchCourse(filteredScratchCourses[FIRST_ELEMENT_INDEX]);
+    }
   }
 }

@@ -16,9 +16,11 @@ class ScheduleScratchCourseListGenerator {
   List<ScheduleScratchCourse> generate() {
     if (notNull(_course.periods) && _course.periods.length > 0) {
       InstitutionSubject courseSubject = _subjects.firstWhere(
-          (InstitutionSubject subject) => subject.id == _course.subjectId);
+          (InstitutionSubject subject) => subject.id == _course.subjectId,
+          orElse: null);
       Commission courseCommission = _commissions.firstWhere(
-          (Commission commission) => commission.id == _course.commissionId);
+          (Commission commission) => commission.id == _course.commissionId,
+          orElse: null);
       List<ScheduleScratchCourse> scheduleScratchCourses = [];
 
       _course.periods.forEach((CoursingPeriod coursingPeriod) {

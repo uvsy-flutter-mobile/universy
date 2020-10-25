@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:universy/model/student/schedule.dart';
+import 'package:universy/modules/student/schedule/widgets/select_course.dart';
+import 'package:universy/modules/student/subjects/state/correlative_dialog.dart';
+import 'package:universy/text/text.dart';
+import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/dialog/title.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class _ScheduleButton extends StatelessWidget {
@@ -41,20 +47,34 @@ class SaveScratchButton extends StatelessWidget {
   }
 }
 
-class AddScheduleButton extends StatelessWidget {
+class AddScheduleCourseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _ScheduleButton(
       tag: "addButton",
       color: Colors.amber,
       icon: Icons.add,
-      /*onPressed: () => _editScratch(context),*/
-      onPressed: () => {},
+      onPressed: () => _addScheduleCourse(context),
     );
   }
 
-  void _editScratch(BuildContext context) {
-    /*BlocProvider.of<NotesCubit>(context).editScratch();*/
+  void _addScheduleCourse(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => TitleDialog(
+        title: AppText.getInstance()
+            .get("student.schedule.createScratchDialog.alertTitle"),
+        content: SelectCourseWidget(
+          commissions: [],
+          courses: [],
+          levels: [],
+          subjects: [],
+          onSelectedScratchCourse: (ScheduleScratchCourse course) =>
+              print('course ${course.toString()}'),
+        ),
+        actions: <Widget>[SaveButton(), CancelButton()],
+      ),
+    );
   }
 }
 
@@ -120,7 +140,7 @@ class ScheduleActionButton extends StatelessWidget {
 
   factory ScheduleActionButton.create() {
     var buttons = [
-      AddScheduleButton(),
+      AddScheduleCourseButton(),
       SizedBox(height: 15),
       SaveScratchButton(),
     ];
@@ -129,7 +149,7 @@ class ScheduleActionButton extends StatelessWidget {
 
   factory ScheduleActionButton.edit() {
     var buttons = [
-      AddScheduleButton(),
+      AddScheduleCourseButton(),
       SizedBox(height: 15),
       ViewScheduleButton(),
       SizedBox(height: 15),
