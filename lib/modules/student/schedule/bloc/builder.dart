@@ -12,17 +12,17 @@ class ScheduleStateBuilder extends WidgetBuilderFactory<ScheduleState> {
   @override
   Widget translate(ScheduleState state) {
     if (state is ScratchesNotFound) {
-      StudentScheduleScratch scheduleScratch =
-          new StudentScheduleScratch.empty("Mi horario", 042020, 072020);
-      return ScratchView(scratch: scheduleScratch, create: false);
-      //return ScratchesNotFoundWidget();
+      return ScratchesNotFoundWidget();
     } else if (state is DisplayScratchesState) {
       return DisplayScratchesWidget(
-          /*scratches: state.scheduleScratches,*/
-          );
+          /*scratches: state.scheduleScratches,*/);
     } else if (state is CareerNotCreatedState) {
       return CareerNotFoundWidget();
     }
     return CenterSizedCircularProgressIndicator();
   }
 }
+
+/*StudentScheduleScratch scheduleScratch =
+new StudentScheduleScratch.empty("Mi horario", 042020, 072020);
+return ScratchView(scratch: scheduleScratch, create: false);*/
