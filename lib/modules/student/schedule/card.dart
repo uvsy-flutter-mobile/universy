@@ -10,13 +10,13 @@ import 'package:universy/widgets/paddings/edge.dart';
 
 class ScheduleCard extends StatelessWidget {
   final StudentScheduleScratch _studentScheduleScratch;
-  final Function(StudentScheduleScratch) _onDelete;
-  final Function(StudentScheduleScratch) _onTap;
+  final VoidCallback _onDelete;
+  final VoidCallback _onTap;
 
   ScheduleCard({
     @required StudentScheduleScratch studentScheduleScratch,
-    Function(StudentScheduleScratch) onDelete,
-    Function(StudentScheduleScratch) onTap,
+    VoidCallback onDelete,
+    VoidCallback onTap,
   })  : this._studentScheduleScratch = studentScheduleScratch,
         this._onDelete = onDelete,
         this._onTap = onTap,
@@ -29,7 +29,7 @@ class ScheduleCard extends StatelessWidget {
       elevation: 2,
       radius: 8.0,
       child: InkWell(
-        onTap: () => this._onTap(this._studentScheduleScratch),
+        onTap: () => this._onTap(),
         child: AllEdgePaddedWidget(
           padding: 10.0,
           child: Row(
@@ -52,7 +52,7 @@ class ScheduleCard extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.delete),
                 color: Colors.black54,
-                onPressed: () => this._onDelete(this._studentScheduleScratch),
+                onPressed: () => this._onDelete(),
               ),
             ],
           ),

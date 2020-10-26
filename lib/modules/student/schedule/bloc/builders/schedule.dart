@@ -11,13 +11,16 @@ import 'package:universy/widgets/progress/circular.dart';
 class ScheduleStateBuilder extends WidgetBuilderFactory<ScheduleState> {
   @override
   Widget translate(ScheduleState state) {
-    if (state is ScratchesNotFound) {
-      return ScratchesNotFoundWidget();
+    if (state is EmptyScratches) {
+      return EmptyScratchesWidget();
     } else if (state is DisplayScratchesState) {
-      return DisplayScratchesWidget(
-          /*scratches: state.scheduleScratches,*/);
+      return DisplayScratchesWidget(scheduleScratches: state.scratches);
     } else if (state is CareerNotCreatedState) {
       return CareerNotFoundWidget();
+    } else if (state is CreateScratchState) {
+      return ScratchView(create: true);
+    } else if (state is EditScratchState) {
+      return ScratchView(create: false, scratch: state.scratch);
     }
     return CenterSizedCircularProgressIndicator();
   }

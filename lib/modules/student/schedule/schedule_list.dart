@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/model/student/schedule.dart';
+import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/card.dart';
 import 'package:universy/modules/student/schedule/widgets/confirm_message.dart';
 import 'package:universy/text/text.dart';
@@ -21,13 +23,12 @@ var mockedScheduleScratchList = [
 ];
 
 class StudentScheduleListWidget extends StatelessWidget {
-  /*List<StudentScheduleScratch> _scheduleScratches;
+  final List<StudentScheduleScratch> _scheduleScratches;
 
-  const DisplayScratchesWidget(
-      {Key key,
-        @required List<StudentScheduleScratch> scheduleScratches})
+  const StudentScheduleListWidget(
+      {Key key, @required List<StudentScheduleScratch> scheduleScratches})
       : this._scheduleScratches = scheduleScratches,
-        super(key: key); */
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +38,17 @@ class StudentScheduleListWidget extends StatelessWidget {
         children: <Widget>[
           ScheduleCard(
             studentScheduleScratch: mockedScheduleScratchList[0],
-            onDelete: (studentScheduleScratch) =>
-                _handleOnDeleteSchedule(studentScheduleScratch, context),
-            onTap: _handleOnTapSchedule,
+            onDelete: () =>
+                _handleOnDeleteSchedule(mockedScheduleScratchList[0], context),
+            onTap: () =>
+                _handleOnTapSchedule(mockedScheduleScratchList[0], context),
           ),
           ScheduleCard(
             studentScheduleScratch: mockedScheduleScratchList[1],
-            onDelete: (studentScheduleScratch) =>
-                _handleOnDeleteSchedule(studentScheduleScratch, context),
-            onTap: _handleOnTapSchedule,
+            onDelete: () =>
+                _handleOnDeleteSchedule(mockedScheduleScratchList[1], context),
+            onTap: () =>
+                _handleOnTapSchedule(mockedScheduleScratchList[1], context),
           ),
         ],
       ),
@@ -88,7 +91,9 @@ class StudentScheduleListWidget extends StatelessWidget {
     Navigator.of(context).pop();
   }
 
-  void _handleOnTapSchedule(StudentScheduleScratch studentScheduleScratch) {
-    print('handleOnTapSchedule $studentScheduleScratch');
+  void _handleOnTapSchedule(
+      StudentScheduleScratch studentScheduleScratch, BuildContext context) {
+    ScheduleCubit cubit = BlocProvider.of<ScheduleCubit>(context);
+    cubit.editScratchSchedule(studentScheduleScratch);
   }
 }

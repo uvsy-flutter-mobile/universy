@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/widgets/add_scratch_button.dart';
 import 'package:universy/modules/student/schedule/widgets/schedule_title.dart';
 import 'package:universy/modules/student/schedule/schedule_list.dart';
@@ -8,13 +9,12 @@ const NO_SCHEDULES_AMOUNT = 0;
 const ONLY_ONE_SCHEDULE_AMOUNT = 1;
 
 class DisplayScratchesWidget extends StatelessWidget {
-  /*List<StudentScheduleScratch> _scheduleScratches;
+  final List<StudentScheduleScratch> _scheduleScratches;
 
   const DisplayScratchesWidget(
-      {Key key,
-        @required List<StudentScheduleScratch> scheduleScratches})
+      {Key key, @required List<StudentScheduleScratch> scheduleScratches})
       : this._scheduleScratches = scheduleScratches,
-        super(key: key); */
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,6 +74,6 @@ class DisplayScratchesWidget extends StatelessWidget {
   }
 
   Widget _buildScratchesList() {
-    return StudentScheduleListWidget(); //TODO pasarle la lista de Scratches
+    return StudentScheduleListWidget(scheduleScratches: _scheduleScratches);
   }
 }

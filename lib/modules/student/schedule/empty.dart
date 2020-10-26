@@ -3,7 +3,7 @@ import 'package:universy/modules/student/schedule/widgets/add_scratch_button.dar
 import 'package:universy/modules/student/schedule/widgets/schedule_title.dart';
 import 'package:universy/text/text.dart';
 
-class ScratchesNotFoundWidget extends StatelessWidget {
+class EmptyScratchesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

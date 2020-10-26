@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_timetable_view/flutter_timetable_view.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
+import 'package:universy/modules/student/schedule/widgets/confirm_message.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
 import 'package:universy/text/text.dart';
@@ -15,11 +16,16 @@ import 'package:universy/widgets/dialog/title.dart';
 class ScratchView extends StatefulWidget {
   final StudentScheduleScratch _scratch;
   final bool _create;
+  final ScheduleCubit _cubit;
 
   const ScratchView(
-      {Key key, StudentScheduleScratch scratch, @required bool create})
+      {Key key,
+      StudentScheduleScratch scratch,
+      @required bool create,
+      ScheduleCubit cubit})
       : this._scratch = scratch,
         this._create = create,
+        this._cubit = cubit,
         super(key: key);
 
   @override
@@ -43,12 +49,14 @@ class _ScratchViewState extends State<ScratchView> {
   void initState() {
     this._scratch = widget._scratch;
     this._create = widget._create;
+    this._cubit = widget._cubit;
     super.initState();
   }
 
   @override
   void dispose() {
     this._scratch = null;
+    this._cubit = null;
     this._create = null;
     super.dispose();
   }
@@ -71,23 +79,11 @@ class _ScratchViewState extends State<ScratchView> {
   }
 
   Widget _buildScratchSchedule() {
-    DateTime now = DateTime.now();
-    DateTime date = DateTime(now.year, now.month, now.day);
-    return _buildTimeTable();
+    List<LaneEvents> list = _buildSchedulerList();
+    return _buildScheduleCalendar();
   }
 
-  Widget _buildTimeTable2() {
-    return DayViewEssentials(
-      properties: new DayViewProperties(
-        days: <DateTime>[
-          new DateTime.now(),
-          DateTime.now().toUtc().add(new Duration(days: 1)).toLocal(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTimeTable() {
+  Widget _buildScheduleCalendar() {
     return TimetableView(
       timetableStyle: TimetableStyle(
           cornerColor: Colors.amber,
@@ -190,6 +186,11 @@ class _ScratchViewState extends State<ScratchView> {
     );
   }
 
+  List<LaneEvents> _buildSchedulerList() {
+    List<LaneEvents> list = [];
+    return list;
+  }
+
   Widget _buildScratchHeader(BuildContext context) {
     return Container(
       color: Colors.grey[100],
@@ -198,7 +199,7 @@ class _ScratchViewState extends State<ScratchView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          _buildHeaderTitles(),
+          Expanded(child: _buildHeaderTitles(), flex: 3),
           _buildEditButton(context),
         ],
       ),
@@ -216,16 +217,16 @@ class _ScratchViewState extends State<ScratchView> {
   void _editScratchTitle(BuildContext context) {
     showDialog(
       context: context,
-      builder: (dialogContext) => TitleDialog(
-        title: AppText.getInstance()
-            .get("student.schedule.createScratchDialog.alertTitle"),
-        content: ScratchFormDialog(),
-        actions: <Widget>[
-          SaveButton(),
-          CancelButton(onCancel: () => Navigator.of(context).pop())
-        ],
+      builder: (dialogContext) => ScratchFormDialog(
+        studentScheduleScratch: _scratch,
       ),
     );
+  }
+
+  void _navigateToWidget() {
+    Navigator.of(context).pop();
+    ScheduleCubit cubit = BlocProvider.of<ScheduleCubit>(context);
+    cubit.editScratchSchedule(_scratch);
   }
 
   Widget _buildHeaderTitles() {
@@ -241,12 +242,15 @@ class _ScratchViewState extends State<ScratchView> {
   }
 
   Widget _buildPeriodTitle(BuildContext context) {
-    return Text("Primer cuatrimestre",
-        style: Theme.of(context).primaryTextTheme.headline3); //TODO: text
+    return Text(this._scratch.name,
+        overflow: TextOverflow.clip,
+        style: Theme.of(context).primaryTextTheme.headline3);
   }
 
   Widget _buildPeriodSubtitle(BuildContext context) {
-    return Text("Enero 2020 - Diciembre 2020",
+    String begin = _scratch.beginTime.toString();
+    String end = _scratch.endTime.toString();
+    return Text("$begin - $end",
         style: Theme.of(context).primaryTextTheme.bodyText1); //TODO: text
   }
 }

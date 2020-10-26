@@ -368,6 +368,7 @@ const Map<dynamic, dynamic> ES = {
     },
     "schedule": {
       "title": "Mis Horarios",
+      "scratchTitle": "Mi borrador",
       "heroText": "Crea borradores para tus horarios de cursado",
       "addNewSchedule": "Nuevo borrador",
       "amounts": {

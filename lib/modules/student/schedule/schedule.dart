@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:universy/modules/student/schedule/bloc/builders/appBar.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/schedule_list.dart';
 import 'package:universy/services/factory.dart';
@@ -9,7 +10,7 @@ import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/decorations/box.dart';
 
-import 'bloc/builder.dart';
+import 'bloc/builders/schedule.dart';
 
 class ScheduleModule extends StatefulWidget {
   @override
@@ -39,19 +40,11 @@ class _ScheduleModuleState extends State<ScheduleModule> {
           decoration: assetImageDecoration(Assets.UNIVERSY_CITY_BACKGROUND),
           child: Scaffold(
             backgroundColor: Colors.transparent,
-            appBar: _buildAppBar(),
+            appBar: ScheduleAppBar(),
             body: _buildBody(),
           ),
         ),
       ),
-    );
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      title: Text(AppText.getInstance().get("student.schedule.title")),
-      elevation: 10.0,
-      automaticallyImplyLeading: true,
     );
   }
 
@@ -61,4 +54,18 @@ class _ScheduleModuleState extends State<ScheduleModule> {
       builder: ScheduleStateBuilder().builder(),
     );
   }
+}
+
+class ScheduleAppBar extends StatelessWidget with PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    var cubit = BlocProvider.of<ScheduleCubit>(context);
+    return BlocBuilder(
+      cubit: cubit,
+      builder: AppBarStateBuilder().builder(),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
