@@ -1,17 +1,11 @@
-import 'package:calendar_views/calendar_views.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_timetable_view/flutter_timetable_view.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
-import 'package:universy/modules/student/schedule/widgets/confirm_message.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
-import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
-import 'package:universy/widgets/buttons/uvsy/cancel.dart';
-import 'package:universy/widgets/buttons/uvsy/save.dart';
-import 'package:universy/widgets/dialog/title.dart';
 
 class ScratchView extends StatefulWidget {
   final StudentScheduleScratch _scratch;
@@ -216,17 +210,15 @@ class _ScratchViewState extends State<ScratchView> {
 
   void _editScratchTitle(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (dialogContext) => ScratchFormDialog(
-        studentScheduleScratch: _scratch,
-      ),
-    );
+        context: context, builder: (dialogContext) => _buildScratchDialog());
   }
 
-  void _navigateToWidget() {
-    Navigator.of(context).pop();
-    ScheduleCubit cubit = BlocProvider.of<ScheduleCubit>(context);
-    cubit.editScratchSchedule(_scratch);
+  Widget _buildScratchDialog() {
+    return ScratchFormDialog(
+      studentScheduleScratch: _scratch,
+      create: false,
+      cubit: _cubit,
+    );
   }
 
   Widget _buildHeaderTitles() {
@@ -242,7 +234,7 @@ class _ScratchViewState extends State<ScratchView> {
   }
 
   Widget _buildPeriodTitle(BuildContext context) {
-    return Text(this._scratch.name,
+    return Text(_scratch.name,
         overflow: TextOverflow.clip,
         style: Theme.of(context).primaryTextTheme.headline3);
   }

@@ -19,7 +19,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       /* var scheduleScratches = await _scheduleService.getScratches(programId);*/
       List<StudentScheduleScratch> scheduleScratches = [];
       StudentScheduleScratch scheduleScratch =
-          new StudentScheduleScratch.empty("Mi horario", 042020, 072020);
+          new StudentScheduleScratch.empty();
       scheduleScratches.add(scheduleScratch);
       if (scheduleScratches.isNotEmpty) {
         emit(DisplayScratchesState(scheduleScratches));
@@ -45,11 +45,12 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     /*await _scheduleService.deleteScratch(scratchId);*/
   }
 
-  void createScratchSchedule(StudentScheduleScratch studentScheduleScratch) {
+  void createViewScratchSchedule(
+      StudentScheduleScratch studentScheduleScratch) {
     emit(CreateScratchState(studentScheduleScratch));
   }
 
-  void editScratchSchedule(StudentScheduleScratch studentScheduleScratch) {
+  void editViewScratchSchedule(StudentScheduleScratch studentScheduleScratch) {
     emit(EditScratchState(studentScheduleScratch));
   }
 }

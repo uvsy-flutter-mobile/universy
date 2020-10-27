@@ -94,6 +94,6 @@ class StudentScheduleListWidget extends StatelessWidget {
   void _handleOnTapSchedule(
       StudentScheduleScratch studentScheduleScratch, BuildContext context) {
     ScheduleCubit cubit = BlocProvider.of<ScheduleCubit>(context);
-    cubit.editScratchSchedule(studentScheduleScratch);
+    cubit.editViewScratchSchedule(studentScheduleScratch);
   }
 }

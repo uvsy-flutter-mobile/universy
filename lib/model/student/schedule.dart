@@ -23,10 +23,9 @@ class StudentScheduleScratch
     //TODO: implement fromJson
   }
 
-  factory StudentScheduleScratch.empty(
-      String name, int beginTime, int endTime) {
-    return StudentScheduleScratch(EMPTY_STRING, name, beginTime, endTime, [],
-        DateTime.now(), DateTime.now());
+  factory StudentScheduleScratch.empty() {
+    return StudentScheduleScratch(
+        EMPTY_STRING, EMPTY_STRING, 0, 0, [], DateTime.now(), DateTime.now());
   }
 
   @override
