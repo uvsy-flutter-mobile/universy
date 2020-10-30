@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/states.dart';
 import 'package:universy/modules/student/schedule/display.dart';
 import 'package:universy/modules/student/schedule/empty.dart';
@@ -18,14 +17,10 @@ class ScheduleStateBuilder extends WidgetBuilderFactory<ScheduleState> {
     } else if (state is CareerNotCreatedState) {
       return CareerNotFoundWidget();
     } else if (state is CreateScratchState) {
-      return ScratchView(create: true, scratch: state.scratch.copy());
+      return ScratchView(create: true, scratch: state.scratch); //TODO: add copy
     } else if (state is EditScratchState) {
       return ScratchView(create: false, scratch: state.scratch);
     }
     return CenterSizedCircularProgressIndicator();
   }
 }
-
-/*StudentScheduleScratch scheduleScratch =
-new StudentScheduleScratch.empty("Mi horario", 042020, 072020);
-return ScratchView(scratch: scheduleScratch, create: false);*/

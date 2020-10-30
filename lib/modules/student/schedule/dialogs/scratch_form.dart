@@ -97,12 +97,13 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
   }
 
   void _navigateToNext() {
-    final form = _formKey.currentState;
-    if (form.validate()) {
-      _studentScheduleScratch.name = _nameTextController.text;
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+
+      this._studentScheduleScratch.name = _nameTextController.text;
       _onSave(this._studentScheduleScratch);
+      Navigator.of(context).pop();
     }
-    Navigator.of(context).pop();
   }
 
   String _validateTitle() {
