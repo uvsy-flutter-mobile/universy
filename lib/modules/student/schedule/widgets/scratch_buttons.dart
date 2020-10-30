@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:universy/model/student/schedule.dart';
-import 'package:universy/modules/student/schedule/widgets/select_course.dart';
+import 'package:universy/modules/student/schedule/dialogs/select_course.dart';
 import 'package:universy/modules/student/subjects/state/correlative_dialog.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
@@ -60,21 +60,19 @@ class AddScheduleCourseButton extends StatelessWidget {
 
   void _addScheduleCourse(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (dialogContext) => TitleDialog(
-        title: AppText.getInstance()
-            .get("student.schedule.createScratchDialog.alertTitle"),
-        content: SelectCourseWidget(
-          commissions: [],
-          courses: [],
-          levels: [],
-          subjects: [],
-          onSelectedScratchCourse: (ScheduleScratchCourse course) =>
-              print('course ${course.toString()}'),
-        ),
-        actions: <Widget>[SaveButton(), CancelButton()],
-      ),
-    );
+        context: context,
+        builder: (dialogContext) => SelectCourseWidgetDialog(
+              commissions: [],
+              courses: [],
+              levels: [],
+              subjects: [],
+              onConfirm: (course) {
+                //TODO: implement this Lore ;)
+                print(course.toString());
+                Navigator.pop(dialogContext);
+              },
+              onCancel: () => Navigator.pop(dialogContext),
+            ));
   }
 }
 

@@ -7,11 +7,15 @@ import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/coursing_period.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
+import 'package:universy/model/subject.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/dialog/title.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-import 'course_info_card.dart';
+import '../widgets/course_info_card.dart';
 
 const double SEPARATOR_SPACE = 15;
 const int FIRST_ELEMENT_INDEX = 0;
@@ -40,35 +44,38 @@ List<Commission> commissionsMocks = [
   Commission('commission_2', 'this.name', 'this.programId', 1),
 ];
 
-class SelectCourseWidget extends StatefulWidget {
+class SelectCourseWidgetDialog extends StatefulWidget {
   final List<int> _levels;
   final List<InstitutionSubject> _subjects;
   final List<Course> _courses;
   final List<Commission> _commissions;
-  final Function(ScheduleScratchCourse) _onSelectedScratchCourse;
+  final Function(ScheduleScratchCourse) _onConfirm;
+  final Function() _onCancel;
 
   //TODO: Remove mocks
-  SelectCourseWidget({
+  SelectCourseWidgetDialog({
     @required List<int> levels,
     @required List<InstitutionSubject> subjects,
     @required List<Course> courses,
     @required List<Commission> commissions,
-    @required Function(ScheduleScratchCourse) onSelectedScratchCourse,
+    @required Function(ScheduleScratchCourse) onConfirm,
+    @required Function() onCancel,
   })  : this._levels = LEVELS_MOCK,
         this._subjects = subjectsMock,
         this._courses = coursesMocks,
         this._commissions = commissionsMocks,
-        this._onSelectedScratchCourse = onSelectedScratchCourse,
+        this._onConfirm = onConfirm,
+        this._onCancel = onCancel,
         super();
 
   @override
-  State<SelectCourseWidget> createState() {
+  State<SelectCourseWidgetDialog> createState() {
     return SelectCourseWidgetState(this._levels, this._subjects, this._courses,
-        this._commissions, this._onSelectedScratchCourse);
+        this._commissions, this._onConfirm, this._onCancel);
   }
 }
 
-class SelectCourseWidgetState extends State<SelectCourseWidget> {
+class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
   List<int> _levels;
   List<InstitutionSubject> _subjects;
   List<InstitutionSubject> _subjectsOnDisplay;
@@ -79,10 +86,11 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   ScheduleScratchCourse _selectedScratchCourse;
   int _selectedLevel;
   InstitutionSubject _selectedSubject;
-  Function(ScheduleScratchCourse) _onSelectedScratchCourse;
+  Function(ScheduleScratchCourse) _onConfirm;
+  Function() _onCancel;
 
   SelectCourseWidgetState(this._levels, this._subjects, this._courses,
-      this._commissions, this._onSelectedScratchCourse);
+      this._commissions, this._onConfirm, this._onCancel);
 
   @override
   void initState() {
@@ -105,6 +113,9 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
     setState(() {
       _scratchCourses = newScratchCourses;
       _scratchCoursesOnDisplay = [...newScratchCourses];
+      if (newScratchCourses.length > 0) {
+        _selectedScratchCourse = newScratchCourses[FIRST_ELEMENT_INDEX];
+      }
     });
   }
 
@@ -112,39 +123,55 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
     var filteredSubjects = _subjects
         .where((InstitutionSubject subject) => subject.level == level)
         .toList();
+
+    if (filteredSubjects.length > 0) {
+      _selectSubject(filteredSubjects[FIRST_ELEMENT_INDEX]);
+    }
+    _selectScratchCourse(null);
     setState(() {
       _subjectsOnDisplay = filteredSubjects;
-      if (filteredSubjects.length > 0) {
-        _selectedSubject = filteredSubjects[FIRST_ELEMENT_INDEX];
-      }
     });
-    _selectScratchCourse(null);
   }
 
   void _selectScratchCourse(ScheduleScratchCourse scheduleScratchCourse) {
     setState(() {
       _selectedScratchCourse = scheduleScratchCourse;
-      _onSelectedScratchCourse(scheduleScratchCourse);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          _buildDropDowns(),
-          SizedBox(
-            height: 15,
-          ),
-          Expanded(
-            child: _buildScratchCoursesList(),
-          ),
-        ],
+    return TitleDialog(
+      title: AppText.getInstance()
+          .get("student.schedule.selectCourseDialog.alertTitle"),
+      content: Container(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            _buildDropDowns(),
+            SizedBox(
+              height: 15,
+            ),
+            Expanded(
+              child: _buildScratchCoursesList(),
+            ),
+          ],
+        ),
       ),
+      actions: <Widget>[
+        SaveButton(
+          onSave: _handleOnSave,
+        ),
+        CancelButton(
+          onCancel: _onCancel,
+        )
+      ],
     );
+  }
+
+  void _handleOnSave() {
+    _onConfirm(_selectedScratchCourse);
   }
 
   Widget _buildScratchCoursesList() {
@@ -164,7 +191,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   Widget _buildCourseInfoCard(ScheduleScratchCourse scheduleScratchCourse) {
     bool isCourseSelected = scheduleScratchCourse == _selectedScratchCourse;
     return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 15,
+      paddingValue: 6,
       child: CourseInfoCardWidget(
         scratchCourse: scheduleScratchCourse,
         onTap: _selectScratchCourse,
@@ -236,10 +263,14 @@ class SelectCourseWidgetState extends State<SelectCourseWidget> {
   }
 
   void _onSubjectDropdownChange(InstitutionSubject newSubject) {
+    _selectSubject(newSubject);
+    _updateCoursesOnDisplay(newSubject);
+  }
+
+  void _selectSubject(InstitutionSubject newSubject) {
     setState(() {
       _selectedSubject = newSubject;
     });
-    _updateCoursesOnDisplay(newSubject);
   }
 
   void _updateCoursesOnDisplay(InstitutionSubject newSubject) {

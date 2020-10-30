@@ -28,7 +28,7 @@ class CourseInfoCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircularRoundedRectangleCard(
         radius: 8,
-        elevation: 8,
+        elevation: 2,
         color: _isSelected ? Theme.of(context).primaryColor : Colors.white,
         child: InkWell(
           onTap: () => _onTap(_scratchCourse),

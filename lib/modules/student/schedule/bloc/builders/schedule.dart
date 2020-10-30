@@ -18,7 +18,7 @@ class ScheduleStateBuilder extends WidgetBuilderFactory<ScheduleState> {
     } else if (state is CareerNotCreatedState) {
       return CareerNotFoundWidget();
     } else if (state is CreateScratchState) {
-      return ScratchView(create: true, scratch: state.scratch);
+      return ScratchView(create: true, scratch: state.scratch.copy());
     } else if (state is EditScratchState) {
       return ScratchView(create: false, scratch: state.scratch);
     }
