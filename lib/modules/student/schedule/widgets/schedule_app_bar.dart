@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:universy/constants/routes.dart';
-import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/widgets/confirm_message.dart';
-import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/delete.dart';
@@ -42,13 +39,13 @@ class ScratchAppBar extends StatelessWidget {
 
   void _navigateBack(BuildContext context) {
     Navigator.pop(context);
-    Navigator.pushNamed(context, Routes.SCHEDULE_MODULE);
+    Navigator.of(context).pushReplacementNamed(Routes.SCHEDULE_MODULE);
   }
 
   Widget _buildBody() {
     return ScheduleConfirmMessage(
       scheduleName: "$title",
-      alertMessage: "No guardaste los cambios de tu horario",
+      alertMessage: "No guardaste los cambios de tu horario", //TODO add test
       confirmMessage: "¿estás seguro que deseas salir?",
     );
   }
@@ -66,8 +63,8 @@ class ScheduleMainAppBar extends StatelessWidget {
       title: Text(AppText.getInstance().get("student.schedule.title")),
       leading: BackButton(
         onPressed: () {
-          Navigator.pop(context);
           Navigator.pushNamed(context, Routes.HOME);
+          Navigator.pop(context);
         },
       ),
     );

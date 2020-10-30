@@ -99,8 +99,8 @@ class CreateScratchPayload extends JsonConvertible {
   Map<String, dynamic> toJson() {
     return {
       "name": studentScheduleScratch.name,
-      "beginTime": studentScheduleScratch.beginTime,
-      "endTime": studentScheduleScratch.endTime,
+      "beginTime": studentScheduleScratch.beginDate,
+      "endTime": studentScheduleScratch.endDate,
       "selectedCourses": studentScheduleScratch.selectedCourses
           .map((e) => e.toJson())
           .toList(),
@@ -117,8 +117,8 @@ class UpdateScratchPayload extends JsonConvertible {
   Map<String, dynamic> toJson() {
     return {
       "name": studentScheduleScratch.name,
-      "beginTime": studentScheduleScratch.beginTime,
-      "endTime": studentScheduleScratch.endTime,
+      "beginTime": studentScheduleScratch.beginDate,
+      "endTime": studentScheduleScratch.endDate,
       "selectedCourses": studentScheduleScratch.selectedCourses
           .map((e) => e.toJson())
           .toList(),

@@ -376,6 +376,9 @@ const Map<dynamic, dynamic> ES = {
         "zero": "Sin borradores",
         "many": "borradores"
       },
+      "form": {
+        "nameRequired": "El título del borrador es requerido",
+      },
       "addCourseDialog": {
         "alertTitle": "Selecciona el curso que deseas agregar",
         "level": "Año",

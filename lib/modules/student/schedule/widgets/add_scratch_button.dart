@@ -23,7 +23,8 @@ class AddScratchButton extends StatelessWidget {
     ScheduleCubit cubit = BlocProvider.of<ScheduleCubit>(context);
     showDialog(
       context: context,
-      builder: (dialogContext) => ScratchFormDialog(cubit: cubit, create: true),
+      builder: (dialogContext) => ScratchFormDialog(
+          onSave: cubit.createViewScratchSchedule, create: true),
     );
   }
 }

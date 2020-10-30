@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_timetable_view/flutter_timetable_view.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
-import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
+import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
+import 'package:universy/widgets/formfield/text/validators.dart';
 
 class ScratchView extends StatefulWidget {
   final StudentScheduleScratch _scratch;
@@ -30,6 +32,7 @@ class _ScratchViewState extends State<ScratchView> {
   StudentScheduleScratch _scratch;
   ScheduleCubit _cubit;
   bool _create;
+  TextEditingController _nameTextController;
 
   @override
   void didChangeDependencies() {
@@ -44,6 +47,8 @@ class _ScratchViewState extends State<ScratchView> {
     this._scratch = widget._scratch;
     this._create = widget._create;
     this._cubit = widget._cubit;
+    this._nameTextController =
+        TextEditingController(text: widget._scratch.name);
     super.initState();
   }
 
@@ -52,6 +57,8 @@ class _ScratchViewState extends State<ScratchView> {
     this._scratch = null;
     this._cubit = null;
     this._create = null;
+    this._nameTextController.dispose();
+    this._nameTextController = null;
     super.dispose();
   }
 
@@ -67,13 +74,14 @@ class _ScratchViewState extends State<ScratchView> {
           Expanded(child: _buildScratchSchedule()),
         ],
       ),
-      floatingActionButton:
-          _create ? ScheduleActionButton.create() : ScheduleActionButton.edit(),
+      floatingActionButton: _create
+          ? ScheduleActionButton.create()
+          : ScheduleActionButton.edit(), //TODO: validar el form y guardarlo
     );
   }
 
   Widget _buildScratchSchedule() {
-    List<LaneEvents> list = _buildSchedulerList();
+    /*List<LaneEvents> list = _buildSchedulerList();*/
     return _buildScheduleCalendar();
   }
 
@@ -180,24 +188,48 @@ class _ScratchViewState extends State<ScratchView> {
     );
   }
 
-  List<LaneEvents> _buildSchedulerList() {
-    List<LaneEvents> list = [];
-    return list;
+  /*List<LaneEvents> _buildSchedulerList() {
+
+
+  }*/
+
+  Lane _buildLane(int count) {
+    List<String> list = [
+      "Lunes",
+      "Martes",
+      "Miercoles",
+      "Jueves",
+      "Viernes",
+      "Sabado"
+    ];
+    return Lane(
+        name: list[count],
+        width: 70.0,
+        textStyle: TextStyle(color: Colors.black));
+  }
+
+  TableEvent _buildEvent(
+      String title, TableEventTime start, TableEventTime end) {
+    return TableEvent(
+      title: title,
+      decoration: BoxDecoration(color: Colors.lightBlue),
+      start: start,
+      end: end,
+    );
   }
 
   Widget _buildScratchHeader(BuildContext context) {
     return Container(
-      color: Colors.grey[100],
-      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Expanded(child: _buildHeaderTitles(), flex: 3),
-          _buildEditButton(context),
-        ],
-      ),
-    );
+        color: Colors.grey[100],
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(child: _buildHeaderTitles(), flex: 3),
+            _buildEditButton(context),
+          ],
+        ));
   }
 
   Widget _buildEditButton(BuildContext context) {
@@ -210,15 +242,18 @@ class _ScratchViewState extends State<ScratchView> {
 
   void _editScratchTitle(BuildContext context) {
     showDialog(
-        context: context, builder: (dialogContext) => _buildScratchDialog());
+        context: context,
+        builder: (dialogContext) => ScratchFormDialog(
+              studentScheduleScratch: this._scratch,
+              create: false,
+              onSave: _updateScratch,
+            ));
   }
 
-  Widget _buildScratchDialog() {
-    return ScratchFormDialog(
-      studentScheduleScratch: _scratch,
-      create: false,
-      cubit: _cubit,
-    );
+  void _updateScratch(StudentScheduleScratch scratchUpdated) {
+    setState(() {
+      this._scratch = scratchUpdated;
+    });
   }
 
   Widget _buildHeaderTitles() {
@@ -239,9 +274,21 @@ class _ScratchViewState extends State<ScratchView> {
         style: Theme.of(context).primaryTextTheme.headline3);
   }
 
+  void _updateName() {
+    _scratch.name = _nameTextController.text;
+  }
+
+  TextFormFieldValidatorBuilder _getTitleInputValidator() {
+    return NotEmptyTextFormFieldValidatorBuilder(_buildRequiredText());
+  }
+
+  String _buildRequiredText() {
+    return AppText.getInstance().get("student.schedule.form.nameRequired");
+  }
+
   Widget _buildPeriodSubtitle(BuildContext context) {
-    String begin = _scratch.beginTime.toString();
-    String end = _scratch.endTime.toString();
+    String begin = _scratch.beginDate.toString();
+    String end = _scratch.endDate.toString();
     return Text("$begin - $end",
         style: Theme.of(context).primaryTextTheme.bodyText1); //TODO: text
   }

@@ -23,16 +23,16 @@ const int DEFAULT_TIME = 1603494929000; //TODO: change this
 
 class ScratchFormDialog extends StatefulWidget {
   final StudentScheduleScratch _studentScheduleScratch;
-  final ScheduleCubit _cubit;
+  final Function(StudentScheduleScratch) _onSave;
   final bool _create;
 
   ScratchFormDialog({
     StudentScheduleScratch studentScheduleScratch,
-    ScheduleCubit cubit,
+    Function(StudentScheduleScratch) onSave,
     bool create,
   })  : this._studentScheduleScratch = studentScheduleScratch,
+        this._onSave = onSave,
         this._create = create,
-        this._cubit = cubit,
         super();
 
   @override
@@ -42,18 +42,18 @@ class ScratchFormDialog extends StatefulWidget {
 class _ScratchFormDialogState extends State<ScratchFormDialog> {
   StudentScheduleScratch _studentScheduleScratch;
   TextEditingController _nameTextController;
-  ScheduleCubit _cubit;
   bool _create;
-  StateLock<StudentScheduleScratch> _stateLock;
+  GlobalKey<FormState> _formKey;
+  Function(StudentScheduleScratch) _onSave;
 
   @override
   void initState() {
+    this._onSave = widget._onSave;
     this._create = widget._create;
-    this._cubit = widget._cubit;
+    this._formKey = GlobalKey<FormState>();
     this._studentScheduleScratch =
         Optional.ofNullable(widget._studentScheduleScratch)
             .orElse(StudentScheduleScratch.empty());
-    this._stateLock = StateLock.lock(snapshot: widget._studentScheduleScratch);
     this._nameTextController = TextEditingController(
         text: widget._create
             ? EMPTY_STRING
@@ -62,18 +62,11 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
   }
 
   @override
-  void didChangeDependencies() {
-    if (isNull(_cubit)) {
-      this._cubit = BlocProvider.of<ScheduleCubit>(context);
-    }
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
+    this._onSave = null;
     this._studentScheduleScratch = null;
-    this._cubit = null;
     this._create = null;
+    this._formKey = null;
     this._nameTextController.dispose();
     this._nameTextController = null;
     super.dispose();
@@ -86,11 +79,14 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
       title: title,
       content: Container(
         padding: EdgeInsets.all(5),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[_buildNameInput(), _buildTimeRange(context)],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[_buildNameInput(), _buildTimeRange(context)],
+          ),
         ),
       ),
       actions: <Widget>[
@@ -101,13 +97,12 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
   }
 
   void _navigateToNext() {
-    if (_create) {
-      _cubit.createViewScratchSchedule(_studentScheduleScratch);
-      Navigator.pop(context);
-    } else {
-      _cubit.editViewScratchSchedule(_studentScheduleScratch);
-      Navigator.pop(context);
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      _studentScheduleScratch.name = _nameTextController.text;
+      _onSave(this._studentScheduleScratch);
     }
+    Navigator.of(context).pop();
   }
 
   String _validateTitle() {
@@ -119,7 +114,6 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
   }
 
   Widget _buildNameInput() {
-    _nameTextController.addListener(_updateName);
     return (SymmetricEdgePaddingWidget.vertical(
       paddingValue: 6.0,
       child: CustomTextFormField(
@@ -130,21 +124,18 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
     ));
   }
 
-  void _updateName() {
-    _studentScheduleScratch.name = _nameTextController.text;
-  }
-
   TextFormFieldValidatorBuilder _getTitleInputValidator() {
     return NotEmptyTextFormFieldValidatorBuilder(_buildRequiredText());
   }
 
   InputDecorationBuilder _getTitleInputDecoration() {
-    return TextInputDecorationBuilder(
-        AppText.getInstance().get("student.calendar.form.eventTitle"));
+    return TextInputDecorationBuilder(AppText.getInstance()
+        .get("student.schedule.scratchFormDialog.scratchTitle"));
   }
 
-  String _buildRequiredText() =>
-      AppText.getInstance().get("student.calendar.form.titleRequired");
+  String _buildRequiredText() {
+    return AppText.getInstance().get("student.schedule.form.nameRequired");
+  }
 
   Widget _buildTimeRange(BuildContext context) {
     return SizedBox(
@@ -153,43 +144,51 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 40,
-              child: _buildDate(
-                context: context,
-                isBeginDate: true,
-                time: widget._create
-                    ? DEFAULT_TIME
-                    : _studentScheduleScratch.beginTime,
-                label: AppText.getInstance()
-                    .get("student.schedule.scratchFormDialog.dateFrom"),
-              ),
-            ),
-            Expanded(
-              flex: 20,
-              child: Text(
-                '-',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 26),
-              ),
-            ),
-            Expanded(
-              flex: 40,
-              child: _buildDate(
-                context: context,
-                isBeginDate: false,
-                time: widget._create
-                    ? DEFAULT_TIME
-                    : _studentScheduleScratch.endTime,
-                label: AppText.getInstance()
-                    .get("student.schedule.scratchFormDialog.dateTo"),
-              ),
-            ),
+            _buildBeginDate(),
+            _buildMiddleDash(),
+            _buildEndDate(),
           ],
         ));
+  }
+
+  Widget _buildBeginDate() {
+    return Expanded(
+      flex: 40,
+      child: _buildDate(
+        context: context,
+        isBeginDate: true,
+        time: widget._create ? DEFAULT_TIME : _studentScheduleScratch.beginDate,
+        label: AppText.getInstance()
+            .get("student.schedule.scratchFormDialog.dateFrom"),
+      ),
+    );
+  }
+
+  Widget _buildMiddleDash() {
+    return Expanded(
+      flex: 20,
+      child: Text(
+        '-',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 26),
+      ),
+    );
+  }
+
+  Widget _buildEndDate() {
+    return Expanded(
+      flex: 40,
+      child: _buildDate(
+        context: context,
+        isBeginDate: false,
+        time: widget._create ? DEFAULT_TIME : _studentScheduleScratch.endDate,
+        label: AppText.getInstance()
+            .get("student.schedule.scratchFormDialog.dateTo"),
+      ),
+    );
   }
 
   Widget _buildDate(

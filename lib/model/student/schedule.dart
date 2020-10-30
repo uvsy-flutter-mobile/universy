@@ -9,14 +9,14 @@ class StudentScheduleScratch
     implements JsonConvertible, Copyable<StudentScheduleScratch> {
   String scheduleScratchId;
   String name;
-  int beginTime;
-  int endTime;
+  int beginDate;
+  int endDate;
   List<ScheduleScratchCourse> selectedCourses;
   DateTime updatedAt;
   DateTime createdAt;
 
-  StudentScheduleScratch(this.scheduleScratchId, this.name, this.beginTime,
-      this.endTime, this.selectedCourses, this.updatedAt, this.createdAt);
+  StudentScheduleScratch(this.scheduleScratchId, this.name, this.beginDate,
+      this.endDate, this.selectedCourses, this.updatedAt, this.createdAt);
 
   // ignore: missing_return
   factory StudentScheduleScratch.fromJson(Map<String, dynamic> json) {
@@ -24,8 +24,8 @@ class StudentScheduleScratch
   }
 
   factory StudentScheduleScratch.empty() {
-    return StudentScheduleScratch(
-        EMPTY_STRING, EMPTY_STRING, 0, 0, [], DateTime.now(), DateTime.now());
+    return StudentScheduleScratch(EMPTY_STRING, EMPTY_STRING, EMPTY_INT,
+        EMPTY_INT, [], DateTime.now(), DateTime.now());
   }
 
   @override
@@ -45,8 +45,8 @@ class StudentScheduleScratch
       other is StudentScheduleScratch &&
           scheduleScratchId == other.scheduleScratchId &&
           name == other.name &&
-          beginTime == other.beginTime &&
-          endTime == other.endTime &&
+          beginDate == other.beginDate &&
+          endDate == other.endDate &&
           ListEquality().equals(selectedCourses, other.selectedCourses) &&
           updatedAt == other.updatedAt &&
           createdAt == other.createdAt;
@@ -55,8 +55,8 @@ class StudentScheduleScratch
   int get hashCode =>
       scheduleScratchId.hashCode ^
       name.hashCode ^
-      beginTime.hashCode ^
-      endTime.hashCode ^
+      beginDate.hashCode ^
+      endDate.hashCode ^
       selectedCourses.hashCode ^
       updatedAt.hashCode ^
       createdAt.hashCode;
