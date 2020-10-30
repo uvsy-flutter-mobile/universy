@@ -11,8 +11,8 @@ class ScheduleScratchTimeRangeFormatter {
 
   String format() {
     if (notNull(_scheduleScratch)) {
-      int beginTime = _scheduleScratch.beginTime;
-      int endTime = _scheduleScratch.endTime;
+      int beginTime = _scheduleScratch.beginDate;
+      int endTime = _scheduleScratch.endDate;
       if (notNull(beginTime) && notNull(beginTime)) {
         String beginTimeFormatted = _formatTime(beginTime);
         String endTImeFormatted = _formatTime(endTime);
