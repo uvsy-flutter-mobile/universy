@@ -6,6 +6,7 @@ import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
+import 'package:universy/modules/student/schedule/widgets/scratch_course_card.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
@@ -34,8 +35,21 @@ class CourseInfoCardWidget extends StatelessWidget {
           onTap: () => _onTap(_scratchCourse),
           child: Container(
             padding: EdgeInsets.all(25),
-            child: Text(_scratchCourse.subjectId.toString()),
+            child: CourseInfoWidget(scratchCourse: null),
           ),
         ));
+  }
+}
+
+class CourseInfoWidget extends StatelessWidget {
+  final ScheduleScratchCourse _scratchCourse;
+
+  const CourseInfoWidget({@required ScheduleScratchCourse scratchCourse})
+      : this._scratchCourse = scratchCourse,
+        super();
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(_scratchCourse.subjectId.toString());
   }
 }

@@ -15,7 +15,7 @@ import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/dialog/title.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-import '../widgets/course_info_card.dart';
+import '../widgets/course_info.dart';
 
 const double SEPARATOR_SPACE = 15;
 const int FIRST_ELEMENT_INDEX = 0;
