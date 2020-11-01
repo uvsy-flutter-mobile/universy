@@ -31,7 +31,7 @@ class DisplayCoursesDialogWidget extends StatefulWidget {
     @required List<ScheduleScratchCourse> scheduleScratchCourse,
     @required Function(List<ScheduleScratchCourse>) onConfirm,
     @required Function() onCancel,
-  })  : this._scheduleScratchCourse = scheduleScratchCourse,
+  })  : this._scheduleScratchCourse = [...scheduleScratchCourse],
         this._onConfirm = onConfirm,
         this._onCancel = onCancel,
         super();

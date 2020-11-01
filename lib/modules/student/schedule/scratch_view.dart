@@ -76,9 +76,27 @@ class _ScratchViewState extends State<ScratchView> {
           Expanded(child: _buildScheduleCalendar()),
         ],
       ),
-      floatingActionButton:
-          _create ? ScheduleActionButton.create() : ScheduleActionButton.edit(),
+      floatingActionButton: _create
+          ? ScheduleActionButton.create()
+          : ScheduleActionButton.edit(
+              onNewCourse: _addNewScratchCourse,
+              onUpdatedCourses: _updateScratchCourses,
+              scratchCourseList: _scratch.selectedCourses,
+            ), //TODO: validar el form y guardarlo
     );
+  }
+
+  void _addNewScratchCourse(ScheduleScratchCourse newScratchCourse) {
+    setState(() {
+      _scratch.selectedCourses.add(newScratchCourse);
+    });
+  }
+
+  void _updateScratchCourses(
+      List<ScheduleScratchCourse> updatedSelectedCourses) {
+    setState(() {
+      _scratch.selectedCourses = [...updatedSelectedCourses];
+    });
   }
 
   Widget _buildScheduleCalendar() {
@@ -103,7 +121,7 @@ class _ScratchViewState extends State<ScratchView> {
   List<LaneEvents> _buildSchedulerList() {
     List<ScheduleScratchCourse> courses = _scratch.selectedCourses;
     List<Lane> lanes = _buildLanes();
-    List<LaneEvents> lanesEvents;
+    List<LaneEvents> lanesEvents = [];
     lanes.forEach((element) {
       lanesEvents.add(_buildLaneEvent(element, []));
     });

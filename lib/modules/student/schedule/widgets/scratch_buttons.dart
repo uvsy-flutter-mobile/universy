@@ -45,6 +45,13 @@ class SaveScratchButton extends StatelessWidget {
 }
 
 class AddScheduleCourseButton extends StatelessWidget {
+  final Function(ScheduleScratchCourse) _onNewCourse;
+
+  AddScheduleCourseButton(
+      {@required Function(ScheduleScratchCourse) onNewCourse})
+      : this._onNewCourse = onNewCourse,
+        super();
+
   @override
   Widget build(BuildContext context) {
     return _ScheduleButton(
@@ -63,9 +70,8 @@ class AddScheduleCourseButton extends StatelessWidget {
               courses: [],
               levels: [],
               subjects: [],
-              onConfirm: (course) {
-                //TODO: implement this Lore ;)
-                print(course.toString());
+              onConfirm: (ScheduleScratchCourse newCourse) {
+                _onNewCourse(newCourse);
                 Navigator.pop(dialogContext);
               },
               onCancel: () => Navigator.pop(dialogContext),
@@ -114,13 +120,13 @@ abstract class DeleteScratchButton extends StatelessWidget {
 
 class ViewScheduleButton extends StatelessWidget {
   final List<ScheduleScratchCourse> _scratchCoursesList;
-  final Function(ScheduleScratchCourse) _onNewCourses;
+  final Function(List<ScheduleScratchCourse>) _onUpdatedCourses;
 
   ViewScheduleButton(
       {@required List<ScheduleScratchCourse> scratchCoursesList,
-      @required Function(ScheduleScratchCourse) onNewCourses})
+      @required Function(List<ScheduleScratchCourse>) onUpdatedCourses})
       : this._scratchCoursesList = scratchCoursesList,
-        this._onNewCourses = onNewCourses,
+        this._onUpdatedCourses = onUpdatedCourses,
         super();
 
   @override
@@ -138,9 +144,8 @@ class ViewScheduleButton extends StatelessWidget {
         context: context,
         builder: (dialogContext) => DisplayCoursesDialogWidget(
               scheduleScratchCourse: _scratchCoursesList,
-              onConfirm: (course) {
-                //TODO: implement this Lore ;)
-                print(course.toString());
+              onConfirm: (List<ScheduleScratchCourse> courses) {
+                _onUpdatedCourses(courses);
                 Navigator.pop(dialogContext);
               },
               onCancel: () => Navigator.pop(dialogContext),
@@ -162,17 +167,6 @@ class ScheduleActionButton extends StatelessWidget {
     return ScheduleActionButton._(buttons: buttons);
   }
 
-  factory ScheduleActionButton.edit() {
-    var buttons = [
-      AddScheduleCourseButton(),
-      SizedBox(height: 15),
-      ViewScheduleButton(),
-      SizedBox(height: 15),
-      SaveScratchButton(),
-    ];
-    return ScheduleActionButton._(buttons: buttons);
-  }
-
   @override
   Widget build(BuildContext context) {
     return OnlyEdgePaddedWidget.bottom(
@@ -182,5 +176,21 @@ class ScheduleActionButton extends StatelessWidget {
         children: buttons,
       ),
     );
+  }
+
+  factory ScheduleActionButton.edit(
+      {@required List<ScheduleScratchCourse> scratchCourseList,
+      @required Function(List<ScheduleScratchCourse>) onUpdatedCourses,
+      @required Function(ScheduleScratchCourse) onNewCourse}) {
+    var buttons = [
+      AddScheduleCourseButton(onNewCourse: onNewCourse),
+      SizedBox(height: 15),
+      ViewScheduleButton(
+          scratchCoursesList: scratchCourseList,
+          onUpdatedCourses: onUpdatedCourses),
+      SizedBox(height: 15),
+      SaveScratchButton(),
+    ];
+    return ScheduleActionButton._(buttons: buttons);
   }
 }

@@ -35,7 +35,7 @@ class CourseInfoCardWidget extends StatelessWidget {
           onTap: () => _onTap(_scratchCourse),
           child: Container(
             padding: EdgeInsets.all(25),
-            child: CourseInfoWidget(scratchCourse: null),
+            child: CourseInfoWidget(scratchCourse: _scratchCourse),
           ),
         ));
   }
