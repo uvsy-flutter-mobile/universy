@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:universy/model/student/schedule.dart';
+import 'package:universy/modules/student/schedule/dialogs/display_courses.dart';
 import 'package:universy/modules/student/schedule/dialogs/select_course.dart';
-import 'package:universy/modules/student/subjects/state/correlative_dialog.dart';
-import 'package:universy/text/text.dart';
-import 'package:universy/widgets/buttons/uvsy/save.dart';
-import 'package:universy/widgets/dialog/title.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class _ScheduleButton extends StatelessWidget {
@@ -116,18 +113,38 @@ abstract class DeleteScratchButton extends StatelessWidget {
 }*/
 
 class ViewScheduleButton extends StatelessWidget {
+  final List<ScheduleScratchCourse> _scratchCoursesList;
+  final Function(ScheduleScratchCourse) _onNewCourses;
+
+  ViewScheduleButton(
+      {@required List<ScheduleScratchCourse> scratchCoursesList,
+      @required Function(ScheduleScratchCourse) onNewCourses})
+      : this._scratchCoursesList = scratchCoursesList,
+        this._onNewCourses = onNewCourses,
+        super();
+
   @override
   Widget build(BuildContext context) {
     return _ScheduleButton(
       tag: "viewButton",
       color: Colors.amber,
       icon: Icons.calendar_today,
-      onPressed: () => {},
+      onPressed: () => _showDisplayCourseDialog(context),
     );
   }
 
-  void _unselectAll(BuildContext context) {
-    /*BlocProvider.of<ScheduleCubit>(context).viewSchedule(studentScheduleScratch);*/
+  void _showDisplayCourseDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (dialogContext) => DisplayCoursesDialogWidget(
+              scheduleScratchCourse: _scratchCoursesList,
+              onConfirm: (course) {
+                //TODO: implement this Lore ;)
+                print(course.toString());
+                Navigator.pop(dialogContext);
+              },
+              onCancel: () => Navigator.pop(dialogContext),
+            ));
   }
 }
 

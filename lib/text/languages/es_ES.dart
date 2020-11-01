@@ -396,6 +396,9 @@ const Map<dynamic, dynamic> ES = {
         "level": "Año",
         "subject": "Materia",
       },
+      "displayCoursesDialog": {
+        "alertTitle": "Cursos cargados",
+      },
       "notFound": {
         "title": "¡Bienvenido a Universy!",
         "subtitle": "Para armar tus horarios, primero elegí una carrera",
