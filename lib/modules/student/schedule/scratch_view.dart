@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_timetable_view/flutter_timetable_view.dart';
+import 'package:universy/model/institution/schedule.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
+import 'package:universy/util/strings.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 
 class ScratchView extends StatefulWidget {
@@ -71,21 +73,16 @@ class _ScratchViewState extends State<ScratchView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           _buildScratchHeader(context),
-          Expanded(child: _buildScratchSchedule()),
+          Expanded(child: _buildScheduleCalendar()),
         ],
       ),
-      floatingActionButton: _create
-          ? ScheduleActionButton.create()
-          : ScheduleActionButton.edit(), //TODO: validar el form y guardarlo
+      floatingActionButton:
+          _create ? ScheduleActionButton.create() : ScheduleActionButton.edit(),
     );
   }
 
-  Widget _buildScratchSchedule() {
-    /*List<LaneEvents> list = _buildSchedulerList();*/
-    return _buildScheduleCalendar();
-  }
-
   Widget _buildScheduleCalendar() {
+    List<LaneEvents> emptyLane = [];
     return TimetableView(
       timetableStyle: TimetableStyle(
           cornerColor: Colors.amber,
@@ -99,101 +96,50 @@ class _ScratchViewState extends State<ScratchView> {
           timeItemWidth: 45,
           timelineItemColor: Colors.white,
           timelineBorderColor: Colors.grey[300]),
-      laneEventsList: [
-        LaneEvents(
-            lane: Lane(
-                name: "Lunes",
-                width: 70.0,
-                textStyle: TextStyle(color: Colors.black)),
-            events: [
-              TableEvent(
-                title: "1k2 - MAD",
-                decoration: BoxDecoration(color: Colors.deepPurple),
-                start: TableEventTime(hour: 8, minute: 0),
-                end: TableEventTime(hour: 11, minute: 20),
-              )
-            ]),
-        LaneEvents(
-            lane: Lane(
-                name: "Martes",
-                width: 70.0,
-                textStyle: TextStyle(color: Colors.black)),
-            events: [
-              TableEvent(
-                title: "1k2 - SOR",
-                decoration: BoxDecoration(color: Colors.amber),
-                start: TableEventTime(hour: 12, minute: 0),
-                end: TableEventTime(hour: 13, minute: 20),
-              )
-            ]),
-        LaneEvents(
-            lane: Lane(
-                name: "Miercoles",
-                width: 70.0,
-                textStyle: TextStyle(color: Colors.black)),
-            events: [
-              TableEvent(
-                title: "1k2 - SOR",
-                decoration: BoxDecoration(color: Colors.amber),
-                start: TableEventTime(hour: 08, minute: 30),
-                end: TableEventTime(hour: 13, minute: 20),
-              ),
-              TableEvent(
-                title: "1k2 - PAV",
-                decoration: BoxDecoration(color: Colors.deepPurple),
-                start: TableEventTime(hour: 08, minute: 45),
-                end: TableEventTime(hour: 13, minute: 50),
-              )
-            ]),
-        LaneEvents(
-            lane: Lane(
-                name: "Jueves",
-                width: 70.0,
-                textStyle: TextStyle(color: Colors.black)),
-            events: [
-              TableEvent(
-                title: "1k2 - SOR",
-                decoration: BoxDecoration(color: Colors.amber),
-                start: TableEventTime(hour: 12, minute: 0),
-                end: TableEventTime(hour: 13, minute: 20),
-              )
-            ]),
-        LaneEvents(
-            lane: Lane(
-                name: "Viernes",
-                width: 70.0,
-                textStyle: TextStyle(color: Colors.black)),
-            events: [
-              TableEvent(
-                title: "2k2 - AMII",
-                decoration: BoxDecoration(color: Colors.lightBlue),
-                start: TableEventTime(hour: 12, minute: 0),
-                end: TableEventTime(hour: 13, minute: 20),
-              )
-            ]),
-        LaneEvents(
-            lane: Lane(
-                name: "Sabado",
-                width: 70.0,
-                textStyle: TextStyle(color: Colors.black)),
-            events: [
-              TableEvent(
-                title: "2k2 - AMII",
-                decoration: BoxDecoration(color: Colors.lightBlue),
-                start: TableEventTime(hour: 23, minute: 0),
-                end: TableEventTime(hour: 23, minute: 50),
-              )
-            ]),
-      ],
+      laneEventsList: _create ? emptyLane : _buildSchedulerList(),
     );
   }
 
-  /*List<LaneEvents> _buildSchedulerList() {
+  List<LaneEvents> _buildSchedulerList() {
+    List<ScheduleScratchCourse> courses = _scratch.selectedCourses;
+    List<Lane> lanes = _buildLanes();
+    List<LaneEvents> lanesEvents;
+    lanes.forEach((element) {
+      lanesEvents.add(_buildLaneEvent(element, []));
+    });
+    courses.forEach((e) {
+      e.period.scheduleList.forEach((schedule) {
+        TableEventTime beginTime = _buildEventTime(schedule.beginTime);
+        TableEventTime endTime = _buildEventTime(schedule.endTime);
+        TableEvent calendarCourse =
+            _buildEvent(e.subjectName, e.commission.name, beginTime, endTime);
+        int index = lanesEvents.indexWhere((laneEvent) =>
+            stringEquals(laneEvent.lane.name, schedule.dayOfWeek));
+        lanesEvents[index].events.add(calendarCourse);
+      });
+    });
 
+    return lanesEvents;
+  }
 
-  }*/
+  LaneEvents _buildLaneEvent(Lane lane, List<TableEvent> events) {
+    return LaneEvents(lane: lane, events: events);
+  }
 
-  Lane _buildLane(int count) {
+  TableEventTime _buildEventTime(int time) {
+    int hours = (time ~/ 100);
+    int minutes = (time % 100);
+    return TableEventTime(hour: hours, minute: minutes);
+  }
+
+  Lane _buildLane(String dayOfWeek) {
+    return Lane(
+        name: dayOfWeek,
+        width: 70.0,
+        textStyle: TextStyle(color: Colors.black));
+  }
+
+  List<Lane> _buildLanes() {
     List<String> list = [
       "Lunes",
       "Martes",
@@ -202,14 +148,13 @@ class _ScratchViewState extends State<ScratchView> {
       "Viernes",
       "Sabado"
     ];
-    return Lane(
-        name: list[count],
-        width: 70.0,
-        textStyle: TextStyle(color: Colors.black));
+    List<Lane> lanes = list.map((e) => _buildLane(e)).toList();
+    return lanes;
   }
 
-  TableEvent _buildEvent(
-      String title, TableEventTime start, TableEventTime end) {
+  TableEvent _buildEvent(String subjectName, String commissionName,
+      TableEventTime start, TableEventTime end) {
+    String title = "$subjectName - $commissionName";
     return TableEvent(
       title: title,
       decoration: BoxDecoration(color: Colors.lightBlue),

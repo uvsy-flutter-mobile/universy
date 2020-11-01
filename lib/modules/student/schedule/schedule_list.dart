@@ -35,24 +35,18 @@ class StudentScheduleListWidget extends StatelessWidget {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 600),
       child: ListView(
-        children: <Widget>[
-          ScheduleCard(
-            studentScheduleScratch: mockedScheduleScratchList[0],
-            onDelete: () =>
-                _handleOnDeleteSchedule(mockedScheduleScratchList[0], context),
-            onTap: () =>
-                _handleOnTapSchedule(mockedScheduleScratchList[0], context),
-          ),
-          ScheduleCard(
-            studentScheduleScratch: mockedScheduleScratchList[1],
-            onDelete: () =>
-                _handleOnDeleteSchedule(mockedScheduleScratchList[1], context),
-            onTap: () =>
-                _handleOnTapSchedule(mockedScheduleScratchList[1], context),
-          ),
-        ],
+        children: _buildScheduleCard(context),
       ),
     );
+  }
+
+  List<Widget> _buildScheduleCard(BuildContext context) {
+    return _scheduleScratches
+        .map((e) => ScheduleCard(
+            studentScheduleScratch: e,
+            onDelete: () => _handleOnDeleteSchedule(e, context),
+            onTap: () => _handleOnTapSchedule(e, context)))
+        .toList();
   }
 
   void _handleOnDeleteSchedule(
