@@ -5,6 +5,7 @@ import 'package:universy/business/schedule_scratch/course_list_generator.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/coursing_period.dart';
+import 'package:universy/model/institution/schedule.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/model/subject.dart';
@@ -28,11 +29,16 @@ List<InstitutionSubject> subjectsMock = [
       'this.programId', 1, 1, false, []),
 ];
 
+List<Schedule> schedulesMocks = [
+  Schedule('Lunes', 'Aula 4', 1800, 2150),
+  Schedule('Jueves', 'Aula 4', 1730, 2300),
+];
+
 List<CoursingPeriod> coursingPeriodsMock = [
-  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
-  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
-  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
-  CoursingPeriod([], [], 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
 ];
 
 List<Course> coursesMocks = [

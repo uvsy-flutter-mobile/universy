@@ -409,6 +409,11 @@ const Map<dynamic, dynamic> ES = {
         "alertMessage": "No guardaste los cambios del horario:",
         "confirmMessage": "¿ Estas seguro que deseas salir  sin guardar ?",
       },
+      "deleteDialog": {
+        "alertTitle": "Borrar horario",
+        "alertMessage": "Estas a punto de borrar:",
+        "confirmMessage": "¿ Estás de acuerdo ?",
+      },
     }
   },
   "institution": {

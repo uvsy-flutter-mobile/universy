@@ -107,7 +107,7 @@ class _ScratchViewState extends State<ScratchView> {
           timelineColor: Colors.amber,
           timeItemTextColor: Colors.black,
           mainBackgroundColor: Colors.white,
-          startHour: 7,
+          startHour: 8,
           endHour: 25,
           laneWidth: 70.0,
           laneHeight: 45,
