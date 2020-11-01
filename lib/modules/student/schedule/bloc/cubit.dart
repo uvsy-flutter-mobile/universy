@@ -17,10 +17,18 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       var programId =
           await DefaultStudentCareerService.instance().getCurrentProgram();
       /* var scheduleScratches = await _scheduleService.getScratches(programId);*/
-      List<StudentScheduleScratch> scheduleScratches = [];
-      StudentScheduleScratch scheduleScratch =
-          new StudentScheduleScratch.empty();
-      scheduleScratches.add(scheduleScratch);
+      List<StudentScheduleScratch> scheduleScratches = [
+        StudentScheduleScratch(
+            'scheduleScratchId',
+            'Primer cuatrimestre muy largo y totalmente execsivo',
+            1602980186767,
+            1602980186767,
+            [],
+            DateTime.now(),
+            DateTime.now()),
+        StudentScheduleScratch('scheduleScratchId', 'name,', 1602980186767,
+            1602980186767, [], DateTime.now(), DateTime.now()),
+      ];
       if (scheduleScratches.isNotEmpty) {
         emit(DisplayScratchesState(scheduleScratches));
       } else {
