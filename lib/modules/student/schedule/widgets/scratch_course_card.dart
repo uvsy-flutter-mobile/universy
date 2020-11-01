@@ -20,29 +20,35 @@ class ScratchCourseCard extends StatelessWidget {
     return CircularRoundedRectangleCard(
         radius: 8,
         color: Colors.white,
-        elevation: 6,
+        elevation: 4,
         child: Column(
           children: <Widget>[
-            _buildCardHeader(),
+            _buildCardHeader(context),
             Divider(),
             _buildCardContent()
           ],
         ));
   }
 
-  Widget _buildCardHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          _scheduleScratchCourse.subjectName,
-        ),
-        IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () => _onRemove(_scheduleScratchCourse),
-        )
-      ],
-    );
+  Widget _buildCardHeader(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              _scheduleScratchCourse.subjectName,
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+            IconButton(
+              padding: EdgeInsets.zero,
+              constraints: BoxConstraints(),
+              icon: Icon(Icons.clear),
+              onPressed: () => _onRemove(_scheduleScratchCourse),
+            )
+          ],
+        ));
   }
 
   Widget _buildCardContent() {

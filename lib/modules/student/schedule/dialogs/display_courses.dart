@@ -64,7 +64,7 @@ class DisplayCoursesWidgetState extends State<DisplayCoursesDialogWidget> {
       title: AppText.getInstance()
           .get("student.schedule.displayCoursesDialog.alertTitle"),
       content: Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(3),
         child: _buildScratchCourseCards(),
       ),
       actions: <Widget>[
@@ -84,8 +84,8 @@ class DisplayCoursesWidgetState extends State<DisplayCoursesDialogWidget> {
 
   Widget _buildScratchCourseCards() {
     return Container(
-        height: 300.0, // Change as per your requirement
-        width: 300.0, // Change as per your requirement
+        height: 300.0,
+        width: 400.0,
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
