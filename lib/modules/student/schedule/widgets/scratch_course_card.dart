@@ -53,8 +53,9 @@ class ScratchCourseCard extends StatelessWidget {
 
   Widget _buildCardContent() {
     return Container(
+        padding: EdgeInsets.all(12),
         child: CourseInfoWidget(
-      scratchCourse: _scheduleScratchCourse,
-    ));
+          scratchCourse: _scheduleScratchCourse,
+        ));
   }
 }

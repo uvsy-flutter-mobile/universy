@@ -84,8 +84,8 @@ class DisplayCoursesWidgetState extends State<DisplayCoursesDialogWidget> {
 
   Widget _buildScratchCourseCards() {
     return Container(
-        height: 300.0,
-        width: 400.0,
+        height: MediaQuery.of(context).size.height - 200,
+        width: MediaQuery.of(context).size.width - 100,
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,

@@ -392,7 +392,7 @@ const Map<dynamic, dynamic> ES = {
         "dateTo": "Hasta",
       },
       "selectCourseDialog": {
-        "alertTitle": "Selecciona un cur",
+        "alertTitle": "Selecciona un curso",
         "level": "Año",
         "subject": "Materia",
       },

@@ -5,6 +5,7 @@ import 'package:universy/business/schedule_scratch/course_list_generator.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/coursing_period.dart';
+import 'package:universy/model/institution/professor.dart';
 import 'package:universy/model/institution/schedule.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
@@ -23,10 +24,10 @@ const int FIRST_ELEMENT_INDEX = 0;
 
 const List<int> LEVELS_MOCK = [1, 2, 3, 4, 5];
 List<InstitutionSubject> subjectsMock = [
-  InstitutionSubject('subject_1', 'this.name', 'this.codename', 1,
+  InstitutionSubject('subject_1', 'Matemática Discreta', 'this.codename', 1,
       'this.programId', 1, 1, false, []),
-  InstitutionSubject('subject_2', 'this.name', 'this.codename', 1,
-      'this.programId', 1, 1, false, []),
+  InstitutionSubject('subject_2', 'Sistemas y Organizaciones', 'this.codename',
+      1, 'this.programId', 1, 1, false, []),
 ];
 
 List<Schedule> schedulesMocks = [
@@ -34,11 +35,16 @@ List<Schedule> schedulesMocks = [
   Schedule('Jueves', 'Aula 4', 1730, 2300),
 ];
 
+List<Professor> professorMocks = [
+  Professor('Caccialupi', 'Maximiliano'),
+  Professor('X', 'Profesor'),
+];
+
 List<CoursingPeriod> coursingPeriodsMock = [
-  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
-  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
-  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
-  CoursingPeriod(schedulesMocks, [], 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
+  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
 ];
 
 List<Course> coursesMocks = [
@@ -46,8 +52,8 @@ List<Course> coursesMocks = [
   Course('this._courseId', 'commission_2', 'subject_2', coursingPeriodsMock),
 ];
 List<Commission> commissionsMocks = [
-  Commission('commission_1', 'this.name', 'this.programId', 1),
-  Commission('commission_2', 'this.name', 'this.programId', 1),
+  Commission('commission_1', '1k1', 'this.programId', 1),
+  Commission('commission_2', '1k2', 'this.programId', 1),
 ];
 
 class SelectCourseWidgetDialog extends StatefulWidget {
@@ -132,6 +138,8 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
 
     if (filteredSubjects.length > 0) {
       _selectSubject(filteredSubjects[FIRST_ELEMENT_INDEX]);
+    } else {
+      _selectSubject(null);
     }
     _selectScratchCourse(null);
     setState(() {
@@ -211,14 +219,14 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
       children: <Widget>[
         Expanded(
           child: _buildLevelDropDown(),
-          flex: 45,
+          flex: 20,
         ),
         SizedBox(
           width: 10,
         ),
         Expanded(
           child: _buildSubjectDropDown(),
-          flex: 45,
+          flex: 70,
         ),
       ],
     ));
@@ -231,11 +239,15 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
             .get("student.schedule.selectCourseDialog.level"),
       ),
       onChanged: _onLevelDropdownChange,
+      isExpanded: true,
       value: _selectedLevel,
       items: _levels.map<DropdownMenuItem<int>>((int level) {
         return DropdownMenuItem<int>(
           value: level,
-          child: Text(level.toString()),
+          child: Text(
+            level.toString(),
+            overflow: TextOverflow.ellipsis,
+          ),
         );
       }).toList(),
     ));
@@ -258,11 +270,12 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
       ),
       onChanged: _onSubjectDropdownChange,
       value: _selectedSubject,
+      isExpanded: true,
       items: _subjectsOnDisplay.map<DropdownMenuItem<InstitutionSubject>>(
           (InstitutionSubject subject) {
         return DropdownMenuItem<InstitutionSubject>(
           value: subject,
-          child: Text(subject.name),
+          child: Text(subject.name, overflow: TextOverflow.ellipsis),
         );
       }).toList(),
     ));
