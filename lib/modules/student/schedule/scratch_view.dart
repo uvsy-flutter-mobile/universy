@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_timetable_view/flutter_timetable_view.dart';
 import 'package:universy/model/institution/schedule.dart';
+import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
@@ -15,15 +16,24 @@ class ScratchView extends StatefulWidget {
   final StudentScheduleScratch _scratch;
   final bool _create;
   final ScheduleCubit _cubit;
+  final List<ScheduleScratchCourse> _scratchCourses;
+  final List<int> _levels;
+  final List<InstitutionSubject> _subjects;
 
   const ScratchView(
       {Key key,
       StudentScheduleScratch scratch,
       @required bool create,
+      @required List<ScheduleScratchCourse> scratchCourses,
+      @required List<int> levels,
+      @required List<InstitutionSubject> subjects,
       ScheduleCubit cubit})
       : this._scratch = scratch,
         this._create = create,
         this._cubit = cubit,
+        this._scratchCourses = scratchCourses,
+        this._levels = levels,
+        this._subjects = subjects,
         super(key: key);
 
   @override
@@ -35,6 +45,9 @@ class _ScratchViewState extends State<ScratchView> {
   ScheduleCubit _cubit;
   bool _create;
   TextEditingController _nameTextController;
+  List<ScheduleScratchCourse> _scratchCourses;
+  List<int> _levels;
+  List<InstitutionSubject> _subjects;
 
   @override
   void didChangeDependencies() {
@@ -49,6 +62,9 @@ class _ScratchViewState extends State<ScratchView> {
     this._scratch = widget._scratch;
     this._create = widget._create;
     this._cubit = widget._cubit;
+    this._scratchCourses = widget._scratchCourses;
+    this._levels = widget._levels;
+    this._subjects = widget._subjects;
     this._nameTextController =
         TextEditingController(text: widget._scratch.name);
     super.initState();
@@ -61,6 +77,9 @@ class _ScratchViewState extends State<ScratchView> {
     this._create = null;
     this._nameTextController.dispose();
     this._nameTextController = null;
+    this._scratchCourses = null;
+    this._levels = null;
+    this._subjects = null;
     super.dispose();
   }
 
@@ -77,11 +96,19 @@ class _ScratchViewState extends State<ScratchView> {
         ],
       ),
       floatingActionButton: _create
-          ? ScheduleActionButton.create()
+          ? ScheduleActionButton.create(
+              onNewCourse: _addNewScratchCourse,
+              levels: _levels,
+              subjects: _subjects,
+              scratchCourses: _scratchCourses,
+            )
           : ScheduleActionButton.edit(
               onNewCourse: _addNewScratchCourse,
               onUpdatedCourses: _updateScratchCourses,
               scratchCourseList: _scratch.selectedCourses,
+              levels: _levels,
+              subjects: _subjects,
+              scratchCourses: _scratchCourses,
             ), //TODO: validar el form y guardarlo
     );
   }

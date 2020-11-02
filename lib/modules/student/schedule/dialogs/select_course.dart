@@ -1,17 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:universy/business/schedule_scratch/course_list_generator.dart';
-import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/course.dart';
-import 'package:universy/model/institution/coursing_period.dart';
-import 'package:universy/model/institution/professor.dart';
-import 'package:universy/model/institution/schedule.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
-import 'package:universy/model/subject.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/util/object.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/dialog/title.dart';
@@ -22,113 +14,53 @@ import '../widgets/course_info.dart';
 const double SEPARATOR_SPACE = 15;
 const int FIRST_ELEMENT_INDEX = 0;
 
-const List<int> LEVELS_MOCK = [1, 2, 3, 4, 5];
-List<InstitutionSubject> subjectsMock = [
-  InstitutionSubject('subject_1', 'Matemática Discreta', 'this.codename', 1,
-      'this.programId', 1, 1, false, []),
-  InstitutionSubject('subject_2', 'Sistemas y Organizaciones', 'this.codename',
-      1, 'this.programId', 1, 1, false, []),
-];
-
-List<Schedule> schedulesMocks = [
-  Schedule('Lunes', 'Aula 4', 1800, 2150),
-  Schedule('Jueves', 'Aula 4', 1730, 2300),
-];
-
-List<Professor> professorMocks = [
-  Professor('Caccialupi', 'Maximiliano'),
-  Professor('X', 'Profesor'),
-];
-
-List<CoursingPeriod> coursingPeriodsMock = [
-  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
-  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
-  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
-  CoursingPeriod(schedulesMocks, professorMocks, 'beginMonth', 'endMonth'),
-];
-
-List<Course> coursesMocks = [
-  Course('this._courseId', 'commission_1', 'subject_1', coursingPeriodsMock),
-  Course('this._courseId', 'commission_2', 'subject_2', coursingPeriodsMock),
-];
-List<Commission> commissionsMocks = [
-  Commission('commission_1', '1k1', 'this.programId', 1),
-  Commission('commission_2', '1k2', 'this.programId', 1),
-];
-
 class SelectCourseWidgetDialog extends StatefulWidget {
   final List<int> _levels;
   final List<InstitutionSubject> _subjects;
-  final List<Course> _courses;
-  final List<Commission> _commissions;
+  final List<ScheduleScratchCourse> _scratchCourses;
   final Function(ScheduleScratchCourse) _onConfirm;
   final Function() _onCancel;
 
-  //TODO: Remove mocks
   SelectCourseWidgetDialog({
     @required List<int> levels,
     @required List<InstitutionSubject> subjects,
-    @required List<Course> courses,
-    @required List<Commission> commissions,
+    @required List<ScheduleScratchCourse> scratchCourses,
     @required Function(ScheduleScratchCourse) onConfirm,
     @required Function() onCancel,
-  })  : this._levels = LEVELS_MOCK,
-        this._subjects = subjectsMock,
-        this._courses = coursesMocks,
-        this._commissions = commissionsMocks,
+  })  : this._levels = levels,
+        this._subjects = subjects,
+        this._scratchCourses = scratchCourses,
         this._onConfirm = onConfirm,
         this._onCancel = onCancel,
         super();
 
   @override
   State<SelectCourseWidgetDialog> createState() {
-    return SelectCourseWidgetState(this._levels, this._subjects, this._courses,
-        this._commissions, this._onConfirm, this._onCancel);
+    return SelectCourseWidgetState(this._levels, this._subjects,
+        this._scratchCourses, this._onConfirm, this._onCancel);
   }
 }
 
 class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
-  List<int> _levels;
-  List<InstitutionSubject> _subjects;
+  final List<int> _levels;
+  final List<InstitutionSubject> _subjects;
+  final List<ScheduleScratchCourse> _scratchCourses;
+  final Function(ScheduleScratchCourse) _onConfirm;
+  final Function() _onCancel;
   List<InstitutionSubject> _subjectsOnDisplay;
-  List<Course> _courses;
-  List<Commission> _commissions;
-  List<ScheduleScratchCourse> _scratchCourses;
   List<ScheduleScratchCourse> _scratchCoursesOnDisplay;
   ScheduleScratchCourse _selectedScratchCourse;
   int _selectedLevel;
   InstitutionSubject _selectedSubject;
-  Function(ScheduleScratchCourse) _onConfirm;
-  Function() _onCancel;
 
-  SelectCourseWidgetState(this._levels, this._subjects, this._courses,
-      this._commissions, this._onConfirm, this._onCancel);
+  SelectCourseWidgetState(this._levels, this._subjects, this._scratchCourses,
+      this._onConfirm, this._onCancel);
 
   @override
   void initState() {
-    _generateScratchCourses();
     _selectedLevel = _levels[FIRST_ELEMENT_INDEX];
     _generateSubjectsOnDisplay(_selectedLevel);
     super.initState();
-  }
-
-  void _generateScratchCourses() {
-    List<ScheduleScratchCourse> newScratchCourses = [];
-    _courses.forEach((Course course) {
-      var generator =
-          ScheduleScratchCourseListGenerator(_subjects, _commissions, course);
-      var scratchCourseListFragment = generator.generate();
-      if (notNull(scratchCourseListFragment)) {
-        newScratchCourses.addAll(scratchCourseListFragment);
-      }
-    });
-    setState(() {
-      _scratchCourses = newScratchCourses;
-      _scratchCoursesOnDisplay = [...newScratchCourses];
-      if (newScratchCourses.length > 0) {
-        _selectedScratchCourse = newScratchCourses[FIRST_ELEMENT_INDEX];
-      }
-    });
   }
 
   void _generateSubjectsOnDisplay(int level) {
@@ -290,6 +222,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
     setState(() {
       _selectedSubject = newSubject;
     });
+    _updateCoursesOnDisplay(newSubject);
   }
 
   void _updateCoursesOnDisplay(InstitutionSubject newSubject) {

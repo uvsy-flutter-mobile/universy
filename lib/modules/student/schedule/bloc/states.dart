@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 
 abstract class ScheduleState extends Equatable {
@@ -23,12 +24,20 @@ class CareerNotCreatedState extends ScheduleState {}
 
 class CreateScratchState extends ScheduleState {
   final StudentScheduleScratch scratch;
+  final List<ScheduleScratchCourse> scratchCourses;
+  final List<int> levels;
+  final List<InstitutionSubject> subjects;
 
-  CreateScratchState(this.scratch);
+  CreateScratchState(
+      this.scratch, this.scratchCourses, this.levels, this.subjects);
 }
 
 class EditScratchState extends ScheduleState {
   final StudentScheduleScratch scratch;
+  final List<ScheduleScratchCourse> scratchCourses;
+  final List<int> levels;
+  final List<InstitutionSubject> subjects;
 
-  EditScratchState(this.scratch);
+  EditScratchState(
+      this.scratch, this.scratchCourses, this.levels, this.subjects);
 }

@@ -25,7 +25,14 @@ class _ScheduleModuleState extends State<ScheduleModule> {
     if (isNull(_scheduleCubit)) {
       var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
       var studentScheduleService = sessionFactory.studentScheduleService();
-      this._scheduleCubit = ScheduleCubit(studentScheduleService);
+      var studentCareerService = sessionFactory.studentCareerService();
+      var institutionService = sessionFactory.institutionService();
+
+      this._scheduleCubit = ScheduleCubit(
+        studentScheduleService,
+        institutionService,
+        studentCareerService,
+      );
       this._scheduleCubit.fetchScratches();
     }
     super.didChangeDependencies();

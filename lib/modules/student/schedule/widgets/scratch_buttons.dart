@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/dialogs/display_courses.dart';
 import 'package:universy/modules/student/schedule/dialogs/select_course.dart';
@@ -46,10 +47,19 @@ class SaveScratchButton extends StatelessWidget {
 
 class AddScheduleCourseButton extends StatelessWidget {
   final Function(ScheduleScratchCourse) _onNewCourse;
+  final List<ScheduleScratchCourse> _scratchCourses;
+  final List<int> _levels;
+  final List<InstitutionSubject> _subjects;
 
-  AddScheduleCourseButton(
-      {@required Function(ScheduleScratchCourse) onNewCourse})
-      : this._onNewCourse = onNewCourse,
+  AddScheduleCourseButton({
+    @required Function(ScheduleScratchCourse) onNewCourse,
+    @required List<ScheduleScratchCourse> scratchCourses,
+    @required List<int> levels,
+    @required List<InstitutionSubject> subjects,
+  })  : this._onNewCourse = onNewCourse,
+        this._scratchCourses = scratchCourses,
+        this._levels = levels,
+        this._subjects = subjects,
         super();
 
   @override
@@ -66,10 +76,9 @@ class AddScheduleCourseButton extends StatelessWidget {
     showDialog(
         context: context,
         builder: (dialogContext) => SelectCourseWidgetDialog(
-              commissions: [],
-              courses: [],
-              levels: [],
-              subjects: [],
+              scratchCourses: _scratchCourses,
+              levels: _levels,
+              subjects: _subjects,
               onConfirm: (ScheduleScratchCourse newCourse) {
                 _onNewCourse(newCourse);
                 Navigator.pop(dialogContext);
@@ -158,9 +167,19 @@ class ScheduleActionButton extends StatelessWidget {
 
   const ScheduleActionButton._({Key key, this.buttons}) : super(key: key);
 
-  factory ScheduleActionButton.create() {
+  factory ScheduleActionButton.create({
+    @required Function(ScheduleScratchCourse) onNewCourse,
+    @required List<ScheduleScratchCourse> scratchCourses,
+    @required List<int> levels,
+    @required List<InstitutionSubject> subjects,
+  }) {
     var buttons = [
-      AddScheduleCourseButton(),
+      AddScheduleCourseButton(
+        onNewCourse: onNewCourse,
+        scratchCourses: scratchCourses,
+        subjects: subjects,
+        levels: levels,
+      ),
       SizedBox(height: 15),
       SaveScratchButton(),
     ];
@@ -178,12 +197,21 @@ class ScheduleActionButton extends StatelessWidget {
     );
   }
 
-  factory ScheduleActionButton.edit(
-      {@required List<ScheduleScratchCourse> scratchCourseList,
-      @required Function(List<ScheduleScratchCourse>) onUpdatedCourses,
-      @required Function(ScheduleScratchCourse) onNewCourse}) {
+  factory ScheduleActionButton.edit({
+    @required List<ScheduleScratchCourse> scratchCourseList,
+    @required Function(List<ScheduleScratchCourse>) onUpdatedCourses,
+    @required Function(ScheduleScratchCourse) onNewCourse,
+    @required List<ScheduleScratchCourse> scratchCourses,
+    @required List<int> levels,
+    @required List<InstitutionSubject> subjects,
+  }) {
     var buttons = [
-      AddScheduleCourseButton(onNewCourse: onNewCourse),
+      AddScheduleCourseButton(
+        onNewCourse: onNewCourse,
+        scratchCourses: scratchCourses,
+        subjects: subjects,
+        levels: levels,
+      ),
       SizedBox(height: 15),
       ViewScheduleButton(
           scratchCoursesList: scratchCourseList,

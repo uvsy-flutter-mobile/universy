@@ -17,9 +17,21 @@ class ScheduleStateBuilder extends WidgetBuilderFactory<ScheduleState> {
     } else if (state is CareerNotCreatedState) {
       return CareerNotFoundWidget();
     } else if (state is CreateScratchState) {
-      return ScratchView(create: true, scratch: state.scratch); //TODO: add copy
+      return ScratchView(
+        create: true,
+        scratch: state.scratch,
+        subjects: state.subjects,
+        levels: state.levels,
+        scratchCourses: state.scratchCourses,
+      ); //TODO: add copy
     } else if (state is EditScratchState) {
-      return ScratchView(create: false, scratch: state.scratch);
+      return ScratchView(
+        create: false,
+        scratch: state.scratch,
+        subjects: state.subjects,
+        levels: state.levels,
+        scratchCourses: state.scratchCourses,
+      );
     }
     return CenterSizedCircularProgressIndicator();
   }
