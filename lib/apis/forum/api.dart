@@ -7,10 +7,10 @@ String _createPath(String resource) {
   return "$basePath$resource";
 }
 
-Future<List<ForumPublication>> getForumPublications(String programId) async {
+Future<List<ForumPublication>> getForumPublications(String programId, int offset) async {
   var resource = "/publications";
   var path = _createPath(resource);
-  var queryParams = {"programId": "$programId","includeTags":"true","includeAlias":"true"};
+  var queryParams = {"programId": "$programId", "includeTags": "true", "includeAlias": "true","limit":"100","offset":"${offset.toString()}"};
 
   var response = await api.getList<ForumPublication>(
     path,
@@ -18,11 +18,23 @@ Future<List<ForumPublication>> getForumPublications(String programId) async {
     model: (content) => ForumPublication.fromJson(content),
   );
 
+  print(response);
   return response.orElse([]);
 }
 
 Future<void> createForumPublication(ForumPublicationRequest request) {
   var resource = "/publications";
+  var path = _createPath(resource);
+  print(request);
+
+  return api.post(
+    path,
+    payload: request,
+  );
+}
+
+Future<void> updateForumPublication(ForumPublicationUpdateRequest request) {
+  var resource = "/publications/${request.idPublication}";
   var path = _createPath(resource);
 
   return api.post(
@@ -31,11 +43,10 @@ Future<void> createForumPublication(ForumPublicationRequest request) {
   );
 }
 
-Future<List<Comment>> searchCommentsPublication(String idPublication) async{
-  var resource = "/publications/$idPublication/comments";
+Future<List<Comment>> searchCommentsPublication(String idPublication) async {
+  var resource = "/comments";
   var path = _createPath(resource);
-  var queryParams = {"limit":"10","includeAlias":"true"};
-
+  var queryParams = {"publicationId":"$idPublication","includeAlias":true};
 
   var response = await api.getList<Comment>(
     path,
@@ -43,5 +54,34 @@ Future<List<Comment>> searchCommentsPublication(String idPublication) async{
     model: (content) => Comment.fromJson(content),
   );
 
+  print(response.value);
   return response.orElse([]);
+}
+
+Future<void> deletePublication(String idPublication) {
+  var resource = "/publications/$idPublication";
+  var path = _createPath(resource);
+
+  return api.delete(
+    path,
+  );
+}
+
+Future<void> deleteComment(String idComment) {
+  var resource = "/comments/$idComment";
+  var path = _createPath(resource);
+
+  return api.delete(
+    path,
+  );
+}
+
+Future<void> insertComment(CommentRequest request) {
+  var resource = "/comments";
+  var path = _createPath(resource);
+
+  return api.post(
+    path,
+    payload:request,
+  );
 }

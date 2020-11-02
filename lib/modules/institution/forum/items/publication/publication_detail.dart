@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
+import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/comments-list.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
@@ -14,7 +16,8 @@ class PublicationDetailWidget extends StatefulWidget {
   final List<Comment> _listComments;
   final Profile _profile;
 
-  PublicationDetailWidget({Key key, ForumPublication forumPublication, Profile profile, List<Comment> listComments})
+  PublicationDetailWidget(
+      {Key key, ForumPublication forumPublication, Profile profile, List<Comment> listComments})
       : this._forumPublication = forumPublication,
         this._profile = profile,
         this._listComments = listComments,
@@ -26,10 +29,13 @@ class PublicationDetailWidget extends StatefulWidget {
 
 class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   ScrollController _scrollController = ScrollController();
+  TextEditingController _newCommentController = TextEditingController();
   bool _newComment;
+  List<Comment> _listComments;
 
   @override
   void initState() {
+    _listComments = widget._listComments;
     _newComment = false;
     super.initState();
   }
@@ -46,8 +52,10 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       controller: _scrollController,
-      child: SymmetricEdgePaddingWidget.vertical(paddingValue: 10,
-        child: SymmetricEdgePaddingWidget.horizontal(paddingValue: 10,
+      child: SymmetricEdgePaddingWidget.vertical(
+        paddingValue: 10,
+        child: SymmetricEdgePaddingWidget.horizontal(
+          paddingValue: 10,
           child: Column(
             children: <Widget>[
               _buildPublication(),
@@ -74,8 +82,10 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildExtraInfoComments() {
-    int comments=0;
-    if(widget._listComments != null){comments=widget._listComments.length;}
+    int comments = 0;
+    if (widget._listComments != null) {
+      comments = widget._listComments.length;
+    }
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 10,
       child: Row(
@@ -119,6 +129,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
                       style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
                     )),
                 TextField(
+                  controller: _newCommentController,
                   decoration: InputDecoration(hintText: 'Escribí un comentario...'),
                 ),
               ],
@@ -147,7 +158,16 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     }
   }
 
-  _createButtonAction() {}
+  void _createButtonAction() {
+    print(widget._profile.userId);
+    print(this._newCommentController.text);
+    print(widget._forumPublication.idPublication);
+    BlocProvider.of<InstitutionForumCubit>(context).addNewCommentPublication(
+        widget._forumPublication,
+        widget._profile.userId,
+        this._newCommentController.text,
+        widget._forumPublication.idPublication);
+  }
 
   void _cancelButtonAction() {
     setState(() {
@@ -162,7 +182,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
 
   Widget _buildComments() {
     return CommentsListWidget(
-      commentsList: widget._listComments,
+      commentsList: _listComments,
       profile: widget._profile,
     );
   }

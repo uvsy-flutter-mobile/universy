@@ -18,11 +18,13 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
 
   Future<void> fetchPublications() async {
     emit(LoadingState());
-
     var profile = await _profileService.getProfile();
     var programId = await this._careerService.getCurrentProgram();
 
-    List<ForumPublication> forumPublications = await this._forumService.getForumPublications(programId);
+    print("userId: ${profile.userId}");
+    print("programId: ${programId}");
+
+    List<ForumPublication> forumPublications = await this._forumService.getForumPublications(programId,1);
     List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
     List<Commission> listCommissions = await this._institutionService.getCommissions(programId);
 
@@ -52,7 +54,7 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
   void selectForumPublication(ForumPublication forumPublication) async {
     var displayState = this.state as DisplayState;
     emit(LoadingState());
-    List<Comment> listComment = await this._forumService.searchCommentsPublication(forumPublication.idPublication);
+    List<Comment> listComment = await this._forumService.getCommentsPublication(forumPublication.idPublication);
     emit(DisplayForumPublicationDetailState(forumPublication, displayState.profile,listComment));
   }
 
@@ -66,6 +68,25 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     emit(UpdateForumPublicationState(
         displayState.institutionSubjects, displayState.profile, forumPublication,displayState.listCommissions));
   }
+
+  void deleteForumPublication(ForumPublication forumPublication) async {
+    emit(LoadingState());
+    await this._forumService.deleteForumPublication(forumPublication.idPublication);
+    fetchPublications();
+  }
+
+  void deletePublicationComment(Comment comment) async {
+    emit(LoadingState());
+    await this._forumService.deletePublicationComment(comment.idComment);
+    fetchPublications();
+  }
+
+  void addNewCommentPublication(ForumPublication forumPublication,String userId, String content,String idPublication) async {
+    emit(LoadingState());
+    await this._forumService.createCommentPublication(userId, content, idPublication);
+    selectForumPublication(forumPublication);
+  }
+
 
 //  void editNote(StudentNote note) {
 //   emit(EditNoteState(note));

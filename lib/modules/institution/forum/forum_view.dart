@@ -3,10 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/filters/filter_button.dart';
 import 'package:universy/modules/institution/forum/items/publication/publication_item.dart';
+import 'package:universy/services/factory.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 import 'bloc/cubit.dart';
@@ -29,11 +31,12 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
   TextEditingController _searchTextEditingController;
   List<DropdownMenuItem> items = List<DropdownMenuItem>();
   DropdownMenuItem _selected;
-
   List<ForumPublication> _listPublications = [];
+  int offset;
 
   @override
   void initState() {
+    int offset = 1;
     _listPublications = widget._listPublications;
     _searchTextEditingController = TextEditingController();
     DropdownMenuItem item1 = DropdownMenuItem(value: 0, child: Text("Más recientes"));
@@ -212,5 +215,18 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   void _onFloatingPressed(BuildContext context) async {
     BlocProvider.of<InstitutionForumCubit>(context).createNewForumPublication();
+  }
+
+  void fetchMorePublications() async {
+    var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+    var careerService = sessionFactory.studentCareerService();
+    var forumService = sessionFactory.forumService();
+    var programId = await careerService.getCurrentProgram();
+    List<ForumPublication> forumPublications =
+        await forumService.getForumPublications(programId, offset + 1);
+    setState(() {
+      this.offset = this.offset + 1;
+      widget._listPublications.addAll(forumPublications);
+    });
   }
 }

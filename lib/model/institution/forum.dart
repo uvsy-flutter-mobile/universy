@@ -105,18 +105,47 @@ class ForumPublicationRequest extends JsonConvertible {
   }
 }
 
-class Comment {
+class ForumPublicationUpdateRequest extends JsonConvertible {
   int _idPublication;
-  int _idComment;
+  String _title;
+  String _description;
+  List<String> _tags;
+
+  int get idPublication => _idPublication;
+
+  String get title => _title;
+
+  String get description => _description;
+
+  List<String> get tags => _tags;
+
+  ForumPublicationUpdateRequest(
+      this._title, this._description, this._tags);
+
+  @override
+  Map<String, dynamic> toJson() {
+    var a = jsonEncode(this.tags);
+    print(a);
+    return {
+      "title": "${this._title}",
+      "description": "${this._description}",
+      "tags": this._tags,
+    };
+  }
+}
+
+class Comment {
+  String _idPublication;
+  String _idComment;
   String _userAlias;
   String _userId;
   DateTime _date;
   String _description;
   int _votes;
 
-  int get idPublication => _idPublication;
+  String get idPublication => _idPublication;
 
-  int get idComment => _idComment;
+  String get idComment => _idComment;
 
   String get userAlias => _userAlias;
 
@@ -135,18 +164,41 @@ class Comment {
     int date = json["createdAt"];
     DateTime publicationDate = DateTime.fromMillisecondsSinceEpoch(date);
     return Comment(json["publicationId"], json["id"], json["userAlias"], json["userId"],
-        publicationDate, json['description'], json['votes']);
+        publicationDate, json['content'], json['votes']);
   }
 
   @override
   Map<String, String> toJson() {
     return {
       "id": _idPublication.toString(),
-      //"student": _profile.toJson().toString(),
       "description": _description,
       "date": _date.toString(),
     };
   }
+}
+
+class CommentRequest extends JsonConvertible{
+
+  String _userId;
+  String _idPublication;
+  String _content;
+
+  String get idComment => _userId;
+
+  String get idPublication => _idPublication;
+
+  String get content => _content;
+
+  @override
+  Map<String, String> toJson() {
+    return {
+      "userId": this._userId,
+      "content": this._content,
+      "publicationId": this._idPublication,
+    };
+  }
+
+  CommentRequest(this._userId,this._idPublication,this._content);
 }
 
 class Filters {

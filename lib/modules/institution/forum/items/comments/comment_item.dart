@@ -17,13 +17,11 @@ class CommentItemWidget extends StatelessWidget {
         this._isOwner = isOwner,
         super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
-    if(this._isOwner){
+    if (this._isOwner) {
       return _buildOwnerCommentItem(context);
-    }else{
+    } else {
       return _buildNotOwnerCommentItem(context);
     }
   }
@@ -52,25 +50,21 @@ class CommentItemWidget extends StatelessWidget {
     return IconSlideAction(
       color: Colors.red,
       icon: Icons.delete,
-      onTap: () => _pressDeletePublicationForumButton(context),
+      onTap: () => _pressDeleteCommentButton(context),
     );
   }
 
-  void _pressDeletePublicationForumButton(BuildContext context) async {
+  void _pressDeleteCommentButton(BuildContext context) async {
     await AsyncModalBuilder()
-        .perform(_deleteEvents)
-        .withTitle(
-        "Eliminando Comentario")
+        .perform(_deleteComment)
+        .withTitle("Eliminando Comentario")
         .then(_refreshForum)
         .build()
         .run(context);
   }
 
-  Future _deleteEvents(BuildContext context) async {
-    ///ELIMINAR COMENTARIO
-    //var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
-    //var studentEventService = sessionFactory.studentEventService();
-    //await studentEventService.deleteStudentEvent(this.event);
+  Future _deleteComment(BuildContext context) async {
+    BlocProvider.of<InstitutionForumCubit>(context).deletePublicationComment(this._comment);
   }
 
   void _refreshForum(BuildContext context) {

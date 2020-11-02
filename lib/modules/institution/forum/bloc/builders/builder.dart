@@ -18,7 +18,7 @@ class InstitutionForumStateBuilder extends WidgetBuilderFactory<InstitutionForum
       return ForumPublicationNotFoundWidget();
     } else if (state is DisplayForumPublicationDetailState) {
       return PublicationDetailWidget(
-          forumPublication: state.forumPublication, profile: state.profile);
+          forumPublication: state.forumPublication, profile: state.profile,listComments: state.listComment,);
     } else if (state is UpdateForumPublicationState) {
       return UpdatePublicationWidget(
           forumPublication: state.forumPublication,

@@ -255,8 +255,8 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     if ((_titleController.text.trim() != null) && (_descriptionController.text.trim() != null)) {
       String title = _titleController.text.trim();
       String description = _descriptionController.text.trim();
-      _uploadTags.add(_selectedSubject.name);
-      _uploadTags.add(_selectedCommission.name);
+      _uploadTags.insert(0,_selectedSubject.name);
+      _uploadTags.insert(1,_selectedCommission.name);
       _savePublication(title, description, _uploadTags, context);
     }
   }

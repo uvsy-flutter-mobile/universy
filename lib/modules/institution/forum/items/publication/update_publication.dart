@@ -38,9 +38,8 @@ class _UpdatePublicationWidgetState extends State<UpdatePublicationWidget> {
   List<InstitutionSubject> _subjects;
   List<Commission> _commissions;
   InstitutionSubject _selectedSubject;
+  Commission _selectedCommission;
   Profile _profile;
-
-  List<DropdownMenuItem> _courses = List<DropdownMenuItem>();
 
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
@@ -55,6 +54,7 @@ class _UpdatePublicationWidgetState extends State<UpdatePublicationWidget> {
     _titleController.value = TextEditingValue(text: widget._forumPublication.title);
     _descriptionController.value = TextEditingValue(text: widget._forumPublication.description);
     _selectedSubject = widget._subjects.singleWhere((element) => element.name == widget._forumPublication.tags.first);
+    _selectedCommission = widget._commissions.singleWhere((element) => element.name == widget._forumPublication.tags[1]);
     _uploadTags = widget._forumPublication.tags;
 
     _subjects = widget._subjects;
@@ -284,7 +284,7 @@ class _UpdatePublicationWidgetState extends State<UpdatePublicationWidget> {
     return Row(
       children: <Widget>[
         _getDropDownSubject(),
-        //SymmetricEdgePaddingWidget.horizontal(paddingValue: 10, child: _getDropDownComision()),
+        _getDropDownCommission(),
       ],
     );
   }
@@ -319,6 +319,39 @@ class _UpdatePublicationWidgetState extends State<UpdatePublicationWidget> {
   void _onChangeDropDownSubject(InstitutionSubject newValue) {
     return setState(() {
       this._selectedSubject = newValue;
+    });
+  }
+
+  Widget _getDropDownCommission() {
+    GlobalKey key = GlobalKey();
+    Commission dropdownValue;
+    return DropdownButton<Commission>(
+      key: key,
+      hint: Text(
+        "Comisión",
+        textAlign: TextAlign.center,
+      ),
+      value: (this._selectedCommission == null) ? dropdownValue : this._selectedCommission,
+      elevation: 6,
+      style: TextStyle(color: Colors.black),
+      onChanged: _onChangeDropDownCommission,
+      items: _commissions.map((x) {
+        return new DropdownMenuItem<Commission>(
+          value: x,
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width / 2.5,
+              child: new Text(
+                x.name,
+                textAlign: TextAlign.center,
+              )),
+        );
+      }).toList(),
+    );
+  }
+
+  void _onChangeDropDownCommission(Commission newValue) {
+    return setState(() {
+      this._selectedCommission = newValue;
     });
   }
 

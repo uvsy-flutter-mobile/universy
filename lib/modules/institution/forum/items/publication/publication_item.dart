@@ -96,7 +96,7 @@ class PublicationItemWidget extends StatelessWidget {
 
   void _pressDeletePublicationForumButton(BuildContext context) async {
     await AsyncModalBuilder()
-        .perform(_deleteEvents)
+        .perform(_deletePublication)
         .withTitle(
         "Eliminando Publicación")
         .then(_refreshForum)
@@ -108,15 +108,12 @@ class PublicationItemWidget extends StatelessWidget {
     BlocProvider.of<InstitutionForumCubit>(context).updateForumPublication(this._forumPublication);
   }
 
-  Future _deleteEvents(BuildContext context) async {
-    ///ELIMINAR PUBLICACION
-    //var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
-    //var studentEventService = sessionFactory.studentEventService();
-    //await studentEventService.deleteStudentEvent(this.event);
+  Future _deletePublication(BuildContext context) async {
+    BlocProvider.of<InstitutionForumCubit>(context).updateForumPublication(this._forumPublication);
   }
 
   void _refreshForum(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
+    BlocProvider.of<InstitutionForumCubit>(context).deleteForumPublication(this._forumPublication);
   }
 
   Widget _buildRowContent() {
