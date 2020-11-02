@@ -8,6 +8,7 @@ import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/text/translators/day.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/util/strings.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
@@ -141,29 +142,40 @@ class _ScratchViewState extends State<ScratchView> {
           timeItemWidth: 45,
           timelineItemColor: Colors.white,
           timelineBorderColor: Colors.grey[300]),
-      laneEventsList: _create ? emptyLane : _buildSchedulerList(),
+      laneEventsList: _buildSchedulerList(),
     );
   }
 
   List<LaneEvents> _buildSchedulerList() {
-    List<ScheduleScratchCourse> courses = _scratch.selectedCourses;
     List<Lane> lanes = _buildLanes();
     List<LaneEvents> lanesEvents = [];
     lanes.forEach((element) {
       lanesEvents.add(_buildLaneEvent(element, []));
     });
+
+    if (_scratch.selectedCourses.isNotEmpty ||
+        notNull(_scratch.selectedCourses)) {
+      lanesEvents = _buildExistingCourses(lanesEvents);
+    }
+
+    return lanesEvents;
+  }
+
+  List<LaneEvents> _buildExistingCourses(List<LaneEvents> lanesEvents) {
+    DayTextTranslator dayTextTranslator = new DayTextTranslator();
+    List<ScheduleScratchCourse> courses = _scratch.selectedCourses;
     courses.forEach((e) {
       e.period.scheduleList.forEach((schedule) {
         TableEventTime beginTime = _buildEventTime(schedule.beginTime);
         TableEventTime endTime = _buildEventTime(schedule.endTime);
         TableEvent calendarCourse =
             _buildEvent(e.subjectName, e.commission.name, beginTime, endTime);
-        int index = lanesEvents.indexWhere((laneEvent) =>
-            stringEquals(laneEvent.lane.name, schedule.dayOfWeek));
+        int index = lanesEvents.indexWhere((laneEvent) => stringEquals(
+            laneEvent.lane.name,
+            dayTextTranslator.translate(schedule.dayOfWeek)));
         lanesEvents[index].events.add(calendarCourse);
       });
     });
-
     return lanesEvents;
   }
 
@@ -188,10 +200,10 @@ class _ScratchViewState extends State<ScratchView> {
     List<String> list = [
       "Lunes",
       "Martes",
-      "Miercoles",
+      "Miércoles",
       "Jueves",
       "Viernes",
-      "Sabado"
+      "Sábado"
     ];
     List<Lane> lanes = list.map((e) => _buildLane(e)).toList();
     return lanes;
@@ -264,22 +276,10 @@ class _ScratchViewState extends State<ScratchView> {
         style: Theme.of(context).primaryTextTheme.headline3);
   }
 
-  void _updateName() {
-    _scratch.name = _nameTextController.text;
-  }
-
-  TextFormFieldValidatorBuilder _getTitleInputValidator() {
-    return NotEmptyTextFormFieldValidatorBuilder(_buildRequiredText());
-  }
-
-  String _buildRequiredText() {
-    return AppText.getInstance().get("student.schedule.form.nameRequired");
-  }
-
   Widget _buildPeriodSubtitle(BuildContext context) {
     String begin = _scratch.beginDate.toString();
     String end = _scratch.endDate.toString();
     return Text("$begin - $end",
-        style: Theme.of(context).primaryTextTheme.bodyText1); //TODO: text
+        style: Theme.of(context).primaryTextTheme.bodyText1);
   }
 }

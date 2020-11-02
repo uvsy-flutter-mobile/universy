@@ -64,7 +64,6 @@ class ScheduleMainAppBar extends StatelessWidget {
       leading: BackButton(
         onPressed: () {
           Navigator.pushNamed(context, Routes.HOME);
-          Navigator.pop(context);
         },
       ),
     );
