@@ -13,6 +13,7 @@ import 'package:universy/text/formaters/couring_period.dart';
 import 'package:universy/text/formaters/professor.dart';
 import 'package:universy/text/formaters/schedule.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/text/translators/day.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
 import 'package:universy/widgets/paddings/edge.dart';
@@ -56,31 +57,59 @@ class CourseInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        _buildHeader(context),
+        SizedBox(
+          height: 10,
+        ),
+        _buildBody(context),
+      ],
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    var periodRangeFormatted =
+        PeriodRangeFormatter(_scratchCourse.period).format();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.baseline,
+      textBaseline: TextBaseline.alphabetic,
+      children: <Widget>[
+        Text(
+          _scratchCourse.commission.name,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        SizedBox(
+          width: 15,
+        ),
+        Text(
+          periodRangeFormatted,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.caption,
+        )
+      ],
+    );
+  }
+
+  Widget _buildBody(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
-          child: _buildCommissionName(context),
-          flex: 20,
+          child: _buildScheduleList(context),
+          flex: 50,
+        ),
+        SizedBox(
+          width: 15,
         ),
         Expanded(
           child: _buildProfessorList(context),
-          flex: 45,
-        ),
-        Expanded(
-          child: _buildScheduleList(context),
-          flex: 35,
+          flex: 50,
         ),
       ],
-    );
-  }
-
-  Widget _buildCommissionName(BuildContext context) {
-    return Text(
-      _scratchCourse.commission.name,
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headline5,
     );
   }
 
@@ -92,13 +121,23 @@ class CourseInfoWidget extends StatelessWidget {
       itemBuilder: (context, position) {
         Schedule scheduleItem = scheduleList[position];
         String timeRange = ScheduleTimeRangeFormatter(scheduleItem).format();
+        String dayOfWeekTranslated =
+            DayTextTranslator().translate(scheduleItem.dayOfWeek);
         return SymmetricEdgePaddingWidget.vertical(
-          paddingValue: 2,
-          child: Column(children: [
-            Text(scheduleItem.dayOfWeek,
-                style: Theme.of(context).textTheme.subtitle1),
-            Text(timeRange, style: Theme.of(context).textTheme.caption)
-          ]),
+          paddingValue: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                dayOfWeekTranslated,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+              Text(
+                timeRange,
+                style: Theme.of(context).textTheme.caption,
+              )
+            ],
+          ),
         );
       },
       itemCount: scheduleList.length,
@@ -114,10 +153,13 @@ class CourseInfoWidget extends StatelessWidget {
         Professor professorItem = professorsList[position];
         String nameFormatted = ProfessorNameFormatter(professorItem).format();
         return SymmetricEdgePaddingWidget.vertical(
-            paddingValue: 3,
-            child: Text(nameFormatted,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.caption));
+          paddingValue: 2,
+          child: Text(
+            nameFormatted,
+            textAlign: TextAlign.right,
+            style: Theme.of(context).textTheme.caption,
+          ),
+        );
       },
       itemCount: professorsList.length,
     );
