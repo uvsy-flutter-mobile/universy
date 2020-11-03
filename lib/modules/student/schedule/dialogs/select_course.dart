@@ -133,27 +133,13 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            titlePadding: const EdgeInsets.all(0.0),
-            contentPadding: const EdgeInsets.all(0.0),
-            content: SingleChildScrollView(
-              child: ColorPicker(
-                pickerColor: _selectedColor,
-                onColorChanged: (Color newColor) {
-                  setState(() {
-                    _selectedColor = newColor;
-                  });
-                },
-                colorPickerWidth: 300.0,
-                pickerAreaHeightPercent: 0.7,
-                enableAlpha: true,
-                displayThumbColor: true,
-                showLabel: true,
-                paletteType: PaletteType.hsv,
-                pickerAreaBorderRadius: const BorderRadius.only(
-                  topLeft: const Radius.circular(2.0),
-                  topRight: const Radius.circular(2.0),
-                ),
-              ),
+            content: BlockPicker(
+              pickerColor: _selectedColor,
+              onColorChanged: (Color newColor) {
+                setState(() {
+                  _selectedColor = newColor;
+                });
+              },
             ),
           );
         });

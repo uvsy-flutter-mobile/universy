@@ -4,12 +4,12 @@ import 'package:universy/widgets/cards/shaped.dart';
 class RoundedRectangleCard extends ShapedCard {
   RoundedRectangleCard(
       BorderRadiusGeometry borderRadius, Color color, Widget child,
-      {double elevation, Key key, Color borderColor})
-      : super(_getShape(borderRadius, borderColor: borderColor), color, child,
+      {double elevation, Key key, Color borderColor = Colors.transparent})
+      : super(_getShape(borderRadius, borderColor), color, child,
             elevation: elevation, key: key);
 
-  static ShapeBorder _getShape(BorderRadiusGeometry borderRadius,
-      {Color borderColor = Colors.transparent}) {
+  static ShapeBorder _getShape(
+      BorderRadiusGeometry borderRadius, Color borderColor) {
     return RoundedRectangleBorder(
         borderRadius: borderRadius,
         side: BorderSide(color: borderColor, width: 4));
@@ -21,7 +21,7 @@ class CircularRoundedRectangleCard extends RoundedRectangleCard {
       {@required double radius,
       @required Color color,
       @required Widget child,
-      Color borderColor,
+      Color borderColor = Colors.transparent,
       double elevation,
       Key key})
       : super(_getBorderRadiusGeometry(radius), color, child,
