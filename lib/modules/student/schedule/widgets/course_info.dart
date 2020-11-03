@@ -22,14 +22,17 @@ class CourseInfoCardWidget extends StatelessWidget {
   final ScheduleScratchCourse _scratchCourse;
   final Function(ScheduleScratchCourse) _onTap;
   final bool _isSelected;
+  final Color _selectedColor;
 
-  const CourseInfoCardWidget(
-      {@required scratchCourse,
-      Function(ScheduleScratchCourse) onTap,
-      bool isSelected})
-      : this._scratchCourse = scratchCourse,
+  const CourseInfoCardWidget({
+    @required scratchCourse,
+    Function(ScheduleScratchCourse) onTap,
+    bool isSelected,
+    Color selectedColor,
+  })  : this._scratchCourse = scratchCourse,
         this._onTap = onTap,
         this._isSelected = isSelected,
+        this._selectedColor = selectedColor,
         super();
 
   @override
@@ -37,7 +40,8 @@ class CourseInfoCardWidget extends StatelessWidget {
     return CircularRoundedRectangleCard(
         radius: 12,
         elevation: 2,
-        color: _isSelected ? Theme.of(context).primaryColor : Colors.white,
+        color: Colors.white,
+        borderColor: _isSelected ? _selectedColor : Colors.white,
         child: InkWell(
           onTap: () => _onTap(_scratchCourse),
           child: Container(

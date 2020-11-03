@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/text/text.dart';
@@ -52,6 +53,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
   ScheduleScratchCourse _selectedScratchCourse;
   int _selectedLevel;
   InstitutionSubject _selectedSubject;
+  Color _selectedColor;
 
   SelectCourseWidgetState(this._levels, this._subjects, this._scratchCourses,
       this._onConfirm, this._onCancel);
@@ -59,6 +61,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
   @override
   void initState() {
     _selectedLevel = _levels[FIRST_ELEMENT_INDEX];
+    _selectedColor = Colors.red;
     _generateSubjectsOnDisplay(_selectedLevel);
     super.initState();
   }
@@ -105,6 +108,15 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
           ],
         ),
       ),
+      titleAction: CircleAvatar(
+          backgroundColor: _selectedColor,
+          child: IconButton(
+            icon: Icon(
+              Icons.palette,
+              color: Colors.white,
+            ),
+            onPressed: () => _openColorPicker(context),
+          )),
       actions: <Widget>[
         SaveButton(
           onSave: _handleOnSave,
@@ -114,6 +126,37 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
         )
       ],
     );
+  }
+
+  void _openColorPicker(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            titlePadding: const EdgeInsets.all(0.0),
+            contentPadding: const EdgeInsets.all(0.0),
+            content: SingleChildScrollView(
+              child: ColorPicker(
+                pickerColor: _selectedColor,
+                onColorChanged: (Color newColor) {
+                  setState(() {
+                    _selectedColor = newColor;
+                  });
+                },
+                colorPickerWidth: 300.0,
+                pickerAreaHeightPercent: 0.7,
+                enableAlpha: true,
+                displayThumbColor: true,
+                showLabel: true,
+                paletteType: PaletteType.hsv,
+                pickerAreaBorderRadius: const BorderRadius.only(
+                  topLeft: const Radius.circular(2.0),
+                  topRight: const Radius.circular(2.0),
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   void _handleOnSave() {
@@ -139,10 +182,10 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 6,
       child: CourseInfoCardWidget(
-        scratchCourse: scheduleScratchCourse,
-        onTap: _selectScratchCourse,
-        isSelected: isCourseSelected,
-      ),
+          scratchCourse: scheduleScratchCourse,
+          onTap: _selectScratchCourse,
+          isSelected: isCourseSelected,
+          selectedColor: _selectedColor),
     );
   }
 
