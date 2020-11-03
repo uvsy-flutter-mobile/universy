@@ -18,14 +18,12 @@ Future<List<ForumPublication>> getForumPublications(String programId, int offset
     model: (content) => ForumPublication.fromJson(content),
   );
 
-  print(response);
   return response.orElse([]);
 }
 
 Future<void> createForumPublication(ForumPublicationRequest request) {
   var resource = "/publications";
   var path = _createPath(resource);
-  print(request);
 
   return api.post(
     path,
@@ -46,7 +44,7 @@ Future<void> updateForumPublication(ForumPublicationUpdateRequest request) {
 Future<List<Comment>> searchCommentsPublication(String idPublication) async {
   var resource = "/comments";
   var path = _createPath(resource);
-  var queryParams = {"publicationId":"$idPublication","includeAlias":true};
+  var queryParams = {"publicationId":"$idPublication","includeAlias":"true"};
 
   var response = await api.getList<Comment>(
     path,
@@ -54,7 +52,6 @@ Future<List<Comment>> searchCommentsPublication(String idPublication) async {
     model: (content) => Comment.fromJson(content),
   );
 
-  print(response.value);
   return response.orElse([]);
 }
 

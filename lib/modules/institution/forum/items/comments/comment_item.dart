@@ -103,7 +103,7 @@ class CommentItemWidget extends StatelessWidget {
           Container(
             child: Expanded(
               flex: 3,
-              child: Text(_comment.description),
+              child: Text(_comment.content),
             ),
           ),
         ],

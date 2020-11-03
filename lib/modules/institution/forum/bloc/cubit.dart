@@ -21,9 +21,6 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     var profile = await _profileService.getProfile();
     var programId = await this._careerService.getCurrentProgram();
 
-    print("userId: ${profile.userId}");
-    print("programId: ${programId}");
-
     List<ForumPublication> forumPublications = await this._forumService.getForumPublications(programId,1);
     List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
     List<Commission> listCommissions = await this._institutionService.getCommissions(programId);

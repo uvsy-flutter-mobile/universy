@@ -74,7 +74,6 @@ class DefaultForumService implements ForumService {
   @override
   Future<void> deleteForumPublication(String idPublication) async {
     try {
-      print(idPublication);
       return await forumApi.deletePublication(idPublication);
     } catch (e) {
       Log.getLogger().error(e);
@@ -84,7 +83,6 @@ class DefaultForumService implements ForumService {
 
   @override
   Future<void> deletePublicationComment(String idComment) async {
-    print(idComment);
     try {
       return await forumApi.deleteComment(idComment);
     } catch (e) {

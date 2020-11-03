@@ -49,11 +49,11 @@ class ForumPublication {
       this._comments, this._tags, this._userAlias);
 
   factory ForumPublication.fromJson(Map<String, dynamic> json) {
-    //List<String> listTags = (json['tags'] as List ?? []).map((tag) => tag.toList().toString());
+    List<String> listTags = (json['tags'] as List ?? []).map((tag) => tag.toString()).toList();
     int date = json["createdAt"];
     DateTime publicationDate = DateTime.fromMillisecondsSinceEpoch(date);
     return ForumPublication(json["id"], json["title"], json['userId'], json['description'],
-        publicationDate, json["comments"], [], json["userAlias"]);
+        publicationDate, json["comments"], listTags, json["userAlias"]);
   }
 
   @override
@@ -134,13 +134,13 @@ class ForumPublicationUpdateRequest extends JsonConvertible {
   }
 }
 
-class Comment {
+class Comment extends JsonConvertible{
   String _idPublication;
   String _idComment;
   String _userAlias;
   String _userId;
   DateTime _date;
-  String _description;
+  String _content;
   int _votes;
 
   String get idPublication => _idPublication;
@@ -153,12 +153,12 @@ class Comment {
 
   DateTime get date => _date;
 
-  String get description => _description;
+  String get content => _content;
 
   int get votes => _votes;
 
   Comment(this._idPublication, this._idComment, this._userAlias, this._userId, this._date,
-      this._description, this._votes);
+      this._content, this._votes);
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     int date = json["createdAt"];
@@ -168,10 +168,10 @@ class Comment {
   }
 
   @override
-  Map<String, String> toJson() {
+  Map<String, dynamic> toJson() {
     return {
       "id": _idPublication.toString(),
-      "description": _description,
+      "description": _content,
       "date": _date.toString(),
     };
   }
