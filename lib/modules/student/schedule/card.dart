@@ -44,7 +44,7 @@ class ScheduleCard extends StatelessWidget {
               Expanded(
                   child: ScheduleInfo(
                 scheduleName: this._studentScheduleScratch.name,
-                scheduleLeyend: _buildScheduleLeyend(),
+                scheduleLegend: _buildScheduleLegend(),
               )),
               SizedBox(
                 width: 10,
@@ -61,19 +61,21 @@ class ScheduleCard extends StatelessWidget {
     );
   }
 
-  String _buildScheduleLeyend() {
-    return ScheduleScratchTimeRangeFormatter(this._studentScheduleScratch)
-        .format();
+  String _buildScheduleLegend() {
+    ScheduleScratchTimeRangeFormatter scheduleFormatter =
+        new ScheduleScratchTimeRangeFormatter();
+    return scheduleFormatter.format(
+        _studentScheduleScratch.beginDate, _studentScheduleScratch.endDate);
   }
 }
 
 class ScheduleInfo extends StatelessWidget {
   final String _scheduleName;
-  final String _scheduleLeyend;
+  final String _scheduleLegend;
 
-  ScheduleInfo({String scheduleName, String scheduleLeyend})
+  ScheduleInfo({String scheduleName, String scheduleLegend})
       : this._scheduleName = scheduleName,
-        this._scheduleLeyend = scheduleLeyend,
+        this._scheduleLegend = scheduleLegend,
         super();
 
   @override
@@ -90,7 +92,7 @@ class ScheduleInfo extends StatelessWidget {
           height: 5,
         ),
         Text(
-          this._scheduleLeyend,
+          this._scheduleLegend,
           style: Theme.of(context).textTheme.caption,
         )
       ],

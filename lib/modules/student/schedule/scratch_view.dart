@@ -7,6 +7,7 @@ import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
+import 'package:universy/text/formaters/schedule_scratch.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/day.dart';
 import 'package:universy/util/object.dart';
@@ -128,7 +129,6 @@ class _ScratchViewState extends State<ScratchView> {
   }
 
   Widget _buildScheduleCalendar() {
-    List<LaneEvents> emptyLane = [];
     return TimetableView(
       timetableStyle: TimetableStyle(
           cornerColor: Colors.amber,
@@ -277,9 +277,10 @@ class _ScratchViewState extends State<ScratchView> {
   }
 
   Widget _buildPeriodSubtitle(BuildContext context) {
-    String begin = _scratch.beginDate.toString();
-    String end = _scratch.endDate.toString();
-    return Text("$begin - $end",
-        style: Theme.of(context).primaryTextTheme.bodyText1);
+    ScheduleScratchTimeRangeFormatter scheduleFormatter =
+        ScheduleScratchTimeRangeFormatter();
+    String date =
+        scheduleFormatter.format(_scratch.beginDate, _scratch.endDate);
+    return Text("$date", style: Theme.of(context).primaryTextTheme.bodyText1);
   }
 }

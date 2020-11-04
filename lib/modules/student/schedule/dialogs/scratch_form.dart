@@ -19,7 +19,6 @@ import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 const double SEPARATOR_SPACE = 15;
-const int DEFAULT_TIME = 1603494929000; //TODO: change this
 
 class ScratchFormDialog extends StatefulWidget {
   final StudentScheduleScratch _studentScheduleScratch;
@@ -158,7 +157,7 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
       child: _buildDate(
         context: context,
         isBeginDate: true,
-        time: widget._create ? DEFAULT_TIME : _studentScheduleScratch.beginDate,
+        date: _create ? DateTime.now() : _studentScheduleScratch.beginDate,
         label: AppText.getInstance()
             .get("student.schedule.scratchFormDialog.dateFrom"),
       ),
@@ -185,7 +184,7 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
       child: _buildDate(
         context: context,
         isBeginDate: false,
-        time: widget._create ? DEFAULT_TIME : _studentScheduleScratch.endDate,
+        date: _create ? DateTime.now() : _studentScheduleScratch.endDate,
         label: AppText.getInstance()
             .get("student.schedule.scratchFormDialog.dateTo"),
       ),
@@ -194,20 +193,19 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
 
   Widget _buildDate(
       {@required BuildContext context,
-      @required int time,
+      @required DateTime date,
       @required String label,
       bool isBeginDate}) {
-    DateTime eventDate = DateTime.fromMillisecondsSinceEpoch(time);
-
     return SizedBox(
         width: 200,
         child: MonthPickerWidget(
-          initialValue: eventDate,
+          initialValue: date,
           context: context,
           label: label,
           onSaved: (value) => setState(() {
-            /*isBeginDate ? _studentScheduleScratch.beginTime = value : _studentScheduleScratch.endTime = value;*/
-            //TODO convert DateTime to int
+            isBeginDate
+                ? _studentScheduleScratch.beginDate = value
+                : _studentScheduleScratch.endDate = value;
           }),
         ));
   }

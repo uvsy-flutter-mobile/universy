@@ -9,19 +9,6 @@ import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/delete.dart';
 import 'package:universy/widgets/dialog/title.dart';
 
-var mockedScheduleScratchList = [
-  StudentScheduleScratch(
-      'scheduleScratchId',
-      'Primer cuatrimestre muy largo y totalmente execsivo',
-      1602980186767,
-      1602980186767,
-      [],
-      DateTime.now(),
-      DateTime.now()),
-  StudentScheduleScratch('scheduleScratchId', 'name,', 1602980186767,
-      1602980186767, [], DateTime.now(), DateTime.now()),
-];
-
 class StudentScheduleListWidget extends StatelessWidget {
   final List<StudentScheduleScratch> _scheduleScratches;
 

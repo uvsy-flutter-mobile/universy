@@ -34,13 +34,13 @@ class ScheduleCubit extends Cubit<ScheduleState> {
         StudentScheduleScratch(
             'scheduleScratchId',
             'Primer cuatrimestre muy largo y totalmente execsivo',
-            1602980186767,
-            1602980186767,
+            DateTime.now(),
+            DateTime.now(),
             [],
             DateTime.now(),
             DateTime.now()),
-        StudentScheduleScratch('scheduleScratchId', 'name,', 1602980186767,
-            1602980186767, [], DateTime.now(), DateTime.now()),
+        StudentScheduleScratch('scheduleScratchId', 'name,', DateTime.now(),
+            DateTime.now(), [], DateTime.now(), DateTime.now()),
       ];
       if (scheduleScratches.isNotEmpty) {
         emit(DisplayScratchesState(scheduleScratches));

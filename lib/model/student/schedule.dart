@@ -9,8 +9,8 @@ class StudentScheduleScratch
     implements JsonConvertible, Copyable<StudentScheduleScratch> {
   String scheduleScratchId;
   String name;
-  int beginDate;
-  int endDate;
+  DateTime beginDate;
+  DateTime endDate;
   List<ScheduleScratchCourse> selectedCourses;
   DateTime updatedAt;
   DateTime createdAt;
@@ -24,8 +24,8 @@ class StudentScheduleScratch
   }
 
   factory StudentScheduleScratch.empty() {
-    return StudentScheduleScratch(EMPTY_STRING, EMPTY_STRING, EMPTY_INT,
-        EMPTY_INT, [], DateTime.now(), DateTime.now());
+    return StudentScheduleScratch(EMPTY_STRING, EMPTY_STRING, DateTime.now(),
+        DateTime.now(), [], DateTime.now(), DateTime.now());
   }
 
   @override
