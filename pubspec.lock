@@ -196,7 +196,7 @@ packages:
     source: hosted
     version: "6.0.1"
   flutter_colorpicker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_colorpicker
       url: "https://pub.dartlang.org"
