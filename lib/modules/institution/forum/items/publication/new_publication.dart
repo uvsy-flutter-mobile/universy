@@ -9,22 +9,31 @@ import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/formfield/decoration/builder.dart';
+import 'package:universy/widgets/formfield/text/custom.dart';
+import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class NewPublicationWidget extends StatefulWidget {
+  final Profile _profile;
   final List<InstitutionSubject> _subjects;
   final List<Commission> _commissions;
-  final Profile _profile;
+  final bool _isUpdate;
+  final ForumPublication _forumPublication;
 
   NewPublicationWidget(
       {Key key,
       Function(ForumPublication) callBack,
       List<InstitutionSubject> subjects,
       List<Commission> commissions,
+      ForumPublication forumPublication,
+      bool isUpdate,
       Profile profile})
       : this._profile = profile,
         this._subjects = subjects,
         this._commissions = commissions,
+        this._isUpdate = isUpdate,
+        this._forumPublication = forumPublication,
         super(key: key);
 
   @override
@@ -37,44 +46,48 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   InstitutionSubject _selectedSubject;
   Commission _selectedCommission;
   Profile _profile;
-
-  List<DropdownMenuItem> _courses = List<DropdownMenuItem>();
-
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _searchTagsEditingController = TextEditingController();
+  TextEditingController _titleController;
+  TextEditingController _descriptionController;
+  TextEditingController _searchTagsEditingController;
   List<String> _uploadTags = [];
   bool _maxTags;
 
   ScrollController _scrollController;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _subjects = widget._subjects;
     _commissions = widget._commissions;
     _profile = widget._profile;
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _searchTagsEditingController = TextEditingController();
+
+    if (widget._isUpdate) {
+      _titleController.text = widget._forumPublication.title;
+    }
+    if (widget._isUpdate) {
+      _descriptionController.text = widget._forumPublication.description;
+    }
+    (widget._isUpdate) ? _uploadTags = widget._forumPublication.tags : [];
     _scrollController = ScrollController();
     _maxTags = false;
-    _uploadTags = [];
-    DropdownMenuItem type1 = DropdownMenuItem(value: "Final", child: Text("Final"));
-    DropdownMenuItem type2 = DropdownMenuItem(value: "Discusion", child: Text("Discusion"));
-    DropdownMenuItem type3 = DropdownMenuItem(value: "Cursado", child: Text("Cursado"));
-    DropdownMenuItem type4 = DropdownMenuItem(value: "Parcial", child: Text("Parcial"));
-    _courses.add(type1);
-    _courses.add(type2);
-    _courses.add(type3);
-    _courses.add(type4);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 10,
-      child: SymmetricEdgePaddingWidget.horizontal(
-        paddingValue: 10,
-        child: Card(
-          child: _buildListView(context),
+    return Form(
+      key: _formKey,
+      child: SymmetricEdgePaddingWidget.vertical(
+        paddingValue: 5,
+        child: SymmetricEdgePaddingWidget.horizontal(
+          paddingValue: 5,
+          child: Card(
+            child: _buildListView(context),
+          ),
         ),
       ),
     );
@@ -88,9 +101,9 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       children: <Widget>[
         _buildHeader(),
         Divider(),
-        _buildTextTitle(),
+        _buildTextFieldTitle(),
         Divider(),
-        _buildTextDescription(context),
+        _buildTextFieldDescription(context),
         Divider(),
         _buildTags(),
         _buildAddTagsSection(),
@@ -242,7 +255,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         SaveButton(
-          onSave: () => {_buildNewPublication(context)},
+          onSave: () => {_buildPublicationRequest(context)},
         ),
         CancelButton(
           onCancel: () => {_cancelNewPublication(context)},
@@ -251,34 +264,52 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     );
   }
 
-  void _buildNewPublication(BuildContext context) {
-    if ((_titleController.text.trim() != null) && (_descriptionController.text.trim() != null)) {
+  void _buildPublicationRequest(BuildContext context) {
+    if (this._formKey.currentState.validate()) {
       String title = _titleController.text.trim();
       String description = _descriptionController.text.trim();
-      _uploadTags.insert(0,_selectedSubject.name);
-      _uploadTags.insert(1,_selectedCommission.name);
-      _savePublication(title, description, _uploadTags, context);
-    }
-  }
+      if (_selectedSubject != null) {
+        _uploadTags.insert(0, _selectedSubject.name);
+      }
+      if (_selectedCommission != null) {
+        _uploadTags.insert(0, _selectedCommission.name);
+      }
 
-  void _savePublication(
-      String title, String description, List<String> _uploadTags, BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context)
-        .addNewForumPublication(title, description, _uploadTags);
+      if (widget._isUpdate == false) {
+        BlocProvider.of<InstitutionForumCubit>(context)
+            .addForumPublication(title, description, _uploadTags);
+      } else {
+        BlocProvider.of<InstitutionForumCubit>(context)
+            .updateForumPublication(title, description, _uploadTags,widget._forumPublication.idPublication);
+      }
+    }
   }
 
   void _cancelNewPublication(BuildContext context) {
     BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
   }
 
-  Widget _buildTextDescription(BuildContext context) {
+  Widget _buildTextFieldDescription(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
-      child: TextField(
+      child: CustomTextFormField(
+        maxLines: 9,
         controller: _descriptionController,
-        decoration: InputDecoration.collapsed(
-            hintText: "Explayate titán !", hintStyle: TextStyle(color: Colors.grey)),
-        maxLines: 10,
+        decorationBuilder: ForumInputDescriptionDecorationBuilder("Explayate Titan !"),
+        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder("Debes ingresar una descripción"),
+      ),
+    );
+  }
+
+  Widget _buildTextFieldTitle() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: CustomTextFormField(
+        style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
+        controller: _titleController,
+        decorationBuilder: ForumInputTitleDecorationBuilder("Escribe el título de tu publicación"),
+        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder("Debes ingresar un titulo !"),
+        maxLines: 1,
       ),
     );
   }
@@ -300,7 +331,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         return new DropdownMenuItem<InstitutionSubject>(
           value: x,
           child: SizedBox(
-              width: MediaQuery.of(context).size.width / 2.5,
+              width: MediaQuery.of(context).size.width / 2.0,
               child: new Text(
                 x.name,
                 textAlign: TextAlign.center,
@@ -333,7 +364,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         return new DropdownMenuItem<Commission>(
           value: x,
           child: SizedBox(
-              width: MediaQuery.of(context).size.width / 2.5,
+              width: MediaQuery.of(context).size.width / 2.0,
               child: new Text(
                 x.name,
                 textAlign: TextAlign.center,
@@ -347,19 +378,5 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     return setState(() {
       this._selectedCommission = newValue;
     });
-  }
-
-  Widget _buildTextTitle() {
-    return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 10,
-      child: TextField(
-        style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
-        controller: _titleController,
-        decoration: InputDecoration.collapsed(
-            hintText: "Escribe el título de tu publicación",
-            hintStyle: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
-        maxLines: 1,
-      ),
-    );
   }
 }

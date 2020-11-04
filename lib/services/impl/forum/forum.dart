@@ -51,20 +51,10 @@ class DefaultForumService implements ForumService {
   }
 
   @override
-  Future<void> updateForumPublication(String title, String description,List<String> tags) async {
+  Future<void> updateForumPublication(String title, String description,List<String> tags, String idPublication) async {
     try {
-      ForumPublicationUpdateRequest request = new ForumPublicationUpdateRequest(title,description,tags);
+      ForumPublicationUpdateRequest request = new ForumPublicationUpdateRequest(title,description,tags,idPublication);
       return await forumApi.updateForumPublication(request);
-    } catch (e) {
-      Log.getLogger().error(e);
-      throw ServiceException();
-    }
-  }
-
-  @override
-  Future<List<Comment>> getCommentsPublication(String idPublication) async {
-    try {
-      return await forumApi.searchCommentsPublication(idPublication);
     } catch (e) {
       Log.getLogger().error(e);
       throw ServiceException();
@@ -82,7 +72,17 @@ class DefaultForumService implements ForumService {
   }
 
   @override
-  Future<void> deletePublicationComment(String idComment) async {
+  Future<List<Comment>> getCommentsPublication(String idPublication) async {
+    try {
+      return await forumApi.searchCommentsPublication(idPublication);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> deleteComment(String idComment) async {
     try {
       return await forumApi.deleteComment(idComment);
     } catch (e) {
@@ -92,7 +92,7 @@ class DefaultForumService implements ForumService {
   }
 
   @override
-  Future<void> createCommentPublication(String userId, String content, String idPublication) async {
+  Future<void> createComment(String userId, String content, String idPublication) async {
     CommentRequest request = CommentRequest(userId,content,idPublication);
     try {
       return await forumApi.insertComment(request);

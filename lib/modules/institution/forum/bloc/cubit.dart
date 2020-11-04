@@ -32,7 +32,7 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     }
   }
 
-  void createNewForumPublication() async {
+  void createNewForumPublicationState() async {
     var displayState = this.state as DisplayState;
     emit(CreateForumPublicationState(displayState.institutionSubjects, displayState.profile,displayState.listCommissions));
   }
@@ -42,28 +42,28 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     emit(CreateForumPublicationState(displayState.institutionSubjects, displayState.profile,displayState.listCommissions));
   }
 
-  void addNewForumPublication(String title, String description, List<String> uploadTags) async {
-    emit(LoadingState());
-    await this._forumService.createForumPublication(title, description, uploadTags);
-    fetchPublications();
-  }
-
-  void selectForumPublication(ForumPublication forumPublication) async {
+  void viewDetailForumPublicationState(ForumPublication forumPublication) async {
     var displayState = this.state as DisplayState;
     emit(LoadingState());
     List<Comment> listComment = await this._forumService.getCommentsPublication(forumPublication.idPublication);
     emit(DisplayForumPublicationDetailState(forumPublication, displayState.profile,listComment));
   }
 
-  void filterForumPublications() async {
+  void updateForumPublicationState(ForumPublication forumPublication) async {
+    var displayState = this.state as DisplayState;
+    emit(UpdateForumPublicationState(
+        displayState.institutionSubjects, displayState.profile, forumPublication,displayState.listCommissions));
+  }
+
+  void filterForumPublicationsState() async {
     var displayState = this.state as DisplayState;
     emit(FilterForumPublicationsState(displayState.institutionSubjects, displayState.profile,displayState.listCommissions));
   }
 
-  void updateForumPublication(ForumPublication forumPublication) async {
-    var displayState = this.state as DisplayState;
-    emit(UpdateForumPublicationState(
-        displayState.institutionSubjects, displayState.profile, forumPublication,displayState.listCommissions));
+  void addForumPublication(String title, String description, List<String> uploadTags) async {
+    emit(LoadingState());
+    await this._forumService.createForumPublication(title, description, uploadTags);
+    fetchPublications();
   }
 
   void deleteForumPublication(ForumPublication forumPublication) async {
@@ -72,32 +72,21 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     fetchPublications();
   }
 
-  void deletePublicationComment(Comment comment) async {
+  void updateForumPublication(String title, String description, List<String> uploadTags, String idPublication) async {
     emit(LoadingState());
-    await this._forumService.deletePublicationComment(comment.idComment);
+    await this._forumService.updateForumPublication(title, description, uploadTags,idPublication);
     fetchPublications();
   }
 
-  void addNewCommentPublication(ForumPublication forumPublication,String userId, String content,String idPublication) async {
+  void deleteComment(Comment comment) async {
     emit(LoadingState());
-    await this._forumService.createCommentPublication(userId, content, idPublication);
-    selectForumPublication(forumPublication);
+    await this._forumService.deleteComment(comment.idComment);
+    fetchPublications();
   }
 
-
-//  void editNote(StudentNote note) {
-//   emit(EditNoteState(note));
-// }
-
-//  Future<void> createForumPublication(String title, String description) async {
-//   await _notesService.createNote(title, description);
-//  }
-
-// Future<void> updateForumPublication(String noteId, String title, String description) async {
-//  await _notesService.updateNote(noteId, title, description);
-// }
-
-// Future<void> deleteForumPublication(String noteId) async {
-// await _notesService.deleteNote(noteId);
-//}
+  void addComment(ForumPublication forumPublication,String userId, String content,String idPublication) async {
+    emit(LoadingState());
+    await this._forumService.createComment(userId, content, idPublication);
+    viewDetailForumPublicationState(forumPublication);
+  }
 }

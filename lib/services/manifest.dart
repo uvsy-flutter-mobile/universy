@@ -144,11 +144,15 @@ abstract class ForumService extends Service {
 
   Future<void> createForumPublication(String title, String description, List<String> tags);
 
-  Future<void> createCommentPublication(String userId, String content, String idPublication);
+  Future<void> createComment(String userId, String content, String idPublication);
 
   Future<void> deleteForumPublication(String idPublication);
 
-  Future<void> deletePublicationComment(String idComment);
+  Future<void> deleteComment(String idComment);
+
+  Future<void> updateForumPublication(String title, String description, List<String> tags,String idPublication);
+
+
 
 
 

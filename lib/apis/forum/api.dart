@@ -32,10 +32,15 @@ Future<void> createForumPublication(ForumPublicationRequest request) {
 }
 
 Future<void> updateForumPublication(ForumPublicationUpdateRequest request) {
+  print(request.title);
+  print(request.description);
+  print(request.idPublication);
+  print(request);
   var resource = "/publications/${request.idPublication}";
   var path = _createPath(resource);
+  print("path" + path);
 
-  return api.post(
+  return api.put(
     path,
     payload: request,
   );

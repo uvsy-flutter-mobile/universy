@@ -105,15 +105,15 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   void _pressUpdatePublicationForumButton(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).updateForumPublication(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context).updateForumPublicationState(this._forumPublication);
   }
 
   Future _deletePublication(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).updateForumPublication(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context).deleteForumPublication(this._forumPublication);
   }
 
   void _refreshForum(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).deleteForumPublication(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
   }
 
   Widget _buildRowContent() {
@@ -230,6 +230,6 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   void _onPublicationTap(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).selectForumPublication(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context).viewDetailForumPublicationState(this._forumPublication);
   }
 }

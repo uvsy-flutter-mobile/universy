@@ -38,7 +38,7 @@ class _FilterButtonWidgetState extends State<FilterButtonWidget> {
   }
 
   void _onTap() {
-    BlocProvider.of<InstitutionForumCubit>(context).filterForumPublications();
+    BlocProvider.of<InstitutionForumCubit>(context).filterForumPublicationsState();
   }
 
   void _fetchFilters(Filters filters) {

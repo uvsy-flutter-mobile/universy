@@ -64,7 +64,7 @@ class CommentItemWidget extends StatelessWidget {
   }
 
   Future _deleteComment(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).deletePublicationComment(this._comment);
+    BlocProvider.of<InstitutionForumCubit>(context).deleteComment(this._comment);
   }
 
   void _refreshForum(BuildContext context) {

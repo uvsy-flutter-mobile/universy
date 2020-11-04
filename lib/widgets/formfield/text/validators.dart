@@ -14,7 +14,7 @@ class NotEmptyTextFormFieldValidatorBuilder implements TextFormFieldValidatorBui
   @override
   FormFieldValidator<String> build(BuildContext context) {
     return (value) {
-      if (value.trim().isEmpty) {
+      if (value.trim().isEmpty || value.trim() =='') {
         return _emptyMessage;
       }
       return null; // This null is required by the interface.

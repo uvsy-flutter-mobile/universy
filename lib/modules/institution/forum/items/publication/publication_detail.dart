@@ -162,7 +162,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     print(widget._profile.userId);
     print(this._newCommentController.text);
     print(widget._forumPublication.idPublication);
-    BlocProvider.of<InstitutionForumCubit>(context).addNewCommentPublication(
+    BlocProvider.of<InstitutionForumCubit>(context).addComment(
         widget._forumPublication,
         widget._profile.userId,
         this._newCommentController.text,

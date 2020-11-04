@@ -35,3 +35,28 @@ class TextInputDecorationBuilder implements InputDecorationBuilder {
     return InputDecoration(labelText: _labelText);
   }
 }
+
+class ForumInputDescriptionDecorationBuilder implements InputDecorationBuilder {
+  final String _labelText;
+
+  ForumInputDescriptionDecorationBuilder(this._labelText);
+
+  @override
+  InputDecoration build(BuildContext context) {
+    return InputDecoration.collapsed(
+        hintText: _labelText, hintStyle: TextStyle(color: Colors.grey));
+  }
+}
+
+class ForumInputTitleDecorationBuilder implements InputDecorationBuilder {
+  final String _labelText;
+
+  ForumInputTitleDecorationBuilder(this._labelText);
+
+  @override
+  InputDecoration build(BuildContext context) {
+    return InputDecoration.collapsed(
+        hintText: _labelText,
+        hintStyle: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold));
+  }
+}

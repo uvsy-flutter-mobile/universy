@@ -214,7 +214,7 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
   }
 
   void _onFloatingPressed(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).createNewForumPublication();
+    BlocProvider.of<InstitutionForumCubit>(context).createNewForumPublicationState();
   }
 
   void fetchMorePublications() async {

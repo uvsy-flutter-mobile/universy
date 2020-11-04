@@ -106,12 +106,12 @@ class ForumPublicationRequest extends JsonConvertible {
 }
 
 class ForumPublicationUpdateRequest extends JsonConvertible {
-  int _idPublication;
+  String _idPublication;
   String _title;
   String _description;
   List<String> _tags;
 
-  int get idPublication => _idPublication;
+  String get idPublication => _idPublication;
 
   String get title => _title;
 
@@ -120,16 +120,14 @@ class ForumPublicationUpdateRequest extends JsonConvertible {
   List<String> get tags => _tags;
 
   ForumPublicationUpdateRequest(
-      this._title, this._description, this._tags);
+      this._title, this._description, this._tags,this._idPublication);
 
   @override
   Map<String, dynamic> toJson() {
-    var a = jsonEncode(this.tags);
-    print(a);
     return {
       "title": "${this._title}",
       "description": "${this._description}",
-      "tags": this._tags,
+      "tags": this.tags,
     };
   }
 }
