@@ -184,12 +184,17 @@ class _ScratchViewState extends State<ScratchView> {
   List<LaneEvents> _buildExistingCourses(List<LaneEvents> lanesEvents) {
     DayTextTranslator dayTextTranslator = new DayTextTranslator();
     List<ScheduleScratchCourse> courses = _scratch.selectedCourses;
-    courses.forEach((e) {
-      e.period.scheduleList.forEach((schedule) {
+    courses.forEach((ScheduleScratchCourse course) {
+      course.period.scheduleList.forEach((Schedule schedule) {
         TableEventTime beginTime = _buildEventTime(schedule.beginTime);
         TableEventTime endTime = _buildEventTime(schedule.endTime);
-        TableEvent calendarCourse =
-            _buildEvent(e.subjectName, e.commission.name, beginTime, endTime);
+        TableEvent calendarCourse = _buildEvent(
+          course.subjectName,
+          course.commission.name,
+          beginTime,
+          endTime,
+          course.color,
+        );
         int index = lanesEvents.indexWhere((laneEvent) => stringEquals(
             laneEvent.lane.name,
             dayTextTranslator.translate(schedule.dayOfWeek)));
@@ -230,11 +235,11 @@ class _ScratchViewState extends State<ScratchView> {
   }
 
   TableEvent _buildEvent(String subjectName, String commissionName,
-      TableEventTime start, TableEventTime end) {
+      TableEventTime start, TableEventTime end, Color color) {
     String title = "$subjectName - $commissionName";
     return TableEvent(
       title: title,
-      decoration: BoxDecoration(color: Colors.lightBlue),
+      decoration: BoxDecoration(color: color),
       start: start,
       end: end,
     );

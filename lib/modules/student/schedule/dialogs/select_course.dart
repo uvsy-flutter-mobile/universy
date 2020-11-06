@@ -146,6 +146,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
   }
 
   void _handleOnSave() {
+    _selectedScratchCourse.color = _selectedColor;
     _onConfirm(_selectedScratchCourse);
   }
 

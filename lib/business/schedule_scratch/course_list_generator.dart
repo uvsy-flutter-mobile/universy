@@ -25,11 +25,13 @@ class ScheduleScratchCourseListGenerator {
 
       _course.periods.forEach((CoursingPeriod coursingPeriod) {
         ScheduleScratchCourse newScheduleScratchCourse = ScheduleScratchCourse(
-            _course.courseId,
-            _course.subjectId,
-            courseSubject.name,
-            courseCommission,
-            coursingPeriod);
+          _course.courseId,
+          _course.subjectId,
+          courseSubject.name,
+          courseCommission,
+          coursingPeriod,
+          null,
+        );
         scheduleScratchCourses.add(newScheduleScratchCourse);
       });
 

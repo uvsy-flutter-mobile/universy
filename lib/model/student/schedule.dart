@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import "package:collection/collection.dart";
 import 'package:universy/constants/strings.dart';
 import "package:universy/model/copyable.dart";
@@ -69,9 +71,10 @@ class ScheduleScratchCourse
   String subjectName;
   Commission commission;
   CoursingPeriod period;
+  Color color;
 
   ScheduleScratchCourse(this.courseId, this.subjectId, this.subjectName,
-      this.commission, this.period);
+      this.commission, this.period, this.color);
 
   @override
   // ignore: missing_return
@@ -97,7 +100,8 @@ class ScheduleScratchCourse
           subjectId == other.subjectId &&
           subjectName == other.subjectName &&
           commission == other.commission &&
-          period == other.period;
+          period == other.period &&
+          color == other.color;
 
   @override
   int get hashCode =>
