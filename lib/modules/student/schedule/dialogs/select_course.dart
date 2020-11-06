@@ -5,8 +5,10 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/util/object.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/buttons/color/color_picker.dart';
 import 'package:universy/widgets/dialog/title.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -76,7 +78,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
     } else {
       _selectSubject(null);
     }
-    _selectScratchCourse(null);
+
     setState(() {
       _subjectsOnDisplay = filteredSubjects;
     });
@@ -108,18 +110,16 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
           ],
         ),
       ),
-      titleAction: CircleAvatar(
-          backgroundColor: _selectedColor,
-          child: IconButton(
-            icon: Icon(
-              Icons.palette,
-              color: Colors.white,
-            ),
-            onPressed: () => _openColorPicker(context),
-          )),
+      titleAction: ColorPickerPicker(
+        onSelectedColor: _onSelectedColor,
+        initialColor: _selectedColor,
+      ),
       actions: <Widget>[
-        SaveButton(
-          onSave: _handleOnSave,
+        Visibility(
+          visible: notNull(_selectedScratchCourse),
+          child: SaveButton(
+            onSave: _handleOnSave,
+          ),
         ),
         CancelButton(
           onCancel: _onCancel,
@@ -128,21 +128,10 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
     );
   }
 
-  void _openColorPicker(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: BlockPicker(
-              pickerColor: _selectedColor,
-              onColorChanged: (Color newColor) {
-                setState(() {
-                  _selectedColor = newColor;
-                });
-              },
-            ),
-          );
-        });
+  void _onSelectedColor(Color newColor) {
+    setState(() {
+      _selectedColor = newColor;
+    });
   }
 
   void _handleOnSave() {
@@ -268,16 +257,23 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
   }
 
   void _updateCoursesOnDisplay(InstitutionSubject newSubject) {
-    List<ScheduleScratchCourse> filteredScratchCourses = _scratchCourses
-        .where((ScheduleScratchCourse scheduleScratchCourse) =>
-            scheduleScratchCourse.subjectId == newSubject.id)
-        .toList();
+    if (notNull(newSubject)) {
+      List<ScheduleScratchCourse> filteredScratchCourses = _scratchCourses
+          .where((ScheduleScratchCourse scheduleScratchCourse) =>
+              scheduleScratchCourse.subjectId == newSubject.id)
+          .toList();
 
-    setState(() {
-      _scratchCoursesOnDisplay = filteredScratchCourses;
-    });
-    if (filteredScratchCourses.length > 0) {
-      _selectScratchCourse(filteredScratchCourses[FIRST_ELEMENT_INDEX]);
+      setState(() {
+        _scratchCoursesOnDisplay = filteredScratchCourses;
+      });
+      if (filteredScratchCourses.length > 0) {
+        _selectScratchCourse(filteredScratchCourses[FIRST_ELEMENT_INDEX]);
+      }
+    } else {
+      setState(() {
+        _scratchCoursesOnDisplay = [];
+      });
+      _selectScratchCourse(null);
     }
   }
 }
