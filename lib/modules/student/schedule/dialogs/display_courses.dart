@@ -1,26 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:universy/business/schedule_scratch/course_list_generator.dart';
-import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/course.dart';
-import 'package:universy/model/institution/coursing_period.dart';
-import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/student/schedule.dart';
-import 'package:universy/model/subject.dart';
-import 'package:universy/modules/institution/dashboard/subjects/courses/courses_list.dart';
-import 'package:universy/modules/institution/dashboard/subjects/courses/courses_list.dart';
-import 'package:universy/modules/institution/dashboard/subjects/courses/courses_list.dart';
-import 'package:universy/modules/institution/dashboard/subjects/courses/courses_list.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_course_card.dart';
 import 'package:universy/text/text.dart';
-import 'package:universy/util/object.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/dialog/title.dart';
-import 'package:universy/widgets/paddings/edge.dart';
-
-import '../widgets/course_info.dart';
 
 class DisplayCoursesDialogWidget extends StatefulWidget {
   final List<ScheduleScratchCourse> _scheduleScratchCourse;
@@ -83,21 +69,34 @@ class DisplayCoursesWidgetState extends State<DisplayCoursesDialogWidget> {
   }
 
   Widget _buildScratchCourseCards() {
-    return Container(
-        height: MediaQuery.of(context).size.height - 200,
-        width: MediaQuery.of(context).size.width - 100,
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          padding: EdgeInsets.symmetric(vertical: 8),
-          itemBuilder: (context, position) {
-            return ScratchCourseCard(
-              scheduleScratchCourse: _scheduleScratchCourseOnDisplay[position],
-              onRemove: _removeScratchFromList,
-            );
-          },
-          itemCount: _scheduleScratchCourseOnDisplay.length,
-        ));
+    if (_scheduleScratchCourseOnDisplay.length > 0) {
+      return Container(
+          height: MediaQuery.of(context).size.height - 200,
+          width: MediaQuery.of(context).size.width - 100,
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            padding: EdgeInsets.symmetric(vertical: 8),
+            itemBuilder: (context, position) {
+              return ScratchCourseCard(
+                scheduleScratchCourse:
+                    _scheduleScratchCourseOnDisplay[position],
+                onRemove: _removeScratchFromList,
+              );
+            },
+            itemCount: _scheduleScratchCourseOnDisplay.length,
+          ));
+    } else {
+      return Container(
+        padding: EdgeInsets.all(25),
+        child: Text(
+          AppText.instance
+              .get("student.schedule.displayCoursesDialog.emptyCourses"),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+      );
+    }
   }
 
   void _removeScratchFromList(ScheduleScratchCourse courseToRemove) {

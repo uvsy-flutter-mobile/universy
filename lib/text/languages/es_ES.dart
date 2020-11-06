@@ -395,9 +395,11 @@ const Map<dynamic, dynamic> ES = {
         "alertTitle": "Selecciona un curso",
         "level": "Año",
         "subject": "Materia",
+        "emptyCourses": "No hay cursos disponibles",
       },
       "displayCoursesDialog": {
         "alertTitle": "Cursos cargados",
+        "emptyCourses": "Sin cursos",
       },
       "notFound": {
         "title": "¡Bienvenido a Universy!",

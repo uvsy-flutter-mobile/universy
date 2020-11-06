@@ -150,17 +150,29 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
   }
 
   Widget _buildScratchCoursesList() {
-    return Container(
-        height: 300.0, // Change as per your requirement
-        width: 300.0, // Change as per your requirement
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemBuilder: (context, position) {
-            return _buildCourseInfoCard(_scratchCoursesOnDisplay[position]);
-          },
-          itemCount: _scratchCoursesOnDisplay.length,
-        ));
+    if (_scratchCoursesOnDisplay.length > 0) {
+      return Container(
+          height: 300.0, // Change as per your requirement
+          width: 300.0, // Change as per your requirement
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemBuilder: (context, position) {
+              return _buildCourseInfoCard(_scratchCoursesOnDisplay[position]);
+            },
+            itemCount: _scratchCoursesOnDisplay.length,
+          ));
+    } else {
+      return Container(
+        padding: EdgeInsets.all(25),
+        child: Text(
+          AppText.instance
+              .get("student.schedule.selectCourseDialog.emptyCourses"),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
+      );
+    }
   }
 
   Widget _buildCourseInfoCard(ScheduleScratchCourse scheduleScratchCourse) {
