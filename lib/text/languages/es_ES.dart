@@ -395,11 +395,11 @@ const Map<dynamic, dynamic> ES = {
         "alertTitle": "Selecciona un curso",
         "level": "Año",
         "subject": "Materia",
-        "emptyCourses": "No hay cursos disponibles",
+        "emptyCourses": "No hay cursos cargados",
       },
       "displayCoursesDialog": {
         "alertTitle": "Cursos cargados",
-        "emptyCourses": "Sin cursos",
+        "emptyCourses": "Sin cursos cargados",
       },
       "notFound": {
         "title": "¡Bienvenido a Universy!",
@@ -416,6 +416,10 @@ const Map<dynamic, dynamic> ES = {
         "alertMessage": "Estas a punto de borrar:",
         "confirmMessage": "¿ Estás de acuerdo ?",
       },
+      "goBackDialog": {
+        "alertMessage": "No guardaste los cambios de tu horario",
+        "confirmMessage": "¿Estás seguro que deseas salir?",
+      }
     }
   },
   "institution": {

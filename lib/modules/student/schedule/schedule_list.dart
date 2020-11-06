@@ -9,13 +9,38 @@ import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/delete.dart';
 import 'package:universy/widgets/dialog/title.dart';
 
-class StudentScheduleListWidget extends StatelessWidget {
+class StudentScheduleListWidget extends StatefulWidget {
   final List<StudentScheduleScratch> _scheduleScratches;
+  final ScheduleCubit _cubit;
 
   const StudentScheduleListWidget(
-      {Key key, @required List<StudentScheduleScratch> scheduleScratches})
+      {Key key,
+      @required List<StudentScheduleScratch> scheduleScratches,
+      @required ScheduleCubit cubit})
       : this._scheduleScratches = scheduleScratches,
+        this._cubit = cubit,
         super(key: key);
+
+  @override
+  _StudentScheduleListWidgetState createState() =>
+      _StudentScheduleListWidgetState();
+}
+
+class _StudentScheduleListWidgetState extends State<StudentScheduleListWidget> {
+  List<StudentScheduleScratch> _scheduleScratches;
+  ScheduleCubit _cubit;
+
+  void initState() {
+    this._scheduleScratches = widget._scheduleScratches;
+    this._cubit = widget._cubit;
+    super.initState();
+  }
+
+  void dispose() {
+    this._scheduleScratches = null;
+    this._cubit = null;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +90,10 @@ class StudentScheduleListWidget extends StatelessWidget {
   void _onDeleteScheduleScratch(
       StudentScheduleScratch studentScheduleScratch, BuildContext context) {
     print('Trying To Delete: ${studentScheduleScratch.name}');
+    _cubit.deleteScratch(studentScheduleScratch.scheduleScratchId);
+    setState(() {
+      _scheduleScratches.remove(studentScheduleScratch);
+    });
     _closeDeleteDialog(context);
   }
 

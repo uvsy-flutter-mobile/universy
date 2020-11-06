@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/model/student/schedule.dart';
+import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/widgets/add_scratch_button.dart';
 import 'package:universy/modules/student/schedule/widgets/schedule_title.dart';
 import 'package:universy/modules/student/schedule/schedule_list.dart';
@@ -39,7 +41,7 @@ class DisplayScratchesWidget extends StatelessWidget {
               SizedBox(height: 20),
               AddScratchButton(),
               SizedBox(height: 15),
-              _buildScratchesList()
+              _buildScratchesList(context)
             ],
           ),
         )
@@ -59,8 +61,7 @@ class DisplayScratchesWidget extends StatelessWidget {
   }
 
   String _getScratchesLength() {
-    /*int amountOfScratches = _scheduleScratches.length(); */ //TODO: tomar el largo de la lista
-    int amountOfScratches = 2;
+    int amountOfScratches = _scheduleScratches.length;
 
     if (amountOfScratches == ONLY_ONE_SCHEDULE_AMOUNT) {
       String onlyOneScheduleMessage =
@@ -73,7 +74,9 @@ class DisplayScratchesWidget extends StatelessWidget {
     }
   }
 
-  Widget _buildScratchesList() {
-    return StudentScheduleListWidget(scheduleScratches: _scheduleScratches);
+  Widget _buildScratchesList(BuildContext context) {
+    ScheduleCubit cubit = BlocProvider.of<ScheduleCubit>(context);
+    return StudentScheduleListWidget(
+        scheduleScratches: _scheduleScratches, cubit: cubit);
   }
 }

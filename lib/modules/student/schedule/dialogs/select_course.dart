@@ -62,7 +62,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
 
   @override
   void initState() {
-    _selectedLevel = _levels[FIRST_ELEMENT_INDEX];
+    _selectedLevel = _levels.isEmpty ? 0 : _levels[FIRST_ELEMENT_INDEX];
     _selectedColor = Colors.red;
     _generateSubjectsOnDisplay(_selectedLevel);
     super.initState();

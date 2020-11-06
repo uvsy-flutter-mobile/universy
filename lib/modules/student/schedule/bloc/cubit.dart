@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/business/schedule_scratch/career_years.dart';
 import 'package:universy/business/schedule_scratch/course_list_generator.dart';
+import 'package:universy/business/subjects/classifier/result.dart';
+import 'package:universy/business/subjects/classifier/year_classifier.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
@@ -10,8 +13,6 @@ import 'package:universy/services/manifest.dart';
 import 'package:universy/util/object.dart';
 
 import 'states.dart';
-
-const List<int> LEVELS = [1, 2, 3, 4, 5]; //TODO: add this behaviour to service?
 
 class ScheduleCubit extends Cubit<ScheduleState> {
   final StudentScheduleService _scheduleService;
@@ -54,46 +55,66 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   Future<void> createScratch(
       StudentScheduleScratch studentScheduleScratch) async {
+    print("saveScratch");
     /*await _scheduleService.createScratch(studentScheduleScratch);*/
+    this.fetchScratches();
   }
 
   Future<void> updateScratch(
       StudentScheduleScratch studentScheduleScratch) async {
+    print("updateScratch");
     /* await _scheduleService.updateScratch(studentScheduleScratch);*/
+    this.fetchScratches();
   }
 
   Future<void> deleteScratch(String scratchId) async {
+    print("deleteScratch");
     /*await _scheduleService.deleteScratch(scratchId);*/
   }
 
   void createViewScratchSchedule(
       StudentScheduleScratch studentScheduleScratch) async {
-    //TODO: Add error handling
-    emit(LoadingState());
-    var programId = await _studentCareerService.getCurrentProgram();
-    var institutionSubjects = await _institutionService.getSubjects(programId);
-    var commissions = await _institutionService.getCommissions(programId);
+    try {
+      emit(LoadingState());
+      var programId = await _studentCareerService.getCurrentProgram();
+      var institutionSubjects =
+          await _institutionService.getSubjects(programId);
+      var commissions = await _institutionService.getCommissions(programId);
 
-    var scratchCourses =
-        await _generateScratchCourses(institutionSubjects, commissions);
+      var scratchCourses =
+          await _generateScratchCourses(institutionSubjects, commissions);
 
-    emit(CreateScratchState(
-        studentScheduleScratch, scratchCourses, LEVELS, institutionSubjects));
+      ProgramYearsClassifier programYearsClassifier = ProgramYearsClassifier();
+      List<int> levels =
+          programYearsClassifier.yearsOfCareer(institutionSubjects);
+
+      emit(CreateScratchState(
+          studentScheduleScratch, scratchCourses, levels, institutionSubjects));
+    } on CurrentProgramNotFound {
+      emit(CareerNotCreatedState());
+    }
   }
 
   void editViewScratchSchedule(
       StudentScheduleScratch studentScheduleScratch) async {
-    //TODO: Add error handling
-    emit(LoadingState());
-    var programId = await _studentCareerService.getCurrentProgram();
-    var institutionSubjects = await _institutionService.getSubjects(programId);
-    var commissions = await _institutionService.getCommissions(programId);
+    try {
+      emit(LoadingState());
+      var programId = await _studentCareerService.getCurrentProgram();
+      var institutionSubjects =
+          await _institutionService.getSubjects(programId);
+      var commissions = await _institutionService.getCommissions(programId);
+      ProgramYearsClassifier programYearsClassifier = ProgramYearsClassifier();
+      List<int> levels =
+          programYearsClassifier.yearsOfCareer(institutionSubjects);
 
-    var scratchCourses =
-        await _generateScratchCourses(institutionSubjects, commissions);
+      var scratchCourses =
+          await _generateScratchCourses(institutionSubjects, commissions);
 
-    emit(EditScratchState(
-        studentScheduleScratch, scratchCourses, LEVELS, institutionSubjects));
+      emit(EditScratchState(
+          studentScheduleScratch, scratchCourses, levels, institutionSubjects));
+    } on CurrentProgramNotFound {
+      emit(CareerNotCreatedState());
+    }
   }
 
   //TODO: Move this to a service

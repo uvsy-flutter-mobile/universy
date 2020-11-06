@@ -30,18 +30,19 @@ class _ScheduleButton extends StatelessWidget {
 }
 
 class SaveScratchButton extends StatelessWidget {
+  final Function _onSave;
+
+  const SaveScratchButton({Key key, @required Function onSave})
+      : this._onSave = onSave,
+        super(key: key);
+
   Widget build(BuildContext context) {
     return _ScheduleButton(
       tag: "saveButton",
       color: Colors.deepPurple,
       icon: Icons.check,
-      /*onPressed: () => _saveScratch(context),*/
-      onPressed: () => {},
+      onPressed: _onSave,
     );
-  }
-
-  void _saveScratch(BuildContext context) {
-    /*onPressed: () =>   BlocProvider.of<NotesCubit>(context).createScratch();*/
   }
 }
 
@@ -88,45 +89,6 @@ class AddScheduleCourseButton extends StatelessWidget {
   }
 }
 
-/*
-abstract class DeleteScratchButton extends StatelessWidget {
-  Future<void> _onPressedButton(BuildContext context) async {
-    bool deleteConfirmed = await _confirmDelete(context);
-    if (deleteConfirmed) {
-      await AsyncModalBuilder()
-          .perform(_deleteScratch)
-          .withTitle(_deleteMessage(context))
-          .build()
-          .run(context);
-      await _cubit(context).fetchScratches();
-    }
-  }
-
-  String _deleteMessage(BuildContext context) {
-    return "Eliminando el horario";
-  }
-
-  Future<bool> _confirmDelete(BuildContext context) async {
-    return await showDialog<bool>(
-      context: context,
-      builder: (context) => ScheduleConfirmMessage(
-        scheduleName: "Atencion",
-        alertMessage: "¿Seguro que desea eliminar?",
-        confirmMessage: "Eliminar",
-      ),
-    ) ??
-        false;
-  }
-
-  Future<void> _deleteScratch(BuildContext context) async {
-    /*await _cubit(context).deleteScratch();*/
-  }
-
-  ScheduleCubit _cubit(BuildContext context) {
-    return BlocProvider.of<ScheduleCubit>(context);
-  }
-}*/
-
 class ViewScheduleButton extends StatelessWidget {
   final List<ScheduleScratchCourse> _scratchCoursesList;
   final Function(List<ScheduleScratchCourse>) _onUpdatedCourses;
@@ -172,6 +134,7 @@ class ScheduleActionButton extends StatelessWidget {
     @required List<ScheduleScratchCourse> scratchCoursesToSelect,
     @required List<int> levels,
     @required List<InstitutionSubject> subjects,
+    @required Function onSave,
   }) {
     var buttons = [
       AddScheduleCourseButton(
@@ -181,7 +144,9 @@ class ScheduleActionButton extends StatelessWidget {
         levels: levels,
       ),
       SizedBox(height: 15),
-      SaveScratchButton(),
+      SaveScratchButton(
+        onSave: onSave,
+      ),
     ];
     return ScheduleActionButton._(buttons: buttons);
   }
@@ -204,6 +169,7 @@ class ScheduleActionButton extends StatelessWidget {
     @required List<ScheduleScratchCourse> scratchCoursesToSelect,
     @required List<int> levels,
     @required List<InstitutionSubject> subjects,
+    @required Function onSave,
   }) {
     var buttons = [
       AddScheduleCourseButton(
@@ -217,7 +183,9 @@ class ScheduleActionButton extends StatelessWidget {
           scratchCoursesList: scratchCourseList,
           onUpdatedCourses: onUpdatedCourses),
       SizedBox(height: 15),
-      SaveScratchButton(),
+      SaveScratchButton(
+        onSave: onSave,
+      ),
     ];
     return ScheduleActionButton._(buttons: buttons);
   }

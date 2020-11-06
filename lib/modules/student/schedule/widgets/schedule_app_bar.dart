@@ -45,8 +45,10 @@ class ScratchAppBar extends StatelessWidget {
   Widget _buildBody() {
     return ScheduleConfirmMessage(
       scheduleName: "$title",
-      alertMessage: "No guardaste los cambios de tu horario", //TODO add test
-      confirmMessage: "¿estás seguro que deseas salir?",
+      alertMessage: AppText.getInstance()
+          .get("student.schedule.goBackDialog.alertMessage"),
+      confirmMessage: AppText.getInstance()
+          .get("student.schedule.goBackDialog.confirmMessage"),
     );
   }
 

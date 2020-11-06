@@ -7,13 +7,10 @@ import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
-import 'package:universy/modules/student/schedule/widgets/scratch_course_card.dart';
 import 'package:universy/text/formaters/schedule_scratch.dart';
-import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/day.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/util/strings.dart';
-import 'package:universy/widgets/formfield/text/validators.dart';
 
 class ScratchView extends StatefulWidget {
   final StudentScheduleScratch _scratch;
@@ -101,12 +98,13 @@ class _ScratchViewState extends State<ScratchView> {
           Expanded(child: _buildScheduleCalendar()),
         ],
       ),
-      floatingActionButton: _create
+      floatingActionButton: _scratch.selectedCourses.isEmpty
           ? ScheduleActionButton.create(
               onNewCourse: _addNewScratchCourse,
               levels: _levels,
               subjects: _subjects,
               scratchCoursesToSelect: _scratchCoursesToSelect,
+              onSave: _create ? _saveStudentScratch : _updateStudentScratch,
             )
           : ScheduleActionButton.edit(
               onNewCourse: _addNewScratchCourse,
@@ -115,8 +113,17 @@ class _ScratchViewState extends State<ScratchView> {
               levels: _levels,
               subjects: _subjects,
               scratchCoursesToSelect: _scratchCoursesToSelect,
-            ), //TODO: validar el form y guardarlo
+              onSave: _create ? _saveStudentScratch : _updateStudentScratch,
+            ),
     );
+  }
+
+  void _saveStudentScratch() {
+    _cubit.createScratch(_scratch);
+  }
+
+  void _updateStudentScratch() {
+    _cubit.updateScratch(_scratch);
   }
 
   void _addNewScratchCourse(ScheduleScratchCourse newScratchCourse) {
