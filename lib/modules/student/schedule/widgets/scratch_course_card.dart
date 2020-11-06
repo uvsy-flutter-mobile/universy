@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/widgets/course_info.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/widgets/buttons/color/color_picker.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
 
-class ScratchCourseCard extends StatelessWidget {
+class ScratchCourseCard extends StatefulWidget {
   final ScheduleScratchCourse _scheduleScratchCourse;
   final Function(ScheduleScratchCourse) _onRemove;
 
@@ -16,15 +17,29 @@ class ScratchCourseCard extends StatelessWidget {
         super();
 
   @override
+  State<StatefulWidget> createState() {
+    return ScratchCourseCardState(this._scheduleScratchCourse, this._onRemove);
+  }
+}
+
+class ScratchCourseCardState extends State<ScratchCourseCard> {
+  ScheduleScratchCourse _scheduleScratchCourse;
+  Function(ScheduleScratchCourse) _onRemove;
+
+  ScratchCourseCardState(this._scheduleScratchCourse, this._onRemove);
+
+  @override
   Widget build(BuildContext context) {
     return CircularRoundedRectangleCard(
         radius: 8,
         color: Colors.white,
-        elevation: 4,
+        elevation: 2,
         child: Column(
           children: <Widget>[
             _buildCardHeader(context),
-            Divider(),
+            Divider(
+              height: 2,
+            ),
             _buildCardContent()
           ],
         ));
@@ -32,11 +47,17 @@ class ScratchCourseCard extends StatelessWidget {
 
   Widget _buildCardHeader(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            ColorPickerButton(
+              initialColor: _scheduleScratchCourse.color,
+              onSelectedColor: _onSelectedColor,
+              radius: 15,
+              iconSize: 18,
+            ),
             Text(
               _scheduleScratchCourse.subjectName,
               style: Theme.of(context).textTheme.subtitle1,
@@ -49,6 +70,12 @@ class ScratchCourseCard extends StatelessWidget {
             )
           ],
         ));
+  }
+
+  void _onSelectedColor(Color newColor) {
+    setState(() {
+      _scheduleScratchCourse.color = newColor;
+    });
   }
 
   Widget _buildCardContent() {

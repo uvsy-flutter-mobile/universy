@@ -110,7 +110,7 @@ class SelectCourseWidgetState extends State<SelectCourseWidgetDialog> {
           ],
         ),
       ),
-      titleAction: ColorPickerPicker(
+      titleAction: ColorPickerButton(
         onSelectedColor: _onSelectedColor,
         initialColor: _selectedColor,
       ),
