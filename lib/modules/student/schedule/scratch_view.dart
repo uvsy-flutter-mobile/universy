@@ -7,6 +7,7 @@ import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/modules/student/schedule/dialogs/scratch_form.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_buttons.dart';
+import 'package:universy/modules/student/schedule/widgets/scratch_course_card.dart';
 import 'package:universy/text/formaters/schedule_scratch.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/text/translators/day.dart';
@@ -48,6 +49,7 @@ class _ScratchViewState extends State<ScratchView> {
   bool _create;
   TextEditingController _nameTextController;
   List<ScheduleScratchCourse> _scratchCourses;
+  List<ScheduleScratchCourse> _scratchCoursesToSelect;
   List<int> _levels;
   List<InstitutionSubject> _subjects;
 
@@ -65,6 +67,7 @@ class _ScratchViewState extends State<ScratchView> {
     this._create = widget._create;
     this._cubit = widget._cubit;
     this._scratchCourses = widget._scratchCourses;
+    this._scratchCoursesToSelect = widget._scratchCourses;
     this._levels = widget._levels;
     this._subjects = widget._subjects;
     this._nameTextController =
@@ -80,6 +83,7 @@ class _ScratchViewState extends State<ScratchView> {
     this._nameTextController.dispose();
     this._nameTextController = null;
     this._scratchCourses = null;
+    this._scratchCoursesToSelect = null;
     this._levels = null;
     this._subjects = null;
     super.dispose();
@@ -102,7 +106,7 @@ class _ScratchViewState extends State<ScratchView> {
               onNewCourse: _addNewScratchCourse,
               levels: _levels,
               subjects: _subjects,
-              scratchCourses: _scratchCourses,
+              scratchCoursesToSelect: _scratchCoursesToSelect,
             )
           : ScheduleActionButton.edit(
               onNewCourse: _addNewScratchCourse,
@@ -110,7 +114,7 @@ class _ScratchViewState extends State<ScratchView> {
               scratchCourseList: _scratch.selectedCourses,
               levels: _levels,
               subjects: _subjects,
-              scratchCourses: _scratchCourses,
+              scratchCoursesToSelect: _scratchCoursesToSelect,
             ), //TODO: validar el form y guardarlo
     );
   }
@@ -119,12 +123,28 @@ class _ScratchViewState extends State<ScratchView> {
     setState(() {
       _scratch.selectedCourses.add(newScratchCourse);
     });
+    _removeScratchCourseFromList(newScratchCourse);
+  }
+
+  void _removeScratchCourseFromList(ScheduleScratchCourse scratchToRemove) {
+    var newScratchCourse = [..._scratchCoursesToSelect];
+    newScratchCourse.removeWhere((ScheduleScratchCourse scratchCourse) =>
+        scratchCourse == scratchToRemove);
+    setState(() {
+      _scratchCoursesToSelect = newScratchCourse;
+    });
   }
 
   void _updateScratchCourses(
       List<ScheduleScratchCourse> updatedSelectedCourses) {
+    var newCoursesToSelect = _scratchCourses
+        .where((ScheduleScratchCourse course) =>
+            !updatedSelectedCourses.contains(course))
+        .toList();
+
     setState(() {
       _scratch.selectedCourses = [...updatedSelectedCourses];
+      _scratchCoursesToSelect = [...newCoursesToSelect];
     });
   }
 

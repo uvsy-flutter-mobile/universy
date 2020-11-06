@@ -169,14 +169,14 @@ class ScheduleActionButton extends StatelessWidget {
 
   factory ScheduleActionButton.create({
     @required Function(ScheduleScratchCourse) onNewCourse,
-    @required List<ScheduleScratchCourse> scratchCourses,
+    @required List<ScheduleScratchCourse> scratchCoursesToSelect,
     @required List<int> levels,
     @required List<InstitutionSubject> subjects,
   }) {
     var buttons = [
       AddScheduleCourseButton(
         onNewCourse: onNewCourse,
-        scratchCourses: scratchCourses,
+        scratchCourses: scratchCoursesToSelect,
         subjects: subjects,
         levels: levels,
       ),
@@ -201,14 +201,14 @@ class ScheduleActionButton extends StatelessWidget {
     @required List<ScheduleScratchCourse> scratchCourseList,
     @required Function(List<ScheduleScratchCourse>) onUpdatedCourses,
     @required Function(ScheduleScratchCourse) onNewCourse,
-    @required List<ScheduleScratchCourse> scratchCourses,
+    @required List<ScheduleScratchCourse> scratchCoursesToSelect,
     @required List<int> levels,
     @required List<InstitutionSubject> subjects,
   }) {
     var buttons = [
       AddScheduleCourseButton(
         onNewCourse: onNewCourse,
-        scratchCourses: scratchCourses,
+        scratchCourses: scratchCoursesToSelect,
         subjects: subjects,
         levels: levels,
       ),
