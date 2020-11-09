@@ -6,6 +6,7 @@ import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/storage/impl/student/account.dart';
+import 'package:universy/system/config.dart';
 import 'package:universy/util/logger.dart';
 import 'package:universy/util/object.dart';
 
@@ -24,10 +25,8 @@ class DefaultAccountService extends AccountService {
 
   factory DefaultAccountService.instance() {
     if (isNull(_instance)) {
-      final userPool = new CognitoUserPool(
-          //TODO: Move to config
-          "us-east-1_T7vuGy14d",
-          "4v8v535v5rh2hkca61k1urun3c",
+      final userPool = new CognitoUserPool(SystemConfig.instance().userPoolId(),
+          SystemConfig.instance().clientId(),
           storage: SecureAccountStorage.instance());
       _instance = DefaultAccountService._internal(userPool);
     }

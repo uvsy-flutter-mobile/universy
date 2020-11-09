@@ -4,15 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:universy/system/assets.dart';
 
 class SystemConfig {
-  static const String STAGE = "stage";
+  static const String CLIENT_ID = "clientId";
   static const String DB_PATH = "dbPath";
-
-  static const String STUDENT_API = "studentEndpoint";
-  static const String ACCOUNT_API = "accountEndpoint";
-  static const String INSTITUTION_API = "institutionEndpoint";
-  static const String STUDENT_API_KEY = "studentKey";
-  static const String ACCOUNT_API_KEY = "accountKey";
-  static const String INSTITUTION_API_KEY = "institutionKey";
+  static const String STAGE = "stage";
+  static const String USER_POOL_ID = "userPoolId";
 
   static final SystemConfig _instance = SystemConfig._internal();
 
@@ -38,19 +33,11 @@ class SystemConfig {
     }
   }
 
-  String getApiStudentURL() {
-    return config[STUDENT_API];
-  }
+  String clientId() => config[CLIENT_ID];
 
-  String getApiStudentKey() {
-    return config[STUDENT_API_KEY];
-  }
+  String dbPath() => config[DB_PATH];
 
-  String getStage() {
-    return config[STAGE];
-  }
+  String getStage() => config[STAGE];
 
-  String dbPath() {
-    return config[DB_PATH];
-  }
+  String userPoolId() => config[USER_POOL_ID];
 }
