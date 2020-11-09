@@ -4,7 +4,6 @@ import 'package:universy/app/theme.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/institution/dashboard/course/dashboard.dart';
 import 'package:universy/modules/institution/dashboard/subjects/dashboard.dart';
-import 'package:universy/modules/institution/subjects/subjects.dart';
 import 'package:universy/modules/loading/loading.dart';
 import 'package:universy/modules/main/main.dart';
 import 'package:universy/modules/student/calendar/calendar.dart';

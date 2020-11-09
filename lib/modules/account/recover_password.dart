@@ -395,7 +395,7 @@ class VerifyCodeWidget extends StatelessWidget {
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
     return PatternNotEmptyTextFormFieldValidatorBuilder(
-      regExp: Regex.CODE_MAX_LENGHT,
+      regExp: Regex.CODE_MAX_LENGTH,
       patternMessage:
           AppText.getInstance().get("verify.input.code.minQuantity"),
       emptyMessage: AppText.getInstance().get("verify.input.code.required"),

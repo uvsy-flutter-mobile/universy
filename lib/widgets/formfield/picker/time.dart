@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:universy/util/object.dart';
-import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class StudentEventTimeWidget extends FormField<TimeOfDay> {

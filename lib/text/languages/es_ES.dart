@@ -72,8 +72,8 @@ const Map<dynamic, dynamic> ES = {
     "title": "¡Regístrate!",
     "input": {
       "user": {
-        "message": "Ingresá tu usuario",
-        "messageCheck": "Volvé a ingresar tu usuario",
+        "message": "Ingresá tu email",
+        "messageCheck": "Volvé a ingresar tu email",
         "notValid": "Ingresá un usuario valido",
         "required": "El usuario es requerido",
         "notEqual": "Ambos usuarios deben ser iguales",
