@@ -181,7 +181,7 @@ class CommentRequest extends JsonConvertible{
   String _idPublication;
   String _content;
 
-  String get idComment => _userId;
+  String get userId => _userId;
 
   String get idPublication => _idPublication;
 
@@ -196,7 +196,7 @@ class CommentRequest extends JsonConvertible{
     };
   }
 
-  CommentRequest(this._userId,this._idPublication,this._content);
+  CommentRequest(this._userId,this._content,this._idPublication);
 }
 
 class Filters {

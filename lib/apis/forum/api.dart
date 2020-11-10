@@ -10,7 +10,8 @@ String _createPath(String resource) {
 Future<List<ForumPublication>> getForumPublications(String programId, int offset) async {
   var resource = "/publications";
   var path = _createPath(resource);
-  var queryParams = {"programId": "$programId", "includeTags": "true", "includeAlias": "true","limit":"100","offset":"${offset.toString()}"};
+  print(programId);
+  var queryParams = {"programId": "$programId", "includeTags": "true", "includeAlias": "true","offset":"${offset.toString()}"};
 
   var response = await api.getList<ForumPublication>(
     path,
@@ -32,13 +33,8 @@ Future<void> createForumPublication(ForumPublicationRequest request) {
 }
 
 Future<void> updateForumPublication(ForumPublicationUpdateRequest request) {
-  print(request.title);
-  print(request.description);
-  print(request.idPublication);
-  print(request);
   var resource = "/publications/${request.idPublication}";
   var path = _createPath(resource);
-  print("path" + path);
 
   return api.put(
     path,

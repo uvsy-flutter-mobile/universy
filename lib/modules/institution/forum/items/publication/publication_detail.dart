@@ -125,7 +125,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
                 SymmetricEdgePaddingWidget.vertical(
                     paddingValue: 5,
                     child: Text(
-                      widget._forumPublication.userAlias,
+                      widget._profile.alias,
                       style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
                     )),
                 TextField(
@@ -221,7 +221,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildUserName() {
-    print(this.widget._forumPublication.userAlias);
+    String alias = (widget._forumPublication.userAlias==null) ? "User":widget._forumPublication.userAlias;
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Column(
@@ -229,7 +229,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         children: <Widget>[
           Icon(Icons.perm_identity),
           Text(
-            this.widget._forumPublication.userAlias,
+            alias,
             overflow: TextOverflow.ellipsis,
           ),
         ],

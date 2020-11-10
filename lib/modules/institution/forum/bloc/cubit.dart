@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
@@ -20,8 +21,7 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     emit(LoadingState());
     var profile = await _profileService.getProfile();
     var programId = await this._careerService.getCurrentProgram();
-
-    List<ForumPublication> forumPublications = await this._forumService.getForumPublications(programId,1);
+    List<ForumPublication> forumPublications = await this._forumService.getForumPublications(programId,0);
     List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
     List<Commission> listCommissions = await this._institutionService.getCommissions(programId);
 
@@ -43,10 +43,10 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
   }
 
   void viewDetailForumPublicationState(ForumPublication forumPublication) async {
-    var displayState = this.state as DisplayState;
     emit(LoadingState());
+    Profile profile = await this._profileService.getProfile();
     List<Comment> listComment = await this._forumService.getCommentsPublication(forumPublication.idPublication);
-    emit(DisplayForumPublicationDetailState(forumPublication, displayState.profile,listComment));
+    emit(DisplayForumPublicationDetailState(forumPublication,profile ,listComment));
   }
 
   void updateForumPublicationState(ForumPublication forumPublication) async {

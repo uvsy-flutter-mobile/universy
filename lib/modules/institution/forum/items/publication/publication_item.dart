@@ -158,7 +158,7 @@ class PublicationItemWidget extends StatelessWidget {
 
   Widget _buildPublicationContent() {
     return Expanded(
-      flex: 5,
+      flex: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -214,14 +214,15 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   Widget _buildUserName() {
+    String alias = (this._forumPublication.userAlias==null) ? "User":this._forumPublication.userAlias;
     return Expanded(
-      flex: 1,
+      flex: 2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Icon(Icons.perm_identity),
           Text(
-            this._forumPublication.userAlias,
+            alias,
             overflow: TextOverflow.ellipsis,
           ),
         ],

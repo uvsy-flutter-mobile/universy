@@ -28,17 +28,20 @@ class ForumViewWidget extends StatefulWidget {
 }
 
 class _InstitutionForumModuleState extends State<ForumViewWidget> {
-  TextEditingController _searchTextEditingController;
+  ScrollController _scrollController = ScrollController();
   List<DropdownMenuItem> items = List<DropdownMenuItem>();
   DropdownMenuItem _selected;
   List<ForumPublication> _listPublications = [];
   int offset;
+  bool isLoading;
+  bool noMorePages;
 
   @override
   void initState() {
-    int offset = 1;
+    isLoading = false;
+    noMorePages = false;
+    offset = 0;
     _listPublications = widget._listPublications;
-    _searchTextEditingController = TextEditingController();
     DropdownMenuItem item1 = DropdownMenuItem(value: 0, child: Text("Más recientes"));
     DropdownMenuItem item2 = DropdownMenuItem(value: 1, child: Text("Más antiguos"));
     DropdownMenuItem item3 = DropdownMenuItem(value: 2, child: Text("Más comentados"));
@@ -50,15 +53,24 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget._profile.userId);
     return Scaffold(
       floatingActionButton: _buildFloatingActionButton(context),
       body: SymmetricEdgePaddingWidget.horizontal(
         paddingValue: 6,
         child: Column(
-          children: <Widget>[_buildSearchField(), _buildOrderBy(), _buildPublications()],
+          children: <Widget>[_buildOrderBy(), _buildPublications(), _buildProgressCircle()],
         ),
       ),
     );
+  }
+
+  Widget _buildProgressCircle() {
+    if (isLoading) {
+      return CircularProgressIndicator();
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildOrderBy() {
@@ -149,37 +161,24 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     });
   }
 
-  Widget _buildSearchField() {
-    return EdgePaddingWidget(
-      EdgeInsets.all(15.0),
-      TextField(
-        controller: _searchTextEditingController,
-        decoration: _buildNameSearchBarDecoration(),
-      ),
-    );
-  }
-
-  InputDecoration _buildNameSearchBarDecoration() {
-    return InputDecoration(
-      labelText: "Buscar publicacion",
-      hintText: "Buscar...",
-      prefixIcon: Icon(Icons.search),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(25.0),
-        ),
-      ),
-    );
-  }
-
   Widget _buildPublications() {
     return Expanded(flex: 10, child: _buildForumPublicationsList());
   }
 
   Widget _buildForumPublicationsList() {
+    this._scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
+        if (isLoading == false && noMorePages==false) {
+          setState(() {
+            isLoading = !isLoading;
+          });
+          fetchMorePublications();
+        }
+      }
+    });
     return ListView.builder(
       scrollDirection: Axis.vertical,
-      controller: ScrollController(),
+      controller: this._scrollController,
       itemCount: this._listPublications.length,
       itemBuilder: (BuildContext context, int index) {
         ForumPublication forumPublication = this._listPublications[index];
@@ -223,10 +222,18 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     var forumService = sessionFactory.forumService();
     var programId = await careerService.getCurrentProgram();
     List<ForumPublication> forumPublications =
-        await forumService.getForumPublications(programId, offset + 1);
-    setState(() {
-      this.offset = this.offset + 1;
-      widget._listPublications.addAll(forumPublications);
-    });
+        await forumService.getForumPublications(programId, this.offset + 10);
+    if(forumPublications.isNotEmpty){
+      setState(() {
+        this.offset = this.offset + 10;
+        widget._listPublications.addAll(forumPublications);
+        this.isLoading = !isLoading;
+      });
+    }else{
+      setState(() {
+        noMorePages = true;
+        this.isLoading = !isLoading;
+      });
+    }
   }
 }
