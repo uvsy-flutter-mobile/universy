@@ -270,10 +270,11 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       String title = _titleController.text.trim();
       String description = _descriptionController.text.trim();
       if (_selectedSubject != null) {
-        _uploadTags.insert(0, _selectedSubject.name);
+        _uploadTags.add(_selectedSubject.name);
+        _uploadTags.add(_selectedSubject.level.toString());
       }
       if (_selectedCommission != null) {
-        _uploadTags.insert(0, _selectedCommission.name);
+        _uploadTags.add(_selectedCommission.name);
       }
 
       if (widget._isUpdate == false) {
