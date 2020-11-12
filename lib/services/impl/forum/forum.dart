@@ -27,8 +27,10 @@ class DefaultForumService implements ForumService {
 
   @override
   Future<List<ForumPublication>> getForumPublications(String programId, int offset, String userId, List<String> filters) async {
+    List<String> filters2 = filters;
+    if(filters.isEmpty){filters2.add("-creation");}
     try {
-      return await forumApi.getForumPublications(programId, offset,userId, filters);
+      return await forumApi.getForumPublications(programId, offset,userId, filters2);
     }on InternalError {
       return [];
     }

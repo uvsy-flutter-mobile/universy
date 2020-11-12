@@ -6,7 +6,7 @@ import 'package:flutter_tags/flutter_tags.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
-import 'package:universy/widgets/async/modal.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class PublicationItemWidget extends StatelessWidget {
@@ -79,7 +79,7 @@ class PublicationItemWidget extends StatelessWidget {
     return IconSlideAction(
       color: Colors.red,
       icon: Icons.delete,
-      onTap: () => _pressDeletePublicationForumButton(context),
+      onTap: () => _deletePublication(context),
     );
   }
 
@@ -91,15 +91,6 @@ class PublicationItemWidget extends StatelessWidget {
     );
   }
 
-  void _pressDeletePublicationForumButton(BuildContext context) async {
-    await AsyncModalBuilder()
-        .perform(_deletePublication)
-        .withTitle("Eliminando Publicación")
-        .then(_refreshForum)
-        .build()
-        .run(context);
-  }
-
   void _pressUpdatePublicationForumButton(BuildContext context) async {
     BlocProvider.of<InstitutionForumCubit>(context)
         .updateForumPublicationState(this._forumPublication);
@@ -107,10 +98,6 @@ class PublicationItemWidget extends StatelessWidget {
 
   Future _deletePublication(BuildContext context) async {
     BlocProvider.of<InstitutionForumCubit>(context).deleteForumPublication(this._forumPublication);
-  }
-
-  void _refreshForum(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications([]);
   }
 
   Widget _buildRowContent() {
@@ -230,8 +217,9 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   Widget _buildUserName() {
-    String alias =
-        (this._forumPublication.userAlias == null) ? "User" : this._forumPublication.userAlias;
+    String alias = (this._forumPublication.userAlias == null)
+        ? AppText.getInstance().get("institution.forum.publication.defaultUser")
+        : this._forumPublication.userAlias;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[

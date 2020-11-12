@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class ProfileNotFoundWidget extends StatefulWidget {
@@ -28,8 +29,7 @@ class _ProfileNotFoundState extends State<ProfileNotFoundWidget> {
 
   Widget _buildTitle() {
     return Text(
-      "No se encontró un perfil creado",
-      //AppText.getInstance().get("institution.subjects.notFound.title"),
+      AppText.getInstance().get("institution.forum.profileNotFound.errorMessage"),
       textAlign: TextAlign.center,
       style: Theme.of(context).primaryTextTheme.headline2,
     );
@@ -37,8 +37,7 @@ class _ProfileNotFoundState extends State<ProfileNotFoundWidget> {
 
   Widget _buildSubtitle() {
     return Text(
-      "Por favor, creá tu perfil para poder acceder al foro de Universy.",
-      //AppText.getInstance().get("institution.subjects.notFound.subtitle"),
+      AppText.getInstance().get("institution.forum.profileNotFound.message"),
       textAlign: TextAlign.center,
       style: Theme.of(context).primaryTextTheme.headline3,
     );

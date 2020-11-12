@@ -7,6 +7,7 @@ import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
@@ -136,7 +137,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 10,
       child: Text(
-        "Has llegado al máximo de tags permitidos, pagá la versión PREMIUM, o eliminá algún TAG.",
+        AppText.getInstance().get("institution.forum.filter.maxTags"),
         style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
       ),
     );
@@ -145,7 +146,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   InputDecoration _buildTagAddDecoration() {
     return InputDecoration.collapsed(
       hintStyle: TextStyle(color: Colors.grey),
-      hintText: "Agregá a tu publicación #",
+      hintText: AppText.getInstance().get("institution.forum.filter.hintTags"),
     );
   }
 
@@ -279,8 +280,8 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         BlocProvider.of<InstitutionForumCubit>(context)
             .addForumPublication(title, description, _uploadTags);
       } else {
-        BlocProvider.of<InstitutionForumCubit>(context)
-            .updateForumPublication(title, description, _uploadTags,widget._forumPublication.idPublication);
+        BlocProvider.of<InstitutionForumCubit>(context).updateForumPublication(
+            title, description, _uploadTags, widget._forumPublication.idPublication);
       }
     }
   }
@@ -295,8 +296,10 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       child: CustomTextFormField(
         maxLines: 9,
         controller: _descriptionController,
-        decorationBuilder: ForumInputDescriptionDecorationBuilder("Explayate Titan !"),
-        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder("Debes ingresar una descripción"),
+        decorationBuilder: ForumInputDescriptionDecorationBuilder(
+            AppText.getInstance().get("institution.forum.publication.hintDescription")),
+        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(
+            AppText.getInstance().get("institution.forum.publication.errorDescription")),
       ),
     );
   }
@@ -307,8 +310,10 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       child: CustomTextFormField(
         style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
         controller: _titleController,
-        decorationBuilder: ForumInputTitleDecorationBuilder("Escribe el título de tu publicación"),
-        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder("Debes ingresar un titulo !"),
+        decorationBuilder: ForumInputTitleDecorationBuilder(
+            AppText.getInstance().get("institution.forum.publication.hintTitle")),
+        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(
+            AppText.getInstance().get("institution.forum.publication.errorTitle")),
         maxLines: 1,
       ),
     );
@@ -320,7 +325,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     return DropdownButton<InstitutionSubject>(
       key: key,
       hint: Text(
-        "Materia",
+        AppText.getInstance().get("institution.forum.filter.subject"),
         textAlign: TextAlign.center,
       ),
       value: (this._selectedSubject == null) ? dropdownValue : this._selectedSubject,
@@ -353,7 +358,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     return DropdownButton<Commission>(
       key: key,
       hint: Text(
-        "Comisión",
+        AppText.getInstance().get("institution.forum.filter.commission"),
         textAlign: TextAlign.center,
       ),
       value: (this._selectedCommission == null) ? dropdownValue : this._selectedCommission,

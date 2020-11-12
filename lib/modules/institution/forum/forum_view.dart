@@ -1,4 +1,5 @@
 import 'dart:core';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/filters/filter_button.dart';
 import 'package:universy/modules/institution/forum/items/publication/publication_item.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 import 'bloc/cubit.dart';
@@ -19,7 +21,10 @@ class ForumViewWidget extends StatefulWidget {
   final List<String> _filters;
 
   const ForumViewWidget(
-      {Key key, @required List<ForumPublication> forumPublications, Profile profile, List<String> filters})
+      {Key key,
+      @required List<ForumPublication> forumPublications,
+      Profile profile,
+      List<String> filters})
       : this._listPublications = forumPublications,
         this._profile = profile,
         this._filters = filters,
@@ -44,12 +49,18 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     noMorePages = false;
     offset = 0;
     _listPublications = widget._listPublications;
-    DropdownMenuItem item1 = DropdownMenuItem(value: 0, child: Text("Más recientes"));
-    DropdownMenuItem item2 = DropdownMenuItem(value: 1, child: Text("Más antiguos"));
-    DropdownMenuItem item3 = DropdownMenuItem(value: 2, child: Text("Más comentados"));
+    DropdownMenuItem item1 = DropdownMenuItem(
+        value: 0, child: Text(AppText.getInstance().get("institution.forum.filter.mostRecent")));
+    DropdownMenuItem item2 = DropdownMenuItem(
+        value: 1, child: Text(AppText.getInstance().get("institution.forum.filter.older")));
+    DropdownMenuItem item3 = DropdownMenuItem(
+        value: 2, child: Text(AppText.getInstance().get("institution.forum.filter.moreComment")));
+    DropdownMenuItem item4 = DropdownMenuItem(
+        value: 3, child: Text(AppText.getInstance().get("institution.forum.filter.morePopular")));
     items.add(item1);
     items.add(item2);
     items.add(item3);
+    items.add(item4);
     super.initState();
   }
 
@@ -83,7 +94,7 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
           Expanded(
             flex: 3,
             child: Text(
-              "Ordenar por:",
+              AppText.getInstance().get("institution.forum.filter.orderBy"),
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             ),
           ),
@@ -100,14 +111,13 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
   Widget _getDropDown() {
     GlobalKey key = GlobalKey();
     DropdownMenuItem dropdownValue;
-    if (_selected != null) {
-      dropdownValue = _selected;
-    } else {
-      dropdownValue = this.items[0];
-    }
     return DropdownButton<DropdownMenuItem>(
       key: key,
-      value: dropdownValue,
+      hint: Text(
+        "-",
+        textAlign: TextAlign.center,
+      ),
+      value: (this._selected == null) ? dropdownValue : this._selected,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDown,
       items: this.items.map<DropdownMenuItem<DropdownMenuItem>>((DropdownMenuItem value) {
@@ -143,6 +153,12 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
         {
           orderedPublications.sort((a, b) => b.comments.compareTo(a.comments));
         }
+        break;
+      case 3:
+        {
+          orderedPublications.sort((a, b) => b.votes.compareTo(a.votes));
+        }
+        break;
     }
     setState(() {
       this._listPublications = orderedPublications;
@@ -209,8 +225,8 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     var careerService = sessionFactory.studentCareerService();
     var forumService = sessionFactory.forumService();
     var programId = await careerService.getCurrentProgram();
-    List<ForumPublication> forumPublications =
-        await forumService.getForumPublications(programId, this.offset + 10,widget._profile.userId,widget._filters);
+    List<ForumPublication> forumPublications = await forumService.getForumPublications(
+        programId, this.offset + 10, widget._profile.userId, widget._filters);
     if (forumPublications.isNotEmpty) {
       setState(() {
         this.offset = this.offset + 10;

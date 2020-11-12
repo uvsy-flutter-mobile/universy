@@ -60,3 +60,16 @@ class ForumInputTitleDecorationBuilder implements InputDecorationBuilder {
         hintStyle: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold));
   }
 }
+
+class ForumInputNewCommentBuilder implements InputDecorationBuilder {
+  final String _labelText;
+
+  ForumInputNewCommentBuilder(this._labelText);
+
+  @override
+  InputDecoration build(BuildContext context) {
+    return InputDecoration(
+        hintText:
+        _labelText);
+  }
+}

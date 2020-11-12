@@ -24,7 +24,8 @@ class DisplayState extends InstitutionForumState {
   final Profile profile;
   final List<String> filters;
 
-  DisplayState(this.forumPublications, this.profile, this.institutionSubjects,this.listCommissions,this.filters);
+  DisplayState(this.forumPublications, this.profile, this.institutionSubjects, this.listCommissions,
+      this.filters);
 
   Profile get myProfile => profile;
 
@@ -38,7 +39,7 @@ class DisplayForumPublicationDetailState extends InstitutionForumState {
   final List<Comment> listComment;
   final Profile profile;
 
-  DisplayForumPublicationDetailState(this.forumPublication, this.profile,this.listComment);
+  DisplayForumPublicationDetailState(this.forumPublication, this.profile, this.listComment);
 }
 
 class CreateForumPublicationState extends InstitutionForumState {
@@ -46,7 +47,7 @@ class CreateForumPublicationState extends InstitutionForumState {
   final List<Commission> listCommissions;
   final Profile profile;
 
-  CreateForumPublicationState(this.institutionSubjects, this.profile,this.listCommissions);
+  CreateForumPublicationState(this.institutionSubjects, this.profile, this.listCommissions);
 }
 
 class UpdateForumPublicationState extends InstitutionForumState {
@@ -55,7 +56,8 @@ class UpdateForumPublicationState extends InstitutionForumState {
   final List<Commission> listCommissions;
   final Profile profile;
 
-  UpdateForumPublicationState(this.institutionSubjects, this.profile,this.forumPublication,this.listCommissions);
+  UpdateForumPublicationState(
+      this.institutionSubjects, this.profile, this.forumPublication, this.listCommissions);
 }
 
 class ForumPublicationsNotFoundState extends InstitutionForumState {
@@ -63,8 +65,10 @@ class ForumPublicationsNotFoundState extends InstitutionForumState {
   final List<InstitutionSubject> institutionSubjects;
   final List<Commission> listCommissions;
   final Profile profile;
+  final bool isFiltering;
 
-  ForumPublicationsNotFoundState(this.forumPublications,this.profile,this.institutionSubjects,this.listCommissions);
+  ForumPublicationsNotFoundState(this.forumPublications, this.profile, this.institutionSubjects,
+      this.listCommissions, this.isFiltering);
 }
 
 class FilterForumPublicationsState extends InstitutionForumState {
@@ -72,5 +76,5 @@ class FilterForumPublicationsState extends InstitutionForumState {
   final List<Commission> listCommissions;
   final Profile profile;
 
-  FilterForumPublicationsState(this.institutionSubjects, this.profile,this.listCommissions);
+  FilterForumPublicationsState(this.institutionSubjects, this.profile, this.listCommissions);
 }

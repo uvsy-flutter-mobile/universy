@@ -7,8 +7,12 @@ import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/comments-list.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/formfield/decoration/builder.dart';
+import 'package:universy/widgets/formfield/text/custom.dart';
+import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class PublicationDetailWidget extends StatefulWidget {
@@ -32,6 +36,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   TextEditingController _newCommentController = TextEditingController();
   bool _newComment;
   List<Comment> _listComments;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -49,21 +54,24 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      controller: _scrollController,
-      child: SymmetricEdgePaddingWidget.vertical(
-        paddingValue: 10,
-        child: SymmetricEdgePaddingWidget.horizontal(
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        controller: _scrollController,
+        child: SymmetricEdgePaddingWidget.vertical(
           paddingValue: 10,
-          child: Column(
-            children: <Widget>[
-              _buildPublication(),
-              _buildExtraInfoComments(),
-              _buildComments(),
-              _buildNewCommentBox(),
-              _buildActionButtons(),
-            ],
+          child: SymmetricEdgePaddingWidget.horizontal(
+            paddingValue: 10,
+            child: Column(
+              children: <Widget>[
+                _buildPublication(),
+                _buildExtraInfoComments(),
+                _buildComments(),
+                _buildNewCommentBox(),
+                _buildActionButtons(),
+              ],
+            ),
           ),
         ),
       ),
@@ -100,7 +108,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           SymmetricEdgePaddingWidget.horizontal(
               paddingValue: 10,
               child: Text(
-                "${comments}" + " Comentarios",
+                "${comments}" + AppText.getInstance().get("institution.forum.publication.comments"),
                 style: TextStyle(color: Colors.grey, fontSize: 18),
               )),
         ],
@@ -128,9 +136,12 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
                       widget._profile.alias,
                       style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
                     )),
-                TextField(
+                CustomTextFormField(
                   controller: _newCommentController,
-                  decoration: InputDecoration(hintText: 'Escribí un comentario...'),
+                  validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(AppText.getInstance()
+                      .get("institution.forum.publication.errorMessageComment")),
+                  decorationBuilder: ForumInputNewCommentBuilder(
+                      AppText.getInstance().get("institution.forum.publication.hintComment")),
                 ),
               ],
             ),
@@ -159,11 +170,13 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   void _createCommentAction() {
-    BlocProvider.of<InstitutionForumCubit>(context).addComment(
-        widget._forumPublication,
-        widget._profile.userId,
-        this._newCommentController.text,
-        widget._forumPublication.idPublication);
+    if (this._formKey.currentState.validate()) {
+      BlocProvider.of<InstitutionForumCubit>(context).addComment(
+          widget._forumPublication,
+          widget._profile.userId,
+          this._newCommentController.text,
+          widget._forumPublication.idPublication);
+    }
   }
 
   void _cancelButtonAction() {
@@ -217,9 +230,25 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 (widget._forumPublication.idVoteUser == null)
-                    ? IconButton(icon: Icon(Icons.thumb_up,size: 30,color: Colors.grey,),onPressed: () => _onVote(),)
-                    : IconButton(icon: Icon(Icons.thumb_up,size: 30,color: Colors.black,),onPressed: () => _onDeleteVote(),),
-                Text(widget._forumPublication.votes.toString(),style: TextStyle(fontSize: 23),
+                    ? IconButton(
+                        icon: Icon(
+                          Icons.thumb_up,
+                          size: 30,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () => _onVote(),
+                      )
+                    : IconButton(
+                        icon: Icon(
+                          Icons.thumb_up,
+                          size: 30,
+                          color: Colors.black,
+                        ),
+                        onPressed: () => _onDeleteVote(),
+                      ),
+                Text(
+                  widget._forumPublication.votes.toString(),
+                  style: TextStyle(fontSize: 23),
                 ),
               ],
             ),
@@ -244,8 +273,9 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildUserName() {
-    String alias =
-        (widget._forumPublication.userAlias == null) ? "User" : widget._forumPublication.userAlias;
+    String alias = (widget._forumPublication.userAlias == null)
+        ? AppText.getInstance().get("institution.forum.publication.defaultUser")
+        : widget._forumPublication.userAlias;
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Column(

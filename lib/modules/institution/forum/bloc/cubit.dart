@@ -3,7 +3,6 @@ import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/subject.dart';
-import 'package:universy/services/exceptions/service.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/manifest.dart';
 
@@ -24,16 +23,22 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
       emit(LoadingState());
       var profile = await _profileService.getProfile();
       var programId = await this._careerService.getCurrentProgram();
-      List<ForumPublication> forumPublications = await this._forumService.getForumPublications(programId, 0, profile.userId,filters);
-      forumPublications.sort((a, b) => b.date.compareTo(a.date));
-      List<InstitutionSubject> institutionSubjects = await this._institutionService.getSubjects(programId);
+      List<ForumPublication> forumPublications =
+          await this._forumService.getForumPublications(programId, 0, profile.userId, filters);
+      List<InstitutionSubject> institutionSubjects =
+          await this._institutionService.getSubjects(programId);
       List<Commission> listCommissions = await this._institutionService.getCommissions(programId);
 
       if (forumPublications.isNotEmpty) {
-        emit(DisplayState(forumPublications, profile, institutionSubjects, listCommissions,[]));
+        emit(DisplayState(
+            forumPublications, profile, institutionSubjects, listCommissions, filters));
       } else {
+        bool isFiltering = false;
+        if (filters.isNotEmpty) {
+          isFiltering = true;
+        }
         emit(ForumPublicationsNotFoundState(
-            forumPublications, profile, institutionSubjects, listCommissions));
+            forumPublications, profile, institutionSubjects, listCommissions, isFiltering));
       }
     } on CurrentProgramNotFound {
       emit(CareerNotCreatedState());
@@ -57,7 +62,9 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
   void viewDetailForumPublicationState(ForumPublication forumPublication) async {
     emit(LoadingState());
     Profile profile = await this._profileService.getProfile();
-    List<Comment> listComment = await this._forumService.getCommentsPublication(forumPublication.idPublication, profile.userId);
+    List<Comment> listComment = await this
+        ._forumService
+        .getCommentsPublication(forumPublication.idPublication, profile.userId);
     listComment.sort((a, b) => b.date.compareTo(a.date));
     emit(DisplayForumPublicationDetailState(forumPublication, profile, listComment));
   }
@@ -72,6 +79,12 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     var displayState = this.state as DisplayState;
     emit(FilterForumPublicationsState(
         displayState.institutionSubjects, displayState.profile, displayState.listCommissions));
+  }
+
+  void filterForumPublicationsStateFromNotFound() async {
+    var notFoundState = this.state as ForumPublicationsNotFoundState;
+    emit(FilterForumPublicationsState(
+        notFoundState.institutionSubjects, notFoundState.profile, notFoundState.listCommissions));
   }
 
   void addForumPublication(String title, String description, List<String> uploadTags) async {
@@ -94,9 +107,10 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
   }
 
   void deleteComment(Comment comment) async {
+    var state = this.state as DisplayForumPublicationDetailState;
     emit(LoadingState());
     await this._forumService.deleteComment(comment.idComment);
-    fetchPublications([]);
+    viewDetailForumPublicationState(state.forumPublication);
   }
 
   void addComment(ForumPublication forumPublication, String userId, String content,

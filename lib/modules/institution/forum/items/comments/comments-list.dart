@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/items/comments/comment_item.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class CommentsListWidget extends StatelessWidget {
   final List<Comment> _commentsList;
   final Profile _profile;
 
-  CommentsListWidget({Key key, List<Comment> commentsList, Profile profile})
+  CommentsListWidget({Key key, List<Comment> commentsList, Profile profile,})
       : this._commentsList = commentsList,
         this._profile = profile,
         super(key: key);
@@ -30,7 +31,7 @@ class CommentsListWidget extends StatelessWidget {
         paddingValue: 10,
         child: Center(
           child: Text(
-            "No se encontraron mensajes para esta publicación. ¿Porqué no sos el primero en comentar?",
+            AppText.getInstance().get("institution.forum.comments.commentsNotFound"),
             textAlign: TextAlign.center,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),

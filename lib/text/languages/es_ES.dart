@@ -149,12 +149,16 @@ const Map<dynamic, dynamic> ES = {
       },
       "calendar": {
         "title": "Calendario",
-        "subtitle": "Gestiona tus eventos y parciales!",
+        "subtitle": "Gestioná tus eventos y parciales!",
       },
       "notes": {
         "title": "Mis Anotaciones",
         "subtitle": "Escribí y editá tus anotaciones",
       },
+      "forum":{
+        "title":"Foro",
+        "subtitle":"Buscá el material que necesités!",
+      }
     }
   },
   "student": {
@@ -201,8 +205,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "empty": {
         "title": "¡Ups!",
-        "subtitle":
-            "Parece que no hay materias cargadas en el plan de estudios",
+        "subtitle": "Parece que no hay materias cargadas en el plan de estudios",
       },
       "correlatives": {
         "title": "Correlativas",
@@ -251,8 +254,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "actions": {
         "confirmDeleteNote": "¿Estás seguro que deseas eliminar la anotación?",
-        "confirmDeleteNotes":
-            "¿Estás seguro que deseas eliminar las anotaciones?",
+        "confirmDeleteNotes": "¿Estás seguro que deseas eliminar las anotaciones?",
         "deleteConfirmed": "¡Entendido!",
       },
       "searchBar": {
@@ -270,8 +272,7 @@ const Map<dynamic, dynamic> ES = {
         "charts": {
           "title": "Mi progreso general",
           "approvedOptativeSubjects": "Avance de materias optativas aprobadas",
-          "approvedMandatorySubjects":
-              "Avance de materias obligatorias aprobadas",
+          "approvedMandatorySubjects": "Avance de materias obligatorias aprobadas",
           "completedPoints": "Puntos Completados en la carrera",
           "completedHours": "Horas Completados en la carrera",
           "subjectsRegular": "Materias regulares",
@@ -364,6 +365,47 @@ const Map<dynamic, dynamic> ES = {
     }
   },
   "institution": {
+    "forum": {
+      "title":"Foro Universy",
+      "comments": {
+        "commentsNotFound":"No se encontraron mensajes para esta publicación. ¿Porqué no sos el primero en comentar?",
+        "separator":" a las ",
+      },
+      "filter":{
+        "filterButton":"Filtrar",
+        "level":"Nivel",
+        "subject":"Materia",
+        "commission":"Comisión",
+        "orderByDate":"Ordenar por fecha",
+        "mostRecent":"Más recientes",
+        "older":"Más antiguos",
+        "moreComment":"Más comentados",
+        "morePopular":"Más populares",
+        "labels":"Etiquetas",
+        "search":"Buscar",
+        "maxTags":"Cantidad máxima de tags alcanzada",
+        "hintTags":"Agregá a tu búsqueda #",
+        "orderBy":"Ordenar por: ",
+      },
+      "publication":{
+        "hintDescription":"Escribí la descripción de tu publicación",
+        "errorDescription":"Debés escribir una descripción",
+        "hintTitle":"Escribí el título de tu publicación",
+        "errorTitle":"Debés escribir un titulo",
+        "comments":" Comentarios",
+        "hintComment":"Escribí un comentario...",
+        "errorMessageComment":"El comentario se encuentra vacío",
+        "defaultUser":"Usuario",
+      },
+      "publicationNotFound":{
+        "errorMessage":"No se encontraron publicaciones en el foro",
+        "buttonMessage":"¿Porque no volvés a filtrar ?",
+      },
+      "profileNotFound":{
+        "errorMessage":"No se encontró un perfil creado",
+        "message":"Por favor, creá tu perfil para poder acceder al foro de Universy.",
+      },
+    },
     "subjects": {
       "notFound": {
         "title": "¡Bienvenido a Universy!",

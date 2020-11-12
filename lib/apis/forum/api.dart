@@ -17,9 +17,10 @@ Future<List<ForumPublication>> getForumPublications(
     "includeAlias": "true",
     "offset": "${offset.toString()}",
     "limit": "15",
-    "includeVoteForUserId": "$userId"
+    "includeVoteForUserId": "$userId",
+    "sortBy":filters[0],
   };
-  if (filters.isNotEmpty) {queryParams.putIfAbsent("tags", () => filters[0]);}
+  if (filters.length>1) {queryParams.putIfAbsent("tags", () => filters[1]);}
 
   var response = await api.getList<ForumPublication>(
     path,
@@ -53,7 +54,6 @@ Future<void> updateForumPublication(ForumPublicationUpdateRequest request) {
 Future<List<Comment>> searchCommentsPublication(String idPublication, String userId) async {
   var resource = "/comments";
   var path = _createPath(resource);
-  print(idPublication);
   var queryParams = {
     "publicationId": "$idPublication",
     "includeAlias": "true",

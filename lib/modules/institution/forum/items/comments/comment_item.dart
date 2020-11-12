@@ -12,7 +12,7 @@ class CommentItemWidget extends StatelessWidget {
   final Comment _comment;
   final bool _isOwner;
 
-  CommentItemWidget({Key key, Comment comment, bool isOwner})
+  CommentItemWidget({Key key, Comment comment, bool isOwner, ForumPublication forumPublication})
       : this._comment = comment,
         this._isOwner = isOwner,
         super(key: key);
@@ -57,18 +57,12 @@ class CommentItemWidget extends StatelessWidget {
   void _pressDeleteCommentButton(BuildContext context) async {
     await AsyncModalBuilder()
         .perform(_deleteComment)
-        .withTitle("Eliminando Comentario")
-        .then(_refreshForum)
         .build()
         .run(context);
   }
 
   Future _deleteComment(BuildContext context) async {
     BlocProvider.of<InstitutionForumCubit>(context).deleteComment(this._comment);
-  }
-
-  void _refreshForum(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications([]);
   }
 
   Widget _buildNotOwnerCommentItem(BuildContext context) {
@@ -91,8 +85,22 @@ class CommentItemWidget extends StatelessWidget {
         Row(
           children: <Widget>[
             (this._comment.voteId == null)
-                ? IconButton(icon: Icon(Icons.thumb_up,size: 23,color: Colors.grey,),onPressed: () =>  _onVote(context),)
-                : IconButton(icon: Icon(Icons.thumb_up,size: 23,color: Colors.black,),onPressed: () =>  _onDeleteVote(context),),
+                ? IconButton(
+                    icon: Icon(
+                      Icons.thumb_up,
+                      size: 23,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () => _onVote(context),
+                  )
+                : IconButton(
+                    icon: Icon(
+                      Icons.thumb_up,
+                      size: 23,
+                      color: Colors.black,
+                    ),
+                    onPressed: () => _onDeleteVote(context),
+                  ),
             Text(
               this._comment.votes.toString(),
               style: TextStyle(fontSize: 20),
@@ -112,7 +120,7 @@ class CommentItemWidget extends StatelessWidget {
   }
 
   void _onDeleteVote(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).deleteVote(this._comment.voteId,false);
+    BlocProvider.of<InstitutionForumCubit>(context).deleteVote(this._comment.voteId, false);
   }
 
   Widget _buildDescription() {

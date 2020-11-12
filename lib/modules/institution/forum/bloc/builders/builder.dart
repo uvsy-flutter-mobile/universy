@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/institution/forum/bloc/states.dart';
 import 'package:universy/modules/institution/forum/forum_view.dart';
 import 'package:universy/modules/institution/forum/items/filters/filters_view.dart';
@@ -9,11 +7,6 @@ import 'package:universy/modules/institution/forum/items/publication/publication
 import 'package:universy/modules/institution/forum/not_found.dart';
 import 'package:universy/modules/institution/forum/profile_not_found.dart';
 import 'package:universy/modules/institution/subjects/not_found.dart';
-import 'package:universy/modules/main/bloc/cubit.dart';
-import 'package:universy/modules/main/main.dart';
-import 'package:universy/modules/student/profile/create.dart';
-import 'package:universy/modules/student/profile/profile.dart';
-import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/util/bloc.dart';
 import 'package:universy/widgets/progress/circular.dart';
 
@@ -27,7 +20,9 @@ class InstitutionForumStateBuilder extends WidgetBuilderFactory<InstitutionForum
         filters: state.filters,
       );
     } else if (state is ForumPublicationsNotFoundState) {
-      return ForumPublicationNotFoundWidget();
+      return ForumPublicationNotFoundWidget(
+        isFiltering: state.isFiltering,
+      );
     } else if (state is DisplayForumPublicationDetailState) {
       return PublicationDetailWidget(
         forumPublication: state.forumPublication,

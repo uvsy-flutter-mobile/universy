@@ -3,10 +3,10 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class FiltersViewWidget extends StatefulWidget {
@@ -25,8 +25,7 @@ class FiltersViewWidget extends StatefulWidget {
 class _FiltersViewWidgetState extends State<FiltersViewWidget> {
   TextEditingController _searchTagsEditingController;
   int _selectedLevel;
-  DateTime _selectedDateFrom;
-  DateTime _selectedDateTo;
+  bool _recently;
   List<String> _uploadTags = [];
   List<InstitutionSubject> _subjects;
   List<Commission> _commissions;
@@ -37,6 +36,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
 
   @override
   void initState() {
+    _recently = true;
     _selectedCommission = null;
     _selectedSubject = null;
     _scrollController = ScrollController();
@@ -62,31 +62,41 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _buildTitle("Nivel"),
+              _buildTitle(
+                AppText.getInstance().get("institution.forum.filter.level"),
+              ),
               _buildLevelButtonsRow(),
-              _buildTitle("Materia"),
+              _buildTitle(
+                AppText.getInstance().get("institution.forum.filter.subject"),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _buildSubjectDropDown(),
                 ],
               ),
-              _buildTitle("Comision"),
+              _buildTitle(
+                AppText.getInstance().get("institution.forum.filter.commission"),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _buildCommissionDropDown(),
                 ],
               ),
-              _buildTitle("Fecha"),
+              _buildTitle(
+                AppText.getInstance().get("institution.forum.filter.orderByDate"),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _buildDatePicker(false),
-                  _buildDatePicker(true),
+                  _buildDatePicker(
+                      AppText.getInstance().get("institution.forum.filter.mostRecent"), true),
+                  _buildDatePicker(
+                      AppText.getInstance().get("institution.forum.filter.older"), false),
                 ],
               ),
-              _buildTitle("Etiquetas"),
+              _buildTitle(AppText.getInstance().get("institution.forum.filter.labels")),
               _buildTags(),
               _buildAddTagsSection(),
               _buildApplyButton()
@@ -108,7 +118,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
               Icons.search,
               size: 30,
             ),
-            Text("Buscar")
+            Text(AppText.getInstance().get("institution.forum.filter.search"))
           ],
         ),
         onPressed: _createAndSendFilter,
@@ -122,7 +132,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     return DropdownButton<InstitutionSubject>(
       key: key,
       hint: Text(
-        "Materia",
+        AppText.getInstance().get("institution.forum.filter.subject"),
         textAlign: TextAlign.center,
       ),
       value: (this._selectedSubject == null) ? dropdownValue : this._selectedSubject,
@@ -155,7 +165,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     return DropdownButton<Commission>(
       key: key,
       hint: Text(
-        "Comisión",
+        AppText.getInstance().get("institution.forum.filter.commission"),
         textAlign: TextAlign.center,
       ),
       value: (this._selectedCommission == null) ? dropdownValue : this._selectedCommission,
@@ -184,6 +194,14 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
 
   void _createAndSendFilter() {
     List<String> listTags = [];
+    if (this._recently == true) {
+      String sort = "-creation";
+      listTags.add(sort);
+    } else {
+      String sort = "+creation";
+      listTags.add(sort);
+    }
+
     String tags = '';
 
     if (this._selectedLevel != null) {
@@ -200,17 +218,11 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         tags += x + ",";
       }
     }
-    listTags.add(tags);
-    if (this._selectedDateFrom != null) {
-      listTags.add(this._selectedDateFrom.millisecondsSinceEpoch.toString());
+    if (tags.trim().length != 0) {
+      listTags.add(tags);
     }
-    if (this._selectedDateTo != null) {
-      listTags.add(this._selectedDateTo.millisecondsSinceEpoch.toString());
-    }
-    print(listTags);
-    print(listTags[0]);
+
     BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(listTags);
-    //Navigator.pop(context);
   }
 
   Widget _buildAddTagsSection() {
@@ -236,7 +248,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 10,
       child: Text(
-        "Has llegado al máximo de tags permitidos, pagá la versión PREMIUM, o eliminá algún TAG.",
+        AppText.getInstance().get("institution.forum.filter.maxTags"),
         style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
       ),
     );
@@ -245,7 +257,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
   InputDecoration _buildTagAddDecoration() {
     return InputDecoration.collapsed(
       hintStyle: TextStyle(color: Colors.grey),
-      hintText: "Agregá a tu búsqueda #",
+      hintText: AppText.getInstance().get("institution.forum.filter.hintTags"),
     );
   }
 
@@ -307,19 +319,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     );
   }
 
-  Widget _buildDatePicker(bool toFrom) {
-    DateTime dateTime = toFrom ? _selectedDateTo : _selectedDateFrom;
-    String date;
-    if (toFrom) {
-      if (_selectedDateTo != null) {
-        date = _selectedDateTo.year.toString() + "/" + _selectedDateTo.month.toString();
-      }
-    } else {
-      if (_selectedDateFrom != null) {
-        date = _selectedDateFrom.year.toString() + "/" + _selectedDateFrom.month.toString();
-      }
-    }
-    String concept = toFrom ? "Hasta " : "Desde ";
+  Widget _buildDatePicker(String descriptionText, bool ascending) {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 5,
       child: RaisedButton(
@@ -328,50 +328,29 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
               side: BorderSide(
                 color: Colors.amber,
               )),
-          color: (dateTime != null) ? Colors.amber : Colors.white,
+          color: (_recently == ascending) ? Colors.amber : Colors.white,
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             Icon(
               Icons.calendar_today,
-              color: (dateTime != null) ? Colors.white : Colors.amber,
+              color: (_recently == ascending) ? Colors.white : Colors.amber,
             ),
             Text(
-              "$concept",
+              "$descriptionText",
               style: TextStyle(
-                color: (dateTime != null) ? Colors.white : Colors.amber,
+                color: (_recently == ascending) ? Colors.white : Colors.amber,
               ),
             ),
-            Text(
-              (dateTime != null) ? "$date" : "",
-              style: TextStyle(
-                color: (dateTime != null) ? Colors.white : Colors.amber,
-              ),
-            )
           ]),
           onPressed: () {
-            var now = (dateTime != null) ? dateTime : DateTime.now();
-            _onPressedDatePicker(toFrom, now);
+            _onPressedDatePicker();
           }),
     );
   }
 
-  void _onPressedDatePicker(bool toFrom, DateTime date) async {
-    final picker = await showMonthPicker(
-      context: context,
-      initialDate: date,
-    );
-    if (toFrom == true) {
-      if (picker != null) {
-        setState(() {
-          _selectedDateTo = picker;
-        });
-      }
-    } else {
-      if (picker != null) {
-        setState(() {
-          _selectedDateFrom = picker;
-        });
-      }
-    }
+  void _onPressedDatePicker() {
+    setState(() {
+      this._recently = !this._recently;
+    });
   }
 
   Widget _buildLevelButtonsRow() {

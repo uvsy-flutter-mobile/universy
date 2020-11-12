@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/constants/routes.dart';
-import 'package:universy/model/institution/forum.dart';
-import 'package:universy/modules/institution/forum/forum_view.dart';
 import 'package:universy/modules/main/bloc/cubit.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/tiles/list.dart';
@@ -113,10 +111,8 @@ class ForumItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTileItem(
-      title: "Foro",
-      //AppText.getInstance().get("main.modules.calendar.title"),
-      subtitle: "Revisá tu foro papá!!",
-      //AppText.getInstance().get("main.modules.calendar.subtitle"),
+      title: AppText.getInstance().get("main.modules.forum.title"),
+      subtitle: AppText.getInstance().get("main.modules.forum.subtitle"),
       selected: false,
       onTap: () {
         Navigator.pop(context);
