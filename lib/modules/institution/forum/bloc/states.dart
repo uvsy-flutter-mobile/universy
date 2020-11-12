@@ -13,13 +13,18 @@ abstract class InstitutionForumState extends Equatable {
 
 class LoadingState extends InstitutionForumState {}
 
+class CareerNotCreatedState extends InstitutionForumState {}
+
+class ProfileNotCreatedState extends InstitutionForumState {}
+
 class DisplayState extends InstitutionForumState {
   final List<ForumPublication> forumPublications;
   final List<InstitutionSubject> institutionSubjects;
   final List<Commission> listCommissions;
   final Profile profile;
+  final List<String> filters;
 
-  DisplayState(this.forumPublications, this.profile, this.institutionSubjects,this.listCommissions);
+  DisplayState(this.forumPublications, this.profile, this.institutionSubjects,this.listCommissions,this.filters);
 
   Profile get myProfile => profile;
 

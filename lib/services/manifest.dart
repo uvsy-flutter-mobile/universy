@@ -138,9 +138,9 @@ abstract class StudentNotesService extends Service {
 }
 
 abstract class ForumService extends Service {
-  Future<List<ForumPublication>> getForumPublications(String programId, int offset);
+  Future<List<ForumPublication>> getForumPublications(String programId, int offset, String userId,List<String> filters);
 
-  Future<List<Comment>> getCommentsPublication(String idPublication);
+  Future<List<Comment>> getCommentsPublication(String idPublication,String userId);
 
   Future<void> createForumPublication(String title, String description, List<String> tags);
 
@@ -152,9 +152,10 @@ abstract class ForumService extends Service {
 
   Future<void> updateForumPublication(String title, String description, List<String> tags,String idPublication);
 
+  Future<void> addVotePublication(String userId, String idPublication);
 
+  Future<void> addVoteComment(String userId, String idComment);
 
-
-
+  Future<void> deleteVote(String idVote, bool isPublication);
 
 }

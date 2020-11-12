@@ -13,21 +13,19 @@ class PublicationItemWidget extends StatelessWidget {
   final ForumPublication _forumPublication;
   final bool _isOwner;
 
-  PublicationItemWidget({Key key, ForumPublication forumPublication,bool isOwner})
+  PublicationItemWidget({Key key, ForumPublication forumPublication, bool isOwner})
       : this._forumPublication = forumPublication,
         this._isOwner = isOwner,
         super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    if(this._isOwner){
+    if (this._isOwner) {
       return _buildOwnerPublicationItem(context);
-    }else{
+    } else {
       return _buildNotOwnerPublicationItem(context);
     }
   }
-
 
   Widget _buildOwnerPublicationItem(BuildContext context) {
     return Slidable(
@@ -35,10 +33,9 @@ class PublicationItemWidget extends StatelessWidget {
       enabled: true,
       actionExtentRatio: 0.25,
       child: _buildNotOwnerPublicationItem(context),
-      secondaryActions: <Widget>[_buildDeleteSlide(context),_buildUpdateSlide(context)],
+      secondaryActions: <Widget>[_buildDeleteSlide(context), _buildUpdateSlide(context)],
     );
   }
-
 
   Widget _buildNotOwnerPublicationItem(BuildContext context) {
     return GestureDetector(
@@ -97,15 +94,15 @@ class PublicationItemWidget extends StatelessWidget {
   void _pressDeletePublicationForumButton(BuildContext context) async {
     await AsyncModalBuilder()
         .perform(_deletePublication)
-        .withTitle(
-        "Eliminando Publicación")
+        .withTitle("Eliminando Publicación")
         .then(_refreshForum)
         .build()
         .run(context);
   }
 
   void _pressUpdatePublicationForumButton(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).updateForumPublicationState(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .updateForumPublicationState(this._forumPublication);
   }
 
   Future _deletePublication(BuildContext context) async {
@@ -113,35 +110,58 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   void _refreshForum(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications([]);
   }
 
   Widget _buildRowContent() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: <Widget>[_buildUserName(), _buildPublicationContent(), _buildExtraInfo()],
+      children: <Widget>[
+        Expanded(flex: 2, child: _buildUserName()),
+        Expanded(flex: 4, child: _buildPublicationContent()),
+        _buildExtraInfo()
+      ],
     );
   }
 
-  Expanded _buildExtraInfo() {
-    return Expanded(
-      flex: 1,
-      child: SymmetricEdgePaddingWidget.horizontal(
-        paddingValue: 2,
-        child: Column(
-          children: <Widget>[
-            _buildPublicationComments(),
-            DateItemWidget(date:this._forumPublication.date,withTime: false,),
-          ],
-        ),
+  Widget _buildExtraInfo() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 4,
+      child: Column(
+        children: <Widget>[
+          _buildPublicationComments(),
+          _buildVotes(),
+          DateItemWidget(
+            date: this._forumPublication.date,
+            withTime: false,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildVotes() {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 5,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Icon(
+            Icons.thumb_up,
+            size: 22,
+          ),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: 2,
+              child: Text(
+                this._forumPublication.votes.toString(),
+                style: TextStyle(fontSize: 16),
+              )),
+        ],
       ),
     );
   }
 
   Widget _buildPublicationComments() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Icon(
           Icons.comment,
@@ -149,24 +169,20 @@ class PublicationItemWidget extends StatelessWidget {
         ),
         SymmetricEdgePaddingWidget.horizontal(
           paddingValue: 2,
-          child: Text(this._forumPublication.comments.toString(),
-              style: TextStyle(fontSize: 17)),
+          child: Text(this._forumPublication.comments.toString(), style: TextStyle(fontSize: 17)),
         ),
       ],
     );
   }
 
   Widget _buildPublicationContent() {
-    return Expanded(
-      flex: 4,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildPublicationTitleItem(),
-          _buildPublicationDescriptionItem(),
-          _buildTags(),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _buildPublicationTitleItem(),
+        _buildPublicationDescriptionItem(),
+        _buildTags(),
+      ],
     );
   }
 
@@ -193,7 +209,7 @@ class PublicationItemWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 7.0,
       child: Tags(
-        spacing: 1.0,
+        spacing: 2.5,
         runSpacing: 1.5,
         alignment: WrapAlignment.start,
         itemCount: _forumPublication.tags.length,
@@ -214,23 +230,22 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   Widget _buildUserName() {
-    String alias = (this._forumPublication.userAlias==null) ? "User":this._forumPublication.userAlias;
-    return Expanded(
-      flex: 2,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Icon(Icons.perm_identity),
-          Text(
-            alias,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
+    String alias =
+        (this._forumPublication.userAlias == null) ? "User" : this._forumPublication.userAlias;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Icon(Icons.perm_identity),
+        Text(
+          alias,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 
   void _onPublicationTap(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).viewDetailForumPublicationState(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .viewDetailForumPublicationState(this._forumPublication);
   }
 }

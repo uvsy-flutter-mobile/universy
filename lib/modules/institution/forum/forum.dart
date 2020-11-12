@@ -25,7 +25,7 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
       var profileService = sessionFactory.profileService();
       var forumService = sessionFactory.forumService();
       this._forumCubit = InstitutionForumCubit(careerService, institutionService, profileService,forumService);
-      this._forumCubit.fetchPublications();
+      this._forumCubit.fetchPublications([]);
     }
     super.didChangeDependencies();
   }
@@ -54,7 +54,7 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
         onPressed: () => {_arrowBackOnPressed(context)},
       ),
       title: Text("Foro"
-          //      AppText.getInstance().get("main.modules.notes.title"      )
+          //AppText.getInstance().get("main.modules.notes.title"      )
           ),
       elevation: 10.0,
       automaticallyImplyLeading: true,
@@ -62,10 +62,10 @@ class _InstitutionForumModuleState extends State<InstitutionForumModule> {
   }
 
   void _arrowBackOnPressed(BuildContext context) {
-    if (_forumCubit.state is DisplayState || _forumCubit.state is ForumPublicationsNotFoundState ) {
+    if (_forumCubit.state is DisplayState || _forumCubit.state is ForumPublicationsNotFoundState || _forumCubit.state is ProfileNotCreatedState ) {
       Navigator.pop(context);
     } else {
-      _forumCubit.fetchPublications();
+      _forumCubit.fetchPublications([]);
     }
   }
 

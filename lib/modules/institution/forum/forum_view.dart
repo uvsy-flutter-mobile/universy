@@ -16,11 +16,13 @@ import 'bloc/cubit.dart';
 class ForumViewWidget extends StatefulWidget {
   final List<ForumPublication> _listPublications;
   final Profile _profile;
+  final List<String> _filters;
 
   const ForumViewWidget(
-      {Key key, @required List<ForumPublication> forumPublications, Profile profile})
+      {Key key, @required List<ForumPublication> forumPublications, Profile profile, List<String> filters})
       : this._listPublications = forumPublications,
         this._profile = profile,
+        this._filters = filters,
         super(key: key);
 
   @override
@@ -53,7 +55,6 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget._profile.userId);
     return Scaffold(
       floatingActionButton: _buildFloatingActionButton(context),
       body: SymmetricEdgePaddingWidget.horizontal(
@@ -89,9 +90,7 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
           Expanded(flex: 4, child: _getDropDown()),
           Expanded(
             flex: 3,
-            child: FilterButtonWidget(
-              callBack: _fetchFilters,
-            ),
+            child: FilterButtonWidget(),
           ),
         ],
       ),
@@ -132,32 +131,21 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     switch (newValue) {
       case 0:
         {
-          orderedPublications.sort((a, b) => a.date.compareTo(b.date));
+          orderedPublications.sort((a, b) => b.date.compareTo(a.date));
         }
         break;
       case 1:
         {
-          orderedPublications.sort((a, b) => b.date.compareTo(a.date));
+          orderedPublications.sort((a, b) => a.date.compareTo(b.date));
         }
         break;
       case 2:
         {
-          //orderedPublications.sort((a, b) => b.comments.length.compareTo(a.comments.length));
+          orderedPublications.sort((a, b) => b.comments.compareTo(a.comments));
         }
     }
     setState(() {
       this._listPublications = orderedPublications;
-    });
-  }
-
-  void _fetchFilters(Filters filters) {
-    print(filters.selectedLevel);
-    print(filters.selectedSubject);
-    print(filters.dateFrom);
-    print(filters.dateTo);
-    Filters newFilter = filters;
-    setState(() {
-      //widget._callBack(newFilter);
     });
   }
 
@@ -168,7 +156,7 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
   Widget _buildForumPublicationsList() {
     this._scrollController.addListener(() {
       if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
-        if (isLoading == false && noMorePages==false) {
+        if (isLoading == false && noMorePages == false) {
           setState(() {
             isLoading = !isLoading;
           });
@@ -222,14 +210,14 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     var forumService = sessionFactory.forumService();
     var programId = await careerService.getCurrentProgram();
     List<ForumPublication> forumPublications =
-        await forumService.getForumPublications(programId, this.offset + 10);
-    if(forumPublications.isNotEmpty){
+        await forumService.getForumPublications(programId, this.offset + 10,widget._profile.userId,widget._filters);
+    if (forumPublications.isNotEmpty) {
       setState(() {
         this.offset = this.offset + 10;
         widget._listPublications.addAll(forumPublications);
         this.isLoading = !isLoading;
       });
-    }else{
+    } else {
       setState(() {
         noMorePages = true;
         this.isLoading = !isLoading;

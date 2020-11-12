@@ -68,7 +68,7 @@ class CommentItemWidget extends StatelessWidget {
   }
 
   void _refreshForum(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications([]);
   }
 
   Widget _buildNotOwnerCommentItem(BuildContext context) {
@@ -78,20 +78,41 @@ class CommentItemWidget extends StatelessWidget {
       ),
       elevation: 4,
       child: Column(
-        children: <Widget>[_buildUserName(), _buildDescription(), _buildDateItem()],
+        children: <Widget>[_buildUserName(), _buildDescription(), _buildDateItem(context)],
       ),
     );
   }
 
-  Widget _buildDateItem() {
-    return SymmetricEdgePaddingWidget.horizontal(
-        paddingValue: 5,
-        child: SymmetricEdgePaddingWidget.vertical(
-            paddingValue: 5,
-            child: DateItemWidget(
-              date: _comment.date,
-              withTime: true,
-            )));
+  Widget _buildDateItem(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            (this._comment.voteId == null)
+                ? IconButton(icon: Icon(Icons.thumb_up,size: 23,color: Colors.grey,),onPressed: () =>  _onVote(context),)
+                : IconButton(icon: Icon(Icons.thumb_up,size: 23,color: Colors.black,),onPressed: () =>  _onDeleteVote(context),),
+            Text(
+              this._comment.votes.toString(),
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+        DateItemWidget(
+          date: _comment.date,
+          withTime: true,
+        ),
+      ],
+    );
+  }
+
+  void _onVote(BuildContext context) {
+    BlocProvider.of<InstitutionForumCubit>(context).addVoteComment(this._comment.idComment);
+  }
+
+  void _onDeleteVote(BuildContext context) {
+    BlocProvider.of<InstitutionForumCubit>(context).deleteVote(this._comment.voteId,false);
   }
 
   Widget _buildDescription() {

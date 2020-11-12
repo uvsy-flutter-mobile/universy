@@ -1,3 +1,4 @@
+import 'package:universy/apis/errors.dart';
 import 'package:universy/apis/forum/api.dart' as forumApi;
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/services/exceptions/service.dart';
@@ -25,10 +26,13 @@ class DefaultForumService implements ForumService {
   }
 
   @override
-  Future<List<ForumPublication>> getForumPublications(String programId, int offset) async {
+  Future<List<ForumPublication>> getForumPublications(String programId, int offset, String userId, List<String> filters) async {
     try {
-      return await forumApi.getForumPublications(programId, offset);
-    } on ServiceException catch (e) {
+      return await forumApi.getForumPublications(programId, offset,userId, filters);
+    }on InternalError {
+      return [];
+    }
+    on ServiceException catch (e) {
       Log.getLogger().error(e);
       rethrow;
     } catch (e) {
@@ -72,9 +76,9 @@ class DefaultForumService implements ForumService {
   }
 
   @override
-  Future<List<Comment>> getCommentsPublication(String idPublication) async {
+  Future<List<Comment>> getCommentsPublication(String idPublication,String userId) async {
     try {
-      return await forumApi.searchCommentsPublication(idPublication);
+      return await forumApi.searchCommentsPublication(idPublication,userId);
     } catch (e) {
       Log.getLogger().error(e);
       throw ServiceException();
@@ -103,4 +107,37 @@ class DefaultForumService implements ForumService {
   }
 
 
+  @override
+  Future<void> addVotePublication(String userId, String idPublication) async {
+    VotePublicationRequest request = VotePublicationRequest(userId,idPublication);
+    try {
+      return await forumApi.addVotePublication(request);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> addVoteComment(String userId, String idComment) async {
+    VoteCommentRequest request = VoteCommentRequest(userId,idComment);
+    try {
+      return await forumApi.addVoteComment(request);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> deleteVote(String idVote, bool isPublication) async {
+    String route ='';
+    if(isPublication){route="publications";}else{route="comments";}
+    try {
+      return await forumApi.deleteVote(idVote,route);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
 }

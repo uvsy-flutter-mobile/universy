@@ -7,11 +7,19 @@ String _createPath(String resource) {
   return "$basePath$resource";
 }
 
-Future<List<ForumPublication>> getForumPublications(String programId, int offset) async {
+Future<List<ForumPublication>> getForumPublications(
+    String programId, int offset, String userId, List<String> filters) async {
   var resource = "/publications";
   var path = _createPath(resource);
-  print(programId);
-  var queryParams = {"programId": "$programId", "includeTags": "true", "includeAlias": "true","offset":"${offset.toString()}"};
+  var queryParams = {
+    "programId": "$programId",
+    "includeTags": "true",
+    "includeAlias": "true",
+    "offset": "${offset.toString()}",
+    "limit": "15",
+    "includeVoteForUserId": "$userId"
+  };
+  if (filters.isNotEmpty) {queryParams.putIfAbsent("tags", () => filters[0]);}
 
   var response = await api.getList<ForumPublication>(
     path,
@@ -42,10 +50,15 @@ Future<void> updateForumPublication(ForumPublicationUpdateRequest request) {
   );
 }
 
-Future<List<Comment>> searchCommentsPublication(String idPublication) async {
+Future<List<Comment>> searchCommentsPublication(String idPublication, String userId) async {
   var resource = "/comments";
   var path = _createPath(resource);
-  var queryParams = {"publicationId":"$idPublication","includeAlias":"true"};
+  print(idPublication);
+  var queryParams = {
+    "publicationId": "$idPublication",
+    "includeAlias": "true",
+    "includeVoteForUserId": "$userId"
+  };
 
   var response = await api.getList<Comment>(
     path,
@@ -80,6 +93,35 @@ Future<void> insertComment(CommentRequest request) {
 
   return api.post(
     path,
-    payload:request,
+    payload: request,
+  );
+}
+
+Future<void> addVotePublication(VotePublicationRequest request) {
+  var resource = "/votes/publications";
+  var path = _createPath(resource);
+
+  return api.post(
+    path,
+    payload: request,
+  );
+}
+
+Future<void> addVoteComment(VoteCommentRequest request) {
+  var resource = "/votes/comments";
+  var path = _createPath(resource);
+
+  return api.post(
+    path,
+    payload: request,
+  );
+}
+
+Future<void> deleteVote(String idVote, String route) {
+  var resource = "/votes/$route/$idVote";
+  var path = _createPath(resource);
+
+  return api.delete(
+    path,
   );
 }

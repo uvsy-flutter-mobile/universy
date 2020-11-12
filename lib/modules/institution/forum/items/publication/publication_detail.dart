@@ -149,7 +149,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              SaveButton(onSave: () => _createButtonAction()),
+              SaveButton(onSave: () => _createCommentAction()),
               CancelButton(onCancel: () => _cancelButtonAction()),
             ],
           ));
@@ -158,10 +158,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     }
   }
 
-  void _createButtonAction() {
-    print(widget._profile.userId);
-    print(this._newCommentController.text);
-    print(widget._forumPublication.idPublication);
+  void _createCommentAction() {
     BlocProvider.of<InstitutionForumCubit>(context).addComment(
         widget._forumPublication,
         widget._profile.userId,
@@ -190,42 +187,68 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   Widget _buildPublication() {
     return Card(
       elevation: 15,
-      child: SymmetricEdgePaddingWidget.vertical(
-        paddingValue: 10,
-        child: Column(
-          children: <Widget>[
-            Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SymmetricEdgePaddingWidget.vertical(
+            paddingValue: 10,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                _buildUserName(),
-                _buildPublicationTitle(),
+                Expanded(flex: 2, child: _buildUserName()),
+                Expanded(flex: 4, child: _buildPublicationTitle()),
+                _buildDate(),
               ],
             ),
-            Row(
+          ),
+          SymmetricEdgePaddingWidget.horizontal(
+            paddingValue: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _buildPublicationDescription(),
+                _buildTags(),
               ],
             ),
-            SymmetricEdgePaddingWidget.horizontal(
-              paddingValue: 15,
-              child: Row(
-                children: <Widget>[
-                  _buildTags(),
-                  _buildDate(),
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+          SymmetricEdgePaddingWidget.horizontal(
+            paddingValue: 10,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                (widget._forumPublication.idVoteUser == null)
+                    ? IconButton(icon: Icon(Icons.thumb_up,size: 30,color: Colors.grey,),onPressed: () => _onVote(),)
+                    : IconButton(icon: Icon(Icons.thumb_up,size: 30,color: Colors.black,),onPressed: () => _onDeleteVote(),),
+                Text(widget._forumPublication.votes.toString(),style: TextStyle(fontSize: 23),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
+  void _onVote() {
+    BlocProvider.of<InstitutionForumCubit>(context).addVotePublication(
+      widget._forumPublication,
+      widget._profile.userId,
+    );
+  }
+
+  void _onDeleteVote() {
+    BlocProvider.of<InstitutionForumCubit>(context).deleteVote(
+      widget._forumPublication.idVoteUser,
+      true,
+    );
+  }
+
   Widget _buildUserName() {
-    String alias = (widget._forumPublication.userAlias==null) ? "User":widget._forumPublication.userAlias;
+    String alias =
+        (widget._forumPublication.userAlias == null) ? "User" : widget._forumPublication.userAlias;
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Icon(Icons.perm_identity),
           Text(
@@ -246,36 +269,26 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   }
 
   Widget _buildDate() {
-    return Column(
-      children: <Widget>[
-        DateItemWidget(
-          date: widget._forumPublication.date,
-          withTime: true,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPublicationDescription() {
-    return Expanded(
-      flex: 2,
-      child: SymmetricEdgePaddingWidget.vertical(
-        paddingValue: 10,
-        child: SymmetricEdgePaddingWidget.horizontal(
-          paddingValue: 20,
-          child: Text(
-            this.widget._forumPublication.description,
-            style: TextStyle(),
-            overflow: TextOverflow.visible,
-          ),
-        ),
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 5,
+      child: DateItemWidget(
+        date: widget._forumPublication.date,
+        withTime: true,
       ),
     );
   }
 
+  Widget _buildPublicationDescription() {
+    return Text(
+      this.widget._forumPublication.description,
+      style: TextStyle(),
+      overflow: TextOverflow.visible,
+    );
+  }
+
   Widget _buildTags() {
-    return Expanded(
-      flex: 1,
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 10,
       child: Tags(
         spacing: 1.0,
         runSpacing: 1.5,

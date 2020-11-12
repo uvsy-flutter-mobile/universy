@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:universy/constants/routes.dart';
 import 'package:universy/modules/institution/forum/bloc/states.dart';
 import 'package:universy/modules/institution/forum/forum_view.dart';
 import 'package:universy/modules/institution/forum/items/filters/filters_view.dart';
 import 'package:universy/modules/institution/forum/items/publication/new_publication.dart';
 import 'package:universy/modules/institution/forum/items/publication/publication_detail.dart';
 import 'package:universy/modules/institution/forum/not_found.dart';
+import 'package:universy/modules/institution/forum/profile_not_found.dart';
+import 'package:universy/modules/institution/subjects/not_found.dart';
+import 'package:universy/modules/main/bloc/cubit.dart';
+import 'package:universy/modules/main/main.dart';
+import 'package:universy/modules/student/profile/create.dart';
+import 'package:universy/modules/student/profile/profile.dart';
+import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/util/bloc.dart';
 import 'package:universy/widgets/progress/circular.dart';
 
@@ -12,7 +21,11 @@ class InstitutionForumStateBuilder extends WidgetBuilderFactory<InstitutionForum
   @override
   Widget translate(InstitutionForumState state) {
     if (state is DisplayState) {
-      return ForumViewWidget(forumPublications: state.forumPublications, profile: state.profile);
+      return ForumViewWidget(
+        forumPublications: state.forumPublications,
+        profile: state.profile,
+        filters: state.filters,
+      );
     } else if (state is ForumPublicationsNotFoundState) {
       return ForumPublicationNotFoundWidget();
     } else if (state is DisplayForumPublicationDetailState) {
@@ -38,7 +51,12 @@ class InstitutionForumStateBuilder extends WidgetBuilderFactory<InstitutionForum
     } else if (state is FilterForumPublicationsState) {
       return FiltersViewWidget(
         subjects: state.institutionSubjects,
+        commission: state.listCommissions,
       );
+    } else if (state is CareerNotCreatedState) {
+      return CareerNotFoundWidget();
+    } else if (state is ProfileNotCreatedState) {
+      return ProfileNotFoundWidget();
     }
     return CenterSizedCircularProgressIndicator();
   }

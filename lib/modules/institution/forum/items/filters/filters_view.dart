@@ -1,18 +1,21 @@
 import 'dart:core';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:universy/model/institution/forum.dart';
+import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/subject.dart';
+import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class FiltersViewWidget extends StatefulWidget {
-  final Function(Filters) _callBack;
   final List<InstitutionSubject> _subjects;
+  final List<Commission> _commissions;
 
-  const FiltersViewWidget({Key key, Function(Filters) callBack,List<InstitutionSubject> subjects})
-      : this._callBack = callBack,
-        this._subjects = subjects,
+  const FiltersViewWidget({Key key, List<InstitutionSubject> subjects, List<Commission> commission})
+      : this._subjects = subjects,
+        this._commissions = commission,
         super(key: key);
 
   @override
@@ -26,14 +29,19 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
   DateTime _selectedDateTo;
   List<String> _uploadTags = [];
   List<InstitutionSubject> _subjects;
+  List<Commission> _commissions;
   InstitutionSubject _selectedSubject;
+  Commission _selectedCommission;
   bool _maxTags;
   ScrollController _scrollController;
 
   @override
   void initState() {
+    _selectedCommission = null;
+    _selectedSubject = null;
     _scrollController = ScrollController();
     _subjects = widget._subjects;
+    _commissions = widget._commissions;
     _searchTagsEditingController = TextEditingController();
     super.initState();
     _maxTags = false;
@@ -41,21 +49,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: _buildFloatingActionButton() ,
-        body: _buildBody());
-  }
-
-  _buildFloatingActionButton(){
-    return FloatingActionButton(
-      backgroundColor: Colors.deepPurple,
-      onPressed: _createAndSendFilter,
-      child: Icon(
-        Icons.search,
-        color: Colors.white,
-        size: 40,
-      ),
-    );
+    return _buildBody();
   }
 
   Widget _buildBody() {
@@ -81,7 +75,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _buildSubjectDropDown(),
+                  _buildCommissionDropDown(),
                 ],
               ),
               _buildTitle("Fecha"),
@@ -95,9 +89,29 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
               _buildTitle("Etiquetas"),
               _buildTags(),
               _buildAddTagsSection(),
+              _buildApplyButton()
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildApplyButton() {
+    return Center(
+      child: RaisedButton(
+        color: Colors.amber,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              Icons.search,
+              size: 30,
+            ),
+            Text("Buscar")
+          ],
+        ),
+        onPressed: _createAndSendFilter,
       ),
     );
   }
@@ -111,7 +125,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         "Materia",
         textAlign: TextAlign.center,
       ),
-      value: dropdownValue,
+      value: (this._selectedSubject == null) ? dropdownValue : this._selectedSubject,
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownSubject,
@@ -135,13 +149,68 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     });
   }
 
-  void _createAndSendFilter() {
-    Filters newFilter =
-        Filters(_selectedLevel, _selectedSubject, _selectedDateFrom, _selectedDateTo, _uploadTags);
-    setState(() {
-      widget._callBack(newFilter);
+  Widget _buildCommissionDropDown() {
+    GlobalKey key = GlobalKey();
+    Commission dropdownValue;
+    return DropdownButton<Commission>(
+      key: key,
+      hint: Text(
+        "Comisión",
+        textAlign: TextAlign.center,
+      ),
+      value: (this._selectedCommission == null) ? dropdownValue : this._selectedCommission,
+      elevation: 6,
+      style: TextStyle(color: Colors.black),
+      onChanged: _onChangeDropDownCommission,
+      items: _commissions.map((x) {
+        return new DropdownMenuItem<Commission>(
+          value: x,
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width / 2.5,
+              child: new Text(
+                x.name,
+                textAlign: TextAlign.center,
+              )),
+        );
+      }).toList(),
+    );
+  }
+
+  void _onChangeDropDownCommission(Commission newValue) {
+    return setState(() {
+      this._selectedCommission = newValue;
     });
-    Navigator.pop(context);
+  }
+
+  void _createAndSendFilter() {
+    List<String> listTags = [];
+    String tags = '';
+
+    if (this._selectedLevel != null) {
+      tags += this._selectedLevel.toString() + ",";
+    }
+    if (this._selectedSubject != null) {
+      tags += this._selectedSubject.name + ",";
+    }
+    if (this._selectedCommission != null) {
+      tags += this._selectedCommission.name + ",";
+    }
+    if (this._uploadTags.isNotEmpty) {
+      for (String x in _uploadTags) {
+        tags += x + ",";
+      }
+    }
+    listTags.add(tags);
+    if (this._selectedDateFrom != null) {
+      listTags.add(this._selectedDateFrom.millisecondsSinceEpoch.toString());
+    }
+    if (this._selectedDateTo != null) {
+      listTags.add(this._selectedDateTo.millisecondsSinceEpoch.toString());
+    }
+    print(listTags);
+    print(listTags[0]);
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(listTags);
+    //Navigator.pop(context);
   }
 
   Widget _buildAddTagsSection() {
@@ -330,10 +399,10 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
 
   Widget _buildButton(String text) {
     return FloatingActionButton(
-      backgroundColor: _selectedLevel == int.parse(text) ? Colors.amber : Colors.white,
+      backgroundColor: this._selectedLevel == int.parse(text) ? Colors.amber : Colors.white,
       shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: _selectedLevel != int.parse(text) ? Colors.amber : Colors.transparent,
+            color: this._selectedLevel != int.parse(text) ? Colors.amber : Colors.transparent,
           ),
           borderRadius: BorderRadius.all(Radius.circular(30.0))),
       child: Container(
@@ -341,10 +410,10 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
       ),
       onPressed: () {
         setState(() {
-          if (_selectedLevel == int.parse(text)) {
-            _selectedLevel = null;
+          if (this._selectedLevel == int.parse(text)) {
+            this._selectedLevel = null;
           } else {
-            _selectedLevel = int.parse(text);
+            this._selectedLevel = int.parse(text);
           }
         });
       },

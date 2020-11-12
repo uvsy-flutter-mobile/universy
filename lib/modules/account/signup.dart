@@ -230,6 +230,7 @@ class SignUpPasswordWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 6.0,
       child: CustomTextFormField(
+        maxLines: 1,
         key: SIGNUP_KEY_PASSWORD_FIELD,
         controller: _textEditingController,
         validatorBuilder: _getPasswordValidator(),

@@ -28,6 +28,8 @@ class ForumPublication {
   List<String> _tags;
   int _comments;
   String _userAlias;
+  int _votes;
+  String _idVoteUser;
 
   String get idPublication => _idPublication;
 
@@ -45,15 +47,19 @@ class ForumPublication {
 
   String get userAlias => _userAlias;
 
+  int get votes => _votes;
+
+  String get idVoteUser => _idVoteUser;
+
   ForumPublication(this._idPublication, this._title, this._userId, this._description, this._date,
-      this._comments, this._tags, this._userAlias);
+      this._comments, this._tags, this._userAlias, this._votes, this._idVoteUser);
 
   factory ForumPublication.fromJson(Map<String, dynamic> json) {
     List<String> listTags = (json['tags'] as List ?? []).map((tag) => tag.toString()).toList();
     int date = json["createdAt"];
     DateTime publicationDate = DateTime.fromMillisecondsSinceEpoch(date);
-    return ForumPublication(json["id"], json["title"], json['userId'], json['description'],
-        publicationDate, json["comments"], listTags, json["userAlias"]);
+    return ForumPublication(json['id'], json['title'], json['userId'], json['description'],
+        publicationDate, json['comments'], listTags, json['userAlias'], json['votes'], json['userVoteId']);
   }
 
   @override
@@ -94,7 +100,6 @@ class ForumPublicationRequest extends JsonConvertible {
   @override
   Map<String, dynamic> toJson() {
     var a = jsonEncode(this.tags);
-    print(a);
     return {
       "title": "${this._title}",
       "description": "${this._description}",
@@ -119,8 +124,7 @@ class ForumPublicationUpdateRequest extends JsonConvertible {
 
   List<String> get tags => _tags;
 
-  ForumPublicationUpdateRequest(
-      this._title, this._description, this._tags,this._idPublication);
+  ForumPublicationUpdateRequest(this._title, this._description, this._tags, this._idPublication);
 
   @override
   Map<String, dynamic> toJson() {
@@ -132,7 +136,7 @@ class ForumPublicationUpdateRequest extends JsonConvertible {
   }
 }
 
-class Comment extends JsonConvertible{
+class Comment extends JsonConvertible {
   String _idPublication;
   String _idComment;
   String _userAlias;
@@ -140,6 +144,7 @@ class Comment extends JsonConvertible{
   DateTime _date;
   String _content;
   int _votes;
+  String _voteId;
 
   String get idPublication => _idPublication;
 
@@ -155,14 +160,17 @@ class Comment extends JsonConvertible{
 
   int get votes => _votes;
 
+  String get voteId => _voteId;
+
   Comment(this._idPublication, this._idComment, this._userAlias, this._userId, this._date,
-      this._content, this._votes);
+      this._content, this._votes, this._voteId);
+
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     int date = json["createdAt"];
     DateTime publicationDate = DateTime.fromMillisecondsSinceEpoch(date);
     return Comment(json["publicationId"], json["id"], json["userAlias"], json["userId"],
-        publicationDate, json['content'], json['votes']);
+        publicationDate, json['content'], json['votes'], json['userVoteId']);
   }
 
   @override
@@ -175,8 +183,7 @@ class Comment extends JsonConvertible{
   }
 }
 
-class CommentRequest extends JsonConvertible{
-
+class CommentRequest extends JsonConvertible {
   String _userId;
   String _idPublication;
   String _content;
@@ -196,26 +203,43 @@ class CommentRequest extends JsonConvertible{
     };
   }
 
-  CommentRequest(this._userId,this._content,this._idPublication);
+  CommentRequest(this._userId, this._content, this._idPublication);
 }
 
-class Filters {
-  int _selectedLevel;
-  InstitutionSubject _selectedSubject;
-  DateTime _dateFrom;
-  DateTime _dateTo;
-  List<String> _uploadTags;
+class VotePublicationRequest extends JsonConvertible {
+  String _userId;
+  String _idPublication;
 
-  int get selectedLevel => _selectedLevel;
+  String get userId => _userId;
 
-  InstitutionSubject get selectedSubject => _selectedSubject;
+  String get idPublication => _idPublication;
 
-  DateTime get dateFrom => _dateFrom;
+  @override
+  Map<String, String> toJson() {
+    return {
+      "userId": this._userId,
+      "publicationId": this._idPublication,
+    };
+  }
 
-  DateTime get dateTo => _dateTo;
+  VotePublicationRequest(this._userId, this._idPublication);
+}
 
-  List<String> get uploadTags => _uploadTags;
+class VoteCommentRequest extends JsonConvertible {
+  String _userId;
+  String _idComment;
 
-  Filters(
-      this._selectedLevel, this._selectedSubject, this._dateFrom, this._dateTo, this._uploadTags);
+  String get userId => _userId;
+
+  String get idComment => _idComment;
+
+  @override
+  Map<String, String> toJson() {
+    return {
+      "userId": this._userId,
+      "commentId": this._idComment,
+    };
+  }
+
+  VoteCommentRequest(this._userId, this._idComment);
 }

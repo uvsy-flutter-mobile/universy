@@ -286,7 +286,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   }
 
   void _cancelNewPublication(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications();
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications([]);
   }
 
   Widget _buildTextFieldDescription(BuildContext context) {

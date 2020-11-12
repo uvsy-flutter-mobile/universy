@@ -6,11 +6,7 @@ import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class FilterButtonWidget extends StatefulWidget {
-  final Function(Filters) _callBack;
-
-  const FilterButtonWidget({Key key, Function(Filters) callBack})
-      : this._callBack = callBack,
-        super(key: key);
+  const FilterButtonWidget({Key key,}) : super(key: key);
 
   @override
   _FilterButtonWidgetState createState() => _FilterButtonWidgetState();
@@ -39,12 +35,5 @@ class _FilterButtonWidgetState extends State<FilterButtonWidget> {
 
   void _onTap() {
     BlocProvider.of<InstitutionForumCubit>(context).filterForumPublicationsState();
-  }
-
-  void _fetchFilters(Filters filters) {
-    Filters newFilter = filters;
-    setState(() {
-      widget._callBack(newFilter);
-    });
   }
 }
