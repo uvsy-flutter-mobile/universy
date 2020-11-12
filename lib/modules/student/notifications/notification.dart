@@ -59,7 +59,6 @@ class NotificationsAlert extends StatelessWidget {
   bool _validateNotEventsList(List<StudentEvent> events) {
     return isNull(events) || events.isEmpty;
   }
-  }
 
   Widget _buildQuantityNotification(List<StudentEvent> eventsToday) {
     return Positioned(
