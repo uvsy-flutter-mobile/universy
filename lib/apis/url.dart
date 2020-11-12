@@ -1,3 +1,5 @@
+import 'package:universy/system/config.dart';
+
 class UrlBuilder {
   final String resource;
   final Map<String, String> queryParams;
@@ -20,8 +22,7 @@ class UrlBuilder {
   }
 
   String _buildBaseURL() {
-    // TODO: Move to config
-    var stage = "dev2";
+    var stage = SystemConfig.instance().getStage();
     return "https://student-gw-$stage.universy.app";
   }
 }
