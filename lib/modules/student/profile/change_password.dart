@@ -20,6 +20,8 @@ import 'package:universy/widgets/text/custom.dart';
 import 'bloc/cubit.dart';
 import 'header.dart';
 
+enum PasswordsForm { FIRST_NEW_PASSWORD, SECOND_NEW_PASSWORD, OLD_PASSWORD }
+
 class ChangePasswordWidget extends StatefulWidget {
   final String _userId;
 
