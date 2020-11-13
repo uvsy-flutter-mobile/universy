@@ -1,5 +1,4 @@
 import 'dart:core';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -57,10 +56,14 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
         value: 2, child: Text(AppText.getInstance().get("institution.forum.filter.moreComment")));
     DropdownMenuItem item4 = DropdownMenuItem(
         value: 3, child: Text(AppText.getInstance().get("institution.forum.filter.morePopular")));
+    DropdownMenuItem item5 = DropdownMenuItem(
+        value: 4,
+        child: Text(AppText.getInstance().get("institution.forum.filter.myPublications")));
     items.add(item1);
     items.add(item2);
     items.add(item3);
     items.add(item4);
+    items.add(item5);
     super.initState();
   }
 
@@ -159,10 +162,41 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
           orderedPublications.sort((a, b) => b.votes.compareTo(a.votes));
         }
         break;
+      case 4:
+        {
+          List<ForumPublication> list = [];
+          for (ForumPublication x in this._listPublications) {
+            if (x.userId == widget._profile.userId) {
+              list.add(x);
+            }
+          }
+          for (ForumPublication x in this._listPublications) {
+            if (x.userId != widget._profile.userId) {
+              list.add(x);
+            }
+          }
+          orderedPublications = list;
+        }
+        break;
     }
     setState(() {
       this._listPublications = orderedPublications;
     });
+  }
+
+  List<ForumPublication> _fetchMyPublication() {
+    List<ForumPublication> list = [];
+    for (ForumPublication x in this._listPublications) {
+      if (x.userId == widget._profile.userId) {
+        list.add(x);
+      }
+    }
+    for (ForumPublication x in this._listPublications) {
+      if (x.userId != widget._profile.userId) {
+        list.add(x);
+      }
+    }
+    return list;
   }
 
   Widget _buildPublications() {
