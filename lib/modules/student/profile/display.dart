@@ -74,9 +74,9 @@ class ProfileDisplayWidget extends StatelessWidget {
       backgroundColor: Theme.of(context).primaryColor,
       children: [
         _EditDialBuilder(() => _navigateToEdit(context)).build(context),
-        _ChangePasswordBuilder(() => _navigateToChangePassword(context))
+        ChangePasswordBuilder(() => _navigateToChangePassword(context))
             .build(context),
-        _ExitDialBuilder().build(context),
+        ExitDialBuilder().build(context),
       ],
     );
   }
@@ -86,14 +86,14 @@ class ProfileDisplayWidget extends StatelessWidget {
   }
 
   void _navigateToChangePassword(BuildContext context) {
-    context.read<ProfileCubit>().toChangePassword(this.profile);
+    context.read<ProfileCubit>().toChangePassword();
   }
 }
 
-class _ChangePasswordBuilder extends ComponentBuilder<SpeedDialChild> {
+class ChangePasswordBuilder extends ComponentBuilder<SpeedDialChild> {
   final VoidCallback editAction;
 
-  _ChangePasswordBuilder(this.editAction);
+  ChangePasswordBuilder(this.editAction);
 
   @override
   SpeedDialChild build(BuildContext context) {
@@ -101,7 +101,7 @@ class _ChangePasswordBuilder extends ComponentBuilder<SpeedDialChild> {
       child: Icon(Icons.lock),
       backgroundColor: Theme.of(context).accentColor,
       // TODO: Change to app text
-      label: "Cambiar contraseña",
+      label: "Cambiar Contraseña",
       //AppText.getInstance().get("student.profile.actions.edit"),
       labelStyle: TextStyle(fontSize: 18.0),
       onTap: editAction,
@@ -126,7 +126,7 @@ class _EditDialBuilder extends ComponentBuilder<SpeedDialChild> {
   }
 }
 
-class _ExitDialBuilder extends ComponentBuilder<SpeedDialChild> {
+class ExitDialBuilder extends ComponentBuilder<SpeedDialChild> {
   @override
   SpeedDialChild build(BuildContext context) {
     return SpeedDialChild(

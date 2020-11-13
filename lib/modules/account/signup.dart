@@ -274,7 +274,9 @@ class SignUpLinkToLogin extends StatelessWidget {
       child: Row(
         children: <Widget>[
           _buildAccountQuestionText(),
-          _buildLink(context),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: MediaQuery.of(context).size.width * 0.01,
+              child: _buildLink(context)),
         ],
       ),
     );
@@ -285,8 +287,7 @@ class SignUpLinkToLogin extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("signUp.actions.accountQuestion")),
-          textStyle: TextStyle(
-              decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(color: Colors.black),
         ),
       ],
     );

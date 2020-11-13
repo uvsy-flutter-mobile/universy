@@ -137,9 +137,11 @@ class LoginWidgetState extends State<LogInWidget> {
         .show(context);
   }
 
-  String _notAuthorizeMessage() => AppText.getInstance().get("login.error.notAuthorized");
+  String _notAuthorizeMessage() =>
+      AppText.getInstance().get("login.error.notAuthorized");
 
-  String _verifyingMessage() => AppText.getInstance().get("login.info.verifying");
+  String _verifyingMessage() =>
+      AppText.getInstance().get("login.info.verifying");
 }
 
 /// Login Title
@@ -160,7 +162,8 @@ class LoginTitleWidget extends StatelessWidget {
 class LoginUsernameWidget extends StatelessWidget {
   final TextEditingController _textEditingController;
 
-  const LoginUsernameWidget({Key key, @required TextEditingController textEditingController})
+  const LoginUsernameWidget(
+      {Key key, @required TextEditingController textEditingController})
       : this._textEditingController = textEditingController,
         super(key: key);
 
@@ -178,7 +181,8 @@ class LoginUsernameWidget extends StatelessWidget {
   }
 
   InputDecorationBuilder _getUserInputDecoration() {
-    return TextInputDecorationBuilder(AppText.getInstance().get("login.input.user.message"));
+    return TextInputDecorationBuilder(
+        AppText.getInstance().get("login.input.user.message"));
   }
 
   TextFormFieldValidatorBuilder _getUserInputValidator() {
@@ -239,7 +243,8 @@ class LoginPasswordWidget extends StatelessWidget {
 class LoginSubmitButtonWidget extends StatelessWidget {
   final Function(BuildContext context) _loginAction;
 
-  const LoginSubmitButtonWidget({Key key, @required Function(BuildContext context) loginAction})
+  const LoginSubmitButtonWidget(
+      {Key key, @required Function(BuildContext context) loginAction})
       : this._loginAction = loginAction,
         super(key: key);
 
@@ -259,7 +264,7 @@ class LoginSubmitButtonWidget extends StatelessWidget {
       key: LOGIN_KEY_SUBMIT_BUTTON,
       radius: 10,
       onPressed: () => _loginAction(context),
-      color: Colors.black54,
+      color: Theme.of(context).accentColor,
       child: Row(
         children: <Widget>[
           _buildButtonText(),
@@ -292,7 +297,8 @@ class LoginSubmitButtonWidget extends StatelessWidget {
 class LoginLinkToSignUp extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const LoginLinkToSignUp({Key key, @required Function(BuildContext context) linkAction})
+  const LoginLinkToSignUp(
+      {Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -303,7 +309,9 @@ class LoginLinkToSignUp extends StatelessWidget {
       child: Row(
         children: <Widget>[
           _buildAccountQuestionText(),
-          _buildLink(context),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: MediaQuery.of(context).size.width * 0.01,
+              child: _buildLink(context)),
         ],
       ),
     );
@@ -315,7 +323,8 @@ class LoginLinkToSignUp extends StatelessWidget {
         GestureDetector(
             child: Text(
               (AppText.getInstance().get("login.actions.register")),
-              style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
+              style: TextStyle(
+                  decoration: TextDecoration.underline, color: Colors.blue),
             ),
             onTap: () => _linkAction(context))
       ],
@@ -327,7 +336,7 @@ class LoginLinkToSignUp extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("login.actions.signup")),
-          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(color: Colors.black),
         ),
       ],
     );
@@ -338,7 +347,8 @@ class LoginLinkToSignUp extends StatelessWidget {
 class LoginPasswordForgotten extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const LoginPasswordForgotten({Key key, @required Function(BuildContext context) linkAction})
+  const LoginPasswordForgotten(
+      {Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -349,7 +359,9 @@ class LoginPasswordForgotten extends StatelessWidget {
       child: Row(
         children: <Widget>[
           _buildPasswordQuestionText(),
-          _buildLink(context),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: MediaQuery.of(context).size.width * 0.01,
+              child: _buildLink(context)),
         ],
       ),
     );
@@ -361,7 +373,8 @@ class LoginPasswordForgotten extends StatelessWidget {
         GestureDetector(
             child: Text(
               (AppText.getInstance().get("recoverPassword.actions.recover")),
-              style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
+              style: TextStyle(
+                  decoration: TextDecoration.underline, color: Colors.blue),
             ),
             onTap: () => _linkAction(context))
       ],
@@ -372,8 +385,9 @@ class LoginPasswordForgotten extends StatelessWidget {
     return Column(
       children: <Widget>[
         EllipsisCustomText.left(
-          text: (AppText.getInstance().get("recoverPassword.info.forgottenPassword")),
-          textStyle: TextStyle(decoration: TextDecoration.underline, color: Colors.black),
+          text: (AppText.getInstance()
+              .get("recoverPassword.info.forgottenPassword")),
+          textStyle: TextStyle(color: Colors.black),
         ),
       ],
     );

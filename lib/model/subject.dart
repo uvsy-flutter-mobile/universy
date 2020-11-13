@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'dart:core';
 
 import 'package:optional/optional.dart';
 import 'package:universy/model/student/subject.dart';
