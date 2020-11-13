@@ -149,7 +149,8 @@ class _VerifyWidgetState extends State<VerifyWidget>
   }
 
   Future<void> _resendCode(BuildContext context) async {
-    var accountService = Provider.of<ServiceFactory>(context, listen: false).accountService();
+    var accountService =
+        Provider.of<ServiceFactory>(context, listen: false).accountService();
     await accountService.resendConfirmationCode(user.username);
   }
 
@@ -372,8 +373,9 @@ class VerifyCodeWidget extends StatelessWidget {
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
     return PatternNotEmptyTextFormFieldValidatorBuilder(
-      regExp: Regex.CODE_MAX_LENGHT,
-      patternMessage: AppText.getInstance().get("verify.input.code.minQuantity"),
+      regExp: Regex.CODE_MAX_LENGTH,
+      patternMessage:
+          AppText.getInstance().get("verify.input.code.minQuantity"),
       emptyMessage: AppText.getInstance().get("verify.input.code.required"),
     );
   }

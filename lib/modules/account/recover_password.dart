@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/regex.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/account/user.dart';
+import 'package:universy/modules/account/bloc/builder.dart';
 import 'package:universy/modules/account/bloc/cubit.dart';
 import 'package:universy/services/exceptions/student.dart';
 import 'package:universy/services/factory.dart';
@@ -18,6 +20,8 @@ import 'package:universy/widgets/text/custom.dart';
 import 'package:universy/widgets/willpop/will_pop.dart';
 
 import 'keys.dart';
+
+enum PasswordsForm { FIRST_NEW_PASSWORD, SECOND_NEW_PASSWORD }
 
 class RecoverPasswordWidget extends StatefulWidget {
   final String user;
@@ -39,7 +43,8 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
       TextEditingController();
   final TextEditingController _secondPasswordController =
       TextEditingController();
-  bool _passwordHidden;
+  bool _firstPasswordHidden;
+  bool _secondPasswordHidden;
 
   @override
   void initState() {
@@ -47,13 +52,16 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
     this.user = widget.user;
     this.animationController = createAnimation();
     this.animationController.reverse(from: 1.0);
-    _passwordHidden = true;
+    this._firstPasswordHidden = true;
+    this._secondPasswordHidden = true;
   }
 
   @override
   void dispose() {
     this.animationController.dispose();
     this.user = null;
+    this._firstPasswordHidden = false;
+    this._secondPasswordHidden = false;
     super.dispose();
   }
 
@@ -79,28 +87,39 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
                   VerifyTitleWidget(),
                   VerifySubTitleWidget(email: widget.user),
                   VerifyCodeWidget(textEditingController: _codeTextController),
-                  _buildCreateAnimationWidget(this.animationController),
                   NewPasswordTitleWidget(),
                   NewPasswordWidget(
                     textEditingController: _firstPasswordController,
                     secondEmailEditingController: _secondPasswordController,
-                    obscure: _passwordHidden,
-                    onPressed: _changePasswordVisibilityOnPressedAction,
+                    obscure: _firstPasswordHidden,
+                    onPressed: () => _changePasswordVisibilityOnPressedAction(
+                        PasswordsForm.FIRST_NEW_PASSWORD),
                     hint: AppText.getInstance()
                         .get("recoverPassword.newPassword.input.user.message"),
                   ),
                   NewPasswordWidget(
                     textEditingController: _secondPasswordController,
                     secondEmailEditingController: _firstPasswordController,
-                    obscure: _passwordHidden,
-                    onPressed: _changePasswordVisibilityOnPressedAction,
+                    obscure: _secondPasswordHidden,
+                    onPressed: () => _changePasswordVisibilityOnPressedAction(
+                        PasswordsForm.SECOND_NEW_PASSWORD),
                     hint: AppText.getInstance().get(
                         "recoverPassword.newPassword.input.user.messageCheck"),
                   ),
-                  NewPasswordConfirmButtonWidget(
-                    createButtonAction: _submitButtonOnPressedAction,
+                  SymmetricEdgePaddingWidget.vertical(
+                    paddingValue: 8.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        _buildGoBackButton(context),
+                        NewPasswordConfirmButtonWidget(
+                          createButtonAction: _submitButtonOnPressedAction,
+                        )
+                      ],
+                    ),
                   ),
-                  SignUpLinkToLogin(linkAction: _navigateToLoginWidget)
+                  _buildCreateAnimationWidget(this.animationController),
+                  SignUpLinkToLogin(linkAction: _navigateToLoginWidget),
                 ],
               ),
             ),
@@ -108,6 +127,47 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
         },
       ),
     );
+  }
+
+  Widget _buildGoBackButton(BuildContext context) {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 8.0,
+      child: CircularRoundedRectangleRaisedButton.general(
+        key: SIGNUP_KEY_SUBMIT_BUTTON,
+        radius: 10,
+        onPressed: () => _goToRecovery(),
+        color: Colors.amber,
+        child: Row(
+          children: <Widget>[
+            _buildButtonIcon(),
+            _buildButtonText(context),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonIcon() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 5,
+      child: Icon(Icons.arrow_back, color: Colors.white),
+    );
+  }
+
+  Widget _buildButtonText(BuildContext context) {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 5,
+      child: Text(
+        AppText.getInstance().get("recoverPassword.actions.goBackToMail"),
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  void _goToRecovery() {
+    AccountCubit cubit = BlocProvider.of<AccountCubit>(context);
+    cubit.toInputUser();
   }
 
   void _submitButtonOnPressedAction(BuildContext context) async {
@@ -140,10 +200,21 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
         .show(context);
   }
 
-  void _changePasswordVisibilityOnPressedAction() {
-    setState(() {
-      _passwordHidden = !_passwordHidden;
-    });
+  void _changePasswordVisibilityOnPressedAction(PasswordsForm passwordType) {
+    switch (passwordType) {
+      case PasswordsForm.FIRST_NEW_PASSWORD:
+        return setState(() {
+          _firstPasswordHidden = !_firstPasswordHidden;
+        });
+        break;
+      case PasswordsForm.SECOND_NEW_PASSWORD:
+        return setState(() {
+          _secondPasswordHidden = !_secondPasswordHidden;
+        });
+        break;
+      default:
+        return null;
+    }
   }
 
   void _navigateToLoginWidget(BuildContext context) {
@@ -171,7 +242,10 @@ class _RecoverPasswordWidgetState extends State<RecoverPasswordWidget>
   }
 
   void _navigateToHomeScreen(BuildContext context) {
-    FlushBarBroker().clear();
+    FlushBarBroker.success()
+        .withMessage(AppText.getInstance()
+            .get("recoverPassword.info.passwordChangedCorrectly"))
+        .show(context);
     Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
@@ -315,7 +389,6 @@ class VerifyReSendButtonWidget extends StatelessWidget {
         child: CircularRoundedRectangleRaisedButton.general(
           radius: 10,
           onPressed: _enabled ? () => _resendAction(context) : null,
-          color: Colors.deepPurple,
           child: Row(
             children: <Widget>[
               _buildButtonText(),
@@ -395,7 +468,7 @@ class VerifyCodeWidget extends StatelessWidget {
 
   TextFormFieldValidatorBuilder _buildNameValidator() {
     return PatternNotEmptyTextFormFieldValidatorBuilder(
-      regExp: Regex.CODE_MAX_LENGHT,
+      regExp: Regex.CODE_MAX_LENGTH,
       patternMessage:
           AppText.getInstance().get("verify.input.code.minQuantity"),
       emptyMessage: AppText.getInstance().get("verify.input.code.required"),
@@ -543,7 +616,9 @@ class SignUpLinkToLogin extends StatelessWidget {
       child: Row(
         children: <Widget>[
           _buildAccountQuestionText(),
-          _buildLink(context),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: MediaQuery.of(context).size.width * 0.01,
+              child: _buildLink(context)),
         ],
       ),
     );
@@ -554,8 +629,7 @@ class SignUpLinkToLogin extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("signUp.actions.accountQuestion")),
-          textStyle: TextStyle(
-              decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(color: Colors.black),
         ),
       ],
     );
@@ -590,20 +664,17 @@ class NewPasswordConfirmButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 8.0,
-      child: SizedBox(
-        width: double.infinity,
-        child: CircularRoundedRectangleRaisedButton.general(
-          key: SIGNUP_KEY_SUBMIT_BUTTON,
-          radius: 10,
-          onPressed: () => _createButtonAction(context),
-          color: Colors.deepPurple,
-          child: Row(
-            children: <Widget>[
-              _buildButtonText(),
-              _buildButtonIcon(),
-            ],
-            mainAxisAlignment: MainAxisAlignment.center,
-          ),
+      child: CircularRoundedRectangleRaisedButton.general(
+        key: SIGNUP_KEY_SUBMIT_BUTTON,
+        radius: 10,
+        onPressed: () => _createButtonAction(context),
+        color: Colors.deepPurple,
+        child: Row(
+          children: <Widget>[
+            _buildButtonText(),
+            _buildButtonIcon(),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
         ),
       ),
     );

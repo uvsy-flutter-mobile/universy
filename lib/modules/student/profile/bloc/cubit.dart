@@ -18,7 +18,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(EditState(profile));
   }
 
-  Future<void> toChangePassword(Profile profile) async {
+  Future<void> toChangePassword() async {
     String userId = await _accountService.getUserId();
     emit(ChangePasswordState(userId));
   }

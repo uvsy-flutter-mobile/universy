@@ -46,12 +46,14 @@ const Map<dynamic, dynamic> ES = {
     "actions": {
       "recover": "¡Recuperala!",
       "continue": "Continuar",
+      "goBackToMail": "Volver atrás",
+      "goBackToSingUp": "Volver atrás"
     },
     "info": {
       "forgottenPassword": "Olvidaste tu contraseña?",
+      "passwordChangedCorrectly": "Tu contraseña se cambió corectamente",
     },
     "newPassword": {
-      "passwordChangedCorrectly": "Tu contraseña fue actualizada con éxito",
       "subtitle": "Luego, ingresá tu nueva contraseña",
       "title": "Cambiar Contraseña",
       "input": {
@@ -72,8 +74,8 @@ const Map<dynamic, dynamic> ES = {
     "title": "¡Regístrate!",
     "input": {
       "user": {
-        "message": "Ingresá tu usuario",
-        "messageCheck": "Volvé a ingresar tu usuario",
+        "message": "Ingresá tu email",
+        "messageCheck": "Volvé a ingresar tu email",
         "notValid": "Ingresá un usuario valido",
         "required": "El usuario es requerido",
         "notEqual": "Ambos usuarios deben ser iguales",
@@ -88,7 +90,7 @@ const Map<dynamic, dynamic> ES = {
     "actions": {
       "submit": "Crear cuenta",
       "accountQuestion": "Ya tenés cuenta?",
-      "goToLogin": "Inicia tu sesión!",
+      "goToLogin": "Inicia sesión",
     },
     "info": {
       "creatingAccount": "Creando cuenta",
@@ -162,8 +164,8 @@ const Map<dynamic, dynamic> ES = {
       "input": {
         "name": {
           "notValid": "Entre 3 y 20 letras, sin símbolos",
-          "required": "Nombre es requerido",
-          "inputMessage": "Nombre",
+          "required": "El Nombre es requerido",
+          "inputMessage": "Ingresa tu Nombre",
         },
         "lastName": {
           "notValid": "Entre 3 y 20 letras, sin símbolos",
@@ -264,7 +266,7 @@ const Map<dynamic, dynamic> ES = {
       "title": "Estadisticas del alumno",
       "view": {
         "yearProgress": {
-          "title": "Mi Progreso por año",
+          "title": "Mi progreso por año",
           "noSubjects": "No hay materias cargadas",
         },
         "charts": {
@@ -272,8 +274,8 @@ const Map<dynamic, dynamic> ES = {
           "approvedOptativeSubjects": "Avance de materias optativas aprobadas",
           "approvedMandatorySubjects":
               "Avance de materias obligatorias aprobadas",
-          "completedPoints": "Puntos Completados en la carrera",
-          "completedHours": "Horas Completados en la carrera",
+          "completedPoints": "Puntos completados en la carrera",
+          "completedHours": "Horas completados en la carrera",
           "subjectsRegular": "Materias regulares",
           "subjectsToTake": "Materias por cursar",
           "subjectsTaking": "Materias cursando",

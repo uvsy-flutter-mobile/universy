@@ -8,7 +8,6 @@ import 'package:universy/modules/student/subjects/state/milestones/commands/comm
 import 'package:universy/system/locale.dart';
 import 'package:universy/text/translators/milestones.dart';
 import 'package:universy/widgets/buttons/uvsy/delete.dart';
-import 'package:universy/widgets/paddings/edge.dart';
 import 'card.dart';
 
 class ExistingMilestoneWidget extends StatefulWidget {

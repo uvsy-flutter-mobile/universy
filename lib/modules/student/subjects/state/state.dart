@@ -41,12 +41,12 @@ class SubjectStateWidgetState extends State<SubjectStateWidget> {
     return Column(
       children: <Widget>[
         ScoreSubjectWidget(subject: _subject),
+        TakingMilestoneWidget(subject: _subject, updateTreeState: updateState),
+        RegularMilestoneWidget(subject: _subject, updateTreeState: updateState),
         ApprovedMilestoneWidget(
           subject: _subject,
           updateTreeState: updateState,
         ),
-        RegularMilestoneWidget(subject: _subject, updateTreeState: updateState),
-        TakingMilestoneWidget(subject: _subject, updateTreeState: updateState)
       ],
     );
   }
