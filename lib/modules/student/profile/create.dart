@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/modules/account/account.dart';
+import 'package:universy/modules/student/profile/display.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
@@ -34,47 +36,26 @@ class _ProfileNotCreateState extends State<ProfileNotCreateWidget> {
           ],
         ),
       ),
-      floatingActionButton: _buildExitFloatingButton(context),
+      floatingActionButton: _buildMainButtons(context),
     );
   }
 
-  Widget _buildExitFloatingButton(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.exit_to_app),
-      tooltip:
-          AppText.getInstance().get("student.profile.actions.closeSession"),
-      backgroundColor: Theme.of(context).accentColor,
-      onPressed: () => _confirmLogOut(context),
+  Widget _buildMainButtons(BuildContext context) {
+    return SpeedDial(
+      shape: CircleBorder(),
+      heroTag: "profile_tooltip_hero_tag",
+      animatedIcon: AnimatedIcons.menu_close,
+      backgroundColor: Theme.of(context).primaryColor,
+      children: [
+        ChangePasswordBuilder(() => _navigateToChangePassword(context))
+            .build(context),
+        ExitDialBuilder().build(context),
+      ],
     );
   }
 
-  void _confirmLogOut(BuildContext context) async {
-    bool logout = await showDialog(
-          context: context,
-          builder: (context) => ExitDialog(),
-        ) ??
-        false;
-
-    if (logout) {
-      await AsyncModalBuilder()
-          .perform(_logOut)
-          .withTitle(
-              AppText.getInstance().get("student.profile.info.closingSession"))
-          .then(_restartApp)
-          .build()
-          .run(context);
-    }
-  }
-
-  Future<void> _logOut(BuildContext context) {
-    var accountService =
-        Provider.of<ServiceFactory>(context, listen: false).accountService();
-    return accountService.logOut();
-  }
-
-  void _restartApp(BuildContext context) {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => AccountModule()));
+  void _navigateToChangePassword(BuildContext context) {
+    context.read<ProfileCubit>().toChangePassword();
   }
 
   Widget _buildCreateProfileTitle() {

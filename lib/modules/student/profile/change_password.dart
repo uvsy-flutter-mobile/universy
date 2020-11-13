@@ -20,6 +20,8 @@ import 'package:universy/widgets/text/custom.dart';
 import 'bloc/cubit.dart';
 import 'header.dart';
 
+enum PasswordsForm { OLD_PASSWORD, FIRST_NEW_PASSWORD, SECOND_NEW_PASSWORD }
+
 class ChangePasswordWidget extends StatefulWidget {
   final String _userId;
 
@@ -39,18 +41,24 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
       TextEditingController();
   final TextEditingController _secondPasswordController =
       TextEditingController();
-  bool _passwordHidden;
+  bool _oldPasswordHidden;
+  bool _firstNewPasswordHidden;
+  bool _secondPasswordHidden;
 
   @override
   void initState() {
     super.initState();
-    this._passwordHidden = true;
+    this._oldPasswordHidden = true;
+    this._firstNewPasswordHidden = true;
+    this._secondPasswordHidden = true;
     this._userId = widget._userId;
   }
 
   @override
   void dispose() {
-    this._passwordHidden = null;
+    this._oldPasswordHidden = null;
+    this._firstNewPasswordHidden = null;
+    this._secondPasswordHidden = null;
     this._userId = null;
     super.dispose();
   }
@@ -75,33 +83,35 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
 
   Widget _buildPasswordForm(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 75,
+      paddingValue: MediaQuery.of(context).size.width * 0.10,
       child: Form(
         key: _formKey,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             NewPasswordTitleWidget(),
             OldPasswordWidget(
               textEditingController: _oldPasswordController,
-              obscure: _passwordHidden,
-              onPressed: _changePasswordVisibilityOnPressedAction,
+              obscure: _oldPasswordHidden,
+              onPressed: () => _changePasswordVisibilityOnPressedAction(
+                  PasswordsForm.OLD_PASSWORD),
               hint: AppText.getInstance()
                   .get("recoverPassword.newPassword.input.user.oldPassword"),
             ),
             NewPasswordWidget(
               textEditingController: _firstPasswordController,
               secondEmailEditingController: _secondPasswordController,
-              obscure: _passwordHidden,
-              onPressed: _changePasswordVisibilityOnPressedAction,
+              obscure: _firstNewPasswordHidden,
+              onPressed: () => _changePasswordVisibilityOnPressedAction(
+                  PasswordsForm.FIRST_NEW_PASSWORD),
               hint: AppText.getInstance()
                   .get("recoverPassword.newPassword.input.user.message"),
             ),
             NewPasswordWidget(
               textEditingController: _secondPasswordController,
               secondEmailEditingController: _firstPasswordController,
-              obscure: _passwordHidden,
-              onPressed: _changePasswordVisibilityOnPressedAction,
+              obscure: _secondPasswordHidden,
+              onPressed: () => _changePasswordVisibilityOnPressedAction(
+                  PasswordsForm.SECOND_NEW_PASSWORD),
               hint: AppText.getInstance()
                   .get("recoverPassword.newPassword.input.user.messageCheck"),
             ),
@@ -145,26 +155,34 @@ class _ChangePasswordWidgetState extends State<ChangePasswordWidget> {
   String _actualPasswordIncorrect() => AppText.getInstance()
       .get("recoverPassword.newPassword.input.user.oldPasswordIncorrect");
 
-  String _passwordChangedCorrectly() => AppText.getInstance()
-      .get("recoverPassword.newPassword.passwordChangedCorrectly");
-
   void _navigateToHomeScreen(BuildContext context) {
-    FlushBarBroker().clear();
-    _showPasswordChangedCorrectly(context);
+    FlushBarBroker.success()
+        .withMessage(AppText.getInstance()
+            .get("recoverPassword.info.passwordChangedCorrectly"))
+        .show(context);
     BlocProvider.of<ProfileCubit>(context).toDisplay();
   }
 
-  void _showPasswordChangedCorrectly(BuildContext context) {
-    FlushBarBroker()
-        .withMessage(_passwordChangedCorrectly())
-        .withIcon(Icon(Icons.check, color: Colors.green))
-        .show(context);
-  }
-
-  void _changePasswordVisibilityOnPressedAction() {
-    setState(() {
-      _passwordHidden = !_passwordHidden;
-    });
+  void _changePasswordVisibilityOnPressedAction(PasswordsForm passwordType) {
+    switch (passwordType) {
+      case PasswordsForm.OLD_PASSWORD:
+        return setState(() {
+          _oldPasswordHidden = !_oldPasswordHidden;
+        });
+        break;
+      case PasswordsForm.FIRST_NEW_PASSWORD:
+        return setState(() {
+          _firstNewPasswordHidden = !_firstNewPasswordHidden;
+        });
+        break;
+      case PasswordsForm.SECOND_NEW_PASSWORD:
+        return setState(() {
+          _secondPasswordHidden = !_secondPasswordHidden;
+        });
+        break;
+      default:
+        return null;
+    }
   }
 }
 
