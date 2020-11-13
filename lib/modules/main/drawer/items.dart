@@ -104,3 +104,20 @@ class StudentNotesItem extends StatelessWidget {
     );
   }
 }
+
+class ForumItem extends StatelessWidget {
+  const ForumItem({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTileItem(
+      title: AppText.getInstance().get("main.modules.forum.title"),
+      subtitle: AppText.getInstance().get("main.modules.forum.subtitle"),
+      selected: false,
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, Routes.FORUM_MODULE);
+      },
+    );
+  }
+}

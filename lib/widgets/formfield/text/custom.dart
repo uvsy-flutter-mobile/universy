@@ -11,11 +11,15 @@ class CustomTextFormField extends StatelessWidget {
   final Key _key;
   final TextCapitalization _textCapitalization;
   final TextInputType _keyboardType;
+  final int _maxLines;
+  final TextStyle _style;
 
   CustomTextFormField(
       {@required TextEditingController controller,
       @required TextFormFieldValidatorBuilder validatorBuilder,
       @required InputDecorationBuilder decorationBuilder,
+      int maxLines,
+      TextStyle style,
       bool obscure = false,
       bool enabled = true,
       TextCapitalization textCapitalization = TextCapitalization.none,
@@ -28,6 +32,8 @@ class CustomTextFormField extends StatelessWidget {
         this._enabled = enabled,
         this._textCapitalization = textCapitalization,
         this._keyboardType = keyboardType,
+        this._maxLines = maxLines,
+        this._style = style,
         this._key = key;
 
   @override
@@ -36,6 +42,8 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: _keyboardType,
         textCapitalization: _textCapitalization,
         key: _key,
+        maxLines: _maxLines,
+        style: _style,
         enabled: _enabled,
         controller: _controller,
         decoration: _decorationBuilder.build(context),

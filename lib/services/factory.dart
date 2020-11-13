@@ -5,6 +5,8 @@ abstract class ServiceFactory {
 
   ProfileService profileService();
 
+  ForumService forumService();
+
   StudentCareerService studentCareerService();
 
   RatingsService ratingsService();

@@ -16,8 +16,7 @@ String _createPath(String resource) {
 
 // Queries
 
-Future<List<InstitutionProgramInfo>> getProgramsInfo(
-    List<String> programsIds) async {
+Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programsIds) async {
   var resource = "/query/programs/info";
   var path = _createPath(resource);
 
