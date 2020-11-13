@@ -49,7 +49,9 @@ class ExistingEvent extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (_) => StudentEventFormWidget(
-            onConfirm: () => _refreshCalendar(context), studentEvent: event),
+            create: false,
+            onConfirm: () => _refreshCalendar(context),
+            studentEvent: event),
       ),
     );
   }

@@ -21,15 +21,18 @@ class StudentEventFormWidget extends StatefulWidget {
   final StudentEvent _studentEvent;
   final DateTime _daySelected;
   final Function() _onConfirm;
+  final bool _create;
 
   StudentEventFormWidget({
     Key key,
     StudentEvent studentEvent,
     DateTime daySelected,
+    bool create,
     @required Function() onConfirm,
   })  : this._daySelected = daySelected,
         this._studentEvent = studentEvent,
         this._onConfirm = onConfirm,
+        this._create = create,
         super(key: key);
 
   @override
@@ -47,12 +50,14 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   StudentEventService _studentEventService;
   TextEditingController _titleTextEditingController;
   TextEditingController _descriptionTextEditingController;
+  bool _create;
 
   StateLock<StudentEvent> _stateLock;
 
   void initState() {
     this._daySelected = widget._daySelected;
     this._formKey = GlobalKey<FormState>();
+    this._create = widget._create;
     this._studentEvent =
         Optional.ofNullable(widget._studentEvent).orElse(StudentEvent.empty());
     this._timeFrom =
@@ -60,10 +65,12 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     this._timeTo =
         Optional.ofNullable(_studentEvent.timeTo).orElse(TimeOfDay.now());
     this._stateLock = StateLock.lock(snapshot: widget._studentEvent);
-    this._titleTextEditingController =
-        TextEditingController(text: _studentEvent.title ?? EMPTY_STRING);
-    this._descriptionTextEditingController =
-        TextEditingController(text: _studentEvent.description ?? EMPTY_STRING);
+    this._titleTextEditingController = TextEditingController(
+        text: _create ? EMPTY_STRING : _studentEvent.title);
+    this._descriptionTextEditingController = TextEditingController(
+        text: _create ? EMPTY_STRING : _studentEvent.description);
+    this._studentEvent.eventType =
+        _create ? EventType.FINAL_EXAM.toString() : _studentEvent.eventType;
     super.initState();
   }
 
@@ -71,21 +78,11 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   void didChangeDependencies() {
     var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
     this._studentEventService = sessionFactory.studentEventService();
-    initializeStudentEvent();
     super.didChangeDependencies();
   }
 
-  void initializeStudentEvent() {
-    if (this._studentEvent.isNewEvent) {
-      String title = AppText.getInstance().get("student.calendar.form.title");
-      this._titleTextEditingController.text = title;
-      this._studentEvent.title = title;
-      this._studentEvent.eventType =
-          _studentEvent.eventType ?? EventType.FINAL_EXAM;
-    }
-  }
-
   void dispose() {
+    this._create = null;
     this._daySelected = null;
     this._formKey = null;
     this._studentEvent = null;
@@ -108,7 +105,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildNewEventAppBar() {
-    var appBarText = _studentEvent.isNewEvent
+    var appBarText = _create
         ? AppText.getInstance().get("student.calendar.form.title")
         : AppText.getInstance().get("student.calendar.form.editTitle");
 
@@ -146,11 +143,11 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildTitle() {
-    _titleTextEditingController.addListener(_updateTitle);
+    this._titleTextEditingController.addListener(_updateTitle);
     return SizedBox(
         width: 200,
         child: StudentEventTitleWidget(
-          textEditingController: _titleTextEditingController,
+          textEditingController: this._titleTextEditingController,
         ));
   }
 
@@ -275,7 +272,9 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   void _updateTitle() {
-    this._studentEvent.title = this._titleTextEditingController.text;
+    setState(() {
+      this._studentEvent.title = this._titleTextEditingController.text;
+    });
   }
 
   void _updateDate(DateTime selectedDate) {
