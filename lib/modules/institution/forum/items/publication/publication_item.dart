@@ -208,10 +208,11 @@ class PublicationItemWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Icon(Icons.perm_identity),
+        Icon((_isOwner)? Icons.person:Icons.perm_identity,color:Colors.black,),
         Text(
           alias,
           overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.black,fontWeight: (_isOwner)? FontWeight.bold:FontWeight.normal),
         ),
       ],
     );

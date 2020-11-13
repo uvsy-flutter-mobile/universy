@@ -8,6 +8,8 @@ import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/raised/rounded.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class FiltersViewWidget extends StatefulWidget {
@@ -99,7 +101,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
               ),
               _buildTitle(AppText.getInstance().get("institution.forum.filter.labels")),
               _buildTags(),
-              _buildAddTagsSection(),
+              _buildAddTagsSection(context),
               _buildApplyButton(context)
             ],
           ),
@@ -111,18 +113,16 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
   Widget _buildApplyButton(BuildContext context) {
     return Center(
       child: CircularRoundedRectangleRaisedButton.general(
-        child: AllEdgePaddedWidget(
-          padding: 9.0,
-          child: Text(
-            AppText.getInstance()
-                .get("institution.forum.filter.filterButton"),
-            style: Theme.of(context).primaryTextTheme.button,
+          child: AllEdgePaddedWidget(
+            padding: 9.0,
+            child: Text(
+              AppText.getInstance().get("institution.forum.filter.filterButton"),
+              style: Theme.of(context).primaryTextTheme.button,
+            ),
           ),
-        ),
-        color: Theme.of(context).buttonColor,
-        radius: 10,
-        onPressed: _createAndSendFilter
-      ),
+          color: Theme.of(context).buttonColor,
+          radius: 10,
+          onPressed: _createAndSendFilter),
     );
   }
 
@@ -225,21 +225,21 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(listTags);
   }
 
-  Widget _buildAddTagsSection() {
+  Widget _buildAddTagsSection(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 10,
       child: Visibility(
         visible: !_maxTags,
         replacement: _buildErrorMessage(),
-        child: _buildInputTagsField(),
+        child: _buildInputTagsField(context),
       ),
     );
   }
 
-  TextField _buildInputTagsField() {
+  TextField _buildInputTagsField(BuildContext context) {
     return TextField(
         enabled: !_maxTags,
-        onChanged: _filterTag,
+        onChanged: (query) => _filterTag(query, context),
         controller: _searchTagsEditingController,
         decoration: _buildTagAddDecoration());
   }
@@ -261,30 +261,47 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     );
   }
 
-  void _filterTag(String query) {
+  void _filterTag(String query, BuildContext context) {
     if (query.isNotEmpty) {
       if (query.trim().length > 0) {
         if (query.endsWith(" ")) {
-          if (_uploadTags.length != 9) {
-            setState(() {
-              String cleanQuery = query.trimLeft();
-              String cleanQuery2 = cleanQuery.trimRight();
-              _uploadTags.add(cleanQuery2);
-              _searchTagsEditingController.clear();
-            });
+          if (query.length < 15) {
+            if (_uploadTags.length != 9) {
+              setState(() {
+                String cleanQuery = query.trimLeft();
+                String cleanQuery2 = cleanQuery.trimRight();
+                _uploadTags.add(cleanQuery2);
+                _searchTagsEditingController.clear();
+              });
+            } else {
+              setState(() {
+                String cleanQuery = query.trimLeft();
+                String cleanQuery2 = cleanQuery.trimRight();
+                _uploadTags.add(cleanQuery2);
+                _searchTagsEditingController.clear();
+                _scrollController.animateTo(
+                  00.0,
+                  curve: Curves.easeOut,
+                  duration: const Duration(milliseconds: 1000),
+                );
+                _maxTags = true;
+              });
+            }
           } else {
-            setState(() {
-              String cleanQuery = query.trimLeft();
-              String cleanQuery2 = cleanQuery.trimRight();
-              _uploadTags.add(cleanQuery2);
-              _searchTagsEditingController.clear();
-              _scrollController.animateTo(
-                00.0,
-                curve: Curves.easeOut,
-                duration: const Duration(milliseconds: 1000),
-              );
-              _maxTags = true;
-            });
+            showDialog<bool>(
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    title: AppText.getInstance().get("institution.forum.filter.maxTagsLengthTitle"),
+                    content: AppText.getInstance()
+                        .get("institution.forum.filter.maxTagsLengthDescription"),
+                    buttons: <Widget>[
+                      CancelButton(
+                        onCancel: () => Navigator.of(context).pop(true),
+                      )
+                    ],
+                  ),
+                ) ??
+                false;
           }
         }
       }

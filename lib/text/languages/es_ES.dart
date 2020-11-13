@@ -3,7 +3,7 @@ const Map<dynamic, dynamic> ES = {
     "loading": "Cargando...",
     "exit": {
       "title": "Estás saliendo de Universy",
-      "content": "Seguro que querés salir?",
+      "content": "¿Seguro que querés salir?",
     },
     "yes": "Si",
     "no": "No"
@@ -12,9 +12,9 @@ const Map<dynamic, dynamic> ES = {
     "title": "Iniciar Sesión",
     "input": {
       "user": {
-        "notValid": "El usuario no es válido",
-        "required": "El usuario es requerido",
-        "message": "Ingresá tu usuario"
+        "notValid": "El email no es válido",
+        "required": "El email es requerido",
+        "message": "Ingresá tu email"
       },
       "password": {
         "required": "La contraseña es requerida",
@@ -24,7 +24,7 @@ const Map<dynamic, dynamic> ES = {
     "actions": {
       "submit": "Ingresar",
       "register": "¡Registrate!",
-      "signup": "Aún no tenes cuenta?",
+      "signup": "¿Aún no tenes cuenta?",
     },
     "info": {
       "verifying": "Verificando información",
@@ -38,9 +38,9 @@ const Map<dynamic, dynamic> ES = {
     "title": "Recuperá tu cuenta",
     "input": {
       "user": {
-        "message": "Ingresá tu usuario",
-        "notValid": "El usuario no es válido",
-        "required": "El usuario es requerido"
+        "message": "Ingresá tu email",
+        "notValid": "El email no es válido",
+        "required": "El email es requerido"
       },
     },
     "actions": {
@@ -50,12 +50,12 @@ const Map<dynamic, dynamic> ES = {
       "goBackToSingUp": "Volver atrás"
     },
     "info": {
-      "forgottenPassword": "Olvidaste tu contraseña?",
+      "forgottenPassword": "¿Olvidaste tu contraseña?",
       "passwordChangedCorrectly": "Tu contraseña se cambió corectamente",
     },
     "newPassword": {
       "subtitle": "Luego, ingresá tu nueva contraseña",
-      "title": "Cambiar Contraseña",
+      "title": "Cambiar contraseña",
       "input": {
         "user": {
           "oldPasswordIncorrect": "La contraseña actual es incorrecta",
@@ -76,9 +76,9 @@ const Map<dynamic, dynamic> ES = {
       "user": {
         "message": "Ingresá tu email",
         "messageCheck": "Volvé a ingresar tu email",
-        "notValid": "Ingresá un usuario valido",
-        "required": "El usuario es requerido",
-        "notEqual": "Ambos usuarios deben ser iguales",
+        "notValid": "Ingresá un email valido",
+        "required": "El email es requerido",
+        "notEqual": "Ambos emails deben ser iguales",
       },
       "password": {
         "notValid": "Al menos 8 caracteres incluyendo 1 número",
@@ -108,7 +108,7 @@ const Map<dynamic, dynamic> ES = {
       "code": {
         "minQuantity": "El código debe tener 6 dígitos",
         "message": "Ingresá el código",
-        "required": "El código no puede ser vacio",
+        "required": "El código no puede ser vacío",
       },
     },
     "actions": {
@@ -168,7 +168,7 @@ const Map<dynamic, dynamic> ES = {
       "input": {
         "name": {
           "notValid": "Entre 3 y 20 letras, sin símbolos",
-          "required": "El Nombre es requerido",
+          "required": "El nombre es requerido",
           "inputMessage": "Ingresá tu nombre",
         },
         "lastName": {
@@ -178,7 +178,7 @@ const Map<dynamic, dynamic> ES = {
         },
         "alias": {
           "notValid": "Entre 3 y 20 caracteres. Ej: miAlias2",
-          "required": "El Alias es requerido",
+          "required": "El alias es requerido",
           "inputMessage": "Ingresá tu alias",
         },
       },
@@ -253,7 +253,7 @@ const Map<dynamic, dynamic> ES = {
         "updateNoteTitle": "Actualizar anotación",
         "noteWithoutTitle": "Sin título",
         "noteWithoutDescription": "Sin descripción",
-        "lastUpdate": "Última Edición: ",
+        "lastUpdate": "Última edición: ",
       },
       "actions": {
         "confirmDeleteNote": "¿Estás seguro que deseas eliminar la anotación?",
@@ -350,7 +350,7 @@ const Map<dynamic, dynamic> ES = {
         "chooseCareer": "Elegí una carrera",
         "chooseYear": "Elegí año de ingreso",
         "checkInput": "Revisá lo ingresado :)",
-        "correctInput": "Los datos son correctos!",
+        "correctInput": "¡Los datos son correctos!",
       },
       "actions": {
         "addCareer": "Agregar Carrera",
@@ -389,10 +389,14 @@ const Map<dynamic, dynamic> ES = {
         "moreComment": "Más comentados",
         "morePopular": "Más populares",
         "labels": "Etiquetas",
-        "search": "Buscar",
+        "myPublications": "Mis publicaciones",
+        "search": "Filtrar",
         "maxTags": "Cantidad máxima de tags alcanzada",
         "hintTags": "Separá tus etiquetas con espacios",
         "orderBy": "Ordenar por: ",
+        "maxTagsLengthTitle": "Longitud Máxima",
+        "maxTagsLengthDescription":
+            "La longitud máxima por etiqueta es de 15 carácteres",
       },
       "publication": {
         "hintDescription": "Escribí la descripción de tu publicación",
@@ -408,7 +412,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "publicationNotFound": {
         "errorMessage": "No se encontraron publicaciones en el foro",
-        "buttonMessage": "¿Porque no volvés a filtrar ?",
+        "buttonMessage": "¿Porque no volvés a filtrar?",
       },
       "profileNotFound": {
         "errorMessage": "No se encontró un perfil creado",
