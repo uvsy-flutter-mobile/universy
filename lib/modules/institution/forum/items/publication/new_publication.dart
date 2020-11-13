@@ -10,6 +10,7 @@ import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
@@ -161,26 +162,43 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
     if (query.isNotEmpty) {
       if (query.trim().length > 0) {
         if (query.endsWith(" ")) {
-          if (_uploadTags.length != 9) {
-            setState(() {
-              String cleanQuery = query.trimLeft();
-              String cleanQuery2 = cleanQuery.trimRight();
-              _uploadTags.add(cleanQuery2);
-              _searchTagsEditingController.clear();
-            });
+          if (query.length < 15) {
+            if (_uploadTags.length != 9) {
+              setState(() {
+                String cleanQuery = query.trimLeft();
+                String cleanQuery2 = cleanQuery.trimRight();
+                _uploadTags.add(cleanQuery2);
+                _searchTagsEditingController.clear();
+              });
+            } else {
+              setState(() {
+                String cleanQuery = query.trimLeft();
+                String cleanQuery2 = cleanQuery.trimRight();
+                _uploadTags.add(cleanQuery2);
+                _searchTagsEditingController.clear();
+                _scrollController.animateTo(
+                  00.0,
+                  curve: Curves.easeOut,
+                  duration: const Duration(milliseconds: 1000),
+                );
+                _maxTags = true;
+              });
+            }
           } else {
-            setState(() {
-              String cleanQuery = query.trimLeft();
-              String cleanQuery2 = cleanQuery.trimRight();
-              _uploadTags.add(cleanQuery2);
-              _searchTagsEditingController.clear();
-              _scrollController.animateTo(
-                00.0,
-                curve: Curves.easeOut,
-                duration: const Duration(milliseconds: 1000),
-              );
-              _maxTags = true;
-            });
+            showDialog<bool>(
+                  context: context,
+                  builder: (context) => ConfirmDialog(
+                    title: AppText.getInstance().get("institution.forum.filter.maxTagsLengthTitle"),
+                    content: AppText.getInstance()
+                        .get("institution.forum.filter.maxTagsLengthDescription"),
+                    buttons: <Widget>[
+                      CancelButton(
+                        onCancel: () => Navigator.of(context).pop(true),
+                      )
+                    ],
+                  ),
+                ) ??
+                false;
           }
         }
       }

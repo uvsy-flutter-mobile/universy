@@ -385,10 +385,13 @@ const Map<dynamic, dynamic> ES = {
         "moreComment":"Más comentados",
         "morePopular":"Más populares",
         "labels":"Etiquetas",
+        "myPublications":"Mis publicaciones",
         "search":"Buscar",
         "maxTags":"Cantidad máxima de tags alcanzada",
         "hintTags":"Separá tus etiquetas con espacios",
         "orderBy":"Ordenar por: ",
+        "maxTagsLengthTitle":"Longitud Máxima",
+        "maxTagsLengthDescription":"La longitud máxima por etiqueta es de 15 carácteres",
       },
       "publication":{
         "hintDescription":"Escribí la descripción de tu publicación",
