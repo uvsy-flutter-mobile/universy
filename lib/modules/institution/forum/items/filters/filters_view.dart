@@ -7,6 +7,7 @@ import 'package:universy/model/institution/commission.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/widgets/buttons/raised/rounded.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class FiltersViewWidget extends StatefulWidget {
@@ -99,7 +100,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
               _buildTitle(AppText.getInstance().get("institution.forum.filter.labels")),
               _buildTags(),
               _buildAddTagsSection(),
-              _buildApplyButton()
+              _buildApplyButton(context)
             ],
           ),
         ),
@@ -107,21 +108,20 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
     );
   }
 
-  Widget _buildApplyButton() {
+  Widget _buildApplyButton(BuildContext context) {
     return Center(
-      child: RaisedButton(
-        color: Colors.amber,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Icon(
-              Icons.search,
-              size: 30,
-            ),
-            Text(AppText.getInstance().get("institution.forum.filter.search"))
-          ],
+      child: CircularRoundedRectangleRaisedButton.general(
+        child: AllEdgePaddedWidget(
+          padding: 9.0,
+          child: Text(
+            AppText.getInstance()
+                .get("institution.forum.filter.filterButton"),
+            style: Theme.of(context).primaryTextTheme.button,
+          ),
         ),
-        onPressed: _createAndSendFilter,
+        color: Theme.of(context).buttonColor,
+        radius: 10,
+        onPressed: _createAndSendFilter
       ),
     );
   }

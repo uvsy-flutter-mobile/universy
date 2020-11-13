@@ -31,7 +31,9 @@ class DateItemWidget extends StatelessWidget {
     List<String> dateSplitted = dateUnformat[0].split("-");
     String date = dateSplitted[2] + "/" + dateSplitted[1] + "/" + dateSplitted[0].substring(2, 4);
     if (_withTime == true) {
-      String time = this._date.hour.toString() + ":" + this._date.minute.toString();
+      String minute='';
+      if(this._date.minute<10){minute='0${this._date.minute}';}else{minute=this._date.minute.toString();};
+      String time = this._date.hour.toString() + ":" + minute;
       String separator = AppText.getInstance().get("institution.forum.comments.separator");
       finalDate = date + separator + time;
     } else {

@@ -30,7 +30,7 @@ class CommentItemWidget extends StatelessWidget {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       enabled: true,
-      actionExtentRatio: 0.25,
+      actionExtentRatio: 0.20,
       child: _buildNotOwnerCommentItem(context),
       secondaryActions: <Widget>[_buildDeleteSlide(context)],
     );
@@ -38,27 +38,20 @@ class CommentItemWidget extends StatelessWidget {
 
   Widget _buildDeleteSlide(BuildContext context) {
     return Container(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(width: 1, color: Color(0xFFC9C9C9))),
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(15),
       ),
-      child: _buildDeleteButton(context),
-    );
-  }
-
-  Widget _buildDeleteButton(BuildContext context) {
-    return IconSlideAction(
-      color: Colors.red,
-      icon: Icons.delete,
-      onTap: () => _pressDeleteCommentButton(context),
+      child: IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () => _pressDeleteCommentButton(context),
+      ),
     );
   }
 
   void _pressDeleteCommentButton(BuildContext context) async {
-    await AsyncModalBuilder()
-        .perform(_deleteComment)
-        .build()
-        .run(context);
+    await AsyncModalBuilder().perform(_deleteComment).build().run(context);
   }
 
   Future _deleteComment(BuildContext context) async {
@@ -70,7 +63,7 @@ class CommentItemWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
       ),
-      elevation: 4,
+      elevation: 1,
       child: Column(
         children: <Widget>[_buildUserName(), _buildDescription(), _buildDateItem(context)],
       ),

@@ -65,7 +65,7 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     List<Comment> listComment = await this
         ._forumService
         .getCommentsPublication(forumPublication.idPublication, profile.userId);
-    listComment.sort((a, b) => b.date.compareTo(a.date));
+    listComment.sort((a, b) => a.date.compareTo(b.date));
     emit(DisplayForumPublicationDetailState(forumPublication, profile, listComment));
   }
 

@@ -31,7 +31,7 @@ class PublicationItemWidget extends StatelessWidget {
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       enabled: true,
-      actionExtentRatio: 0.25,
+      actionExtentRatio: 0.20,
       child: _buildNotOwnerPublicationItem(context),
       secondaryActions: <Widget>[_buildDeleteSlide(context), _buildUpdateSlide(context)],
     );
@@ -57,40 +57,25 @@ class PublicationItemWidget extends StatelessWidget {
 
   Widget _buildDeleteSlide(BuildContext context) {
     return Container(
-      alignment: Alignment.topLeft,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(width: 1, color: Color(0xFFC9C9C9))),
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(15),
       ),
-      child: _buildDeleteButton(context),
+      child: IconButton(icon:Icon(Icons.delete),onPressed: () => _deletePublication(context),),
     );
   }
 
   Widget _buildUpdateSlide(BuildContext context) {
     return Container(
-      alignment: Alignment.topRight,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(width: 1, color: Colors.grey)),
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(15),
       ),
-      child: _buildUpdateButton(context),
+      child: IconButton(icon:Icon(Icons.edit),onPressed: () => _pressUpdatePublicationForumButton(context),),
     );
   }
-
-  Widget _buildDeleteButton(BuildContext context) {
-    return IconSlideAction(
-      color: Colors.red,
-      icon: Icons.delete,
-      onTap: () => _deletePublication(context),
-    );
-  }
-
-  Widget _buildUpdateButton(BuildContext context) {
-    return IconSlideAction(
-      color: Colors.grey,
-      icon: Icons.edit,
-      onTap: () => _pressUpdatePublicationForumButton(context),
-    );
-  }
-
   void _pressUpdatePublicationForumButton(BuildContext context) async {
     BlocProvider.of<InstitutionForumCubit>(context)
         .updateForumPublicationState(this._forumPublication);

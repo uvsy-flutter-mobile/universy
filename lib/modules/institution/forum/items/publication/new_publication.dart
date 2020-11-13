@@ -42,6 +42,8 @@ class NewPublicationWidget extends StatefulWidget {
 }
 
 class _NewPublicationWidgetState extends State<NewPublicationWidget> {
+  final MAX_LENGTH_DESCRIPTION = 500;
+  final MAX_LENGTH_TITLE = 50;
   List<InstitutionSubject> _subjects;
   List<Commission> _commissions;
   InstitutionSubject _selectedSubject;
@@ -80,6 +82,11 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (this._uploadTags.length >= 10) {
+      setState(() {
+        _maxTags = true;
+      });
+    }
     return Form(
       key: _formKey,
       child: SymmetricEdgePaddingWidget.vertical(
@@ -299,8 +306,11 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         controller: _descriptionController,
         decorationBuilder: ForumInputDescriptionDecorationBuilder(
             AppText.getInstance().get("institution.forum.publication.hintDescription")),
-        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(
-            AppText.getInstance().get("institution.forum.publication.errorDescription")),
+        validatorBuilder: TextFieldForumValidatorBuilder(
+            AppText.getInstance().get("institution.forum.publication.errorDescription"),
+            AppText.getInstance().get("institution.forum.publication.errorDescriptionMaxLength") +
+                MAX_LENGTH_DESCRIPTION.toString(),
+            MAX_LENGTH_DESCRIPTION),
       ),
     );
   }
@@ -313,8 +323,12 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         controller: _titleController,
         decorationBuilder: ForumInputTitleDecorationBuilder(
             AppText.getInstance().get("institution.forum.publication.hintTitle")),
-        validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(
-            AppText.getInstance().get("institution.forum.publication.errorTitle")),
+        validatorBuilder: TextFieldForumValidatorBuilder(
+          AppText.getInstance().get("institution.forum.publication.errorTitle"),
+          AppText.getInstance().get("institution.forum.publication.errorTitleMaxLength") +
+              MAX_LENGTH_TITLE.toString(),
+          MAX_LENGTH_TITLE,
+        ),
         maxLines: 1,
       ),
     );
@@ -333,17 +347,19 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownSubject,
-      items: _subjects.map((x) {
-        return new DropdownMenuItem<InstitutionSubject>(
-          value: x,
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width / 2.0,
-              child: new Text(
-                x.name,
-                textAlign: TextAlign.center,
-              )),
-        );
-      }).toList(),
+      items: (this._maxTags && widget._isUpdate)
+          ? null
+          : _subjects.map((x) {
+              return new DropdownMenuItem<InstitutionSubject>(
+                value: x,
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 2.0,
+                    child: new Text(
+                      x.name,
+                      textAlign: TextAlign.center,
+                    )),
+              );
+            }).toList(),
     );
   }
 
@@ -366,17 +382,19 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownCommission,
-      items: _commissions.map((x) {
-        return new DropdownMenuItem<Commission>(
-          value: x,
-          child: SizedBox(
-              width: MediaQuery.of(context).size.width / 2.0,
-              child: new Text(
-                x.name,
-                textAlign: TextAlign.center,
-              )),
-        );
-      }).toList(),
+      items: (this._maxTags && widget._isUpdate)
+          ? null
+          : _commissions.map((x) {
+              return new DropdownMenuItem<Commission>(
+                value: x,
+                child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 2.0,
+                    child: new Text(
+                      x.name,
+                      textAlign: TextAlign.center,
+                    )),
+              );
+            }).toList(),
     );
   }
 

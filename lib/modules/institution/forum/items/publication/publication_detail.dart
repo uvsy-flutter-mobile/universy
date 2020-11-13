@@ -122,7 +122,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         shape: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: new BorderSide(color: Colors.deepPurple, width: 2.0)),
-        elevation: 15,
+        elevation: 1,
         child: SymmetricEdgePaddingWidget.vertical(
           paddingValue: 10,
           child: SymmetricEdgePaddingWidget.horizontal(
@@ -199,7 +199,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
 
   Widget _buildPublication() {
     return Card(
-      elevation: 15,
+      elevation: 1,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -214,12 +214,14 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
               ],
             ),
           ),
+          Divider(),
           SymmetricEdgePaddingWidget.horizontal(
             paddingValue: 10,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 _buildPublicationDescription(),
+                Divider(),
                 _buildTags(),
               ],
             ),
@@ -283,7 +285,8 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           Icon(Icons.perm_identity),
           Text(
             alias,
-            overflow: TextOverflow.ellipsis,
+            overflow: TextOverflow.visible,
+            textAlign: TextAlign.center,
           ),
         ],
       ),

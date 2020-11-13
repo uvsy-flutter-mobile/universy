@@ -139,3 +139,23 @@ class NotEqualPatternTextFormValidatorBuilderPassword implements TextFormFieldVa
     };
   }
 }
+
+class TextFieldForumValidatorBuilder implements TextFormFieldValidatorBuilder {
+  final String _emptyMessage;
+  final String _maxLengthMessage;
+  final int _cantCharacters;
+
+  TextFieldForumValidatorBuilder(this._emptyMessage,this._maxLengthMessage,this._cantCharacters);
+
+  @override
+  FormFieldValidator<String> build(BuildContext context) {
+    return (value) {
+      if (value.trim().isEmpty || value.trim() =='') {
+        return _emptyMessage;
+      }else if(value.trim().length>=_cantCharacters){
+        return _maxLengthMessage;
+      }
+      return null; // This null is required by the interface.
+    };
+  }
+}
