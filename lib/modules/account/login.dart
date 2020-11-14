@@ -174,6 +174,7 @@ class LoginUsernameWidget extends StatelessWidget {
       child: CustomTextFormField(
         key: LOGIN_KEY_USER_FIELD,
         controller: _textEditingController,
+        keyboardType: TextInputType.emailAddress,
         validatorBuilder: _getUserInputValidator(),
         decorationBuilder: _getUserInputDecoration(),
       ),
@@ -215,7 +216,7 @@ class LoginPasswordWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 6.0,
       child: CustomTextFormField(
-        maxLines: 1,
+          maxLines: 1,
           key: LOGIN_KEY_PASSWORD_FIELD,
           controller: textEditingController,
           validatorBuilder: _getPasswordValidator(),

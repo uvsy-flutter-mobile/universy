@@ -50,41 +50,54 @@ class _ReviewStepState extends State<ReviewStep> {
   }
 
   Widget _buildReviewWidget() {
-    String checkCareerLabel = AppText.getInstance().get("student.enroll.info.checkCareer");
+    String checkCareerLabel =
+        AppText.getInstance().get("student.enroll.info.checkCareer");
     String checkInstitutionLabel =
         AppText.getInstance().get("student.enroll.info.checkInstitution");
-    String checkProgramLabel = AppText.getInstance().get("student.enroll.info.checkProgram");
+    String checkProgramLabel =
+        AppText.getInstance().get("student.enroll.info.checkProgram");
     return AllEdgePaddedWidget(
       padding: 20,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(checkCareerLabel),
+          Text(checkCareerLabel, style: TextStyle(fontSize: 18.0)),
           Text(
             widget.enrollment.institutionCareer.name,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.visible,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.amber,
+                fontSize: 20.0),
+          ),
+          SizedBox(height: 12.0),
+          Text(checkInstitutionLabel, style: TextStyle(fontSize: 18.0)),
+          Text(
+            widget.enrollment.institution.name,
+            overflow: TextOverflow.visible,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.amber,
+                fontSize: 20.0),
+          ),
+          SizedBox(height: 12.0),
+          Text(checkProgramLabel, style: TextStyle(fontSize: 18.0)),
+          Text(
+            widget.enrollment.institutionProgram.name,
+            overflow: TextOverflow.visible,
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.amber,
+                fontSize: 20.0),
+          ),
+          SizedBox(height: 12.0),
+          Divider(
+            color: Colors.grey,
+            height: 4.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(checkInstitutionLabel),
-              Text(
-                widget.enrollment.institution.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(checkProgramLabel),
-              Text(
-                widget.enrollment.institutionProgram.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Row(
             children: <Widget>[
               Checkbox(
                 value: confirmed,
@@ -92,7 +105,7 @@ class _ReviewStepState extends State<ReviewStep> {
               ),
               Text(
                 AppText.getInstance().get("student.enroll.input.correctInput"),
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
               )
             ],
           )
@@ -111,7 +124,8 @@ class _ReviewStepState extends State<ReviewStep> {
     await AsyncModalBuilder()
         .perform(_createCareer)
         .then(_navigateToHome)
-        .withTitle(AppText.getInstance().get("student.enroll.info.addingCareer"))
+        .withTitle(
+            AppText.getInstance().get("student.enroll.info.addingCareer"))
         .build()
         .run(context);
   }
@@ -137,7 +151,8 @@ class _ReviewStepState extends State<ReviewStep> {
     // save a reference to the ancestor by calling dependOnInheritedWidgetOfExactType()
     // in the widget's didChangeDependencies() method.
     FlushBarBroker()
-        .withMessage(AppText.getInstance().get("student.enroll.info.careerAdded"))
+        .withMessage(
+            AppText.getInstance().get("student.enroll.info.careerAdded"))
         .withIcon(Icon(Icons.check, color: Colors.green))
         .show(context);
   }

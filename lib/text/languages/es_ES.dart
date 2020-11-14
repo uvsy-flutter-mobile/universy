@@ -12,9 +12,9 @@ const Map<dynamic, dynamic> ES = {
     "title": "Iniciar Sesión",
     "input": {
       "user": {
-        "notValid": "El email no es válido",
-        "required": "El email es requerido",
-        "message": "Ingresá tu email"
+        "notValid": "El e-mail no es válido",
+        "required": "El e-mail es requerido",
+        "message": "Ingresá tu e-mail"
       },
       "password": {
         "required": "La contraseña es requerida",
@@ -38,9 +38,9 @@ const Map<dynamic, dynamic> ES = {
     "title": "Recuperá tu cuenta",
     "input": {
       "user": {
-        "message": "Ingresá tu email",
-        "notValid": "El email no es válido",
-        "required": "El email es requerido"
+        "message": "Ingresá tu e-mail",
+        "notValid": "El e-mail no es válido",
+        "required": "El e-mail es requerido"
       },
     },
     "actions": {
@@ -74,11 +74,11 @@ const Map<dynamic, dynamic> ES = {
     "title": "¡Regístrate!",
     "input": {
       "user": {
-        "message": "Ingresá tu email",
-        "messageCheck": "Volvé a ingresar tu email",
-        "notValid": "Ingresá un email valido",
-        "required": "El email es requerido",
-        "notEqual": "Ambos emails deben ser iguales",
+        "message": "Ingresá tu e-mail",
+        "messageCheck": "Volvé a ingresar tu e-mail",
+        "notValid": "Ingresá un e-mail valido",
+        "required": "El e-mail es requerido",
+        "notEqual": "Ambos e-mails deben ser iguales",
       },
       "password": {
         "notValid": "Al menos 8 caracteres incluyendo 1 número",
@@ -102,8 +102,8 @@ const Map<dynamic, dynamic> ES = {
     },
   },
   "verify": {
-    "title": "Verificá tu email",
-    "subtitle": "Un email con el código de verificación fue enviado a",
+    "title": "Verificá tu e-mail",
+    "subtitle": "Un e-mail con el código de verificación fue enviado a",
     "input": {
       "code": {
         "minQuantity": "El código debe tener 6 dígitos",
@@ -116,7 +116,7 @@ const Map<dynamic, dynamic> ES = {
       "resend": "Reenviar código",
     },
     "info": {
-      "verified": "Email verificado!",
+      "verified": "E-mail verificado!",
       "resending": "Enviando nuevo código",
       "codeSent": "Se envío un nuevo código"
     },
@@ -275,6 +275,7 @@ const Map<dynamic, dynamic> ES = {
         },
         "charts": {
           "title": "Mi progreso general",
+          "titleState": "Mi estado de la carrera",
           "approvedOptativeSubjects": "Avance de materias optativas aprobadas",
           "approvedMandatorySubjects":
               "Avance de materias obligatorias aprobadas",
@@ -349,7 +350,7 @@ const Map<dynamic, dynamic> ES = {
         "chooseInstitution": "Elegí una institución",
         "chooseCareer": "Elegí una carrera",
         "chooseYear": "Elegí año de ingreso",
-        "checkInput": "Revisá lo ingresado :)",
+        "checkInput": "¡Ya casi estamos!",
         "correctInput": "¡Los datos son correctos!",
       },
       "actions": {
@@ -360,9 +361,9 @@ const Map<dynamic, dynamic> ES = {
       "info": {
         "addingCareer": "Agregando Carrera...",
         "careerAdded": "Carrera agregada!",
-        "checkCareer": "Estás a punto de unirte a la carrera ",
-        "checkInstitution": "en la institución ",
-        "checkProgram": "con el programa ",
+        "checkCareer": "Carrera ",
+        "checkInstitution": "Institución ",
+        "checkProgram": "Programa ",
       },
       "error": {
         "noCareers": "No hay carreras disponibles para esta institución",

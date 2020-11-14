@@ -46,7 +46,7 @@ class NotificationsAlert extends StatelessWidget {
   IconButton _buildNotificationIcon(
       List<StudentEvent> eventsToday, BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.notifications, size: 35.0, color: Colors.grey),
+        icon: Icon(Icons.notifications, size: 30.0, color: Colors.grey),
         splashColor: Colors.amberAccent,
         onPressed: () => _validateNotEventsList(eventsToday)
             ? {}
@@ -63,16 +63,17 @@ class NotificationsAlert extends StatelessWidget {
   Widget _buildQuantityNotification(List<StudentEvent> eventsToday) {
     return Positioned(
       top: 2,
-      right: 23,
+      right: 24,
       child: CircleAvatar(
-        radius: 14.0,
-        backgroundColor:
-            _validateNotEventsList(eventsToday) ? Colors.grey : Colors.amber,
+        radius: 13.0,
+        backgroundColor: _validateNotEventsList(eventsToday)
+            ? Colors.grey[350]
+            : Colors.amber,
         child: Text(
           _validateNotEventsList(eventsToday)
               ? NO_NOTIFICATION
               : eventsToday.length.toString(),
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
         ),
       ),
     );

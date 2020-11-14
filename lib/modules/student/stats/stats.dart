@@ -4,6 +4,7 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:universy/business/correlatives/validator.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/modules/student/stats/career_history.dart';
+import 'package:universy/modules/student/stats/career_state_chart.dart';
 import 'package:universy/modules/student/stats/charts.dart';
 import 'package:universy/modules/student/stats/year_progress.dart';
 import 'package:universy/system/assets.dart';
@@ -26,6 +27,7 @@ class StatsModule extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> chartsList = [
       _buildStudentCharts(),
+      _buildCareerState(),
       _buildYearProgress(),
       _buildCareerHistory(),
     ];
@@ -43,6 +45,10 @@ class StatsModule extends StatelessWidget {
             },
           ),
         ));
+  }
+
+  Widget _buildCareerState() {
+    return CareerStateChart(subjects: _subjects);
   }
 
   Widget _buildStatsBar() {
