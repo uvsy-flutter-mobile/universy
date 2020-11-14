@@ -200,6 +200,7 @@ class ForgotPasswordUserNameWidget extends StatelessWidget {
       child: CustomTextFormField(
         key: LOGIN_KEY_USER_FIELD,
         controller: _textEditingController,
+        keyboardType: TextInputType.emailAddress,
         validatorBuilder: _getUserInputValidator(),
         decorationBuilder: _getUserInputDecoration(),
       ),
