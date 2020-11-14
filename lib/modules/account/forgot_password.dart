@@ -128,7 +128,8 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
           .perform(_recoverPassword)
           .withTitle(_verifyingMessage())
           .then(_navigateToRecoverPassword)
-          .handle(UserAlreadyExists, _showUsernameNotExistFlushBar)
+          .handle(NotAuthorized, _showDefaultErrorFlushBar)
+          .handle(UserNotFoundException, _showUsernameNotExistFlushBar)
           .build()
           .run(context);
     }
@@ -150,8 +151,18 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         .show(context);
   }
 
+  void _showDefaultErrorFlushBar(BuildContext context) {
+    FlushBarBroker()
+        .withMessage(_defaultErrorMessage())
+        .withIcon(Icon(Icons.contacts, color: Colors.redAccent))
+        .show(context);
+  }
+
   String _usernameAlreadyExistsMessage() => AppText.getInstance() //
       .get("login.input.user.notValid");
+
+  String _defaultErrorMessage() => AppText.getInstance() //
+      .get("login.error.unexpectedError");
 
   String _verifyingMessage() =>
       AppText.getInstance().get("login.info.verifying");

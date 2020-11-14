@@ -191,6 +191,11 @@ class PublicationItemWidget extends StatelessWidget {
             index: index,
             title: "${_forumPublication.tags[index]}",
             pressEnabled: false,
+            activeColor: Colors.grey[350],
+            color: Colors.grey[350],
+            textActiveColor: Colors.black,
+            textColor: Colors.black,
+            elevation: 0,
             textStyle: TextStyle(
               fontSize: 10,
             ),

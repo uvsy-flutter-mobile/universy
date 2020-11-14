@@ -213,6 +213,8 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         itemCount: _uploadTags.length,
         itemBuilder: (int index) {
           return ItemTags(
+            removeButton: ItemTagsRemoveButton(
+                backgroundColor: Colors.transparent, icon: Icons.clear, color: Colors.black),
             onPressed: (x) {
               setState(() {
                 _uploadTags.removeAt(index);
@@ -223,6 +225,11 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
             index: index,
             title: "${_uploadTags[index]}",
             pressEnabled: true,
+            activeColor: Colors.grey[350],
+            color: Colors.grey[350],
+            elevation: 0,
+            textActiveColor: Colors.black,
+            textColor: Colors.black,
             textStyle: TextStyle(
               fontSize: 14,
             ),
@@ -313,7 +320,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   }
 
   void _cancelNewPublication(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications([]);
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(false,[]);
   }
 
   Widget _buildTextFieldDescription(BuildContext context) {

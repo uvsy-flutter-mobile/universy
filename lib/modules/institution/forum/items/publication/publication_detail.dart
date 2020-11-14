@@ -333,6 +333,11 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
             index: index,
             title: "${widget._forumPublication.tags[index]}",
             pressEnabled: false,
+            activeColor: Colors.grey[350],
+            color: Colors.grey[350],
+            textActiveColor: Colors.black,
+            textColor: Colors.black,
+            elevation: 0,
             textStyle: TextStyle(
               fontSize: 10,
             ),

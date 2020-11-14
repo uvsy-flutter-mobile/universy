@@ -171,12 +171,12 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeRange(BuildContext context) {
     return SizedBox(
-        width: 200,
+        width: MediaQuery.of(context).size.width / 2.1,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: 60,
+              width: MediaQuery.of(context).size.width / 5.3,
               child: _buildTimeFrom(context),
             ),
             SizedBox(
@@ -190,7 +190,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
               ),
             ),
             SizedBox(
-              width: 60,
+              width: MediaQuery.of(context).size.width / 5.3,
               child: _buildTimeTo(context),
             ),
           ],

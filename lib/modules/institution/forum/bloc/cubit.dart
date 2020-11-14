@@ -18,7 +18,7 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
       this._careerService, this._institutionService, this._profileService, this._forumService)
       : super(LoadingState());
 
-  Future<void> fetchPublications(List<String> filters) async {
+  Future<void> fetchPublications(bool isFiltering, List<String> filters) async {
     try {
       emit(LoadingState());
       var profile = await _profileService.getProfile();
@@ -33,10 +33,6 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
         emit(DisplayState(
             forumPublications, profile, institutionSubjects, listCommissions, filters));
       } else {
-        bool isFiltering = false;
-        if (filters.isNotEmpty) {
-          isFiltering = true;
-        }
         emit(ForumPublicationsNotFoundState(
             forumPublications, profile, institutionSubjects, listCommissions, isFiltering));
       }
@@ -90,20 +86,20 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
   void addForumPublication(String title, String description, List<String> uploadTags) async {
     emit(LoadingState());
     await this._forumService.createForumPublication(title, description, uploadTags);
-    fetchPublications([]);
+    fetchPublications(false,[]);
   }
 
   void deleteForumPublication(ForumPublication forumPublication) async {
     emit(LoadingState());
     await this._forumService.deleteForumPublication(forumPublication.idPublication);
-    fetchPublications([]);
+    fetchPublications(false,[]);
   }
 
   void updateForumPublication(
       String title, String description, List<String> uploadTags, String idPublication) async {
     emit(LoadingState());
     await this._forumService.updateForumPublication(title, description, uploadTags, idPublication);
-    fetchPublications([]);
+    fetchPublications(false,[]);
   }
 
   void deleteComment(Comment comment) async {
@@ -126,7 +122,7 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
   ) async {
     emit(LoadingState());
     await this._forumService.addVotePublication(userId, forumPublication.idPublication);
-    fetchPublications([]);
+    fetchPublications(false,[]);
   }
 
   void addVoteComment(String idComment) async {
@@ -141,7 +137,7 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
     emit(LoadingState());
     await this._forumService.deleteVote(idVote, isPublication);
     if (isPublication) {
-      fetchPublications([]);
+      fetchPublications(false,[]);
     } else {
       viewDetailForumPublicationState(state.forumPublication);
     }

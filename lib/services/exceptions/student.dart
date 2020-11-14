@@ -49,3 +49,5 @@ class CurrentProgramNotFound extends ServiceException {}
 /// [RatingNotFound] occurs there is not a rating
 /// for a given request
 class RatingNotFound extends ServiceException {}
+
+class UserNotFoundException extends ServiceException {}

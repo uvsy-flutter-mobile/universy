@@ -222,7 +222,7 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
       listTags.add(tags);
     }
 
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(listTags);
+    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(true, listTags);
   }
 
   Widget _buildAddTagsSection(BuildContext context) {
@@ -316,6 +316,8 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         itemCount: _uploadTags.length,
         itemBuilder: (int index) {
           return ItemTags(
+            removeButton: ItemTagsRemoveButton(
+                backgroundColor: Colors.transparent, icon: Icons.clear, color: Colors.black),
             onPressed: (x) {
               setState(() {
                 _uploadTags.removeAt(index);
@@ -326,6 +328,11 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
             index: index,
             title: "${_uploadTags[index]}",
             pressEnabled: true,
+            activeColor: Colors.grey[350],
+            color: Colors.grey[350],
+            elevation: 0,
+            textActiveColor: Colors.black,
+            textColor: Colors.black,
             textStyle: TextStyle(
               fontSize: 14,
             ),
