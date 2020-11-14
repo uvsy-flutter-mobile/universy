@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:universy/widgets/builder/builder.dart';
 
-abstract class InputDecorationBuilder
-    implements ComponentBuilder<InputDecoration> {}
+abstract class InputDecorationBuilder implements ComponentBuilder<InputDecoration> {}
 
 class IconButtonInputDecorationBuilder implements InputDecorationBuilder {
   final String _labelText;
+  final String _hintText;
   final Icon _icon;
   final VoidCallback _onPressed;
 
   IconButtonInputDecorationBuilder(
       {@required String labelText,
       @required Icon icon,
+      String hintText,
       @required VoidCallback onPressed})
       : this._labelText = labelText,
         this._icon = icon,
+        this._hintText = hintText,
         this._onPressed = onPressed;
 
   @override
   InputDecoration build(BuildContext context) {
     return InputDecoration(
+        hintText: _hintText,
         labelText: _labelText,
         suffixIcon: IconButton(icon: _icon, onPressed: _onPressed));
   }
@@ -68,8 +71,6 @@ class ForumInputNewCommentBuilder implements InputDecorationBuilder {
 
   @override
   InputDecoration build(BuildContext context) {
-    return InputDecoration(
-        hintText:
-        _labelText);
+    return InputDecoration(hintText: _labelText);
   }
 }

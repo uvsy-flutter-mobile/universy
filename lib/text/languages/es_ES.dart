@@ -81,7 +81,7 @@ const Map<dynamic, dynamic> ES = {
         "notEqual": "Ambos emails deben ser iguales",
       },
       "password": {
-        "notValid": "Al menos 8 caracteres incluyendo 1 número",
+        "notValid": "8-15 carácteres entre letras y números",
         "required": "La contraseña es requerida",
         "message": "Ingresá tu contraseña",
         "notEqual": "Ambas contraseñas deben ser iguales",
@@ -411,7 +411,7 @@ const Map<dynamic, dynamic> ES = {
         "defaultUser": "Usuario",
       },
       "publicationNotFound": {
-        "errorMessage": "No se encontraron publicaciones en el foro",
+        "errorMessage": "¡No se encontraron publicaciones en el foro, creá una!",
         "buttonMessage": "¿Porque no volvés a filtrar?",
       },
       "profileNotFound": {
