@@ -90,7 +90,7 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   Widget _buildOrderBy() {
     return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 4,
+      paddingValue: 1,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
