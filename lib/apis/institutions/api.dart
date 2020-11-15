@@ -21,7 +21,6 @@ Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programsIds) a
   var path = _createPath(resource);
 
   var queryParams = {"programIds": programsIds.join(",")};
-  print(queryParams);
 
   var response = await api.getList<InstitutionProgramInfo>(
     path,
