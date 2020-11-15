@@ -21,6 +21,7 @@ Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programsIds) a
   var path = _createPath(resource);
 
   var queryParams = {"programIds": programsIds.join(",")};
+  print(queryParams);
 
   var response = await api.getList<InstitutionProgramInfo>(
     path,
@@ -36,7 +37,7 @@ Future<List<Institution>> getInstitutions() async {
   var resource = "/institutions";
   var path = _createPath(resource);
 
-  var queryParams = {"onlyActive": "true"};
+  var queryParams = {"only_active": "true"};
 
   var response = await api.getList<Institution>(
     path,
@@ -51,7 +52,7 @@ Future<List<InstitutionCareer>> getCareers(String institutionId) async {
   var resource = "/institutions/$institutionId/careers";
   var path = _createPath(resource);
 
-  var queryParams = {"onlyActive": "true"};
+  var queryParams = {"only_active": "true"};
 
   var response = await api.getList<InstitutionCareer>(
     path,
@@ -66,7 +67,7 @@ Future<List<InstitutionProgram>> getPrograms(String careerId) async {
   var resource = "/careers/$careerId/programs";
   var path = _createPath(resource);
 
-  var queryParams = {"onlyActive": "true"};
+  var queryParams = {"only_active": "true"};
 
   var response = await api.getList<InstitutionProgram>(
     path,
