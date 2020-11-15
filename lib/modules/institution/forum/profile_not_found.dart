@@ -9,6 +9,7 @@ class ProfileNotFoundWidget extends StatefulWidget {
 
 class _ProfileNotFoundState extends State<ProfileNotFoundWidget> {
   @override
+
   Widget build(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 90.0,

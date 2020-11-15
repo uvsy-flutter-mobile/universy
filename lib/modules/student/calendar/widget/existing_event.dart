@@ -121,8 +121,7 @@ class ExistingEvent extends StatelessWidget {
   }
 
   void _refreshCalendar(BuildContext context) {
-    TableCalendarCubit tableCalendarCubit =
-        BlocProvider.of<TableCalendarCubit>(context);
+    TableCalendarCubit tableCalendarCubit =  BlocProvider.of<TableCalendarCubit>(context);
     tableCalendarCubit.refreshTableCalendar(event.date);
   }
 }

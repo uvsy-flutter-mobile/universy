@@ -11,7 +11,7 @@ class MainModule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MainCubit(),
+        create: (context) => MainCubit(),
       child: Scaffold(
         drawer: MainDrawer(),
         appBar: MainAppBar(),
