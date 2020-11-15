@@ -11,7 +11,10 @@ import 'package:universy/modules/student/calendar/widget/form/title.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/util/time_of_day.dart';
 import 'package:universy/widgets/async/modal.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/formfield/picker/date.dart';
 import 'package:universy/widgets/formfield/picker/time.dart';
 
@@ -71,6 +74,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         text: _create ? EMPTY_STRING : _studentEvent.description);
     this._studentEvent.eventType =
         _create ? EventType.FINAL_EXAM.toString() : _studentEvent.eventType;
+    this._studentEvent.timeFrom =
+        _create ? TimeOfDay.now() : _studentEvent.timeFrom;
+    this._studentEvent.timeTo =
+        _create ? TimeOfDay.now() : _studentEvent.timeTo;
     super.initState();
   }
 
@@ -171,16 +178,16 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeRange(BuildContext context) {
     return SizedBox(
-        width: MediaQuery.of(context).size.width / 2.1,
+        width: MediaQuery.of(context).size.width / 1.8,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: MediaQuery.of(context).size.width / 5.3,
+              width: MediaQuery.of(context).size.width / 4.3,
               child: _buildTimeFrom(context),
             ),
             SizedBox(
-              width: 5,
+              width: 10,
               child: Text(
                 '-',
                 style: TextStyle(
@@ -190,7 +197,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
               ),
             ),
             SizedBox(
-              width: MediaQuery.of(context).size.width / 5.3,
+              width: MediaQuery.of(context).size.width / 4.3,
               child: _buildTimeTo(context),
             ),
           ],
@@ -204,7 +211,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         label: label,
         initialValue: _timeFrom,
         context: context,
-        onSaved: _updateTimeFrom);
+        onChanged: _updateTimeFrom);
   }
 
   Widget _buildTimeTo(BuildContext context) {
@@ -214,7 +221,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
       context: context,
       label: label,
       initialValue: _timeTo,
-      onSaved: _updateTimeTo,
+      onChanged: _updateTimeTo,
     );
   }
 
@@ -268,7 +275,10 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   void _updateTimeTo(TimeOfDay selectedTime) {
-    _studentEvent.timeTo = selectedTime;
+    setState(() {
+      this._timeTo = selectedTime;
+      this._studentEvent.timeTo = _timeTo;
+    });
   }
 
   void _updateTitle() {
@@ -278,31 +288,60 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   void _updateDate(DateTime selectedDate) {
-    this._studentEvent.date = selectedDate;
+    setState(() {
+      this._studentEvent.date = selectedDate;
+    });
   }
 
   void _updateTimeFrom(TimeOfDay selectedTime) {
-    _studentEvent.timeFrom = selectedTime;
+    setState(() {
+      this._timeFrom = selectedTime;
+      this._studentEvent.timeFrom = _timeFrom;
+    });
+  }
+
+  bool _validateDate() {
+    if (TimeOfDayComparator().isAfter(_timeFrom, _timeTo)) {
+      _buildTimeDialog(
+          "Verificá las horas del evento. La hora de inicio es mayor a la de fin");
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  _buildTimeDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(
+              title: "Algo anda mal",
+              content: message,
+              buttons: <Widget>[
+                CancelButton(onCancel: () => Navigator.of(context).pop())
+              ],
+            ));
   }
 
   void _pressConfirmButton() async {
     final form = _formKey.currentState;
     if (form.validate()) {
-      form.save();
+      if (_validateDate()) {
+        form.save();
 
-      if (_stateLock.hasChange(_studentEvent)) {
-        var confirmAction =
-            this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
+        if (_stateLock.hasChange(_studentEvent)) {
+          var confirmAction =
+              this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
 
-        await AsyncModalBuilder()
-            .perform(confirmAction)
-            .withTitle(
-                AppText.getInstance().get("student.calendar.actions.saving"))
-            .then(_refreshCalendarAndNavigateBack)
-            .build()
-            .run(context);
-      } else {
-        Navigator.pop(context);
+          await AsyncModalBuilder()
+              .perform(confirmAction)
+              .withTitle(
+                  AppText.getInstance().get("student.calendar.actions.saving"))
+              .then(_refreshCalendarAndNavigateBack)
+              .build()
+              .run(context);
+        } else {
+          Navigator.pop(context);
+        }
       }
     }
   }

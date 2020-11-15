@@ -1,6 +1,7 @@
 import "package:collection/collection.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:optional/optional.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/bloc/panel/cubit.dart';
@@ -13,7 +14,8 @@ class StudentCalendarWidget extends StatefulWidget {
   final DateTime selectedDate;
   final List<StudentEvent> studentEvents;
 
-  StudentCalendarWidget({Key key, this.selectedDate, this.studentEvents}) : super(key: key);
+  StudentCalendarWidget({Key key, this.selectedDate, this.studentEvents})
+      : super(key: key);
 
   @override
   _StudentCalendarWidgetState createState() => _StudentCalendarWidgetState();
@@ -37,7 +39,8 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
   @override
   void didUpdateWidget(StudentCalendarWidget oldWidget) {
     if (_hasDateChange(oldWidget) || _haveEventsChanged(oldWidget)) {
-      Map<DateTime, List> dateEventMap = _getStudentEventsMap(widget.studentEvents);
+      Map<DateTime, List> dateEventMap =
+          _getStudentEventsMap(widget.studentEvents);
       DateTime selectedDate = widget.selectedDate;
 
       this._dispatchSelectedDay(dateEventMap[selectedDate]);
@@ -50,7 +53,8 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
   }
 
   bool _haveEventsChanged(StudentCalendarWidget oldWidget) {
-    return !ListEquality().equals(oldWidget.studentEvents, widget.studentEvents);
+    return !ListEquality()
+        .equals(oldWidget.studentEvents, widget.studentEvents);
   }
 
   Map<DateTime, List> _getStudentEventsMap(List<StudentEvent> studentEvents) {
@@ -82,7 +86,8 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
       },
       calendarStyle: _buildCalendarStyle(),
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekendStyle: TextStyle().copyWith(color: Theme.of(context).accentColor),
+        weekendStyle:
+            TextStyle().copyWith(color: Theme.of(context).accentColor),
       ),
       headerStyle: _buildHeaderStyle(),
       builders: CalendarBuilders(markersBuilder: _buildCalendarMarkers),
@@ -93,9 +98,13 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
     );
   }
 
-  List<Widget> _buildCalendarMarkers(BuildContext context, DateTime date, List events, List h) {
+  List<Widget> _buildCalendarMarkers(
+      BuildContext context, DateTime date, List events, List h) {
     return events.isNotEmpty
-        ? [Positioned(right: 1, bottom: 1, child: _buildEventsMarker(date, events))]
+        ? [
+            Positioned(
+                right: 1, bottom: 1, child: _buildEventsMarker(date, events))
+          ]
         : [];
   }
 
@@ -179,13 +188,16 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
   }
 
   void _dispatchSelectedDay(List eventsSelected) {
-    List<StudentEvent> eventsToPanel = List<StudentEvent>.from(eventsSelected ?? []);
-    EventPanelCubit eventsPanelCubit = BlocProvider.of<EventPanelCubit>(context);
+    List<StudentEvent> eventsToPanel =
+        List<StudentEvent>.from(eventsSelected ?? []);
+    EventPanelCubit eventsPanelCubit =
+        BlocProvider.of<EventPanelCubit>(context);
     eventsPanelCubit.daySelectedChange(eventsToPanel);
   }
 
   void _refreshCalendar() {
-    TableCalendarCubit tableCalendarCubit = BlocProvider.of<TableCalendarCubit>(context);
+    TableCalendarCubit tableCalendarCubit =
+        BlocProvider.of<TableCalendarCubit>(context);
     tableCalendarCubit.refreshTableCalendar(_getSelectedDate());
   }
 

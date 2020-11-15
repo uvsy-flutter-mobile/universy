@@ -35,7 +35,7 @@ class InstitutionSubject {
       json["programId"],
       json["hours"],
       json["points"],
-      json["optatives"],
+      json["optative"],
       correlatives,
     );
   }
