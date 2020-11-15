@@ -16,7 +16,8 @@ class FiltersViewWidget extends StatefulWidget {
   final List<InstitutionSubject> _subjects;
   final List<Commission> _commissions;
 
-  const FiltersViewWidget({Key key, List<InstitutionSubject> subjects, List<Commission> commission})
+  const FiltersViewWidget(
+      {Key key, List<InstitutionSubject> subjects, List<Commission> commission})
       : this._subjects = subjects,
         this._commissions = commission,
         super(key: key);
@@ -79,7 +80,8 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
                 ],
               ),
               _buildTitle(
-                AppText.getInstance().get("institution.forum.filter.commission"),
+                AppText.getInstance()
+                    .get("institution.forum.filter.commission"),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -88,18 +90,24 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
                 ],
               ),
               _buildTitle(
-                AppText.getInstance().get("institution.forum.filter.orderByDate"),
+                AppText.getInstance()
+                    .get("institution.forum.filter.orderByDate"),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _buildDatePicker(
-                      AppText.getInstance().get("institution.forum.filter.mostRecent"), true),
+                      AppText.getInstance()
+                          .get("institution.forum.filter.mostRecent"),
+                      true),
                   _buildDatePicker(
-                      AppText.getInstance().get("institution.forum.filter.older"), false),
+                      AppText.getInstance()
+                          .get("institution.forum.filter.older"),
+                      false),
                 ],
               ),
-              _buildTitle(AppText.getInstance().get("institution.forum.filter.labels")),
+              _buildTitle(
+                  AppText.getInstance().get("institution.forum.filter.labels")),
               _buildTags(),
               _buildAddTagsSection(context),
               _buildApplyButton(context)
@@ -116,7 +124,8 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
           child: AllEdgePaddedWidget(
             padding: 9.0,
             child: Text(
-              AppText.getInstance().get("institution.forum.filter.filterButton"),
+              AppText.getInstance()
+                  .get("institution.forum.filter.filterButton"),
               style: Theme.of(context).primaryTextTheme.button,
             ),
           ),
@@ -135,7 +144,9 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         AppText.getInstance().get("institution.forum.filter.subject"),
         textAlign: TextAlign.center,
       ),
-      value: (this._selectedSubject == null) ? dropdownValue : this._selectedSubject,
+      value: (this._selectedSubject == null)
+          ? dropdownValue
+          : this._selectedSubject,
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownSubject,
@@ -168,7 +179,9 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         AppText.getInstance().get("institution.forum.filter.commission"),
         textAlign: TextAlign.center,
       ),
-      value: (this._selectedCommission == null) ? dropdownValue : this._selectedCommission,
+      value: (this._selectedCommission == null)
+          ? dropdownValue
+          : this._selectedCommission,
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownCommission,
@@ -222,7 +235,8 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
       listTags.add(tags);
     }
 
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(true, listTags);
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .fetchPublications(true, listTags);
   }
 
   Widget _buildAddTagsSection(BuildContext context) {
@@ -237,9 +251,11 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
   }
 
   TextField _buildInputTagsField(BuildContext context) {
+    _searchTagsEditingController.clear();
     return TextField(
         enabled: !_maxTags,
-        onChanged: (query) => _filterTag(query, context),
+        onChanged: (query) =>
+            _filterTag(_searchTagsEditingController.text, context),
         controller: _searchTagsEditingController,
         decoration: _buildTagAddDecoration());
   }
@@ -263,46 +279,42 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
 
   void _filterTag(String query, BuildContext context) {
     if (query.isNotEmpty) {
-      if (query.trim().length > 0) {
-        if (query.endsWith(" ")) {
-          if (query.length < 15) {
-            if (_uploadTags.length != 9) {
-              setState(() {
-                String cleanQuery = query.trimLeft();
-                String cleanQuery2 = cleanQuery.trimRight();
-                _uploadTags.add(cleanQuery2);
-                _searchTagsEditingController.clear();
-              });
-            } else {
-              setState(() {
-                String cleanQuery = query.trimLeft();
-                String cleanQuery2 = cleanQuery.trimRight();
-                _uploadTags.add(cleanQuery2);
-                _searchTagsEditingController.clear();
-                _scrollController.animateTo(
-                  00.0,
-                  curve: Curves.easeOut,
-                  duration: const Duration(milliseconds: 1000),
-                );
-                _maxTags = true;
-              });
-            }
+      if (query.trim().length > 0 && query.endsWith(" ")) {
+        if (query.length < 15) {
+          if (_uploadTags.length != 9) {
+            setState(() {
+              String cleanQuery = query.trimLeft();
+              String cleanQuery2 = cleanQuery.trimRight();
+              _uploadTags.add(cleanQuery2);
+            });
           } else {
-            showDialog<bool>(
-                  context: context,
-                  builder: (context) => ConfirmDialog(
-                    title: AppText.getInstance().get("institution.forum.filter.maxTagsLengthTitle"),
-                    content: AppText.getInstance()
-                        .get("institution.forum.filter.maxTagsLengthDescription"),
-                    buttons: <Widget>[
-                      CancelButton(
-                        onCancel: () => Navigator.of(context).pop(true),
-                      )
-                    ],
-                  ),
-                ) ??
-                false;
+            setState(() {
+              String cleanQuery = query.trimLeft();
+              String cleanQuery2 = cleanQuery.trimRight();
+              _uploadTags.add(cleanQuery2);
+              _scrollController.animateTo(
+                00.0,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 1000),
+              );
+              _maxTags = true;
+            });
           }
+        } else {
+          showDialog<bool>(
+            context: context,
+            builder: (context) => ConfirmDialog(
+              title: AppText.getInstance()
+                  .get("institution.forum.filter.maxTagsLengthTitle"),
+              content: AppText.getInstance()
+                  .get("institution.forum.filter.maxTagsLengthDescription"),
+              buttons: <Widget>[
+                CancelButton(
+                  onCancel: () => Navigator.of(context).pop(true),
+                )
+              ],
+            ),
+          );
         }
       }
     }
@@ -317,7 +329,9 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         itemBuilder: (int index) {
           return ItemTags(
             removeButton: ItemTagsRemoveButton(
-                backgroundColor: Colors.transparent, icon: Icons.clear, color: Colors.black),
+                backgroundColor: Colors.transparent,
+                icon: Icons.clear,
+                color: Colors.black),
             onPressed: (x) {
               setState(() {
                 _uploadTags.removeAt(index);
@@ -353,18 +367,21 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
                 color: Colors.amber,
               )),
           color: (_recently == ascending) ? Colors.amber : Colors.white,
-          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-            Icon(
-              Icons.calendar_today,
-              color: (_recently == ascending) ? Colors.white : Colors.amber,
-            ),
-            Text(
-              "$descriptionText",
-              style: TextStyle(
-                color: (_recently == ascending) ? Colors.white : Colors.amber,
-              ),
-            ),
-          ]),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.calendar_today,
+                  color: (_recently == ascending) ? Colors.white : Colors.amber,
+                ),
+                Text(
+                  "$descriptionText",
+                  style: TextStyle(
+                    color:
+                        (_recently == ascending) ? Colors.white : Colors.amber,
+                  ),
+                ),
+              ]),
           onPressed: () {
             _onPressedDatePicker();
           }),
@@ -402,10 +419,13 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
 
   Widget _buildButton(String text) {
     return FloatingActionButton(
-      backgroundColor: this._selectedLevel == int.parse(text) ? Colors.amber : Colors.white,
+      backgroundColor:
+          this._selectedLevel == int.parse(text) ? Colors.amber : Colors.white,
       shape: RoundedRectangleBorder(
           side: BorderSide(
-            color: this._selectedLevel != int.parse(text) ? Colors.amber : Colors.transparent,
+            color: this._selectedLevel != int.parse(text)
+                ? Colors.amber
+                : Colors.transparent,
           ),
           borderRadius: BorderRadius.all(Radius.circular(30.0))),
       child: Container(
@@ -428,7 +448,8 @@ class _FiltersViewWidgetState extends State<FiltersViewWidget> {
         child: Text(
       text,
       style: TextStyle(
-          color: _selectedLevel == int.parse(text) ? Colors.white : Colors.amber,
+          color:
+              _selectedLevel == int.parse(text) ? Colors.white : Colors.amber,
           fontWeight: FontWeight.bold),
     ));
   }
