@@ -81,7 +81,7 @@ const Map<dynamic, dynamic> ES = {
         "notEqual": "Ambos e-mails deben ser iguales",
       },
       "password": {
-        "notValid": "8-15 carácteres entre letras y números",
+        "notValid": "8-15 caracteres entre letras y números",
         "required": "La contraseña es requerida",
         "message": "Ingresá tu contraseña",
         "notEqual": "Ambas contraseñas deben ser iguales",
@@ -416,9 +416,9 @@ const Map<dynamic, dynamic> ES = {
         "buttonMessage": "¿Porque no volvés a filtrar?",
       },
       "profileNotFound": {
-        "errorMessage": "No se encontró un perfil creado",
+        "errorMessage": "Para acceder al Foro necesitas tener un perfil creado",
         "message":
-            "Por favor, creá tu perfil para poder acceder al foro de Universy.",
+            "Por favor, dirigite a la sección Mi Perfil a través de la barra de navegación para crear uno",
       },
     },
     "subjects": {

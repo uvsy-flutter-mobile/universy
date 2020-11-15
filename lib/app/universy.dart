@@ -47,7 +47,6 @@ class Universy extends StatelessWidget {
       Routes.SUBJECT_BOARD_MODULE: (context) => SubjectBoardModule(),
       Routes.COURSE_BOARD_MODULE: (context) => CourseBoardModule(),
       Routes.FORUM_MODULE: (context) => InstitutionForumModule(),
-      Routes.STUDENT_PROFILE_MODULE: (context) => ProfileModule(),
     };
   }
 
