@@ -236,7 +236,7 @@ Future<void> updateEvent(
 Future<List<StudentScheduleScratch>> getScratches(
     String userId, String programId) async {
   var resource =
-      "/students/$userId/programs/$programId/schedule"; //TODO: check with gon
+      "/students/$userId/programs/$programId/schedules"; //TODO: check with gon
   var path = _createPath(resource);
 
   var response = await api.getList<StudentScheduleScratch>(
@@ -249,7 +249,8 @@ Future<List<StudentScheduleScratch>> getScratches(
 
 Future<void> createScheduleScratch(
     String userId, String programId, CreateScratchPayload payload) {
-  var resource = "/students/$userId/programs/$programId"; //TODO check with gon
+  var resource =
+      "/students/$userId/programs/$programId/schedules"; //TODO check with gon
   var path = _createPath(resource);
 
   return api.post(
@@ -261,7 +262,7 @@ Future<void> createScheduleScratch(
 Future<void> updateScheduleScratch(String userId, String programId,
     String scratchId, UpdateScratchPayload payload) {
   var resource =
-      "/students/$userId/programs/$programId/scratchs/$scratchId"; //TODO check with gon
+      "/students/$userId/programs/$programId/schedules/$scratchId"; //TODO check with gon
   var path = _createPath(resource);
 
   return api.put(
@@ -273,7 +274,7 @@ Future<void> updateScheduleScratch(String userId, String programId,
 Future<void> deleteScheduleScratch(
     String userId, String programId, String scratchId) {
   var resource =
-      "/students/$userId/programs/$programId/scratchs/$scratchId"; //TODO check with gon
+      "/students/$userId/programs/$programId/schedules/$scratchId"; //TODO check with gon
   var path = _createPath(resource);
 
   return api.delete(path);
