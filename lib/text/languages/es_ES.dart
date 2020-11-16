@@ -267,7 +267,7 @@ const Map<dynamic, dynamic> ES = {
       }
     },
     "stats": {
-      "title": "Estadisticas del alumno",
+      "title": "Estadísticas del alumno",
       "view": {
         "yearProgress": {
           "title": "Mi progreso por año",
@@ -412,7 +412,8 @@ const Map<dynamic, dynamic> ES = {
         "defaultUser": "Usuario",
       },
       "publicationNotFound": {
-        "errorMessage": "¡No se encontraron publicaciones en el foro, creá una!",
+        "errorMessage":
+            "¡No se encontraron publicaciones en el foro, creá una!",
         "buttonMessage": "¿Porque no volvés a filtrar?",
       },
       "profileNotFound": {

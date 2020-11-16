@@ -66,8 +66,8 @@ class StudentEvent implements JsonConvertible, Copyable<StudentEvent> {
       date,
       eventType,
       description,
-      timeTo,
       timeFrom,
+      timeTo,
     );
   }
 

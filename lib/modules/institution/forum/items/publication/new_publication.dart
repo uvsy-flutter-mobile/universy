@@ -134,6 +134,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
   }
 
   TextField _buildInputTagsField() {
+    _searchTagsEditingController.clear();
     return TextField(
         enabled: !_maxTags,
         onChanged: _filterTag,
@@ -168,14 +169,12 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
                 String cleanQuery = query.trimLeft();
                 String cleanQuery2 = cleanQuery.trimRight();
                 _uploadTags.add(cleanQuery2);
-                _searchTagsEditingController.clear();
               });
             } else {
               setState(() {
                 String cleanQuery = query.trimLeft();
                 String cleanQuery2 = cleanQuery.trimRight();
                 _uploadTags.add(cleanQuery2);
-                _searchTagsEditingController.clear();
                 _scrollController.animateTo(
                   00.0,
                   curve: Curves.easeOut,
@@ -188,9 +187,10 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
             showDialog<bool>(
                   context: context,
                   builder: (context) => ConfirmDialog(
-                    title: AppText.getInstance().get("institution.forum.filter.maxTagsLengthTitle"),
-                    content: AppText.getInstance()
-                        .get("institution.forum.filter.maxTagsLengthDescription"),
+                    title: AppText.getInstance()
+                        .get("institution.forum.filter.maxTagsLengthTitle"),
+                    content: AppText.getInstance().get(
+                        "institution.forum.filter.maxTagsLengthDescription"),
                     buttons: <Widget>[
                       CancelButton(
                         onCancel: () => Navigator.of(context).pop(true),
@@ -214,7 +214,9 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         itemBuilder: (int index) {
           return ItemTags(
             removeButton: ItemTagsRemoveButton(
-                backgroundColor: Colors.transparent, icon: Icons.clear, color: Colors.black),
+                backgroundColor: Colors.transparent,
+                icon: Icons.clear,
+                color: Colors.black),
             onPressed: (x) {
               setState(() {
                 _uploadTags.removeAt(index);
@@ -314,13 +316,17 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
             .addForumPublication(title, description, _uploadTags);
       } else {
         BlocProvider.of<InstitutionForumCubit>(context).updateForumPublication(
-            title, description, _uploadTags, widget._forumPublication.idPublication);
+            title,
+            description,
+            _uploadTags,
+            widget._forumPublication.idPublication);
       }
     }
   }
 
   void _cancelNewPublication(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context).fetchPublications(false,[]);
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .fetchPublications(false, []);
   }
 
   Widget _buildTextFieldDescription(BuildContext context) {
@@ -330,10 +336,13 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         maxLines: 9,
         controller: _descriptionController,
         decorationBuilder: ForumInputDescriptionDecorationBuilder(
-            AppText.getInstance().get("institution.forum.publication.hintDescription")),
+            AppText.getInstance()
+                .get("institution.forum.publication.hintDescription")),
         validatorBuilder: TextFieldForumValidatorBuilder(
-            AppText.getInstance().get("institution.forum.publication.errorDescription"),
-            AppText.getInstance().get("institution.forum.publication.errorDescriptionMaxLength") +
+            AppText.getInstance()
+                .get("institution.forum.publication.errorDescription"),
+            AppText.getInstance().get(
+                    "institution.forum.publication.errorDescriptionMaxLength") +
                 MAX_LENGTH_DESCRIPTION.toString(),
             MAX_LENGTH_DESCRIPTION),
       ),
@@ -347,10 +356,12 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold),
         controller: _titleController,
         decorationBuilder: ForumInputTitleDecorationBuilder(
-            AppText.getInstance().get("institution.forum.publication.hintTitle")),
+            AppText.getInstance()
+                .get("institution.forum.publication.hintTitle")),
         validatorBuilder: TextFieldForumValidatorBuilder(
           AppText.getInstance().get("institution.forum.publication.errorTitle"),
-          AppText.getInstance().get("institution.forum.publication.errorTitleMaxLength") +
+          AppText.getInstance()
+                  .get("institution.forum.publication.errorTitleMaxLength") +
               MAX_LENGTH_TITLE.toString(),
           MAX_LENGTH_TITLE,
         ),
@@ -368,7 +379,9 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         AppText.getInstance().get("institution.forum.filter.subject"),
         textAlign: TextAlign.center,
       ),
-      value: (this._selectedSubject == null) ? dropdownValue : this._selectedSubject,
+      value: (this._selectedSubject == null)
+          ? dropdownValue
+          : this._selectedSubject,
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownSubject,
@@ -403,7 +416,9 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
         AppText.getInstance().get("institution.forum.filter.commission"),
         textAlign: TextAlign.center,
       ),
-      value: (this._selectedCommission == null) ? dropdownValue : this._selectedCommission,
+      value: (this._selectedCommission == null)
+          ? dropdownValue
+          : this._selectedCommission,
       elevation: 6,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDownCommission,

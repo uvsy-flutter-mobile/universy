@@ -13,7 +13,8 @@ class StudentCalendarWidget extends StatefulWidget {
   final DateTime selectedDate;
   final List<StudentEvent> studentEvents;
 
-  StudentCalendarWidget({Key key, this.selectedDate, this.studentEvents}) : super(key: key);
+  StudentCalendarWidget({Key key, this.selectedDate, this.studentEvents})
+      : super(key: key);
 
   @override
   _StudentCalendarWidgetState createState() => _StudentCalendarWidgetState();
@@ -35,22 +36,24 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
   }
 
   @override
-  void didUpdateWidget(StudentCalendarWidget oldWidget) {
+  /*void didUpdateWidget(StudentCalendarWidget oldWidget) {
     if (_hasDateChange(oldWidget) || _haveEventsChanged(oldWidget)) {
-      Map<DateTime, List> dateEventMap = _getStudentEventsMap(widget.studentEvents);
+      Map<DateTime, List> dateEventMap =
+          _getStudentEventsMap(widget.studentEvents);
       DateTime selectedDate = widget.selectedDate;
 
       this._dispatchSelectedDay(dateEventMap[selectedDate]);
     }
     super.didUpdateWidget(oldWidget);
-  }
+  }*/
 
   bool _hasDateChange(StudentCalendarWidget oldWidget) {
     return oldWidget.selectedDate != widget.selectedDate;
   }
 
   bool _haveEventsChanged(StudentCalendarWidget oldWidget) {
-    return !ListEquality().equals(oldWidget.studentEvents, widget.studentEvents);
+    return !ListEquality()
+        .equals(oldWidget.studentEvents, widget.studentEvents);
   }
 
   Map<DateTime, List> _getStudentEventsMap(List<StudentEvent> studentEvents) {
@@ -82,20 +85,24 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
       },
       calendarStyle: _buildCalendarStyle(),
       daysOfWeekStyle: DaysOfWeekStyle(
-        weekendStyle: TextStyle().copyWith(color: Theme.of(context).accentColor),
+        weekendStyle:
+            TextStyle().copyWith(color: Theme.of(context).accentColor),
       ),
       headerStyle: _buildHeaderStyle(),
       builders: CalendarBuilders(markersBuilder: _buildCalendarMarkers),
       initialSelectedDay: widget.selectedDate,
+      onVisibleDaysChanged: _onVisibleDaysChanged,
       onDaySelected: _onDaySelected,
-      // TODO: This code is commented given that the lib of table calendar is broken.
-      // onVisibleDaysChanged: _onVisibleDaysChanged,
     );
   }
 
-  List<Widget> _buildCalendarMarkers(BuildContext context, DateTime date, List events, List h) {
+  List<Widget> _buildCalendarMarkers(
+      BuildContext context, DateTime date, List events, List h) {
     return events.isNotEmpty
-        ? [Positioned(right: 1, bottom: 1, child: _buildEventsMarker(date, events))]
+        ? [
+            Positioned(
+                right: 1, bottom: 1, child: _buildEventsMarker(date, events))
+          ]
         : [];
   }
 
@@ -179,14 +186,28 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
   }
 
   void _dispatchSelectedDay(List eventsSelected) {
-    List<StudentEvent> eventsToPanel = List<StudentEvent>.from(eventsSelected ?? []);
-    EventPanelCubit eventsPanelCubit = BlocProvider.of<EventPanelCubit>(context);
+    List<StudentEvent> eventsToPanel =
+        List<StudentEvent>.from(eventsSelected ?? []);
+    EventPanelCubit eventsPanelCubit =
+        BlocProvider.of<EventPanelCubit>(context);
     eventsPanelCubit.daySelectedChange(eventsToPanel);
   }
 
   void _refreshCalendar() {
-    TableCalendarCubit tableCalendarCubit = BlocProvider.of<TableCalendarCubit>(context);
+    TableCalendarCubit tableCalendarCubit =
+        BlocProvider.of<TableCalendarCubit>(context);
     tableCalendarCubit.refreshTableCalendar(_getSelectedDate());
+    EventPanelCubit eventPanelCubit = BlocProvider.of<EventPanelCubit>(context);
+    eventPanelCubit.refreshPanelCalendar(_getSelectedDate());
+  }
+
+  void _onVisibleDaysChanged(
+      DateTime timeFrom, DateTime timeTo, CalendarFormat format) {
+    TableCalendarCubit tableCalendarCubit =
+        BlocProvider.of<TableCalendarCubit>(context);
+    tableCalendarCubit.refreshTableCalendar(timeFrom);
+    EventPanelCubit eventPanelCubit = BlocProvider.of<EventPanelCubit>(context);
+    eventPanelCubit.refreshPanelCalendar(timeFrom);
   }
 
   DateTime _getSelectedDate() {
