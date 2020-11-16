@@ -21,14 +21,18 @@ class PublicationDetailWidget extends StatefulWidget {
   final Profile _profile;
 
   PublicationDetailWidget(
-      {Key key, ForumPublication forumPublication, Profile profile, List<Comment> listComments})
+      {Key key,
+      ForumPublication forumPublication,
+      Profile profile,
+      List<Comment> listComments})
       : this._forumPublication = forumPublication,
         this._profile = profile,
         this._listComments = listComments,
         super(key: key);
 
   @override
-  _PublicationDetailWidgetState createState() => _PublicationDetailWidgetState();
+  _PublicationDetailWidgetState createState() =>
+      _PublicationDetailWidgetState();
 }
 
 class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
@@ -43,6 +47,13 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     _listComments = widget._listComments;
     _newComment = false;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _listComments = null;
+    _newComment = false;
+    super.dispose();
   }
 
   @override
@@ -108,7 +119,9 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           SymmetricEdgePaddingWidget.horizontal(
               paddingValue: 10,
               child: Text(
-                "${comments}" + AppText.getInstance().get("institution.forum.publication.comments"),
+                "${comments}" +
+                    AppText.getInstance()
+                        .get("institution.forum.publication.comments"),
                 style: TextStyle(color: Colors.grey, fontSize: 18),
               )),
         ],
@@ -134,14 +147,18 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
                     paddingValue: 5,
                     child: Text(
                       widget._profile.alias,
-                      style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontWeight: FontWeight.bold),
                     )),
                 CustomTextFormField(
                   controller: _newCommentController,
-                  validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(AppText.getInstance()
-                      .get("institution.forum.publication.errorMessageComment")),
+                  validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(
+                      AppText.getInstance().get(
+                          "institution.forum.publication.errorMessageComment")),
                   decorationBuilder: ForumInputNewCommentBuilder(
-                      AppText.getInstance().get("institution.forum.publication.hintComment")),
+                      AppText.getInstance()
+                          .get("institution.forum.publication.hintComment")),
                 ),
               ],
             ),
@@ -265,13 +282,21 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       widget._forumPublication,
       widget._profile.userId,
     );
+    setState(() {
+      widget._forumPublication.votes = widget._forumPublication.votes + 1;
+      widget._forumPublication.idVoteUser = widget._profile.userId;
+    });
   }
 
   void _onDeleteVote() {
-    BlocProvider.of<InstitutionForumCubit>(context).deleteVote(
+    BlocProvider.of<InstitutionForumCubit>(context).deleteVotePublication(
       widget._forumPublication.idVoteUser,
       true,
     );
+    setState(() {
+      widget._forumPublication.votes = widget._forumPublication.votes - 1;
+      widget._forumPublication.idVoteUser = null;
+    });
   }
 
   Widget _buildUserName() {
@@ -297,7 +322,8 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     return Text(
       this.widget._forumPublication.title,
       textAlign: TextAlign.left,
-      style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
+      style: TextStyle(
+          color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 

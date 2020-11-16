@@ -30,7 +30,7 @@ class HistoricItemCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
-        elevation: 10,
+        elevation: 1.0,
         child: Container(
           width: double.infinity,
           height: 80,

@@ -35,27 +35,6 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
     super.dispose();
   }
 
-  @override
-  /*void didUpdateWidget(StudentCalendarWidget oldWidget) {
-    if (_hasDateChange(oldWidget) || _haveEventsChanged(oldWidget)) {
-      Map<DateTime, List> dateEventMap =
-          _getStudentEventsMap(widget.studentEvents);
-      DateTime selectedDate = widget.selectedDate;
-
-      this._dispatchSelectedDay(dateEventMap[selectedDate]);
-    }
-    super.didUpdateWidget(oldWidget);
-  }*/
-
-  bool _hasDateChange(StudentCalendarWidget oldWidget) {
-    return oldWidget.selectedDate != widget.selectedDate;
-  }
-
-  bool _haveEventsChanged(StudentCalendarWidget oldWidget) {
-    return !ListEquality()
-        .equals(oldWidget.studentEvents, widget.studentEvents);
-  }
-
   Map<DateTime, List> _getStudentEventsMap(List<StudentEvent> studentEvents) {
     return groupBy(studentEvents, (event) => event.date);
   }
