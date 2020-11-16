@@ -27,6 +27,11 @@ class SelectableTag extends StatelessWidget {
         return ItemTags(
           key: Key(index.toString()),
           index: index,
+          activeColor: Colors.grey[350],
+          color: Colors.grey[350],
+          elevation: 0,
+          textActiveColor: Colors.black,
+          textColor: Colors.black,
           title: "$title ($amountOfRates)",
           pressEnabled: false,
           textStyle: TextStyle(

@@ -303,7 +303,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   bool _validateDate() {
     if (TimeOfDayComparator().isAfter(_timeFrom, _timeTo)) {
       _buildTimeDialog(
-          "Verificá las horas del evento. La hora de inicio es mayor a la de fin");
+          AppText.getInstance().get("student.calendar.form.timeAlert"));
       return false;
     } else {
       return true;

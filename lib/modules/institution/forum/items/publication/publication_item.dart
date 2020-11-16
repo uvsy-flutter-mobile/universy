@@ -13,7 +13,8 @@ class PublicationItemWidget extends StatelessWidget {
   final ForumPublication _forumPublication;
   final bool _isOwner;
 
-  PublicationItemWidget({Key key, ForumPublication forumPublication, bool isOwner})
+  PublicationItemWidget(
+      {Key key, ForumPublication forumPublication, bool isOwner})
       : this._forumPublication = forumPublication,
         this._isOwner = isOwner,
         super(key: key);
@@ -33,7 +34,10 @@ class PublicationItemWidget extends StatelessWidget {
       enabled: true,
       actionExtentRatio: 0.20,
       child: _buildNotOwnerPublicationItem(context),
-      secondaryActions: <Widget>[_buildDeleteSlide(context), _buildUpdateSlide(context)],
+      secondaryActions: <Widget>[
+        _buildDeleteSlide(context),
+        _buildUpdateSlide(context)
+      ],
     );
   }
 
@@ -43,7 +47,7 @@ class PublicationItemWidget extends StatelessWidget {
         _onPublicationTap(context);
       },
       child: Card(
-        elevation: 5,
+        elevation: 2.5,
         child: SymmetricEdgePaddingWidget.vertical(
           paddingValue: 4,
           child: SymmetricEdgePaddingWidget.horizontal(
@@ -62,7 +66,10 @@ class PublicationItemWidget extends StatelessWidget {
         color: Colors.red,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: IconButton(icon:Icon(Icons.delete),onPressed: () => _deletePublication(context),),
+      child: IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () => _deletePublication(context),
+      ),
     );
   }
 
@@ -73,16 +80,21 @@ class PublicationItemWidget extends StatelessWidget {
         color: Colors.grey,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: IconButton(icon:Icon(Icons.edit),onPressed: () => _pressUpdatePublicationForumButton(context),),
+      child: IconButton(
+        icon: Icon(Icons.edit),
+        onPressed: () => _pressUpdatePublicationForumButton(context),
+      ),
     );
   }
+
   void _pressUpdatePublicationForumButton(BuildContext context) async {
     BlocProvider.of<InstitutionForumCubit>(context)
         .updateForumPublicationState(this._forumPublication);
   }
 
   Future _deletePublication(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).deleteForumPublication(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .deleteForumPublication(this._forumPublication);
   }
 
   Widget _buildRowContent() {
@@ -141,7 +153,8 @@ class PublicationItemWidget extends StatelessWidget {
         ),
         SymmetricEdgePaddingWidget.horizontal(
           paddingValue: 2,
-          child: Text(this._forumPublication.comments.toString(), style: TextStyle(fontSize: 17)),
+          child: Text(this._forumPublication.comments.toString(),
+              style: TextStyle(fontSize: 17)),
         ),
       ],
     );
@@ -172,7 +185,8 @@ class PublicationItemWidget extends StatelessWidget {
       paddingValue: 2,
       child: Text(this._forumPublication.title,
           textAlign: TextAlign.left,
-          style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(
+              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
           overflow: TextOverflow.ellipsis),
     );
   }
@@ -213,11 +227,16 @@ class PublicationItemWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
-        Icon((_isOwner)? Icons.person:Icons.perm_identity,color:Colors.black,),
+        Icon(
+          (_isOwner) ? Icons.person : Icons.perm_identity,
+          color: Colors.black,
+        ),
         Text(
           alias,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: Colors.black,fontWeight: (_isOwner)? FontWeight.bold:FontWeight.normal),
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: (_isOwner) ? FontWeight.bold : FontWeight.normal),
         ),
       ],
     );
