@@ -43,7 +43,10 @@ class _StudentCalendarModuleState extends State<StudentCalendarModule> {
 
   void _buildEventPanelCubit() {
     if (_eventPanelCubic == null) {
-      this._eventPanelCubic = EventPanelCubit();
+      var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
+      var studentEventService = sessionFactory.studentEventService();
+      this._eventPanelCubic = EventPanelCubit(studentEventService);
+      this._eventPanelCubic.refreshPanelCalendar(DateTime.now());
     }
   }
 

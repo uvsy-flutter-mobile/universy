@@ -1,7 +1,6 @@
 import "package:collection/collection.dart";
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:optional/optional.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/calendar/bloc/panel/cubit.dart';
@@ -199,6 +198,8 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
     TableCalendarCubit tableCalendarCubit =
         BlocProvider.of<TableCalendarCubit>(context);
     tableCalendarCubit.refreshTableCalendar(_getSelectedDate());
+    EventPanelCubit eventPanelCubit = BlocProvider.of<EventPanelCubit>(context);
+    eventPanelCubit.refreshPanelCalendar(_getSelectedDate());
   }
 
   DateTime _getSelectedDate() {
