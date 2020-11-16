@@ -12,16 +12,16 @@ const int EXTRA_MONTH = 1;
 class EventPanelCubit extends Cubit<EventsPanelState> {
   final StudentEventService _studentEventsService;
 
-  EventPanelCubit(this._studentEventsService) : super(EventsPanelInitialState());
+  EventPanelCubit(this._studentEventsService)
+      : super(EventsPanelInitialState());
 
   Future<void> daySelectedChange(List<StudentEvent> studentEvents) async {
     emit(DaySelectedChangeState(studentEvents));
   }
 
   Future<void> refreshPanelCalendar(DateTime dateSelected) async {
-    DateTime dateFrom = DateTime(dateSelected.year, dateSelected.month, FIRST_DAY_OF_MONTH);
-    DateTime dateTo = DateTime(dateSelected.year, dateSelected.month + EXTRA_MONTH, 0);
-    var studentEvents = await _studentEventsService.getStudentEvents(dateFrom, dateTo);
+    var studentEvents = await _studentEventsService.getStudentEvents(
+        dateSelected, dateSelected);
     return this.daySelectedChange(studentEvents);
   }
 }

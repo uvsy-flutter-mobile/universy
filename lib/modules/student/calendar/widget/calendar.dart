@@ -36,7 +36,7 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
   }
 
   @override
-  void didUpdateWidget(StudentCalendarWidget oldWidget) {
+  /*void didUpdateWidget(StudentCalendarWidget oldWidget) {
     if (_hasDateChange(oldWidget) || _haveEventsChanged(oldWidget)) {
       Map<DateTime, List> dateEventMap =
           _getStudentEventsMap(widget.studentEvents);
@@ -45,7 +45,7 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
       this._dispatchSelectedDay(dateEventMap[selectedDate]);
     }
     super.didUpdateWidget(oldWidget);
-  }
+  }*/
 
   bool _hasDateChange(StudentCalendarWidget oldWidget) {
     return oldWidget.selectedDate != widget.selectedDate;
@@ -91,9 +91,8 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
       headerStyle: _buildHeaderStyle(),
       builders: CalendarBuilders(markersBuilder: _buildCalendarMarkers),
       initialSelectedDay: widget.selectedDate,
+      onVisibleDaysChanged: _onVisibleDaysChanged,
       onDaySelected: _onDaySelected,
-      // TODO: This code is commented given that the lib of table calendar is broken.
-      // onVisibleDaysChanged: _onVisibleDaysChanged,
     );
   }
 
@@ -200,6 +199,15 @@ class _StudentCalendarWidgetState extends State<StudentCalendarWidget> {
     tableCalendarCubit.refreshTableCalendar(_getSelectedDate());
     EventPanelCubit eventPanelCubit = BlocProvider.of<EventPanelCubit>(context);
     eventPanelCubit.refreshPanelCalendar(_getSelectedDate());
+  }
+
+  void _onVisibleDaysChanged(
+      DateTime timeFrom, DateTime timeTo, CalendarFormat format) {
+    TableCalendarCubit tableCalendarCubit =
+        BlocProvider.of<TableCalendarCubit>(context);
+    tableCalendarCubit.refreshTableCalendar(timeFrom);
+    EventPanelCubit eventPanelCubit = BlocProvider.of<EventPanelCubit>(context);
+    eventPanelCubit.refreshPanelCalendar(timeFrom);
   }
 
   DateTime _getSelectedDate() {

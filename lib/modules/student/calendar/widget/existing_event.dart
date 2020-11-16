@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/constants/event_types.dart';
 import 'package:universy/model/student/event.dart';
+import 'package:universy/modules/student/calendar/bloc/panel/cubit.dart';
 import 'package:universy/modules/student/calendar/bloc/table-calendar/cubit.dart';
 import 'package:universy/modules/student/calendar/widget/form/form.dart';
 import 'package:universy/services/factory.dart';
@@ -14,9 +15,12 @@ import 'package:universy/widgets/paddings/edge.dart';
 
 class ExistingEvent extends StatelessWidget {
   final StudentEvent event;
+  final Function(StudentEvent) onSave;
 
-  const ExistingEvent({Key key, StudentEvent event})
+  const ExistingEvent(
+      {Key key, StudentEvent event, Function(StudentEvent) onSave})
       : this.event = event,
+        this.onSave = onSave,
         super(key: key);
 
   @override
@@ -50,7 +54,7 @@ class ExistingEvent extends StatelessWidget {
       MaterialPageRoute(
         builder: (_) => StudentEventFormWidget(
             create: false,
-            onConfirm: () => _refreshCalendar(context),
+            onConfirm: () => _refreshUpdateCalendar(context),
             studentEvent: event),
       ),
     );
@@ -124,5 +128,14 @@ class ExistingEvent extends StatelessWidget {
     TableCalendarCubit tableCalendarCubit =
         BlocProvider.of<TableCalendarCubit>(context);
     tableCalendarCubit.refreshTableCalendar(event.date);
+    EventPanelCubit eventPanelCubit = BlocProvider.of<EventPanelCubit>(context);
+    eventPanelCubit.refreshPanelCalendar(event.date);
+  }
+
+  void _refreshUpdateCalendar(BuildContext context) {
+    TableCalendarCubit tableCalendarCubit =
+        BlocProvider.of<TableCalendarCubit>(context);
+    tableCalendarCubit.refreshTableCalendar(event.date);
+    onSave(event);
   }
 }
