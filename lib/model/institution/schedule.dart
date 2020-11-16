@@ -22,4 +22,13 @@ class Schedule {
       json["endTime"],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "dayOfWeek": _dayOfWeek,
+      "classroom": _classroom,
+      "beginTime": _beginTime,
+      "endTime": _endTime,
+    };
+  }
 }

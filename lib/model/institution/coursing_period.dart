@@ -36,4 +36,13 @@ class CoursingPeriod {
       json["endMonth"],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "beginMonth": _beginMonth,
+      "endMonth": _endMonth,
+      "professors": _professors.map((e) => e.toJson()).toList(),
+      "schedules": _schedules.map((e) => e.toJson()).toList(),
+    };
+  }
 }

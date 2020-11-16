@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:universy/business/converters/time.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/notifications/notification_dialog.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/util/time_of_day.dart';
 import 'package:universy/widgets/future/future_widget.dart';
 
 const String NO_NOTIFICATION = '0';

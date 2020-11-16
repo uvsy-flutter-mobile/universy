@@ -14,4 +14,11 @@ class Professor {
       json["lastName"],
     );
   }
+
+  Map<String, String> toJson() {
+    return {
+      "name": _name,
+      "lastname": _lastName,
+    };
+  }
 }

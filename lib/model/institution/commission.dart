@@ -1,3 +1,5 @@
+import 'package:universy/constants/strings.dart';
+
 class Commission {
   final String id;
   final String name;
@@ -13,5 +15,9 @@ class Commission {
       json["programId"],
       json["level"],
     );
+  }
+
+  factory Commission.empty(String id) {
+    return Commission(id, EMPTY_STRING, EMPTY_STRING, 0);
   }
 }

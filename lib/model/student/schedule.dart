@@ -1,11 +1,21 @@
+import 'dart:js';
 import 'dart:ui';
 
 import "package:collection/collection.dart";
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:universy/constants/strings.dart';
 import "package:universy/model/copyable.dart";
 import 'package:universy/model/institution/commission.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/coursing_period.dart';
+import 'package:universy/model/institution/subject.dart';
 import "package:universy/model/json.dart";
+import 'package:universy/model/subject.dart';
+import 'package:universy/services/factory.dart';
+import 'package:universy/services/impl/institution/institution.dart';
+import 'package:universy/services/impl/student/account.dart';
+import 'package:universy/services/impl/student/career.dart';
 
 class StudentScheduleScratch
     implements JsonConvertible, Copyable<StudentScheduleScratch> {
@@ -20,20 +30,39 @@ class StudentScheduleScratch
   StudentScheduleScratch(this.scheduleScratchId, this.name, this.beginDate,
       this.endDate, this.selectedCourses, this.updatedAt, this.createdAt);
 
-  // ignore: missing_return
-  factory StudentScheduleScratch.fromJson(Map<String, dynamic> json) {
-    //TODO: implement fromJson
-  }
-
   factory StudentScheduleScratch.empty() {
     return StudentScheduleScratch(EMPTY_STRING, EMPTY_STRING, DateTime.now(),
         DateTime.now(), [], DateTime.now(), DateTime.now());
   }
 
+  factory StudentScheduleScratch.fromJson(Map<String, dynamic> json) {
+    List<ScheduleScratchCourse> courses = (json["selectedCourses"] as List) //
+        .map((courseJson) => ScheduleScratchCourse.fromJson(courseJson)) //
+        .toList();
+    var updatedAt = DateTime.fromMillisecondsSinceEpoch(json["updatedAt"]);
+    var createdAt = DateTime.fromMillisecondsSinceEpoch(json["createdAt"]);
+    var beginDate = DateTime.fromMillisecondsSinceEpoch(json["beginDate"]);
+    var endDate = DateTime.fromMillisecondsSinceEpoch(json["endDate"]);
+
+    return StudentScheduleScratch(
+      json["scheduleScratchId"],
+      json["name"],
+      beginDate,
+      endDate,
+      courses,
+      updatedAt,
+      createdAt,
+    );
+  }
+
   @override
-  // ignore: missing_return
   Map<String, dynamic> toJson() {
-    //TODO: implement toJson
+    return {
+      "name": name,
+      "beginTime": beginDate,
+      "endTime": endDate,
+      "selectedCourses": selectedCourses.map((e) => e.toJson()).toList(),
+    };
   }
 
   @override
@@ -76,20 +105,37 @@ class ScheduleScratchCourse
   ScheduleScratchCourse(this.courseId, this.subjectId, this.subjectName,
       this.commission, this.period, this.color);
 
-  @override
-  // ignore: missing_return
-  Map<String, String> toJson() {
-    //TODO: implement
-  }
-
   // ignore: missing_return
   factory ScheduleScratchCourse.fromJson(Map<String, dynamic> json) {
-    //TODO: implement
+    Color colorToCourse = json["color"];
+    CoursingPeriod coursingPeriod = CoursingPeriod.fromJson(json);
+    Commission commission = new Commission.empty(json["commisionId"]);
+
+    return ScheduleScratchCourse(
+      json["courseId"],
+      json["subjectId"],
+      EMPTY_STRING,
+      commission,
+      coursingPeriod,
+      colorToCourse,
+    );
   }
 
   @override
   ScheduleScratchCourse copy() {
     return ScheduleScratchCourse.fromJson(this.toJson());
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "courseId": courseId,
+      "subjectId": subjectId,
+      "subjectName": subjectName,
+      "comissionId": commission.id,
+      "color": color.toString(),
+      "coursingPeriod": period.toJson(),
+    };
   }
 
   @override
