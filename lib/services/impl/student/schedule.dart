@@ -43,8 +43,15 @@ class DefaultStudentScheduleService extends StudentScheduleService {
       String userId = await DefaultAccountService.instance().getUserId();
       String programId =
           await DefaultStudentCareerService.instance().getCurrentProgram();
-      CreateScratchPayload payload =
-          new CreateScratchPayload(studentScheduleScratch, userId, programId);
+      int begin = studentScheduleScratch.beginDate.millisecondsSinceEpoch;
+      int end = studentScheduleScratch.endDate.millisecondsSinceEpoch;
+      CreateScratchPayload payload = new CreateScratchPayload(
+          userId,
+          programId,
+          studentScheduleScratch.name,
+          begin,
+          end,
+          studentScheduleScratch.selectedCourses);
       return await studentApi.createScheduleScratch(payload);
     } catch (e) {
       Log.getLogger().error(e);
@@ -55,14 +62,10 @@ class DefaultStudentScheduleService extends StudentScheduleService {
   Future<void> updateScratch(
       StudentScheduleScratch studentScheduleScratch) async {
     try {
-      String userId = await DefaultAccountService.instance().getUserId();
-      String programId =
-          await DefaultStudentCareerService.instance().getCurrentProgram();
       String scratchId = studentScheduleScratch.scheduleScratchId;
       UpdateScratchPayload payload =
           new UpdateScratchPayload(studentScheduleScratch);
-      return await studentApi.updateScheduleScratch(
-          userId, programId, scratchId, payload);
+      return await studentApi.updateScheduleScratch(scratchId, payload);
     } catch (e) {
       Log.getLogger().error(e);
       throw ServiceException();
@@ -71,11 +74,7 @@ class DefaultStudentScheduleService extends StudentScheduleService {
 
   Future<void> deleteScratch(String scratchId) async {
     try {
-      String userId = await DefaultAccountService.instance().getUserId();
-      String programId =
-          await DefaultStudentCareerService.instance().getCurrentProgram();
-      return await studentApi.deleteScheduleScratch(
-          userId, programId, scratchId);
+      return await studentApi.deleteScheduleScratch(scratchId);
     } catch (e) {
       Log.getLogger().error(e);
       throw ServiceException();

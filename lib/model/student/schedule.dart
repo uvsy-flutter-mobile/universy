@@ -107,11 +107,13 @@ class ScheduleScratchCourse
   ScheduleScratchCourse(this.courseId, this.subjectId, this.subjectName,
       this.commission, this.period, this.color);
 
-  // ignore: missing_return
   factory ScheduleScratchCourse.fromJson(Map<String, dynamic> json) {
-    Color colorToCourse = json["color"];
-    CoursingPeriod coursingPeriod = CoursingPeriod.fromJson(json);
-    Commission commission = new Commission.empty(json["commisionId"]);
+    String colorToCourse = json["color"].toString();
+    Color colorValue = new Color(
+        int.parse(colorToCourse.substring(1, 7), radix: 16) + 0XFF000000);
+    CoursingPeriod coursingPeriod =
+        CoursingPeriod.fromJson(json["coursingPeriod"]);
+    Commission commission = new Commission.empty(json["commissionId"]);
 
     return ScheduleScratchCourse(
       json["courseId"],
@@ -119,7 +121,7 @@ class ScheduleScratchCourse
       EMPTY_STRING,
       commission,
       coursingPeriod,
-      colorToCourse,
+      colorValue,
     );
   }
 
@@ -130,12 +132,15 @@ class ScheduleScratchCourse
 
   @override
   Map<String, dynamic> toJson() {
+    String colorValue = '#${color.value.toRadixString(16).substring(2, 8)}';
+    String commissionValue = commission.id;
+
     return {
       "courseId": courseId,
+      "commissionId": commissionValue,
       "subjectId": subjectId,
-      "comissionId": commission.id,
-      "color": color.toString(),
-      "coursingPeriod": period.toJson(),
+      "color": colorValue,
+      "coursingPeriod": period.scheduleToJson(),
     };
   }
 

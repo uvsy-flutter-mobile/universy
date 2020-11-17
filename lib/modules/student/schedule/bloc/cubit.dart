@@ -50,14 +50,12 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   Future<void> updateScratch(
       StudentScheduleScratch studentScheduleScratch) async {
-    print("updateScratch");
-    /* await _scheduleService.updateScratch(studentScheduleScratch);*/
+    await _scheduleService.updateScratch(studentScheduleScratch);
     this.fetchScratches();
   }
 
   Future<void> deleteScratch(String scratchId) async {
-    print("deleteScratch");
-    /*await _scheduleService.deleteScratch(scratchId);*/
+    await _scheduleService.deleteScratch(scratchId);
   }
 
   void createViewScratchSchedule(
@@ -91,12 +89,13 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       var institutionSubjects =
           await _institutionService.getSubjects(programId);
       var commissions = await _institutionService.getCommissions(programId);
-      ProgramYearsClassifier programYearsClassifier = ProgramYearsClassifier();
-      List<int> levels =
-          programYearsClassifier.yearsOfCareer(institutionSubjects);
 
       var scratchCourses =
           await _generateScratchCourses(institutionSubjects, commissions);
+
+      ProgramYearsClassifier programYearsClassifier = ProgramYearsClassifier();
+      List<int> levels =
+          programYearsClassifier.yearsOfCareer(institutionSubjects);
 
       emit(EditScratchState(
           studentScheduleScratch, scratchCourses, levels, institutionSubjects));

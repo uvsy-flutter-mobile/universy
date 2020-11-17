@@ -252,17 +252,16 @@ Future<List<StudentScheduleScratch>> getScratches(
 Future<void> createScheduleScratch(CreateScratchPayload payload) {
   var resource = "/schedules";
   var path = _createPath(resource);
-  print(payload);
+
   return api.post(
     path,
     payload: payload,
   );
 }
 
-Future<void> updateScheduleScratch(String userId, String programId,
+Future<void> updateScheduleScratch(
     String scratchId, UpdateScratchPayload payload) {
-  var resource =
-      "/students/$userId/programs/$programId/schedules/$scratchId"; //TODO check with gon
+  var resource = "/schedules/$scratchId";
   var path = _createPath(resource);
 
   return api.put(
@@ -271,10 +270,8 @@ Future<void> updateScheduleScratch(String userId, String programId,
   );
 }
 
-Future<void> deleteScheduleScratch(
-    String userId, String programId, String scratchId) {
-  var resource =
-      "/students/$userId/programs/$programId/schedules/$scratchId"; //TODO check with gon
+Future<void> deleteScheduleScratch(String scratchId) {
+  var resource = "/schedules/$scratchId";
   var path = _createPath(resource);
 
   return api.delete(path);

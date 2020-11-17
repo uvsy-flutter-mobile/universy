@@ -195,8 +195,9 @@ class _ScratchViewState extends State<ScratchView> {
       course.period.scheduleList.forEach((Schedule schedule) {
         TableEventTime beginTime = _buildEventTime(schedule.beginTime);
         TableEventTime endTime = _buildEventTime(schedule.endTime);
+        String subjectName = _buildSubjectName(course.subjectId, course);
         TableEvent calendarCourse = _buildEvent(
-          course.subjectName,
+          subjectName,
           course.commission.name,
           beginTime,
           endTime,
@@ -209,6 +210,16 @@ class _ScratchViewState extends State<ScratchView> {
       });
     });
     return lanesEvents;
+  }
+
+  String _buildSubjectName(String subjectId, ScheduleScratchCourse course) {
+    InstitutionSubject subject =
+        _subjects.firstWhere((element) => element.id == subjectId);
+    int index = _scratch.selectedCourses.indexOf(course);
+    setState(() {
+      _scratch.selectedCourses[index].subjectName = subject.name;
+    });
+    return subject.name;
   }
 
   LaneEvents _buildLaneEvent(Lane lane, List<TableEvent> events) {

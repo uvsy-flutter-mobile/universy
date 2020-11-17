@@ -4,6 +4,7 @@ import 'package:universy/modules/student/schedule/widgets/course_info.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/color/color_picker.dart';
 import 'package:universy/widgets/cards/rectangular.dart';
+import 'package:universy/widgets/paddings/edge.dart';
 
 class ScratchCourseCard extends StatefulWidget {
   final ScheduleScratchCourse _scheduleScratchCourse;
@@ -47,21 +48,27 @@ class ScratchCourseCardState extends State<ScratchCourseCard> {
 
   Widget _buildCardHeader(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 9, vertical: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ColorPickerButton(
-              initialColor: _scheduleScratchCourse.color,
-              onSelectedColor: _onSelectedColor,
-              radius: 15,
-              iconSize: 18,
+            SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: 8.0,
+              child: ColorPickerButton(
+                initialColor: _scheduleScratchCourse.color,
+                onSelectedColor: _onSelectedColor,
+                radius: 15,
+                iconSize: 18,
+              ),
             ),
-            Text(
-              _scheduleScratchCourse.subjectName,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
+            Expanded(
+                child: Text(
+                  _scheduleScratchCourse.subjectName,
+                  overflow: TextOverflow.visible,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                flex: 10),
             IconButton(
               padding: EdgeInsets.zero,
               constraints: BoxConstraints(),
