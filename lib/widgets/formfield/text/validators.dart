@@ -14,7 +14,7 @@ class NotEmptyTextFormFieldValidatorBuilder implements TextFormFieldValidatorBui
   @override
   FormFieldValidator<String> build(BuildContext context) {
     return (value) {
-      if (value.trim().isEmpty) {
+      if (value.trim().isEmpty || value.trim() =='') {
         return _emptyMessage;
       }
       return null; // This null is required by the interface.
@@ -134,6 +134,26 @@ class NotEqualPatternTextFormValidatorBuilderPassword implements TextFormFieldVa
         return _notEqualMessage;
       } else if (!pattern.hasMatch(value)) {
         return _patternMessage;
+      }
+      return null; // This null is required by the interface.
+    };
+  }
+}
+
+class TextFieldForumValidatorBuilder implements TextFormFieldValidatorBuilder {
+  final String _emptyMessage;
+  final String _maxLengthMessage;
+  final int _cantCharacters;
+
+  TextFieldForumValidatorBuilder(this._emptyMessage,this._maxLengthMessage,this._cantCharacters);
+
+  @override
+  FormFieldValidator<String> build(BuildContext context) {
+    return (value) {
+      if (value.trim().isEmpty || value.trim() =='') {
+        return _emptyMessage;
+      }else if(value.trim().length>=_cantCharacters){
+        return _maxLengthMessage;
       }
       return null; // This null is required by the interface.
     };

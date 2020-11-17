@@ -11,19 +11,15 @@ class NoteCardWidget extends StatelessWidget {
   final Widget description;
   final bool selected;
 
-  const NoteCardWidget._({Key key, this.title, this.description, this.selected})
-      : super(key: key);
+  const NoteCardWidget._({Key key, this.title, this.description, this.selected}) : super(key: key);
 
   factory NoteCardWidget.form(
-      {TextEditingController titleController,
-      TextEditingController descriptionController}) {
+      {TextEditingController titleController, TextEditingController descriptionController}) {
     assert(notNull(titleController));
     assert(notNull(descriptionController));
     var title = _TitleTextField(titleTextController: titleController);
-    var description =
-        _DescriptionTextField(descriptionTextController: descriptionController);
-    return NoteCardWidget._(
-        title: title, description: description, selected: false);
+    var description = _DescriptionTextField(descriptionTextController: descriptionController);
+    return NoteCardWidget._(title: title, description: description, selected: false);
   }
 
   factory NoteCardWidget.display(
@@ -32,8 +28,7 @@ class NoteCardWidget extends StatelessWidget {
     assert(notNull(descriptionText));
     var title = _TitleDisplay(titleText: titleText);
     var description = _DescriptionDisplay(descriptionText: descriptionText);
-    return NoteCardWidget._(
-        title: title, description: description, selected: selected);
+    return NoteCardWidget._(title: title, description: description, selected: selected);
   }
 
   Widget build(BuildContext context) {
@@ -136,8 +131,7 @@ class _TitleTextField extends StatelessWidget {
 class _DescriptionTextField extends StatelessWidget {
   final TextEditingController descriptionTextController;
 
-  const _DescriptionTextField({Key key, this.descriptionTextController})
-      : super(key: key);
+  const _DescriptionTextField({Key key, this.descriptionTextController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

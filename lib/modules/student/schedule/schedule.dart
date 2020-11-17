@@ -5,7 +5,6 @@ import 'package:universy/modules/student/schedule/bloc/builders/appBar.dart';
 import 'package:universy/modules/student/schedule/bloc/cubit.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/system/assets.dart';
-import 'package:universy/text/text.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/decorations/box.dart';
 

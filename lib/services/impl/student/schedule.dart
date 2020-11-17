@@ -44,8 +44,8 @@ class DefaultStudentScheduleService extends StudentScheduleService {
       String programId =
           await DefaultStudentCareerService.instance().getCurrentProgram();
       CreateScratchPayload payload =
-          new CreateScratchPayload(studentScheduleScratch);
-      return await studentApi.createScheduleScratch(userId, programId, payload);
+          new CreateScratchPayload(studentScheduleScratch, userId, programId);
+      return await studentApi.createScheduleScratch(payload);
     } catch (e) {
       Log.getLogger().error(e);
       throw ServiceException();

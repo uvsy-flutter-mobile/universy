@@ -48,14 +48,9 @@ class DisplayCharts extends StatelessWidget {
               style: Theme.of(context).primaryTextTheme.headline4,
             )),
         _buildScoreAverageChart(),
-        _buildCareerState(),
         Expanded(child: _buildCharts(context, program, charts), flex: 5),
       ],
     );
-  }
-
-  Widget _buildCareerState() {
-    return CareerStateChart(subjects: _subjects);
   }
 
   Widget _buildCharts(

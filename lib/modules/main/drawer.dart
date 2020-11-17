@@ -58,6 +58,9 @@ class _Widget extends StatelessWidget {
           Divider(),
           Ink(
             child: StudentNotesItem(),
+          ),
+          Ink(
+            child: ForumItem(),
           )
         ],
       ),

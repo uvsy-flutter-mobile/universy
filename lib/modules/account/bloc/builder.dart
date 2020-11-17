@@ -16,11 +16,12 @@ class AccountStateBuilder extends WidgetBuilderFactory<AccountState> {
     } else if (state is VerifyState) {
       return VerifyWidget(user: state.user);
     } else if (state is RecoverPasswordState) {
-      return RecoverPasswordWidget(user: state.user,);
+      return RecoverPasswordWidget(
+        user: state.user,
+      );
     } else if (state is InputUserState) {
       return ForgotPasswordWidget();
     }
-
     return LogInWidget();
   }
 }

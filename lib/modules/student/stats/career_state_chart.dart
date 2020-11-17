@@ -21,19 +21,36 @@ class CareerStateChart extends StatelessWidget {
         subjectByTypeClassifier.classify(_subjects);
     SubjectByStateClassifier subjectByStateClassifier =
         SubjectByStateClassifier();
-    return Column(
-      children: <Widget>[
-        _buildMandatoryTaking(context,
-            subjectByStateClassifier.classify(subjectByType.mandatory)),
-        _buildMandatoryRegular(context,
-            subjectByStateClassifier.classify(subjectByType.mandatory)),
-        _buildMandatoryToTake(context,
-            subjectByStateClassifier.classify(subjectByType.mandatory)),
-        _buildOptativeTaking(
-            context, subjectByStateClassifier.classify(subjectByType.optative)),
-        _buildOptativeRegular(
-            context, subjectByStateClassifier.classify(subjectByType.optative)),
-      ],
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 9.0,
+      child: Column(
+        children: <Widget>[
+          OnlyEdgePaddedWidget.top(
+              padding: 20.0,
+              child: Text(
+                AppText.getInstance()
+                    .get("student.stats.view.charts.titleState"),
+                style: Theme.of(context).primaryTextTheme.headline4,
+              )),
+          SizedBox(height: 30.0),
+          _buildMandatoryTaking(context,
+              subjectByStateClassifier.classify(subjectByType.mandatory)),
+          _buildMandatoryRegular(context,
+              subjectByStateClassifier.classify(subjectByType.mandatory)),
+          _buildMandatoryToTake(context,
+              subjectByStateClassifier.classify(subjectByType.mandatory)),
+          SizedBox(height: 20.0),
+          Divider(
+            color: Colors.grey,
+            height: 4.0,
+          ),
+          SizedBox(height: 10.0),
+          _buildOptativeTaking(context,
+              subjectByStateClassifier.classify(subjectByType.optative)),
+          _buildOptativeRegular(context,
+              subjectByStateClassifier.classify(subjectByType.optative)),
+        ],
+      ),
     );
   }
 
@@ -96,11 +113,11 @@ class CareerStateChart extends StatelessWidget {
   Widget _buildStateWidget(BuildContext context, Icon icon, String title,
       int total, Color colorSubject) {
     return OnlyEdgePaddedWidget.top(
-      padding: 5.0,
+      padding: 10.0,
       child: CircularRoundedRectangleCard(
           radius: 10.0,
           child: AllEdgePaddedWidget(
-              padding: 5.0,
+              padding: 10.0,
               child: Container(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

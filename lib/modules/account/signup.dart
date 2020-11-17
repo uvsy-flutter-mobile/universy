@@ -16,7 +16,6 @@ import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 import 'package:universy/widgets/text/custom.dart';
-
 import 'bloc/cubit.dart';
 
 class SignUpWidget extends StatefulWidget {
@@ -31,8 +30,7 @@ class SignUpWidget extends StatefulWidget {
 class SignUpWidgetState extends State<SignUpWidget> {
   final _formKeyLog = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _secondUsernameController =
-      TextEditingController();
+  final TextEditingController _secondUsernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _passwordHidden;
 
@@ -73,8 +71,7 @@ class SignUpWidgetState extends State<SignUpWidget> {
               obscure: _passwordHidden,
               onPressed: _changePasswordVisibilityOnPressedAction,
             ),
-            SignUpCreateButtonWidget(
-                createButtonAction: _submitButtonOnPressedAction),
+            SignUpCreateButtonWidget(createButtonAction: _submitButtonOnPressedAction),
             SignUpLinkToLogin(linkAction: _navigateToLoginWidget)
           ],
         ),
@@ -230,6 +227,7 @@ class SignUpPasswordWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 6.0,
       child: CustomTextFormField(
+        maxLines: 1,
         key: SIGNUP_KEY_PASSWORD_FIELD,
         controller: _textEditingController,
         validatorBuilder: _getPasswordValidator(),
@@ -241,6 +239,7 @@ class SignUpPasswordWidget extends StatelessWidget {
 
   InputDecorationBuilder _getPasswordDecoration() {
     return IconButtonInputDecorationBuilder(
+      hintText: AppText.getInstance().get("signUp.input.password.notValid"),
       labelText: AppText.getInstance().get("signUp.input.password.message"),
       icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
       onPressed: _onPressed,
@@ -250,8 +249,7 @@ class SignUpPasswordWidget extends StatelessWidget {
   TextFormFieldValidatorBuilder _getPasswordValidator() {
     return PatternNotEmptyTextFormFieldValidatorBuilder(
       regExp: Regex.PASSWORD_FORMAT_REGEX,
-      patternMessage:
-          AppText.getInstance().get("signUp.input.password.notValid"),
+      patternMessage: AppText.getInstance().get("signUp.input.password.notValid"),
       emptyMessage: AppText.getInstance().get("signUp.input.password.required"),
     );
   }
@@ -261,8 +259,7 @@ class SignUpPasswordWidget extends StatelessWidget {
 class SignUpLinkToLogin extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const SignUpLinkToLogin(
-      {Key key, @required Function(BuildContext context) linkAction})
+  const SignUpLinkToLogin({Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -273,7 +270,8 @@ class SignUpLinkToLogin extends StatelessWidget {
       child: Row(
         children: <Widget>[
           _buildAccountQuestionText(),
-          _buildLink(context),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: MediaQuery.of(context).size.width * 0.01, child: _buildLink(context)),
         ],
       ),
     );
@@ -284,8 +282,7 @@ class SignUpLinkToLogin extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("signUp.actions.accountQuestion")),
-          textStyle: TextStyle(
-              decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(color: Colors.black),
         ),
       ],
     );
@@ -297,8 +294,7 @@ class SignUpLinkToLogin extends StatelessWidget {
         GestureDetector(
           child: Text(
             AppText.getInstance().get("signUp.actions.goToLogin"),
-            style: TextStyle(
-                decoration: TextDecoration.underline, color: Colors.blue),
+            style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
           ),
           onTap: () => _linkAction(context),
         )

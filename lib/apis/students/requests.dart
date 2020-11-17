@@ -92,15 +92,22 @@ class UpdateSubjectPayload extends JsonConvertible {
 
 class CreateScratchPayload extends JsonConvertible {
   final StudentScheduleScratch studentScheduleScratch;
+  final String userId;
+  final String programId;
 
-  CreateScratchPayload(this.studentScheduleScratch);
+  CreateScratchPayload(
+      this.studentScheduleScratch, this.userId, this.programId);
 
   @override
   Map<String, dynamic> toJson() {
+    int begin = studentScheduleScratch.beginDate.millisecondsSinceEpoch;
+    int end = studentScheduleScratch.endDate.millisecondsSinceEpoch;
     return {
+      "userId": userId,
+      "programId": programId,
       "name": studentScheduleScratch.name,
-      "beginTime": studentScheduleScratch.beginDate,
-      "endTime": studentScheduleScratch.endDate,
+      "beginTime": begin,
+      "endTime": end,
       "selectedCourses": studentScheduleScratch.selectedCourses
           .map((e) => e.toJson())
           .toList(),
@@ -115,10 +122,13 @@ class UpdateScratchPayload extends JsonConvertible {
 
   @override
   Map<String, dynamic> toJson() {
+    int begin = studentScheduleScratch.beginDate.millisecondsSinceEpoch;
+    int end = studentScheduleScratch.endDate.millisecondsSinceEpoch;
+
     return {
       "name": studentScheduleScratch.name,
-      "beginTime": studentScheduleScratch.beginDate,
-      "endTime": studentScheduleScratch.endDate,
+      "beginTime": begin,
+      "endTime": end,
       "selectedCourses": studentScheduleScratch.selectedCourses
           .map((e) => e.toJson())
           .toList(),

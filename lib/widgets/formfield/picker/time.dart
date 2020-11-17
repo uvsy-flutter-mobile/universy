@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:universy/util/object.dart';
-import 'package:universy/widgets/formfield/text/validators.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class StudentEventTimeWidget extends FormField<TimeOfDay> {
   StudentEventTimeWidget(
       {@required BuildContext context,
-      @required FormFieldSetter<TimeOfDay> onSaved,
+      FormFieldSetter<TimeOfDay> onSaved,
       @required TimeOfDay initialValue,
+      @required Function(TimeOfDay) onChanged,
       FormFieldValidator<TimeOfDay> validator,
       String label = '',
       bool autovalidate = false})
@@ -34,6 +34,7 @@ class StudentEventTimeWidget extends FormField<TimeOfDay> {
                 );
                 if (notNull(selectedTime)) {
                   state.didChange(selectedTime);
+                  onChanged(selectedTime);
                 }
               },
               child: SymmetricEdgePaddingWidget.vertical(

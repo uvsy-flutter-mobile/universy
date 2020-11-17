@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:universy/business/correlatives/validator.dart';
 import 'package:universy/business/subjects/calculator/calculator.dart';
 import 'package:universy/business/subjects/classifier/result.dart';
+import 'package:universy/business/subjects/classifier/type_classifier.dart';
 import 'package:universy/business/subjects/classifier/year_classifier.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/subject.dart';
@@ -77,8 +78,10 @@ class _YearProgressChartState extends State<YearProgressChart> {
   }
 
   Widget _buildYearsChartBody() {
+    SubjectByTypeResult subjectByType =
+        SubjectByTypeClassifier().classify(_subjects);
     SubjectByYearResult subjectByYearResult =
-        SubjectByYearClassifier().classify(_subjects);
+        SubjectByYearClassifier().classify(subjectByType.mandatory);
     return Container(
       child: FadingEdgeScrollView.fromScrollView(
         child: ListView.builder(

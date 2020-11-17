@@ -3,7 +3,7 @@ const Map<dynamic, dynamic> ES = {
     "loading": "Cargando...",
     "exit": {
       "title": "Estás saliendo de Universy",
-      "content": "Seguro que querés salir?",
+      "content": "¿Seguro que querés salir?",
     },
     "yes": "Si",
     "no": "No"
@@ -12,9 +12,9 @@ const Map<dynamic, dynamic> ES = {
     "title": "Iniciar Sesión",
     "input": {
       "user": {
-        "notValid": "El usuario no es válido",
-        "required": "El usuario es requerido",
-        "message": "Ingresá tu usuario"
+        "notValid": "El e-mail no es válido",
+        "required": "El e-mail es requerido",
+        "message": "Ingresá tu e-mail"
       },
       "password": {
         "required": "La contraseña es requerida",
@@ -24,7 +24,7 @@ const Map<dynamic, dynamic> ES = {
     "actions": {
       "submit": "Ingresar",
       "register": "¡Registrate!",
-      "signup": "Aún no tenes cuenta?",
+      "signup": "¿Aún no tenes cuenta?",
     },
     "info": {
       "verifying": "Verificando información",
@@ -38,22 +38,24 @@ const Map<dynamic, dynamic> ES = {
     "title": "Recuperá tu cuenta",
     "input": {
       "user": {
-        "message": "Ingresá tu usuario",
-        "notValid": "El usuario no es válido",
-        "required": "El usuario es requerido"
+        "message": "Ingresá tu e-mail",
+        "notValid": "El e-mail no es válido",
+        "required": "El e-mail es requerido"
       },
     },
     "actions": {
       "recover": "¡Recuperala!",
       "continue": "Continuar",
+      "goBackToMail": "Volver atrás",
+      "goBackToSingUp": "Volver atrás"
     },
     "info": {
-      "forgottenPassword": "Olvidaste tu contraseña?",
+      "forgottenPassword": "¿Olvidaste tu contraseña?",
+      "passwordChangedCorrectly": "Tu contraseña se cambió corectamente",
     },
     "newPassword": {
-      "passwordChangedCorrectly": "Tu contraseña fue actualizada con éxito",
       "subtitle": "Luego, ingresá tu nueva contraseña",
-      "title": "Cambiar Contraseña",
+      "title": "Cambiar contraseña",
       "input": {
         "user": {
           "oldPasswordIncorrect": "La contraseña actual es incorrecta",
@@ -72,14 +74,14 @@ const Map<dynamic, dynamic> ES = {
     "title": "¡Regístrate!",
     "input": {
       "user": {
-        "message": "Ingresá tu usuario",
-        "messageCheck": "Volvé a ingresar tu usuario",
-        "notValid": "Ingresá un usuario valido",
-        "required": "El usuario es requerido",
-        "notEqual": "Ambos usuarios deben ser iguales",
+        "message": "Ingresá tu e-mail",
+        "messageCheck": "Volvé a ingresar tu e-mail",
+        "notValid": "Ingresá un e-mail valido",
+        "required": "El e-mail es requerido",
+        "notEqual": "Ambos e-mails deben ser iguales",
       },
       "password": {
-        "notValid": "Al menos 8 caracteres incluyendo 1 número",
+        "notValid": "8-15 caracteres entre letras y números",
         "required": "La contraseña es requerida",
         "message": "Ingresá tu contraseña",
         "notEqual": "Ambas contraseñas deben ser iguales",
@@ -88,7 +90,7 @@ const Map<dynamic, dynamic> ES = {
     "actions": {
       "submit": "Crear cuenta",
       "accountQuestion": "Ya tenés cuenta?",
-      "goToLogin": "Inicia tu sesión!",
+      "goToLogin": "Inicia sesión",
     },
     "info": {
       "creatingAccount": "Creando cuenta",
@@ -100,13 +102,13 @@ const Map<dynamic, dynamic> ES = {
     },
   },
   "verify": {
-    "title": "Verificá tu email",
-    "subtitle": "Un email con el código de verificación fue enviado a",
+    "title": "Verificá tu e-mail",
+    "subtitle": "Un e-mail con el código de verificación fue enviado a",
     "input": {
       "code": {
         "minQuantity": "El código debe tener 6 dígitos",
         "message": "Ingresá el código",
-        "required": "El código no puede ser vacio",
+        "required": "El código no puede ser vacío",
       },
     },
     "actions": {
@@ -114,7 +116,7 @@ const Map<dynamic, dynamic> ES = {
       "resend": "Reenviar código",
     },
     "info": {
-      "verified": "Email verificado!",
+      "verified": "E-mail verificado!",
       "resending": "Enviando nuevo código",
       "codeSent": "Se envío un nuevo código"
     },
@@ -149,7 +151,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "calendar": {
         "title": "Calendario",
-        "subtitle": "Gestiona tus eventos y parciales!",
+        "subtitle": "Gestioná tus eventos y parciales!",
       },
       "notes": {
         "title": "Mis Anotaciones",
@@ -159,6 +161,10 @@ const Map<dynamic, dynamic> ES = {
         "title": "Mis Horarios",
         "subtitle": "Crea borradores para tus horarios de cursado",
       },
+      "forum": {
+        "title": "Foro",
+        "subtitle": "Buscá el material que necesités!",
+      }
     }
   },
   "student": {
@@ -166,8 +172,8 @@ const Map<dynamic, dynamic> ES = {
       "input": {
         "name": {
           "notValid": "Entre 3 y 20 letras, sin símbolos",
-          "required": "Nombre es requerido",
-          "inputMessage": "Nombre",
+          "required": "El nombre es requerido",
+          "inputMessage": "Ingresá tu nombre",
         },
         "lastName": {
           "notValid": "Entre 3 y 20 letras, sin símbolos",
@@ -176,7 +182,7 @@ const Map<dynamic, dynamic> ES = {
         },
         "alias": {
           "notValid": "Entre 3 y 20 caracteres. Ej: miAlias2",
-          "required": "El Alias es requerido",
+          "required": "El alias es requerido",
           "inputMessage": "Ingresá tu alias",
         },
       },
@@ -251,7 +257,7 @@ const Map<dynamic, dynamic> ES = {
         "updateNoteTitle": "Actualizar anotación",
         "noteWithoutTitle": "Sin título",
         "noteWithoutDescription": "Sin descripción",
-        "lastUpdate": "Última Edición: ",
+        "lastUpdate": "Última edición: ",
       },
       "actions": {
         "confirmDeleteNote": "¿Estás seguro que deseas eliminar la anotación?",
@@ -265,19 +271,20 @@ const Map<dynamic, dynamic> ES = {
       }
     },
     "stats": {
-      "title": "Estadisticas del alumno",
+      "title": "Estadísticas del alumno",
       "view": {
         "yearProgress": {
-          "title": "Mi Progreso por año",
+          "title": "Mi progreso por año",
           "noSubjects": "No hay materias cargadas",
         },
         "charts": {
           "title": "Mi progreso general",
+          "titleState": "Mi estado de la carrera",
           "approvedOptativeSubjects": "Avance de materias optativas aprobadas",
           "approvedMandatorySubjects":
               "Avance de materias obligatorias aprobadas",
-          "completedPoints": "Puntos Completados en la carrera",
-          "completedHours": "Horas Completados en la carrera",
+          "completedPoints": "Puntos completados en la carrera",
+          "completedHours": "Horas completados en la carrera",
           "subjectsRegular": "Materias regulares",
           "subjectsToTake": "Materias por cursar",
           "subjectsTaking": "Materias cursando",
@@ -312,6 +319,7 @@ const Map<dynamic, dynamic> ES = {
         "editTitle": "Editar Evento",
         "eventTitle": "Título",
         "titleRequired": "El título es requerido",
+        "titleRestriction": "Maximo de caracteres",
         "eventDate": "Fecha",
         "eventDateRequired": "La fecha es requerida",
         "timeFrom": "Hora inicio",
@@ -321,6 +329,8 @@ const Map<dynamic, dynamic> ES = {
         "typeEvent": "Tipo de evento",
         "description": "Descripción",
         "descriptionCheck": "Sin descripción",
+        "timeAlert":
+            "¡Verificá las horas del evento!. La hora de inicio es mayor a la de fin.",
       },
       "eventType": {
         "DUE_DATE": "Entrega",
@@ -346,8 +356,8 @@ const Map<dynamic, dynamic> ES = {
         "chooseInstitution": "Elegí una institución",
         "chooseCareer": "Elegí una carrera",
         "chooseYear": "Elegí año de ingreso",
-        "checkInput": "Revisá lo ingresado :)",
-        "correctInput": "Los datos son correctos!",
+        "checkInput": "¡Ya casi estamos!",
+        "correctInput": "¡Los datos son correctos!",
       },
       "actions": {
         "addCareer": "Agregar Carrera",
@@ -357,9 +367,9 @@ const Map<dynamic, dynamic> ES = {
       "info": {
         "addingCareer": "Agregando Carrera...",
         "careerAdded": "Carrera agregada!",
-        "checkCareer": "Estás a punto de unirte a la carrera ",
-        "checkInstitution": "en la institución ",
-        "checkProgram": "con el programa ",
+        "checkCareer": "Carrera ",
+        "checkInstitution": "Institución ",
+        "checkProgram": "Programa ",
       },
       "error": {
         "noCareers": "No hay carreras disponibles para esta institución",
@@ -423,6 +433,56 @@ const Map<dynamic, dynamic> ES = {
     }
   },
   "institution": {
+    "forum": {
+      "title": "Foro Universy",
+      "comments": {
+        "commentsNotFound":
+            "No se encontraron mensajes para esta publicación. ¿Porqué no sos el primero en comentar?",
+        "separator": " a las ",
+      },
+      "filter": {
+        "filterButton": "Filtrar",
+        "level": "Nivel",
+        "subject": "Materia",
+        "commission": "Comisión",
+        "orderByDate": "Ordenar por fecha",
+        "mostRecent": "Más recientes",
+        "older": "Más antiguos",
+        "moreComment": "Más comentados",
+        "morePopular": "Más populares",
+        "labels": "Etiquetas",
+        "myPublications": "Mis publicaciones",
+        "search": "Filtrar",
+        "maxTags": "Cantidad máxima de tags alcanzada",
+        "hintTags": "Separá tus etiquetas con espacios",
+        "orderBy": "Ordenar por: ",
+        "maxTagsLengthTitle": "Longitud Máxima",
+        "maxTagsLengthDescription":
+            "La longitud máxima por etiqueta es de 15 carácteres",
+      },
+      "publication": {
+        "hintDescription": "Escribí la descripción de tu publicación",
+        "errorDescription": "Debés escribir una descripción",
+        "errorDescriptionMaxLength": "El máximo de caracteres es de ",
+        "hintTitle": "Escribí el título de tu publicación",
+        "errorTitle": "Debés escribir un título",
+        "errorTitleMaxLength": "El máximo de caracteres es de ",
+        "comments": " Comentarios",
+        "hintComment": "Escribí un comentario...",
+        "errorMessageComment": "El comentario se encuentra vacío",
+        "defaultUser": "Usuario",
+      },
+      "publicationNotFound": {
+        "errorMessage":
+            "¡No se encontraron publicaciones en el foro, creá una!",
+        "buttonMessage": "¿Porque no volvés a filtrar?",
+      },
+      "profileNotFound": {
+        "errorMessage": "Para acceder al Foro necesitas tener un perfil creado",
+        "message":
+            "Por favor, dirigite a la sección Mi Perfil a través de la barra de navegación para crear uno",
+      },
+    },
     "subjects": {
       "notFound": {
         "title": "¡Bienvenido a Universy!",

@@ -11,7 +11,10 @@ import 'package:universy/modules/student/calendar/widget/form/title.dart';
 import 'package:universy/services/factory.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/util/time_of_day.dart';
 import 'package:universy/widgets/async/modal.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/formfield/picker/date.dart';
 import 'package:universy/widgets/formfield/picker/time.dart';
 
@@ -21,15 +24,18 @@ class StudentEventFormWidget extends StatefulWidget {
   final StudentEvent _studentEvent;
   final DateTime _daySelected;
   final Function() _onConfirm;
+  final bool _create;
 
   StudentEventFormWidget({
     Key key,
     StudentEvent studentEvent,
     DateTime daySelected,
+    bool create,
     @required Function() onConfirm,
   })  : this._daySelected = daySelected,
         this._studentEvent = studentEvent,
         this._onConfirm = onConfirm,
+        this._create = create,
         super(key: key);
 
   @override
@@ -47,12 +53,14 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   StudentEventService _studentEventService;
   TextEditingController _titleTextEditingController;
   TextEditingController _descriptionTextEditingController;
+  bool _create;
 
   StateLock<StudentEvent> _stateLock;
 
   void initState() {
     this._daySelected = widget._daySelected;
     this._formKey = GlobalKey<FormState>();
+    this._create = widget._create;
     this._studentEvent =
         Optional.ofNullable(widget._studentEvent).orElse(StudentEvent.empty());
     this._timeFrom =
@@ -60,10 +68,16 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
     this._timeTo =
         Optional.ofNullable(_studentEvent.timeTo).orElse(TimeOfDay.now());
     this._stateLock = StateLock.lock(snapshot: widget._studentEvent);
-    this._titleTextEditingController =
-        TextEditingController(text: _studentEvent.title ?? EMPTY_STRING);
-    this._descriptionTextEditingController =
-        TextEditingController(text: _studentEvent.description ?? EMPTY_STRING);
+    this._titleTextEditingController = TextEditingController(
+        text: _create ? EMPTY_STRING : _studentEvent.title);
+    this._descriptionTextEditingController = TextEditingController(
+        text: _create ? EMPTY_STRING : _studentEvent.description);
+    this._studentEvent.eventType =
+        _create ? EventType.FINAL_EXAM.toString() : _studentEvent.eventType;
+    this._studentEvent.timeFrom =
+        _create ? TimeOfDay.now() : _studentEvent.timeFrom;
+    this._studentEvent.timeTo =
+        _create ? TimeOfDay.now() : _studentEvent.timeTo;
     super.initState();
   }
 
@@ -71,21 +85,11 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   void didChangeDependencies() {
     var sessionFactory = Provider.of<ServiceFactory>(context, listen: false);
     this._studentEventService = sessionFactory.studentEventService();
-    initializeStudentEvent();
     super.didChangeDependencies();
   }
 
-  void initializeStudentEvent() {
-    if (this._studentEvent.isNewEvent) {
-      String title = AppText.getInstance().get("student.calendar.form.title");
-      this._titleTextEditingController.text = title;
-      this._studentEvent.title = title;
-      this._studentEvent.eventType =
-          _studentEvent.eventType ?? EventType.FINAL_EXAM;
-    }
-  }
-
   void dispose() {
+    this._create = null;
     this._daySelected = null;
     this._formKey = null;
     this._studentEvent = null;
@@ -108,7 +112,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildNewEventAppBar() {
-    var appBarText = _studentEvent.isNewEvent
+    var appBarText = _create
         ? AppText.getInstance().get("student.calendar.form.title")
         : AppText.getInstance().get("student.calendar.form.editTitle");
 
@@ -146,11 +150,11 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   Widget _buildTitle() {
-    _titleTextEditingController.addListener(_updateTitle);
+    this._titleTextEditingController.addListener(_updateTitle);
     return SizedBox(
         width: 200,
         child: StudentEventTitleWidget(
-          textEditingController: _titleTextEditingController,
+          textEditingController: this._titleTextEditingController,
         ));
   }
 
@@ -174,16 +178,16 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
 
   Widget _buildTimeRange(BuildContext context) {
     return SizedBox(
-        width: 200,
+        width: MediaQuery.of(context).size.width / 1.8,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              width: 60,
+              width: MediaQuery.of(context).size.width / 4.3,
               child: _buildTimeFrom(context),
             ),
             SizedBox(
-              width: 5,
+              width: 10,
               child: Text(
                 '-',
                 style: TextStyle(
@@ -193,7 +197,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
               ),
             ),
             SizedBox(
-              width: 60,
+              width: MediaQuery.of(context).size.width / 4.3,
               child: _buildTimeTo(context),
             ),
           ],
@@ -207,7 +211,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
         label: label,
         initialValue: _timeFrom,
         context: context,
-        onSaved: _updateTimeFrom);
+        onChanged: _updateTimeFrom);
   }
 
   Widget _buildTimeTo(BuildContext context) {
@@ -217,7 +221,7 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
       context: context,
       label: label,
       initialValue: _timeTo,
-      onSaved: _updateTimeTo,
+      onChanged: _updateTimeTo,
     );
   }
 
@@ -271,39 +275,73 @@ class StudentEventFormWidgetState extends State<StudentEventFormWidget> {
   }
 
   void _updateTimeTo(TimeOfDay selectedTime) {
-    _studentEvent.timeTo = selectedTime;
+    setState(() {
+      this._timeTo = selectedTime;
+      this._studentEvent.timeTo = _timeTo;
+    });
   }
 
   void _updateTitle() {
-    this._studentEvent.title = this._titleTextEditingController.text;
+    setState(() {
+      this._studentEvent.title = this._titleTextEditingController.text;
+    });
   }
 
   void _updateDate(DateTime selectedDate) {
-    this._studentEvent.date = selectedDate;
+    setState(() {
+      this._studentEvent.date = selectedDate;
+    });
   }
 
   void _updateTimeFrom(TimeOfDay selectedTime) {
-    _studentEvent.timeFrom = selectedTime;
+    setState(() {
+      this._timeFrom = selectedTime;
+      this._studentEvent.timeFrom = _timeFrom;
+    });
+  }
+
+  bool _validateDate() {
+    if (TimeOfDayComparator().isAfter(_timeFrom, _timeTo)) {
+      _buildTimeDialog(
+          AppText.getInstance().get("student.calendar.form.timeAlert"));
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  _buildTimeDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (context) => ConfirmDialog(
+              title: "Algo anda mal",
+              content: message,
+              buttons: <Widget>[
+                CancelButton(onCancel: () => Navigator.of(context).pop())
+              ],
+            ));
   }
 
   void _pressConfirmButton() async {
     final form = _formKey.currentState;
     if (form.validate()) {
-      form.save();
+      if (_validateDate()) {
+        form.save();
 
-      if (_stateLock.hasChange(_studentEvent)) {
-        var confirmAction =
-            this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
+        if (_stateLock.hasChange(_studentEvent)) {
+          var confirmAction =
+              this._studentEvent.isNewEvent ? _saveEvent : _updateEvent;
 
-        await AsyncModalBuilder()
-            .perform(confirmAction)
-            .withTitle(
-                AppText.getInstance().get("student.calendar.actions.saving"))
-            .then(_refreshCalendarAndNavigateBack)
-            .build()
-            .run(context);
-      } else {
-        Navigator.pop(context);
+          await AsyncModalBuilder()
+              .perform(confirmAction)
+              .withTitle(
+                  AppText.getInstance().get("student.calendar.actions.saving"))
+              .then(_refreshCalendarAndNavigateBack)
+              .build()
+              .run(context);
+        } else {
+          Navigator.pop(context);
+        }
       }
     }
   }

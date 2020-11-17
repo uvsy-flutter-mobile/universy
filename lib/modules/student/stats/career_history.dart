@@ -31,6 +31,7 @@ class CareerHistory extends StatelessWidget {
                   overflow: TextOverflow.clip),
             ),
             flex: 1),
+        SizedBox(height: 20.0),
         Expanded(child: _buildCareerHistory(), flex: 10)
       ],
     );

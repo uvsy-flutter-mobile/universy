@@ -101,6 +101,7 @@ flutter:
     - assets/universy/backgrounds/clouds_header.png
     - assets/universy/backgrounds/clouds_header_opaque.png
     - assets/universy/logos/universy.png
+    - config/config.json
 
 
   # To add assets to your application, add an assets section, like this:

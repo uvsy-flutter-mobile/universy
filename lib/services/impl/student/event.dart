@@ -1,4 +1,3 @@
-import 'package:universy/apis/errors.dart';
 import 'package:universy/apis/students/api.dart' as studentApi;
 import 'package:universy/model/student/event.dart';
 import 'package:universy/services/exceptions/service.dart';

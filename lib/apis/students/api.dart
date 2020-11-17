@@ -235,24 +235,24 @@ Future<void> updateEvent(
 // Schedule Scratches
 Future<List<StudentScheduleScratch>> getScratches(
     String userId, String programId) async {
-  var resource =
-      "/students/$userId/programs/$programId/schedules"; //TODO: check with gon
+  var resource = "/schedules";
   var path = _createPath(resource);
+
+  var queryParams = {"userId": userId, "programId": programId};
 
   var response = await api.getList<StudentScheduleScratch>(
     path,
+    queryParams: queryParams,
     model: (content) => StudentScheduleScratch.fromJson(content),
   );
 
   return response.orElse([]);
 }
 
-Future<void> createScheduleScratch(
-    String userId, String programId, CreateScratchPayload payload) {
-  var resource =
-      "/students/$userId/programs/$programId/schedules"; //TODO check with gon
+Future<void> createScheduleScratch(CreateScratchPayload payload) {
+  var resource = "/schedules";
   var path = _createPath(resource);
-
+  print(payload);
   return api.post(
     path,
     payload: payload,

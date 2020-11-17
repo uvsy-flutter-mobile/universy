@@ -1,4 +1,5 @@
 VENV ?= venv
+STAGE ?= dev2
 
 
 init: clean init-venv
@@ -16,7 +17,7 @@ update-venv:
 	@( \
 		. $(VENV)/bin/activate; \
 		pip install --upgrade pip; \
-		pip install pre-commit; \
+		pip install pre-commit boto3==1.16.9 click==7.1.2; \
 		pre-commit install; \
 	)
 
@@ -25,3 +26,6 @@ clean: clean-venv
 clean-venv:
 	@echo "Removing virtual environment: $(VENV)..."
 	@rm -rf $(VENV)
+
+configure:
+	@python3 bin/configure.py --stage $(STAGE)

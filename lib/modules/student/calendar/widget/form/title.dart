@@ -33,7 +33,13 @@ class StudentEventTitleWidget extends StatelessWidget {
   }
 
   TextFormFieldValidatorBuilder _getTitleInputValidator() {
-    return NotEmptyTextFormFieldValidatorBuilder(_buildRequiredText());
+    final MAX_LENGTH_TITLE = 100;
+    return TextFieldForumValidatorBuilder(
+      AppText.getInstance().get("student.calendar.form.titleRequired"),
+      AppText.getInstance().get("student.calendar.form.titleRestriction") +
+          MAX_LENGTH_TITLE.toString(),
+      MAX_LENGTH_TITLE,
+    );
   }
 
   String _buildRequiredText() =>

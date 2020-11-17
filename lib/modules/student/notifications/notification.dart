@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/modules/student/notifications/notification_dialog.dart';
 import 'package:universy/services/factory.dart';
+import 'package:universy/util/object.dart';
 import 'package:universy/util/time_of_day.dart';
 import 'package:universy/widgets/future/future_widget.dart';
 
@@ -21,7 +22,8 @@ class NotificationsAlert extends StatelessWidget {
   }
 
   Widget _buildIconAlert(BuildContext context, List<StudentEvent> events) {
-    List<StudentEvent> eventsToday = _buildEventsSorted(events);
+    List<StudentEvent> eventsToday =
+        _validateNotEventsList(events) ? [] : _buildEventsSorted(events);
     return Stack(
       overflow: Overflow.visible,
       children: <Widget>[
@@ -44,25 +46,34 @@ class NotificationsAlert extends StatelessWidget {
   IconButton _buildNotificationIcon(
       List<StudentEvent> eventsToday, BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.notifications, size: 35.0, color: Colors.grey),
+        icon: Icon(Icons.notifications, size: 30.0, color: Colors.grey),
         splashColor: Colors.amberAccent,
-        onPressed: () => showDialog(
-            context: context,
-            builder: (context) => eventsToday.isEmpty
-                ? {}
-                : NotificationsDialog(events: eventsToday)));
+        onPressed: () => _validateNotEventsList(eventsToday)
+            ? {}
+            : showDialog(
+                context: context,
+                builder: (context) =>
+                    NotificationsDialog(events: eventsToday)));
+  }
+
+  bool _validateNotEventsList(List<StudentEvent> events) {
+    return isNull(events) || events.isEmpty;
   }
 
   Widget _buildQuantityNotification(List<StudentEvent> eventsToday) {
     return Positioned(
       top: 2,
-      right: 23,
+      right: 24,
       child: CircleAvatar(
-        radius: 14.0,
-        backgroundColor: eventsToday.isEmpty ? Colors.grey : Colors.amber,
+        radius: 13.0,
+        backgroundColor: _validateNotEventsList(eventsToday)
+            ? Colors.grey[350]
+            : Colors.amber,
         child: Text(
-          eventsToday.isEmpty ? NO_NOTIFICATION : eventsToday.length.toString(),
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
+          _validateNotEventsList(eventsToday)
+              ? NO_NOTIFICATION
+              : eventsToday.length.toString(),
+          style: TextStyle(color: Colors.white, fontSize: 16.0),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:universy/modules/account/bloc/cubit.dart';
 import 'package:universy/services/exceptions/student.dart';
@@ -59,13 +60,57 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
             ForgotPasswordUserNameWidget(
                 textEditingController: _userController),
             ForgotPasswordLinkToLogin(linkAction: _navigateToLoginWidget),
-            ForgotPasswordSubmitButtonWidget(
-                loginAction: _submitButtonOnPressedAction),
-            ForgotPasswordLinkToSignUp(linkAction: _navigateToSignUp)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _buildGoBackButton(context),
+                ForgotPasswordSubmitButtonWidget(
+                    loginAction: _submitButtonOnPressedAction),
+              ],
+            ),
+            ForgotPasswordLinkToSignUp(linkAction: _navigateToSignUp),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildGoBackButton(BuildContext context) {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 8.0,
+      child: CircularRoundedRectangleRaisedButton.general(
+        key: SIGNUP_KEY_SUBMIT_BUTTON,
+        radius: 10,
+        onPressed: () => _goToRecovery(),
+        color: Colors.amber,
+        child: Row(
+          children: <Widget>[_buildButtonIcon(), _buildButtonText(context)],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonIcon() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 5,
+      child: Icon(Icons.arrow_back, color: Colors.white),
+    );
+  }
+
+  Widget _buildButtonText(BuildContext context) {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 5,
+      child: Text(
+        AppText.getInstance().get("recoverPassword.actions.goBackToSingUp"),
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  void _goToRecovery() {
+    AccountCubit cubit = BlocProvider.of<AccountCubit>(context);
+    cubit.toLogIn();
   }
 
   void _submitButtonOnPressedAction(BuildContext context) async {
@@ -75,7 +120,8 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
           .perform(_recoverPassword)
           .withTitle(_verifyingMessage())
           .then(_navigateToRecoverPassword)
-          .handle(UserAlreadyExists, _showUsernameNotExistFlushBar)
+          .handle(NotAuthorized, _showDefaultErrorFlushBar)
+          .handle(UserNotFoundException, _showUsernameNotExistFlushBar)
           .build()
           .run(context);
     }
@@ -97,8 +143,18 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         .show(context);
   }
 
+  void _showDefaultErrorFlushBar(BuildContext context) {
+    FlushBarBroker()
+        .withMessage(_defaultErrorMessage())
+        .withIcon(Icon(Icons.contacts, color: Colors.redAccent))
+        .show(context);
+  }
+
   String _usernameAlreadyExistsMessage() => AppText.getInstance() //
       .get("login.input.user.notValid");
+
+  String _defaultErrorMessage() => AppText.getInstance() //
+      .get("login.error.unexpectedError");
 
   String _verifyingMessage() =>
       AppText.getInstance().get("login.info.verifying");
@@ -147,6 +203,7 @@ class ForgotPasswordUserNameWidget extends StatelessWidget {
       child: CustomTextFormField(
         key: LOGIN_KEY_USER_FIELD,
         controller: _textEditingController,
+        keyboardType: TextInputType.emailAddress,
         validatorBuilder: _getUserInputValidator(),
         decorationBuilder: _getUserInputDecoration(),
       ),
@@ -179,12 +236,9 @@ class ForgotPasswordSubmitButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SymmetricEdgePaddingWidget.vertical(
-      paddingValue: 8.0,
-      child: SizedBox(
-        width: double.infinity,
-        child: _buildButton(context),
-      ),
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 5.0,
+      child: _buildButton(context),
     );
   }
 
@@ -193,7 +247,7 @@ class ForgotPasswordSubmitButtonWidget extends StatelessWidget {
       key: LOGIN_KEY_SUBMIT_BUTTON,
       radius: 10,
       onPressed: () => _loginAction(context),
-      color: Colors.black54,
+      color: Theme.of(context).accentColor,
       child: Row(
         children: <Widget>[
           _buildButtonText(),
@@ -206,7 +260,7 @@ class ForgotPasswordSubmitButtonWidget extends StatelessWidget {
 
   Widget _buildButtonText() {
     return SymmetricEdgePaddingWidget.horizontal(
-      paddingValue: 10,
+      paddingValue: 5,
       child: Text(
         AppText.getInstance().get("recoverPassword.actions.continue"),
         style: TextStyle(color: Colors.white),
@@ -238,7 +292,9 @@ class ForgotPasswordLinkToSignUp extends StatelessWidget {
       child: Row(
         children: <Widget>[
           _buildAccountQuestionText(),
-          _buildLink(context),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: MediaQuery.of(context).size.width * 0.01,
+              child: _buildLink(context)),
         ],
       ),
     );
@@ -263,8 +319,7 @@ class ForgotPasswordLinkToSignUp extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("login.actions.signup")),
-          textStyle: TextStyle(
-              decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(color: Colors.black),
         ),
       ],
     );
@@ -287,7 +342,9 @@ class ForgotPasswordLinkToLogin extends StatelessWidget {
       child: Row(
         children: <Widget>[
           _buildAccountQuestionText(),
-          _buildLink(context),
+          SymmetricEdgePaddingWidget.horizontal(
+              paddingValue: MediaQuery.of(context).size.width * 0.01,
+              child: _buildLink(context)),
         ],
       ),
     );
@@ -298,8 +355,7 @@ class ForgotPasswordLinkToLogin extends StatelessWidget {
       children: <Widget>[
         EllipsisCustomText.left(
           text: (AppText.getInstance().get("signUp.actions.accountQuestion")),
-          textStyle: TextStyle(
-              decoration: TextDecoration.underline, color: Colors.black),
+          textStyle: TextStyle(color: Colors.black),
         ),
       ],
     );

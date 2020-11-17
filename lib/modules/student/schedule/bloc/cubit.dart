@@ -30,19 +30,8 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       emit(LoadingState());
       var programId =
           await DefaultStudentCareerService.instance().getCurrentProgram();
-      /* var scheduleScratches = await _scheduleService.getScratches(programId);*/
-      List<StudentScheduleScratch> scheduleScratches = [
-        StudentScheduleScratch(
-            'scheduleScratchId',
-            'Primer cuatrimestre muy largo y totalmente execsivo',
-            DateTime.now(),
-            DateTime.now(),
-            [],
-            DateTime.now(),
-            DateTime.now()),
-        StudentScheduleScratch('scheduleScratchId', 'name,', DateTime.now(),
-            DateTime.now(), [], DateTime.now(), DateTime.now()),
-      ];
+      var scheduleScratches = await _scheduleService.getScratches(programId);
+
       if (scheduleScratches.isNotEmpty) {
         emit(DisplayScratchesState(scheduleScratches));
       } else {
@@ -55,8 +44,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   Future<void> createScratch(
       StudentScheduleScratch studentScheduleScratch) async {
-    print("saveScratch");
-    /*await _scheduleService.createScratch(studentScheduleScratch);*/
+    await _scheduleService.createScratch(studentScheduleScratch);
     this.fetchScratches();
   }
 

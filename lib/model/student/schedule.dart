@@ -1,4 +1,3 @@
-import 'dart:js';
 import 'dart:ui';
 
 import "package:collection/collection.dart";
@@ -57,10 +56,13 @@ class StudentScheduleScratch
 
   @override
   Map<String, dynamic> toJson() {
+    int begin = beginDate.millisecondsSinceEpoch;
+    int end = endDate.millisecondsSinceEpoch;
+
     return {
       "name": name,
-      "beginTime": beginDate,
-      "endTime": endDate,
+      "beginTime": begin,
+      "endTime": end,
       "selectedCourses": selectedCourses.map((e) => e.toJson()).toList(),
     };
   }
@@ -131,7 +133,6 @@ class ScheduleScratchCourse
     return {
       "courseId": courseId,
       "subjectId": subjectId,
-      "subjectName": subjectName,
       "comissionId": commission.id,
       "color": color.toString(),
       "coursingPeriod": period.toJson(),

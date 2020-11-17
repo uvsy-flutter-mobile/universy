@@ -3,6 +3,7 @@ import 'package:universy/model/account/token.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/commission.dart';
+import 'package:universy/model/institution/forum.dart';
 import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
@@ -136,6 +137,33 @@ abstract class StudentNotesService extends Service {
   Future<void> deleteNote(String noteId);
 
   Future<void> batchDeleteNotes(List<StudentNote> notes);
+}
+
+abstract class ForumService extends Service {
+  Future<List<ForumPublication>> getForumPublications(
+      String programId, int offset, String userId, List<String> filters);
+
+  Future<List<Comment>> getCommentsPublication(
+      String idPublication, String userId);
+
+  Future<void> createForumPublication(
+      String title, String description, List<String> tags);
+
+  Future<void> createComment(
+      String userId, String content, String idPublication);
+
+  Future<void> deleteForumPublication(String idPublication);
+
+  Future<void> deleteComment(String idComment);
+
+  Future<void> updateForumPublication(String title, String description,
+      List<String> tags, String idPublication);
+
+  Future<void> addVotePublication(String userId, String idPublication);
+
+  Future<void> addVoteComment(String userId, String idComment);
+
+  Future<void> deleteVote(String idVote, bool isPublication);
 }
 
 // Student Schedule Services
