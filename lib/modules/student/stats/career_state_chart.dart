@@ -129,7 +129,7 @@ class CareerStateChart extends StatelessWidget {
                           style: Theme.of(context).primaryTextTheme.subtitle2),
                       flex: 9),
                   Expanded(
-                      child: _buildStateCount(total, colorSubject), flex: 1)
+                      child: _buildStateCount(total, colorSubject), flex: 2)
                 ],
               )))),
     );

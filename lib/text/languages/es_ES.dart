@@ -351,7 +351,7 @@ const Map<dynamic, dynamic> ES = {
       },
     },
     "enroll": {
-      "title": "Agregá una carrera!",
+      "title": "¡Agregá una carrera!",
       "input": {
         "chooseInstitution": "Elegí una institución",
         "chooseCareer": "Elegí una carrera",
