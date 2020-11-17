@@ -246,7 +246,8 @@ class _ScratchViewState extends State<ScratchView> {
       "Miércoles",
       "Jueves",
       "Viernes",
-      "Sábado"
+      "Sábado",
+      "Domingo"
     ];
     List<Lane> lanes = list.map((e) => _buildLane(e)).toList();
     return lanes;

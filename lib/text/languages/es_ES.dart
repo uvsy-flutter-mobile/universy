@@ -89,7 +89,7 @@ const Map<dynamic, dynamic> ES = {
     },
     "actions": {
       "submit": "Crear cuenta",
-      "accountQuestion": "Ya tenés cuenta?",
+      "accountQuestion": "¿Ya tenés cuenta?",
       "goToLogin": "Inicia sesión",
     },
     "info": {
@@ -151,7 +151,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "calendar": {
         "title": "Calendario",
-        "subtitle": "Gestioná tus eventos y parciales!",
+        "subtitle": "Gestioná tus eventos y parciales",
       },
       "notes": {
         "title": "Mis Anotaciones",
@@ -159,7 +159,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "schedule": {
         "title": "Mis Horarios",
-        "subtitle": "Crea borradores para tus horarios de cursado",
+        "subtitle": "Creá borradores de tus horarios",
       },
       "forum": {
         "title": "Foro",
@@ -388,9 +388,10 @@ const Map<dynamic, dynamic> ES = {
       },
       "form": {
         "nameRequired": "El título del borrador es requerido",
+        "maxLength": "Máximo de caracteres: "
       },
       "addCourseDialog": {
-        "alertTitle": "Selecciona el curso que deseas agregar",
+        "alertTitle": "Seleccioná el curso que deseas agregar",
         "level": "Año",
         "subject": "Materia",
       },
@@ -402,7 +403,7 @@ const Map<dynamic, dynamic> ES = {
         "dateTo": "Hasta",
       },
       "selectCourseDialog": {
-        "alertTitle": "Selecciona un curso",
+        "alertTitle": "Seleccioná un curso",
         "level": "Año",
         "subject": "Materia",
         "emptyCourses": "No hay cursos cargados",

@@ -47,12 +47,15 @@ class _StudentScheduleListWidgetState extends State<StudentScheduleListWidget> {
     return ConstrainedBox(
       constraints: BoxConstraints(maxHeight: 600),
       child: ListView(
+        controller: ScrollController(),
+        physics: BouncingScrollPhysics(),
         children: _buildScheduleCard(context),
       ),
     );
   }
 
   List<Widget> _buildScheduleCard(BuildContext context) {
+    _scheduleScratches.sort((a, b) => a.beginDate.compareTo(b.beginDate));
     return _scheduleScratches
         .map((e) => ScheduleCard(
             studentScheduleScratch: e,

@@ -30,8 +30,21 @@ class ScratchCourseCardState extends State<ScratchCourseCard> {
   ScratchCourseCardState(this._scheduleScratchCourse, this._onRemove);
 
   @override
+  void initState() {
+    _scheduleScratchCourse = widget._scheduleScratchCourse;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scheduleScratchCourse = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CircularRoundedRectangleCard(
+        key: GlobalKey(),
         radius: 8,
         color: Colors.white,
         elevation: 2,

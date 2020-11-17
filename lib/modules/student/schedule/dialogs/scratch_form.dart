@@ -44,11 +44,14 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
   bool _create;
   GlobalKey<FormState> _formKey;
   Function(StudentScheduleScratch) _onSave;
+  bool _alert;
+  final MAX_LENGTH_TITLE = 25;
 
   @override
   void initState() {
     this._onSave = widget._onSave;
     this._create = widget._create;
+    this._alert = false;
     this._formKey = GlobalKey<FormState>();
     this._studentScheduleScratch =
         Optional.ofNullable(widget._studentScheduleScratch)
@@ -84,7 +87,11 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
-            children: <Widget>[_buildNameInput(), _buildTimeRange(context)],
+            children: <Widget>[
+              _buildNameInput(),
+              _buildTimeRange(context),
+              _buildDateAlert()
+            ],
           ),
         ),
       ),
@@ -95,13 +102,34 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
     );
   }
 
+  Widget _buildDateAlert() {
+    return Visibility(
+        visible: _alert,
+        child: Text(
+          "Ingresá un rango de fechas válido",
+          style: TextStyle(color: Colors.red, fontSize: 12.0),
+        ));
+  }
+
   void _navigateToNext() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-
-      this._studentScheduleScratch.name = _nameTextController.text;
-      _onSave(this._studentScheduleScratch);
-      Navigator.of(context).pop();
+      DateTime begin = new DateTime(_studentScheduleScratch.beginDate.year,
+          _studentScheduleScratch.beginDate.month);
+      DateTime end = new DateTime(_studentScheduleScratch.endDate.year,
+          _studentScheduleScratch.endDate.month);
+      if (begin.isBefore(end)) {
+        setState(() {
+          _alert = false;
+        });
+        this._studentScheduleScratch.name = _nameTextController.text;
+        _onSave(this._studentScheduleScratch);
+        Navigator.of(context).pop();
+      } else {
+        setState(() {
+          _alert = true;
+        });
+      }
     }
   }
 
@@ -118,23 +146,20 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
       paddingValue: 6.0,
       child: CustomTextFormField(
         controller: _nameTextController,
-        validatorBuilder: _getTitleInputValidator(),
+        validatorBuilder: TextFieldForumValidatorBuilder(
+          AppText.getInstance().get("student.schedule.form.nameRequired"),
+          AppText.getInstance().get("student.schedule.form.maxLength") +
+              MAX_LENGTH_TITLE.toString(),
+          MAX_LENGTH_TITLE,
+        ),
         decorationBuilder: _getTitleInputDecoration(),
       ),
     ));
   }
 
-  TextFormFieldValidatorBuilder _getTitleInputValidator() {
-    return NotEmptyTextFormFieldValidatorBuilder(_buildRequiredText());
-  }
-
   InputDecorationBuilder _getTitleInputDecoration() {
     return TextInputDecorationBuilder(AppText.getInstance()
         .get("student.schedule.scratchFormDialog.scratchTitle"));
-  }
-
-  String _buildRequiredText() {
-    return AppText.getInstance().get("student.schedule.form.nameRequired");
   }
 
   Widget _buildTimeRange(BuildContext context) {
