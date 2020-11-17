@@ -2,7 +2,7 @@ import 'package:optional/optional.dart';
 import 'package:universy/apis/api.dart' as api;
 import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
@@ -16,7 +16,8 @@ String _createPath(String resource) {
 
 // Queries
 
-Future<List<InstitutionProgramInfo>> getProgramsInfo(List<String> programsIds) async {
+Future<List<InstitutionProgramInfo>> getProgramsInfo(
+    List<String> programsIds) async {
   var resource = "/query/programs/info";
   var path = _createPath(resource);
 
@@ -36,7 +37,7 @@ Future<List<Institution>> getInstitutions() async {
   var resource = "/institutions";
   var path = _createPath(resource);
 
-  var queryParams = {"only_active": "true"};
+  var queryParams = {"only_active": "false"};
 
   var response = await api.getList<Institution>(
     path,
@@ -51,7 +52,7 @@ Future<List<InstitutionCareer>> getCareers(String institutionId) async {
   var resource = "/institutions/$institutionId/careers";
   var path = _createPath(resource);
 
-  var queryParams = {"only_active": "true"};
+  var queryParams = {"only_active": "false"};
 
   var response = await api.getList<InstitutionCareer>(
     path,
@@ -66,7 +67,7 @@ Future<List<InstitutionProgram>> getPrograms(String careerId) async {
   var resource = "/careers/$careerId/programs";
   var path = _createPath(resource);
 
-  var queryParams = {"only_active": "true"};
+  var queryParams = {"only_active": "false"};
 
   var response = await api.getList<InstitutionProgram>(
     path,

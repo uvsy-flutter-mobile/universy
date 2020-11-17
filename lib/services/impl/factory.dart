@@ -6,6 +6,7 @@ import 'package:universy/services/impl/student/career.dart';
 import 'package:universy/services/impl/student/notes.dart';
 import 'package:universy/services/impl/student/event.dart';
 import 'package:universy/services/impl/student/profile.dart';
+import 'package:universy/services/impl/student/schedule.dart';
 import 'package:universy/services/manifest.dart';
 import 'package:universy/util/object.dart';
 
@@ -60,5 +61,10 @@ class DefaultServiceFactory extends ServiceFactory {
   @override
   ForumService forumService() {
     return DefaultForumService.instance();
+  }
+
+  @override
+  StudentScheduleService studentScheduleService() {
+    return DefaultStudentScheduleService.instance();
   }
 }

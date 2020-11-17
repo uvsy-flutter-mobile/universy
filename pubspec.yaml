@@ -64,7 +64,9 @@ dependencies:
   percent_indicator: 2.1.6
   timeline_list: 0.0.5
   charts_flutter: 0.9.0
-
+  flutter_timetable_view: 0.1.0
+  calendar_views: 0.5.2
+  flutter_colorpicker: 0.3.4
 
   # Libs for state management
   flutter_bloc: 6.0.1

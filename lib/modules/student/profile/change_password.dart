@@ -212,8 +212,9 @@ class NewPasswordWidget extends StatelessWidget {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 6.0,
       child: CustomTextFormField(
-        obscure: _obscure,
         key: SIGNUP_KEY_USER_FIELD,
+        obscure: _obscure,
+        maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         controller: _textEditingController,
         validatorBuilder: _buildPasswordValidator(),
@@ -267,6 +268,7 @@ class OldPasswordWidget extends StatelessWidget {
       paddingValue: 6.0,
       child: CustomTextFormField(
         obscure: _obscure,
+        maxLines: 1,
         key: SIGNUP_KEY_USER_FIELD,
         keyboardType: TextInputType.emailAddress,
         controller: _textEditingController,

@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  calendar_views:
+    dependency: "direct main"
+    description:
+      name: calendar_views
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.2"
   card_settings:
     dependency: "direct main"
     description:
@@ -189,7 +196,7 @@ packages:
     source: hosted
     version: "6.0.1"
   flutter_colorpicker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_colorpicker
       url: "https://pub.dartlang.org"
@@ -296,6 +303,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_timetable_view:
+    dependency: "direct main"
+    description:
+      name: flutter_timetable_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   flutter_udid:
     dependency: "direct main"
     description:

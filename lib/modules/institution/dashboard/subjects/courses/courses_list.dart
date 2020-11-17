@@ -2,7 +2,7 @@ import 'package:fading_edge_scrollview/fading_edge_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
 
 import 'item.dart';

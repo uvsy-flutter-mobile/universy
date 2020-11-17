@@ -3,8 +3,8 @@ import 'package:universy/model/account/token.dart';
 import 'package:universy/model/account/user.dart';
 import 'package:universy/model/institution/career.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
 import 'package:universy/model/institution/forum.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/institution.dart';
 import 'package:universy/model/institution/program.dart';
 import 'package:universy/model/institution/queries.dart';
@@ -14,6 +14,7 @@ import 'package:universy/model/student/career.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/notes.dart';
 import 'package:universy/model/student/ratings.dart';
+import 'package:universy/model/student/schedule.dart';
 import 'package:universy/model/student/session.dart';
 import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
@@ -77,7 +78,8 @@ abstract class StudentCareerService extends Service {
 abstract class StudentEventService extends Service {
   Future<void> createEvent(StudentEvent event);
 
-  Future<List<StudentEvent>> getStudentEvents(DateTime dateFrom, DateTime dateTo);
+  Future<List<StudentEvent>> getStudentEvents(
+      DateTime dateFrom, DateTime dateTo);
 
   Future<void> updateEvent(StudentEvent studentEvent);
 
@@ -138,24 +140,39 @@ abstract class StudentNotesService extends Service {
 }
 
 abstract class ForumService extends Service {
-  Future<List<ForumPublication>> getForumPublications(String programId, int offset, String userId,List<String> filters);
+  Future<List<ForumPublication>> getForumPublications(
+      String programId, int offset, String userId, List<String> filters);
 
-  Future<List<Comment>> getCommentsPublication(String idPublication,String userId);
+  Future<List<Comment>> getCommentsPublication(
+      String idPublication, String userId);
 
-  Future<void> createForumPublication(String title, String description, List<String> tags);
+  Future<void> createForumPublication(
+      String title, String description, List<String> tags);
 
-  Future<void> createComment(String userId, String content, String idPublication);
+  Future<void> createComment(
+      String userId, String content, String idPublication);
 
   Future<void> deleteForumPublication(String idPublication);
 
   Future<void> deleteComment(String idComment);
 
-  Future<void> updateForumPublication(String title, String description, List<String> tags,String idPublication);
+  Future<void> updateForumPublication(String title, String description,
+      List<String> tags, String idPublication);
 
   Future<void> addVotePublication(String userId, String idPublication);
 
   Future<void> addVoteComment(String userId, String idComment);
 
   Future<void> deleteVote(String idVote, bool isPublication);
+}
 
+// Student Schedule Services
+abstract class StudentScheduleService extends Service {
+  Future<List<StudentScheduleScratch>> getScratches(String programId);
+
+  Future<void> createScratch(StudentScheduleScratch scheduleScratch);
+
+  Future<void> updateScratch(StudentScheduleScratch scheduleScratch);
+
+  Future<void> deleteScratch(String scheduleScratchId);
 }

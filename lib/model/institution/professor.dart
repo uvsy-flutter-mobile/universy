@@ -14,4 +14,18 @@ class Professor {
       json["lastName"],
     );
   }
+
+  Map<String, String> toJson() {
+    return {
+      "name": _name,
+      "lastname": _lastName,
+    };
+  }
+
+  Map<String, String> scheduleToJson() {
+    return {
+      "name": _name,
+      "lastName": _lastName,
+    };
+  }
 }

@@ -13,6 +13,7 @@ import 'package:universy/modules/student/enroll/enroll.dart';
 import 'package:universy/modules/student/notes/notes.dart';
 import 'package:universy/modules/student/profile/profile.dart';
 import 'package:universy/modules/student/profile/update.dart';
+import 'package:universy/modules/student/schedule/schedule.dart';
 import 'package:universy/system/config.dart';
 import 'package:universy/system/locale.dart';
 import 'package:universy/system/start.dart';
@@ -47,6 +48,7 @@ class Universy extends StatelessWidget {
       Routes.SUBJECT_BOARD_MODULE: (context) => SubjectBoardModule(),
       Routes.COURSE_BOARD_MODULE: (context) => CourseBoardModule(),
       Routes.FORUM_MODULE: (context) => InstitutionForumModule(),
+      Routes.SCHEDULE_MODULE: (context) => ScheduleModule(),
     };
   }
 

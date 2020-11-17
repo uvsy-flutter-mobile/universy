@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:universy/util/object.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class StudentEventDateWidget extends FormField<DateTime> {
-  StudentEventDateWidget(
+class DatePickerWidget extends FormField<DateTime> {
+  DatePickerWidget(
       {@required BuildContext context,
       @required FormFieldSetter<DateTime> onSaved,
       @required DateTime initialValue,

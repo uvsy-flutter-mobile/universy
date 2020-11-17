@@ -36,4 +36,37 @@ class CoursingPeriod {
       json["endMonth"],
     );
   }
+
+  factory CoursingPeriod.scheduleFromJson(Map<String, dynamic> json) {
+    List<Schedule> scheduleList = (json["schedules"] as List ?? [])
+        .map((scheduleFromJson) => Schedule.fromJson(scheduleFromJson))
+        .toList();
+    List<Professor> professors = (json["professors"] as List ?? [])
+        .map((professorFromJson) => Professor.fromJson(professorFromJson))
+        .toList();
+    return CoursingPeriod(
+      scheduleList,
+      professors,
+      json["beginMonth"],
+      json["endMonth"],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "beginMonth": _beginMonth,
+      "endMonth": _endMonth,
+      "professors": _professors.map((e) => e.toJson()).toList(),
+      "schedules": _schedules.map((e) => e.toJson()).toList(),
+    };
+  }
+
+  Map<String, dynamic> scheduleToJson() {
+    return {
+      "professors": _professors.map((e) => e.scheduleToJson()).toList(),
+      "schedules": _schedules.map((e) => e.scheduleToJson()).toList(),
+      "beginMonth": _beginMonth,
+      "endMonth": _endMonth,
+    };
+  }
 }

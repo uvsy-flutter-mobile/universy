@@ -17,6 +17,8 @@ abstract class ServiceFactory {
 
   StudentNotesService studentNotesService();
 
+  StudentScheduleService studentScheduleService();
+
   List<Service> services() {
     return [
       accountService(),
@@ -26,6 +28,7 @@ abstract class ServiceFactory {
       studentEventService(),
       institutionService(),
       studentNotesService(),
+      studentScheduleService()
     ];
   }
 }

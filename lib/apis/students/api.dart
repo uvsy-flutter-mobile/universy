@@ -5,6 +5,7 @@ import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/student/career.dart';
 import 'package:universy/model/student/event.dart';
 import 'package:universy/model/student/notes.dart';
+import 'package:universy/model/student/schedule.dart';
 import 'package:universy/model/student/subject.dart';
 
 import 'requests.dart';
@@ -229,4 +230,49 @@ Future<void> updateEvent(
   var path = _createPath(resource);
 
   return api.put(path, payload: studentEvent);
+}
+
+// Schedule Scratches
+Future<List<StudentScheduleScratch>> getScratches(
+    String userId, String programId) async {
+  var resource = "/schedules";
+  var path = _createPath(resource);
+
+  var queryParams = {"userId": userId, "programId": programId};
+
+  var response = await api.getList<StudentScheduleScratch>(
+    path,
+    queryParams: queryParams,
+    model: (content) => StudentScheduleScratch.fromJson(content),
+  );
+
+  return response.orElse([]);
+}
+
+Future<void> createScheduleScratch(CreateScratchPayload payload) {
+  var resource = "/schedules";
+  var path = _createPath(resource);
+
+  return api.post(
+    path,
+    payload: payload,
+  );
+}
+
+Future<void> updateScheduleScratch(
+    String scratchId, UpdateScratchPayload payload) {
+  var resource = "/schedules/$scratchId";
+  var path = _createPath(resource);
+
+  return api.put(
+    path,
+    payload: payload,
+  );
+}
+
+Future<void> deleteScheduleScratch(String scratchId) {
+  var resource = "/schedules/$scratchId";
+  var path = _createPath(resource);
+
+  return api.delete(path);
 }

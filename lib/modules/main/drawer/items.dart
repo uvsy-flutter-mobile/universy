@@ -121,3 +121,20 @@ class ForumItem extends StatelessWidget {
     );
   }
 }
+
+class ScheduleItem extends StatelessWidget {
+  const ScheduleItem({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTileItem(
+      title: AppText.getInstance().get("main.modules.schedule.title"),
+      subtitle: AppText.getInstance().get("main.modules.schedule.subtitle"),
+      selected: false,
+      onTap: () {
+        Navigator.pop(context);
+        Navigator.pushNamed(context, Routes.SCHEDULE_MODULE);
+      },
+    );
+  }
+}

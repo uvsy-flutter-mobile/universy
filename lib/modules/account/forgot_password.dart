@@ -66,14 +66,6 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
                 _buildGoBackButton(context),
                 ForgotPasswordSubmitButtonWidget(
                     loginAction: _submitButtonOnPressedAction),
-                /*Expanded(
-                  child: ,
-                  flex: 3,
-                ),
-                Expanded(
-                  child:
-                  flex: 3
-                )*/
               ],
             ),
             ForgotPasswordLinkToSignUp(linkAction: _navigateToSignUp),

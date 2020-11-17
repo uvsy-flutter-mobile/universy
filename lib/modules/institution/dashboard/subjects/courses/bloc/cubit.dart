@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/services/manifest.dart';
 

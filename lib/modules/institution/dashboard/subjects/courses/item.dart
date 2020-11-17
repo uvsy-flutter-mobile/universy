@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:universy/constants/routes.dart';
 import 'package:universy/model/institution/commission.dart';
-import 'package:universy/model/institution/couse.dart';
+import 'package:universy/model/institution/course.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/dashboard/course/dashboard.dart';
 import 'package:universy/widgets/inkwell/clipped.dart';

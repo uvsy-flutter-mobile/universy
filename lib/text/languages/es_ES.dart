@@ -157,6 +157,10 @@ const Map<dynamic, dynamic> ES = {
         "title": "Mis Anotaciones",
         "subtitle": "Escribí y editá tus anotaciones",
       },
+      "schedule": {
+        "title": "Mis Horarios",
+        "subtitle": "Crea borradores para tus horarios de cursado",
+      },
       "forum": {
         "title": "Foro",
         "subtitle": "Buscá el material que necesités!",
@@ -371,6 +375,61 @@ const Map<dynamic, dynamic> ES = {
         "noCareers": "No hay carreras disponibles para esta institución",
         "noProgram": "No hay programa para este año :/",
       },
+    },
+    "schedule": {
+      "title": "Mis Horarios",
+      "scratchTitle": "Mi borrador",
+      "heroText": "Crea borradores para tus horarios de cursado",
+      "addNewSchedule": "Nuevo borrador",
+      "amounts": {
+        "onlyOne": "borrador",
+        "zero": "Sin borradores",
+        "many": "borradores"
+      },
+      "form": {
+        "nameRequired": "El título del borrador es requerido",
+      },
+      "addCourseDialog": {
+        "alertTitle": "Selecciona el curso que deseas agregar",
+        "level": "Año",
+        "subject": "Materia",
+      },
+      "scratchFormDialog": {
+        "newScratchTitle": "Creá un nuevo borrador",
+        "editScratchTitle": "Modificá tu borrador",
+        "scratchTitle": "Título",
+        "dateFrom": "Desde",
+        "dateTo": "Hasta",
+      },
+      "selectCourseDialog": {
+        "alertTitle": "Selecciona un curso",
+        "level": "Año",
+        "subject": "Materia",
+        "emptyCourses": "No hay cursos cargados",
+      },
+      "displayCoursesDialog": {
+        "alertTitle": "Cursos cargados",
+        "emptyCourses": "Sin cursos cargados",
+      },
+      "notFound": {
+        "title": "¡Bienvenido a Universy!",
+        "subtitle": "Para armar tus horarios, primero elegí una carrera",
+        "actions": {"addCareer": "Elegir carrera"},
+      },
+      "saveWithoutSavingDialog": {
+        "alertTitle": "Atención",
+        "alertMessage": "No guardaste los cambios del horario:",
+        "confirmMessage": "¿ Estas seguro que deseas salir  sin guardar ?",
+      },
+      "deleteDialog": {
+        "alertTitle": "Borrar horario",
+        "alertMessage": "Estas a punto de borrar:",
+        "confirmMessage": "¿ Estás de acuerdo ?",
+      },
+      "goBackDialog": {
+        "alertMessage": "No guardaste los cambios de tu horario",
+        "confirmMessage": "¿Estás seguro que deseas salir?",
+      }
     }
   },
   "institution": {
