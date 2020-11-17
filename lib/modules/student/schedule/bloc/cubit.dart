@@ -56,6 +56,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   Future<void> deleteScratch(String scratchId) async {
     await _scheduleService.deleteScratch(scratchId);
+    this.fetchScratches();
   }
 
   void createViewScratchSchedule(

@@ -27,7 +27,7 @@ class ScratchAppBar extends StatelessWidget {
 
   Widget _buildAlertBackDialog(BuildContext context) {
     return AlertDialog(
-      title: Text("Atencion"),
+      title: Text("Atención"),
       shape: _buildShape(),
       content: _buildBody(),
       actions: <Widget>[

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:optional/optional.dart';
 import 'package:universy/model/student/schedule.dart';
 import 'package:universy/modules/student/schedule/widgets/scratch_course_card.dart';
 import 'package:universy/text/text.dart';
@@ -40,8 +41,15 @@ class DisplayCoursesWidgetState extends State<DisplayCoursesDialogWidget> {
 
   @override
   void initState() {
-    _scheduleScratchCourseOnDisplay = [..._scheduleScratchCourse];
+    _scheduleScratchCourseOnDisplay =
+        Optional.ofNullable(widget._scheduleScratchCourse).orElse([]);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scheduleScratchCourseOnDisplay = null;
+    super.dispose();
   }
 
   @override
@@ -74,13 +82,13 @@ class DisplayCoursesWidgetState extends State<DisplayCoursesDialogWidget> {
           height: MediaQuery.of(context).size.height - 200,
           width: MediaQuery.of(context).size.width - 100,
           child: ListView.builder(
+            key: Key(_scheduleScratchCourseOnDisplay.length.toString()),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             padding: EdgeInsets.symmetric(vertical: 8),
-            itemBuilder: (context, position) {
+            itemBuilder: (context, _position) {
               return ScratchCourseCard(
-                scheduleScratchCourse:
-                    _scheduleScratchCourseOnDisplay[position],
+                scheduleScratchCourse: _scheduleScratchCourse[_position],
                 onRemove: _removeScratchFromList,
               );
             },
@@ -101,7 +109,7 @@ class DisplayCoursesWidgetState extends State<DisplayCoursesDialogWidget> {
 
   void _removeScratchFromList(ScheduleScratchCourse courseToRemove) {
     setState(() {
-      _scheduleScratchCourseOnDisplay.remove(courseToRemove);
+      _scheduleScratchCourse.remove(courseToRemove);
     });
   }
 }
