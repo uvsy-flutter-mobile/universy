@@ -7,7 +7,6 @@ const NO_SCHEDULE_SCRATCH_TIME_TEXT = "...";
 class ScheduleScratchTimeRangeFormatter {
   String format(DateTime beginTime, DateTime endTIme) {
     DateFormat dateFormat = DateFormat("MMM yyyy");
-    print(beginTime.month);
     if (notNull(beginTime) && notNull(endTIme)) {
       String beginTimeFormatted = dateFormat.format(beginTime);
       String endTImeFormatted = dateFormat.format(endTIme);
