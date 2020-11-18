@@ -57,15 +57,13 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         child: Column(
           children: <Widget>[
             ForgotPasswordTitleWidget(),
-            ForgotPasswordUserNameWidget(
-                textEditingController: _userController),
+            ForgotPasswordUserNameWidget(textEditingController: _userController),
             ForgotPasswordLinkToLogin(linkAction: _navigateToLoginWidget),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 _buildGoBackButton(context),
-                ForgotPasswordSubmitButtonWidget(
-                    loginAction: _submitButtonOnPressedAction),
+                ForgotPasswordSubmitButtonWidget(loginAction: _submitButtonOnPressedAction),
               ],
             ),
             ForgotPasswordLinkToSignUp(linkAction: _navigateToSignUp),
@@ -150,14 +148,12 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         .show(context);
   }
 
-  String _usernameAlreadyExistsMessage() => AppText.getInstance() //
-      .get("login.input.user.notValid");
+  String _usernameAlreadyExistsMessage() => AppText.getInstance().get("login.input.user.notValid");
 
   String _defaultErrorMessage() => AppText.getInstance() //
       .get("login.error.unexpectedError");
 
-  String _verifyingMessage() =>
-      AppText.getInstance().get("login.info.verifying");
+  String _verifyingMessage() => AppText.getInstance().get("login.info.verifying");
 
   void _navigateToLoginWidget(BuildContext context) {
     context.read<AccountCubit>().toLogIn();
@@ -219,8 +215,7 @@ class ForgotPasswordUserNameWidget extends StatelessWidget {
     return NotEmptyFunctionTextFormValidatorBuilder(
       validationFunction: EmailValidator.validate,
       message: AppText.getInstance().get("recoverPassword.input.user.notValid"),
-      emptyMessage:
-          AppText.getInstance().get("recoverPassword.input.user.required"),
+      emptyMessage: AppText.getInstance().get("recoverPassword.input.user.required"),
     );
   }
 }
@@ -280,8 +275,7 @@ class ForgotPasswordSubmitButtonWidget extends StatelessWidget {
 class ForgotPasswordLinkToSignUp extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const ForgotPasswordLinkToSignUp(
-      {Key key, @required Function(BuildContext context) linkAction})
+  const ForgotPasswordLinkToSignUp({Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -293,8 +287,7 @@ class ForgotPasswordLinkToSignUp extends StatelessWidget {
         children: <Widget>[
           _buildAccountQuestionText(),
           SymmetricEdgePaddingWidget.horizontal(
-              paddingValue: MediaQuery.of(context).size.width * 0.01,
-              child: _buildLink(context)),
+              paddingValue: MediaQuery.of(context).size.width * 0.01, child: _buildLink(context)),
         ],
       ),
     );
@@ -306,8 +299,7 @@ class ForgotPasswordLinkToSignUp extends StatelessWidget {
         GestureDetector(
             child: Text(
               (AppText.getInstance().get("login.actions.register")),
-              style: TextStyle(
-                  decoration: TextDecoration.underline, color: Colors.blue),
+              style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
             ),
             onTap: () => _linkAction(context))
       ],
@@ -330,8 +322,7 @@ class ForgotPasswordLinkToSignUp extends StatelessWidget {
 class ForgotPasswordLinkToLogin extends StatelessWidget {
   final Function(BuildContext context) _linkAction;
 
-  const ForgotPasswordLinkToLogin(
-      {Key key, @required Function(BuildContext context) linkAction})
+  const ForgotPasswordLinkToLogin({Key key, @required Function(BuildContext context) linkAction})
       : this._linkAction = linkAction,
         super(key: key);
 
@@ -343,8 +334,7 @@ class ForgotPasswordLinkToLogin extends StatelessWidget {
         children: <Widget>[
           _buildAccountQuestionText(),
           SymmetricEdgePaddingWidget.horizontal(
-              paddingValue: MediaQuery.of(context).size.width * 0.01,
-              child: _buildLink(context)),
+              paddingValue: MediaQuery.of(context).size.width * 0.01, child: _buildLink(context)),
         ],
       ),
     );
@@ -367,8 +357,7 @@ class ForgotPasswordLinkToLogin extends StatelessWidget {
         GestureDetector(
           child: Text(
             AppText.getInstance().get("signUp.actions.goToLogin"),
-            style: TextStyle(
-                decoration: TextDecoration.underline, color: Colors.blue),
+            style: TextStyle(decoration: TextDecoration.underline, color: Colors.blue),
           ),
           onTap: () => _linkAction(context),
         )
