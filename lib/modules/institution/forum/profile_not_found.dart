@@ -17,6 +17,7 @@ class _ProfileNotFoundState extends State<ProfileNotFoundWidget> {
         alignment: AlignmentDirectional.topCenter,
         child: Column(
           children: <Widget>[
+            SizedBox(height: 50.0),
             _buildTitle(),
             SizedBox(height: 50.0),
             _buildSubtitle(),
