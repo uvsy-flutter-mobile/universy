@@ -45,10 +45,8 @@ class _StudentScheduleListWidgetState extends State<StudentScheduleListWidget> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 600),
+      constraints: BoxConstraints(maxHeight: 480),
       child: ListView(
-        controller: ScrollController(),
-        physics: BouncingScrollPhysics(),
         children: _buildScheduleCard(context),
       ),
     );

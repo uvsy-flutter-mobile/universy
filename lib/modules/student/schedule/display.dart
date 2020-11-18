@@ -30,6 +30,8 @@ class DisplayScratchesWidget extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     return ListView(
+      controller: ScrollController(),
+      physics: BouncingScrollPhysics(),
       children: <Widget>[
         Container(
           padding: EdgeInsets.all(45),

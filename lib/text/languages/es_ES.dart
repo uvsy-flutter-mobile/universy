@@ -163,7 +163,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "forum": {
         "title": "Foro",
-        "subtitle": "Buscá el material que necesités!",
+        "subtitle": "Interactuá con gente de la comunidad Universy",
       }
     }
   },
@@ -401,6 +401,7 @@ const Map<dynamic, dynamic> ES = {
         "scratchTitle": "Título",
         "dateFrom": "Desde",
         "dateTo": "Hasta",
+        "datesInvalid": "Ingresá un rango de fechas válido",
       },
       "selectCourseDialog": {
         "alertTitle": "Seleccioná un curso",
