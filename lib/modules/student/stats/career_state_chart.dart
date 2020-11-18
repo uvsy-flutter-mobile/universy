@@ -143,7 +143,7 @@ class CareerStateChart extends StatelessWidget {
         Icon(Icons.done_all),
         AppText.getInstance().get("student.stats.view.charts.optativeApproved"),
         subjectsApproved.length,
-        Colors.amber);
+        Colors.lightBlue);
   }
 
   Widget _buildStateWidget(BuildContext context, Icon icon, String title,
