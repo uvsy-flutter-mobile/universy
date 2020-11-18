@@ -75,6 +75,8 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       List<int> levels =
           programYearsClassifier.yearsOfCareer(institutionSubjects);
 
+      levels.sort();
+
       emit(CreateScratchState(
           studentScheduleScratch, scratchCourses, levels, institutionSubjects));
     } on CurrentProgramNotFound {
@@ -97,6 +99,8 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       ProgramYearsClassifier programYearsClassifier = ProgramYearsClassifier();
       List<int> levels =
           programYearsClassifier.yearsOfCareer(institutionSubjects);
+
+      levels.sort();
 
       emit(EditScratchState(
           studentScheduleScratch, scratchCourses, levels, institutionSubjects));

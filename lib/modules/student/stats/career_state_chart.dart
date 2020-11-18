@@ -39,6 +39,8 @@ class CareerStateChart extends StatelessWidget {
               subjectByStateClassifier.classify(subjectByType.mandatory)),
           _buildMandatoryToTake(context,
               subjectByStateClassifier.classify(subjectByType.mandatory)),
+          _buildMandatoryApproved(context,
+              subjectByStateClassifier.classify(subjectByType.mandatory)),
           SizedBox(height: 20.0),
           Divider(
             color: Colors.grey,
@@ -48,6 +50,8 @@ class CareerStateChart extends StatelessWidget {
           _buildOptativeTaking(context,
               subjectByStateClassifier.classify(subjectByType.optative)),
           _buildOptativeRegular(context,
+              subjectByStateClassifier.classify(subjectByType.optative)),
+          _buildOptativeApproved(context,
               subjectByStateClassifier.classify(subjectByType.optative)),
         ],
       ),
@@ -88,6 +92,17 @@ class CareerStateChart extends StatelessWidget {
         Colors.amber);
   }
 
+  Widget _buildMandatoryApproved(
+      BuildContext context, SubjectByStateResult subjectByStateResult) {
+    List<Subject> subjectsApproved = subjectByStateResult.approved;
+    return _buildStateWidget(
+        context,
+        Icon(Icons.book),
+        AppText.getInstance().get("student.stats.view.charts.subjectsApproved"),
+        subjectsApproved.length,
+        Colors.amber);
+  }
+
   Widget _buildOptativeTaking(
       BuildContext context, SubjectByStateResult subjectByStateResult) {
     List<Subject> subjectsTaking = subjectByStateResult.taking;
@@ -108,6 +123,17 @@ class CareerStateChart extends StatelessWidget {
         AppText.getInstance().get("student.stats.view.charts.optativeRegular"),
         subjectsTaking.length,
         Colors.lightBlue);
+  }
+
+  Widget _buildOptativeApproved(
+      BuildContext context, SubjectByStateResult subjectByStateResult) {
+    List<Subject> subjectsApproved = subjectByStateResult.approved;
+    return _buildStateWidget(
+        context,
+        Icon(Icons.book),
+        AppText.getInstance().get("student.stats.view.charts.optativeApproved"),
+        subjectsApproved.length,
+        Colors.amber);
   }
 
   Widget _buildStateWidget(BuildContext context, Icon icon, String title,

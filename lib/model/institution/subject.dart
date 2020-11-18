@@ -1,4 +1,5 @@
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:universy/util/object.dart';
 
 class InstitutionSubject {
   final String id;
@@ -38,6 +39,13 @@ class InstitutionSubject {
       json["optative"],
       correlatives,
     );
+  }
+
+  bool isOptative() {
+    if (notNull(optative)) {
+      return optative;
+    }
+    return false;
   }
 }
 

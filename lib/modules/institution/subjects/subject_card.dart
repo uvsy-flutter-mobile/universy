@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/text/formaters/subject.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/inkwell/clipped.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -65,9 +66,21 @@ class InstitutionSubjectCardWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildSubjectTypeSubtitle(InstitutionSubject subjects) {
+    return Text(AppText.getInstance().get("student.subjects.optative"),
+        style: TextStyle(fontSize: 12, color: Colors.grey));
+  }
+
   Widget _getSubjectName() {
-    return Container(
-        child: Text(_institutionSubject.name), alignment: Alignment.centerLeft);
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(_institutionSubject.name),
+          _institutionSubject.isOptative()
+              ? _buildSubjectTypeSubtitle(_institutionSubject)
+              : Container()
+        ]);
   }
 
   VoidCallback onTap(BuildContext context) {

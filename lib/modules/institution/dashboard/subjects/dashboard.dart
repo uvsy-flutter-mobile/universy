@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:universy/model/institution/subject.dart';
 import 'package:universy/modules/institution/dashboard/subjects/correlatives.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/widgets/cards/rectangular.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 import 'courses.dart';
@@ -44,9 +45,59 @@ class SubjectBoardModule extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(child: _buildCourseColumn(subject), flex: 25),
-        Expanded(child: _getCorrelatives(subject), flex: 80),
+        Expanded(child: _buildCorrelativesAndPoints(subject), flex: 80),
       ],
     );
+  }
+
+  Widget _buildCorrelativesAndPoints(InstitutionSubject subject) {
+    return Column(
+      children: <Widget>[
+        subject.isOptative() ? _getHoursAndPoints(subject) : Container(),
+        _getCorrelatives(subject),
+      ],
+    );
+  }
+
+  Widget _getHoursAndPoints(InstitutionSubject subject) {
+    int points = subject.points;
+    int hours = subject.hours;
+    return CircularRoundedRectangleCard(
+      elevation: 5,
+      color: Colors.white,
+      radius: 10.0,
+      child: AllEdgePaddedWidget(
+          padding: 10,
+          child: Container(
+              child: _buildTextPointsAndHours(points, hours),
+              width: double.infinity)),
+    );
+  }
+
+  Widget _buildTextPointsAndHours(int points, int hours) {
+    return Column(
+      children: <Widget>[
+        Text("Esta materia te suma"),
+        _buildTextPoints(points),
+        _buildTextHours(hours),
+      ],
+    );
+  }
+
+  Widget _buildTextPoints(int points) {
+    if (points != 0) {
+      return Text("Puntos: $points");
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildTextHours(int hours) {
+    if (hours != 0) {
+      return Text("Horas: $hours");
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildCourseColumn(InstitutionSubject subject) {

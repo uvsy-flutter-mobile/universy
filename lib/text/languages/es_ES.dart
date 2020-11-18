@@ -290,8 +290,10 @@ const Map<dynamic, dynamic> ES = {
           "subjectsRegular": "Materias regulares",
           "subjectsToTake": "Materias por cursar",
           "subjectsTaking": "Materias cursando",
+          "subjectsApproved": "Materias aprobadas",
           "optativeTaking": "Materias optativas cursando",
           "optativeRegular": "Materias optativas regulares",
+          "optativeApproved": "Materias optativas aprobadas",
           "average": {
             "notNotesAdded": "Debes cargar tus notas para ver tu promedio",
             "title": "Promedio de notas",

@@ -49,16 +49,25 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     offset = 0;
     _listPublications = widget._listPublications;
     DropdownMenuItem item1 = DropdownMenuItem(
-        value: 0, child: Text(AppText.getInstance().get("institution.forum.filter.mostRecent")));
+        value: 0,
+        child: Text(
+            AppText.getInstance().get("institution.forum.filter.mostRecent")));
     DropdownMenuItem item2 = DropdownMenuItem(
-        value: 1, child: Text(AppText.getInstance().get("institution.forum.filter.older")));
+        value: 1,
+        child:
+            Text(AppText.getInstance().get("institution.forum.filter.older")));
     DropdownMenuItem item3 = DropdownMenuItem(
-        value: 2, child: Text(AppText.getInstance().get("institution.forum.filter.moreComment")));
+        value: 2,
+        child: Text(
+            AppText.getInstance().get("institution.forum.filter.moreComment")));
     DropdownMenuItem item4 = DropdownMenuItem(
-        value: 3, child: Text(AppText.getInstance().get("institution.forum.filter.morePopular")));
+        value: 3,
+        child: Text(
+            AppText.getInstance().get("institution.forum.filter.morePopular")));
     DropdownMenuItem item5 = DropdownMenuItem(
         value: 4,
-        child: Text(AppText.getInstance().get("institution.forum.filter.myPublications")));
+        child: Text(AppText.getInstance()
+            .get("institution.forum.filter.myPublications")));
     items.add(item1);
     items.add(item2);
     items.add(item3);
@@ -71,10 +80,15 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: _buildFloatingActionButton(context),
+      backgroundColor: Colors.transparent,
       body: SymmetricEdgePaddingWidget.horizontal(
         paddingValue: 6,
         child: Column(
-          children: <Widget>[_buildOrderBy(), _buildPublications(), _buildProgressCircle()],
+          children: <Widget>[
+            _buildOrderBy(),
+            _buildPublications(),
+            _buildProgressCircle()
+          ],
         ),
       ),
     );
@@ -123,7 +137,9 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
       value: (this._selected == null) ? dropdownValue : this._selected,
       style: TextStyle(color: Colors.black),
       onChanged: _onChangeDropDown,
-      items: this.items.map<DropdownMenuItem<DropdownMenuItem>>((DropdownMenuItem value) {
+      items: this
+          .items
+          .map<DropdownMenuItem<DropdownMenuItem>>((DropdownMenuItem value) {
         return DropdownMenuItem<DropdownMenuItem>(
           value: value,
           child: value.child,
@@ -205,7 +221,8 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
 
   Widget _buildForumPublicationsList() {
     this._scrollController.addListener(() {
-      if (_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
+      if (_scrollController.position.maxScrollExtent ==
+          _scrollController.position.pixels) {
         if (isLoading == false && noMorePages == false) {
           setState(() {
             isLoading = !isLoading;
@@ -251,7 +268,8 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
   }
 
   void _onFloatingPressed(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context).createNewForumPublicationState();
+    BlocProvider.of<InstitutionForumCubit>(context)
+        .createNewForumPublicationState();
   }
 
   void fetchMorePublications() async {
@@ -260,8 +278,9 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     var forumService = sessionFactory.forumService();
     var programId = await careerService.getCurrentProgram();
     print(widget._filters);
-    List<ForumPublication> forumPublications = await forumService.getForumPublications(
-        programId, this.offset + 10, widget._profile.userId, widget._filters);
+    List<ForumPublication> forumPublications =
+        await forumService.getForumPublications(programId, this.offset + 10,
+            widget._profile.userId, widget._filters);
     if (forumPublications.isNotEmpty) {
       setState(() {
         this.offset = this.offset + 10;
