@@ -106,7 +106,8 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
     return Visibility(
         visible: _alert,
         child: Text(
-          "Ingresá un rango de fechas válido",
+          AppText.getInstance()
+              .get("student.schedule.scratchFormDialog.datesInvalid"),
           style: TextStyle(color: Colors.red, fontSize: 12.0),
         ));
   }
@@ -118,7 +119,7 @@ class _ScratchFormDialogState extends State<ScratchFormDialog> {
           _studentScheduleScratch.beginDate.month);
       DateTime end = new DateTime(_studentScheduleScratch.endDate.year,
           _studentScheduleScratch.endDate.month);
-      if (begin.isBefore(end)) {
+      if (begin.isBefore(end) || begin == end) {
         setState(() {
           _alert = false;
         });

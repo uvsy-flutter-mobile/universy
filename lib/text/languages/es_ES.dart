@@ -163,7 +163,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "forum": {
         "title": "Foro",
-        "subtitle": "Buscá el material que necesités!",
+        "subtitle": "Interactuá con la comunidad Universy",
       }
     }
   },
@@ -202,7 +202,7 @@ const Map<dynamic, dynamic> ES = {
       }
     },
     "subjects": {
-      "optative":"Optativa",
+      "optative": "Optativa",
       "notFound": {
         "title": "¡Bienvenido a Universy!",
         "subtitle": "Para ver tus materias, primero elegí una carrera",
@@ -402,6 +402,7 @@ const Map<dynamic, dynamic> ES = {
         "scratchTitle": "Título",
         "dateFrom": "Desde",
         "dateTo": "Hasta",
+        "datesInvalid": "Ingresá un rango de fechas válido",
       },
       "selectCourseDialog": {
         "alertTitle": "Seleccioná un curso",
