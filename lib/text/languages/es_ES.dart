@@ -13,6 +13,7 @@ const Map<dynamic, dynamic> ES = {
     "input": {
       "user": {
         "notValid": "El e-mail no es válido",
+        "userNotExist": "El usuario ingresado no existe",
         "required": "El e-mail es requerido",
         "message": "Ingresá tu e-mail"
       },

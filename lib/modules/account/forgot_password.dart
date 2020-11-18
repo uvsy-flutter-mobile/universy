@@ -136,7 +136,7 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
 
   void _showUsernameNotExistFlushBar(BuildContext context) {
     FlushBarBroker()
-        .withMessage(_usernameAlreadyExistsMessage())
+        .withMessage(_usernameNotExistsMessage())
         .withIcon(Icon(Icons.contacts, color: Colors.redAccent))
         .show(context);
   }
@@ -148,7 +148,7 @@ class ForgotPasswordWidgetState extends State<ForgotPasswordWidget> {
         .show(context);
   }
 
-  String _usernameAlreadyExistsMessage() => AppText.getInstance().get("login.input.user.notValid");
+  String _usernameNotExistsMessage() => AppText.getInstance().get("login.input.user.userNotExist");
 
   String _defaultErrorMessage() => AppText.getInstance() //
       .get("login.error.unexpectedError");

@@ -145,7 +145,7 @@ class LoginWidgetState extends State<LogInWidget> {
         .show(context);
   }
 
-  String _usernameNotExistsMessage() => AppText.getInstance().get("login.input.user.notValid");
+  String _usernameNotExistsMessage() => AppText.getInstance().get("login.input.user.userNotExist");
 
   String _notAuthorizeMessage() => AppText.getInstance().get("login.error.notAuthorized");
 
