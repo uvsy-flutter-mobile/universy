@@ -4,6 +4,7 @@ import 'package:universy/business/correlatives/validator.dart';
 import 'package:universy/constants/subject_level_color.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/text/formaters/subject.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/inkwell/clipped.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
@@ -38,7 +39,7 @@ class SubjectCardWidget extends StatelessWidget {
               Expanded(child: getColorTag(color), flex: 1),
               Expanded(child: getLogoAndLevel(level, context), flex: 3),
               VerticalDivider(width: 2),
-              Expanded(child: getSubjectName(), flex: 12)
+              Expanded(child: getSubjectName(), flex: 12),
             ],
           ),
         ),
@@ -68,6 +69,7 @@ class SubjectCardWidget extends StatelessWidget {
             ),
           ),
         ),
+        (_subject.isOptative()) ? Text(AppText.getInstance().get("student.subjects.optative"),style: TextStyle(fontSize: 12),):Container()
       ],
     );
   }

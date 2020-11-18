@@ -202,6 +202,7 @@ const Map<dynamic, dynamic> ES = {
       }
     },
     "subjects": {
+      "optative":"Optativa",
       "notFound": {
         "title": "¡Bienvenido a Universy!",
         "subtitle": "Para ver tus materias, primero elegí una carrera",
