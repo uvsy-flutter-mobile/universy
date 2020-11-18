@@ -163,7 +163,7 @@ const Map<dynamic, dynamic> ES = {
       },
       "forum": {
         "title": "Foro",
-        "subtitle": "Interactuá con gente de la comunidad Universy",
+        "subtitle": "Interactuá con la comunidad Universy",
       }
     }
   },
@@ -202,7 +202,7 @@ const Map<dynamic, dynamic> ES = {
       }
     },
     "subjects": {
-      "optative":"Optativa",
+      "optative": "Optativa",
       "notFound": {
         "title": "¡Bienvenido a Universy!",
         "subtitle": "Para ver tus materias, primero elegí una carrera",
