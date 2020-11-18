@@ -9,7 +9,6 @@ class ProfileNotFoundWidget extends StatefulWidget {
 
 class _ProfileNotFoundState extends State<ProfileNotFoundWidget> {
   @override
-
   Widget build(BuildContext context) {
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 90.0,
@@ -18,7 +17,6 @@ class _ProfileNotFoundState extends State<ProfileNotFoundWidget> {
         alignment: AlignmentDirectional.topCenter,
         child: Column(
           children: <Widget>[
-            SizedBox(height: 125.0),
             _buildTitle(),
             SizedBox(height: 50.0),
             _buildSubtitle(),
@@ -30,7 +28,8 @@ class _ProfileNotFoundState extends State<ProfileNotFoundWidget> {
 
   Widget _buildTitle() {
     return Text(
-      AppText.getInstance().get("institution.forum.profileNotFound.errorMessage"),
+      AppText.getInstance()
+          .get("institution.forum.profileNotFound.errorMessage"),
       textAlign: TextAlign.center,
       style: Theme.of(context).primaryTextTheme.headline2,
     );

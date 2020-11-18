@@ -21,6 +21,28 @@ class CareerStateChart extends StatelessWidget {
         subjectByTypeClassifier.classify(_subjects);
     SubjectByStateClassifier subjectByStateClassifier =
         SubjectByStateClassifier();
+    List<Widget> charts = [
+      _buildMandatoryTaking(
+          context, subjectByStateClassifier.classify(subjectByType.mandatory)),
+      _buildMandatoryRegular(
+          context, subjectByStateClassifier.classify(subjectByType.mandatory)),
+      _buildMandatoryToTake(
+          context, subjectByStateClassifier.classify(subjectByType.mandatory)),
+      _buildMandatoryApproved(
+          context, subjectByStateClassifier.classify(subjectByType.mandatory)),
+      SizedBox(height: 10.0),
+      Divider(
+        color: Colors.grey,
+        height: 4.0,
+      ),
+      SizedBox(height: 10.0),
+      _buildOptativeTaking(
+          context, subjectByStateClassifier.classify(subjectByType.optative)),
+      _buildOptativeRegular(
+          context, subjectByStateClassifier.classify(subjectByType.optative)),
+      _buildOptativeApproved(
+          context, subjectByStateClassifier.classify(subjectByType.optative))
+    ];
     return SymmetricEdgePaddingWidget.horizontal(
       paddingValue: 9.0,
       child: Column(
@@ -32,27 +54,15 @@ class CareerStateChart extends StatelessWidget {
                     .get("student.stats.view.charts.titleState"),
                 style: Theme.of(context).primaryTextTheme.headline4,
               )),
-          SizedBox(height: 30.0),
-          _buildMandatoryTaking(context,
-              subjectByStateClassifier.classify(subjectByType.mandatory)),
-          _buildMandatoryRegular(context,
-              subjectByStateClassifier.classify(subjectByType.mandatory)),
-          _buildMandatoryToTake(context,
-              subjectByStateClassifier.classify(subjectByType.mandatory)),
-          _buildMandatoryApproved(context,
-              subjectByStateClassifier.classify(subjectByType.mandatory)),
-          SizedBox(height: 20.0),
-          Divider(
-            color: Colors.grey,
-            height: 4.0,
-          ),
-          SizedBox(height: 10.0),
-          _buildOptativeTaking(context,
-              subjectByStateClassifier.classify(subjectByType.optative)),
-          _buildOptativeRegular(context,
-              subjectByStateClassifier.classify(subjectByType.optative)),
-          _buildOptativeApproved(context,
-              subjectByStateClassifier.classify(subjectByType.optative)),
+          Container(
+            height: MediaQuery.of(context).size.height - 200,
+            child: ListView(
+              controller: ScrollController(),
+              physics: BouncingScrollPhysics(),
+              children: charts.toList(),
+              shrinkWrap: true,
+            ),
+          )
         ],
       ),
     );
@@ -97,7 +107,7 @@ class CareerStateChart extends StatelessWidget {
     List<Subject> subjectsApproved = subjectByStateResult.approved;
     return _buildStateWidget(
         context,
-        Icon(Icons.book),
+        Icon(Icons.done_all),
         AppText.getInstance().get("student.stats.view.charts.subjectsApproved"),
         subjectsApproved.length,
         Colors.amber);
@@ -130,7 +140,7 @@ class CareerStateChart extends StatelessWidget {
     List<Subject> subjectsApproved = subjectByStateResult.approved;
     return _buildStateWidget(
         context,
-        Icon(Icons.book),
+        Icon(Icons.done_all),
         AppText.getInstance().get("student.stats.view.charts.optativeApproved"),
         subjectsApproved.length,
         Colors.amber);
