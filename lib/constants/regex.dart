@@ -24,4 +24,8 @@ abstract class Regex {
 
   // ignore: non_constant_identifier_verification_code max 6 characters
   static final RegExp CODE_MAX_LENGTH = RegExp(r"^[0-9]{6}$");
+
+  static final RegExp URL_DETECT = RegExp(r"^((https?:\/\/)|(www\.))+([\da-z\.-]+)(\.([a-z\s]{2,7}))$");
+  //static final RegExp URL_DETECT = RegExp(r"\b((https?: \/\/)|(www.))\S+/gi");
+
 }

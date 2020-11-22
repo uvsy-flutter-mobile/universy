@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:linkwell/linkwell.dart';
+import 'package:universy/constants/regex.dart';
 import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
@@ -21,18 +23,14 @@ class PublicationDetailWidget extends StatefulWidget {
   final Profile _profile;
 
   PublicationDetailWidget(
-      {Key key,
-      ForumPublication forumPublication,
-      Profile profile,
-      List<Comment> listComments})
+      {Key key, ForumPublication forumPublication, Profile profile, List<Comment> listComments})
       : this._forumPublication = forumPublication,
         this._profile = profile,
         this._listComments = listComments,
         super(key: key);
 
   @override
-  _PublicationDetailWidgetState createState() =>
-      _PublicationDetailWidgetState();
+  _PublicationDetailWidgetState createState() => _PublicationDetailWidgetState();
 }
 
 class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
@@ -42,10 +40,13 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   List<Comment> _listComments;
   final _formKey = GlobalKey<FormState>();
 
+  List<String> urlList = [];
+
   @override
   void initState() {
     _listComments = widget._listComments;
     _newComment = false;
+    _checkUrl();
     super.initState();
   }
 
@@ -119,9 +120,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           SymmetricEdgePaddingWidget.horizontal(
               paddingValue: 10,
               child: Text(
-                "${comments}" +
-                    AppText.getInstance()
-                        .get("institution.forum.publication.comments"),
+                "${comments}" + AppText.getInstance().get("institution.forum.publication.comments"),
                 style: TextStyle(color: Colors.grey, fontSize: 18),
               )),
         ],
@@ -147,18 +146,14 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
                     paddingValue: 5,
                     child: Text(
                       widget._profile.alias,
-                      style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold),
+                      style: TextStyle(color: Colors.deepPurple, fontWeight: FontWeight.bold),
                     )),
                 CustomTextFormField(
                   controller: _newCommentController,
-                  validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(
-                      AppText.getInstance().get(
-                          "institution.forum.publication.errorMessageComment")),
+                  validatorBuilder: NotEmptyTextFormFieldValidatorBuilder(AppText.getInstance()
+                      .get("institution.forum.publication.errorMessageComment")),
                   decorationBuilder: ForumInputNewCommentBuilder(
-                      AppText.getInstance()
-                          .get("institution.forum.publication.hintComment")),
+                      AppText.getInstance().get("institution.forum.publication.hintComment")),
                 ),
               ],
             ),
@@ -220,61 +215,89 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          SymmetricEdgePaddingWidget.vertical(
-            paddingValue: 10,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(flex: 2, child: _buildUserName()),
-                Expanded(flex: 4, child: _buildPublicationTitle()),
-                _buildDate(),
-              ],
-            ),
-          ),
+          _buildPublicationHeader(),
           Divider(),
-          SymmetricEdgePaddingWidget.horizontal(
-            paddingValue: 10,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildPublicationDescription(),
-                Divider(),
-                _buildTags(),
-              ],
-            ),
-          ),
-          SymmetricEdgePaddingWidget.horizontal(
-            paddingValue: 10,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                (widget._forumPublication.idVoteUser == null)
-                    ? IconButton(
-                        icon: Icon(
-                          Icons.thumb_up,
-                          size: 30,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () => _onVote(),
-                      )
-                    : IconButton(
-                        icon: Icon(
-                          Icons.thumb_up,
-                          size: 30,
-                          color: Colors.black,
-                        ),
-                        onPressed: () => _onDeleteVote(),
-                      ),
-                Text(
-                  widget._forumPublication.votes.toString(),
-                  style: TextStyle(fontSize: 23),
+          _buildPublicationBody(),
+          _buildPublicationVotes(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPublicationVotes() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          (widget._forumPublication.idVoteUser == null)
+              ? IconButton(
+                  icon: Icon(
+                    Icons.thumb_up,
+                    size: 30,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () => _onVote(),
+                )
+              : IconButton(
+                  icon: Icon(
+                    Icons.thumb_up,
+                    size: 30,
+                    color: Colors.black,
+                  ),
+                  onPressed: () => _onDeleteVote(),
                 ),
-              ],
-            ),
+          Text(
+            widget._forumPublication.votes.toString(),
+            style: TextStyle(fontSize: 23),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildPublicationBody() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          _buildPublicationDescription(),
+          (urlList.isNotEmpty) ? Divider(): Container(),
+          _buildLinks(),
+          Divider(),
+          _buildTags(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPublicationHeader() {
+    return SymmetricEdgePaddingWidget.vertical(
+      paddingValue: 10,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(flex: 2, child: _buildUserName()),
+          Expanded(flex: 4, child: _buildPublicationTitle()),
+          _buildDate(),
+        ],
+      ),
+    );
+  }
+
+  _buildLinks() {
+    if (urlList.isNotEmpty) {
+      String url = '';
+      int count=1;
+      for (String x in urlList) {
+        url += "\nLink $count:  $x \n";
+        count+=1;
+      }
+      return LinkWell("$url",style: TextStyle(fontSize: 14,color: Colors.black),linkStyle: TextStyle(fontSize: 15,color: Colors.lightBlue,fontStyle: FontStyle.italic),);
+    } else {
+      return Container();
+    }
   }
 
   void _onVote() {
@@ -322,8 +345,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
     return Text(
       this.widget._forumPublication.title,
       textAlign: TextAlign.left,
-      style: TextStyle(
-          color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
+      style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
     );
   }
 
@@ -340,7 +362,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   Widget _buildPublicationDescription() {
     return Text(
       this.widget._forumPublication.description,
-      style: TextStyle(),
+      style: TextStyle(fontSize: 16),
       overflow: TextOverflow.visible,
     );
   }
@@ -384,4 +406,25 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       );
     });
   }
+
+  void _checkUrl() {
+    List<String> list = widget._forumPublication.description.split(" ");
+    var pattern = Regex.URL_DETECT;
+    for (String x in list) {
+      if (pattern.hasMatch(x)) {
+        Iterable<Match> matches = pattern.allMatches(x);
+        urlList.add(matches.first.group(0));
+      }
+    }
+    print(urlList);
+  }
 }
+
+//while (match != null) {
+//const link = textToCheck.substr(match.index, match[0].length);
+//splitText.push(link);
+//startIndex = match.index + match[0].length;
+//match = regex.exec(textToCheck);
+//}
+//return
+//splitText;

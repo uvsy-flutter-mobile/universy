@@ -67,6 +67,7 @@ dependencies:
   flutter_timetable_view: 0.1.0
   calendar_views: 0.5.2
   flutter_colorpicker: 0.3.4
+  linkwell: ^0.1.9
 
   # Libs for state management
   flutter_bloc: 6.0.1

@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:linkwell/linkwell.dart';
+import 'package:universy/constants/regex.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
@@ -12,13 +14,17 @@ class CommentItemWidget extends StatelessWidget {
   final Comment _comment;
   final bool _isOwner;
 
+
   CommentItemWidget({Key key, Comment comment, bool isOwner, ForumPublication forumPublication})
       : this._comment = comment,
         this._isOwner = isOwner,
         super(key: key);
 
+  List<String> urlList=[];
+
   @override
   Widget build(BuildContext context) {
+    _checkUrl();
     if (this._isOwner) {
       return _buildOwnerCommentItem(context);
     } else {
@@ -65,9 +71,39 @@ class CommentItemWidget extends StatelessWidget {
       ),
       elevation: 1,
       child: Column(
-        children: <Widget>[_buildUserName(), _buildDescription(), _buildDateItem(context)],
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[_buildUserName(), _buildDescription(),
+        (urlList.isNotEmpty) ? Divider():Container(),
+        SymmetricEdgePaddingWidget.horizontal(paddingValue: 15,child: _buildLinks()),
+        (urlList.isNotEmpty) ? Divider():Container(),
+        _buildDateItem(context)],
       ),
     );
+  }
+
+  void _checkUrl() {
+    List<String> list = this._comment.content.split(" ");
+    var pattern = Regex.URL_DETECT;
+    for (String x in list) {
+      if (pattern.hasMatch(x)) {
+        Iterable<Match> matches = pattern.allMatches(x);
+        urlList.add(matches.first.group(0));
+      }
+    }
+  }
+
+  Widget _buildLinks() {
+    if (urlList.isNotEmpty) {
+      String url = '';
+      int count=1;
+      for (String x in urlList) {
+        url += "\nLink $count:  $x \n";
+        count+=1;
+      }
+      return LinkWell("$url",style: TextStyle(fontSize: 14,color: Colors.black),linkStyle: TextStyle(fontSize: 15,color: Colors.lightBlue,fontStyle: FontStyle.italic),);
+    } else {
+      return Container();
+    }
   }
 
   Widget _buildDateItem(BuildContext context) {
@@ -125,7 +161,7 @@ class CommentItemWidget extends StatelessWidget {
           Container(
             child: Expanded(
               flex: 3,
-              child: Text(_comment.content),
+              child: Text(_comment.content,style: TextStyle(fontSize: 16),),
             ),
           ),
         ],
