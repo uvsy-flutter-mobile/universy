@@ -513,7 +513,10 @@ const Map<dynamic, dynamic> ES = {
           "saving": "Guardando",
           "saved": "Se guardó tu valoración",
           "coursesNotFound": "No se encuentran comisiones disponibles",
-          "correlativeNotFound": "Sin correlativas"
+          "correlativeNotFound": "Sin correlativas",
+          "pointsElective": "Esta materia suma",
+          "hours": "Horas: ",
+          "points": "Puntos: ",
         },
         "label": {
           "rate": "¿Qué te pareció la materia?",

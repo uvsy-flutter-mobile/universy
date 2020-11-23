@@ -44,18 +44,20 @@ class SubjectBoardModule extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Expanded(child: _buildCourseColumn(subject), flex: 25),
-        Expanded(child: _buildCorrelativesAndPoints(subject), flex: 80),
+        Expanded(child: _buildCourseColumn(subject), flex: 2),
+        Expanded(child: _buildCorrelativesAndPoints(subject), flex: 7),
       ],
     );
   }
 
   Widget _buildCorrelativesAndPoints(InstitutionSubject subject) {
-    return Column(
-      children: <Widget>[
-        subject.isOptative() ? _getHoursAndPoints(subject) : Container(),
-        _getCorrelatives(subject),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          subject.isOptative() ? _getHoursAndPoints(subject) : Container(),
+          _getCorrelatives(subject),
+        ],
+      ),
     );
   }
 
@@ -77,7 +79,7 @@ class SubjectBoardModule extends StatelessWidget {
   Widget _buildTextPointsAndHours(int points, int hours) {
     return Column(
       children: <Widget>[
-        Text("Esta materia te suma"),
+        Text(AppText.getInstance().get("institution.dashboard.subject.info.pointsElective"),style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),),
         _buildTextPoints(points),
         _buildTextHours(hours),
       ],
@@ -86,7 +88,7 @@ class SubjectBoardModule extends StatelessWidget {
 
   Widget _buildTextPoints(int points) {
     if (points != 0) {
-      return Text("Puntos: $points");
+      return Text(AppText.getInstance().get("institution.dashboard.subject.info.points") + points.toString());
     } else {
       return Container();
     }
@@ -94,7 +96,7 @@ class SubjectBoardModule extends StatelessWidget {
 
   Widget _buildTextHours(int hours) {
     if (hours != 0) {
-      return Text("Horas: $hours");
+      return Text(AppText.getInstance().get("institution.dashboard.subject.info.hours") + hours.toString());
     } else {
       return Container();
     }
