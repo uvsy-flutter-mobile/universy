@@ -263,7 +263,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           _buildPublicationDescription(),
-          (urlList.isNotEmpty) ? Divider(): Container(),
+          (urlList.isNotEmpty) ? Divider() : Container(),
           _buildLinks(),
           Divider(),
           _buildTags(),
@@ -289,12 +289,16 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   _buildLinks() {
     if (urlList.isNotEmpty) {
       String url = '';
-      int count=1;
+      int count = 1;
       for (String x in urlList) {
         url += "\nLink $count:  $x \n";
-        count+=1;
+        count += 1;
       }
-      return LinkWell("$url",style: TextStyle(fontSize: 14,color: Colors.black),linkStyle: TextStyle(fontSize: 15,color: Colors.lightBlue,fontStyle: FontStyle.italic),);
+      return LinkWell(
+        "$url",
+        style: TextStyle(fontSize: 14, color: Colors.black),
+        linkStyle: TextStyle(fontSize: 15, color: Colors.lightBlue, fontStyle: FontStyle.italic),
+      );
     } else {
       return Container();
     }
@@ -416,15 +420,5 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         urlList.add(matches.first.group(0));
       }
     }
-    print(urlList);
   }
 }
-
-//while (match != null) {
-//const link = textToCheck.substr(match.index, match[0].length);
-//splitText.push(link);
-//startIndex = match.index + match[0].length;
-//match = regex.exec(textToCheck);
-//}
-//return
-//splitText;
