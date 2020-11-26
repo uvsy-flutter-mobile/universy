@@ -310,6 +310,9 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
       if (_selectedCommission != null) {
         _uploadTags.add(_selectedCommission.name);
       }
+      if(this._uploadTags.isEmpty){
+        this._uploadTags.add("General");
+      }
 
       if (widget._isUpdate == false) {
         BlocProvider.of<InstitutionForumCubit>(context)

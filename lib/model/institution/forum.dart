@@ -157,8 +157,8 @@ class ForumPublicationUpdateRequest extends JsonConvertible {
   @override
   Map<String, dynamic> toJson() {
     return {
-      "title": "${this._title}",
-      "description": "${this._description}",
+      "title": "$_title",
+      "description": "$_description",
       "tags": this.tags,
     };
   }
