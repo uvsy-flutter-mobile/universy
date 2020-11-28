@@ -94,9 +94,10 @@ class CommentItemWidget extends StatelessWidget {
 
   Widget _buildLinks() {
     if (urlList.isNotEmpty) {
+      List<String> distinctUrls = urlList.toSet().toList();
       String url = '';
       int count=1;
-      for (String x in urlList) {
+      for (String x in distinctUrls) {
         url += "\nLink $count:  $x \n";
         count+=1;
       }
