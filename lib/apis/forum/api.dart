@@ -45,6 +45,7 @@ Future<void> updateForumPublication(ForumPublicationUpdateRequest request) {
   var resource = "/publications/${request.idPublication}";
   var path = _createPath(resource);
 
+  print(request.toJson().toString());
   return api.put(
     path,
     payload: request,
