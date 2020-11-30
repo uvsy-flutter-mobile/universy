@@ -53,13 +53,12 @@ class PointsAndHoursChart extends StatelessWidget {
   }
 
   Widget _buildChartLine() {
-    int total = _isHoursChart ? _program.hours : _program.points;
-    double percent = _completed / total;
-    int percentText = (percent * 100).truncate();
+    double totalPercent = _calculatePercent();
+    int percentText = (totalPercent * 100).truncate();
     return AllEdgePaddedWidget(
       padding: 10.0,
       child: LinearPercentIndicator(
-        percent: percent,
+        percent: totalPercent,
         width: 125,
         animation: true,
         lineHeight: 20.0,
@@ -70,6 +69,15 @@ class PointsAndHoursChart extends StatelessWidget {
         progressColor: Colors.lightBlue,
       ),
     );
+  }
+
+  double _calculatePercent() {
+    int total = _isHoursChart ? _program.hours : _program.points;
+    double percent = _completed / total;
+    if (percent > 1.0) {
+      percent = 1.0;
+    }
+    return percent;
   }
 
   Widget _buildChartBody(BuildContext context) {
