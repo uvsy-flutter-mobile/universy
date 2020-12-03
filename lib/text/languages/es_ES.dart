@@ -302,6 +302,8 @@ const Map<dynamic, dynamic> ES = {
         "careerHistory": {
           "title": "Mi historial de carrera",
           "welcomeCard": "Este es el punto de partida de tu carrera",
+          "AllMilestones": "Todas",
+          "LabelFilter": "Mostrar"
         },
       },
     },
