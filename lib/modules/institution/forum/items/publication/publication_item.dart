@@ -7,14 +7,15 @@ import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class PublicationItemWidget extends StatelessWidget {
   final ForumPublication _forumPublication;
   final bool _isOwner;
 
-  PublicationItemWidget(
-      {Key key, ForumPublication forumPublication, bool isOwner})
+  PublicationItemWidget({Key key, ForumPublication forumPublication, bool isOwner})
       : this._forumPublication = forumPublication,
         this._isOwner = isOwner,
         super(key: key);
@@ -34,10 +35,7 @@ class PublicationItemWidget extends StatelessWidget {
       enabled: true,
       actionExtentRatio: 0.20,
       child: _buildNotOwnerPublicationItem(context),
-      secondaryActions: <Widget>[
-        _buildDeleteSlide(context),
-        _buildUpdateSlide(context)
-      ],
+      secondaryActions: <Widget>[_buildDeleteSlide(context), _buildUpdateSlide(context)],
     );
   }
 
@@ -47,6 +45,11 @@ class PublicationItemWidget extends StatelessWidget {
         _onPublicationTap(context);
       },
       child: Card(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: (this._forumPublication.tags.length == 3) ? Colors.red : Colors.transparent),
+          borderRadius: BorderRadius.circular(5),
+        ),
         elevation: 2.5,
         child: SymmetricEdgePaddingWidget.vertical(
           paddingValue: 4,
@@ -93,8 +96,7 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   Future _deletePublication(BuildContext context) async {
-    BlocProvider.of<InstitutionForumCubit>(context)
-        .deleteForumPublication(this._forumPublication);
+    BlocProvider.of<InstitutionForumCubit>(context).deleteForumPublication(this._forumPublication);
   }
 
   Widget _buildRowContent() {
@@ -153,8 +155,7 @@ class PublicationItemWidget extends StatelessWidget {
         ),
         SymmetricEdgePaddingWidget.horizontal(
           paddingValue: 2,
-          child: Text(this._forumPublication.comments.toString(),
-              style: TextStyle(fontSize: 17)),
+          child: Text(this._forumPublication.comments.toString(), style: TextStyle(fontSize: 17)),
         ),
       ],
     );
@@ -165,8 +166,12 @@ class PublicationItemWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         _buildPublicationTitleItem(),
-        _buildPublicationDescriptionItem(),
-        _buildTags(),
+        //(this._forumPublication.isReported)
+        (this._forumPublication.tags.length == 3)
+            ? _buildPublicationReportedDescription()
+            : _buildPublicationDescriptionItem(),
+        //(this._forumPublication.isReported)
+        (this._forumPublication.tags.length == 3) ? Container() : _buildTags(),
       ],
     );
   }
@@ -180,13 +185,21 @@ class PublicationItemWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildPublicationReportedDescription() {
+    return Text(
+      AppText.getInstance().get("institution.forum.publication.reportedPublication"),
+      textAlign: TextAlign.left,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),
+    );
+  }
+
   Widget _buildPublicationTitleItem() {
     return SymmetricEdgePaddingWidget.vertical(
       paddingValue: 2,
       child: Text(this._forumPublication.title,
           textAlign: TextAlign.left,
-          style: TextStyle(
-              color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 16),
           overflow: TextOverflow.ellipsis),
     );
   }
@@ -235,15 +248,31 @@ class PublicationItemWidget extends StatelessWidget {
           alias,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              color: Colors.black,
-              fontWeight: (_isOwner) ? FontWeight.bold : FontWeight.normal),
+              color: Colors.black, fontWeight: (_isOwner) ? FontWeight.bold : FontWeight.normal),
         ),
       ],
     );
   }
 
   void _onPublicationTap(BuildContext context) {
-    BlocProvider.of<InstitutionForumCubit>(context)
-        .viewDetailForumPublicationState(this._forumPublication);
+    if (this._forumPublication.tags.length == 3) {
+      showDialog<bool>(
+            context: context,
+            builder: (context) => ConfirmDialog(
+              title: AppText.getInstance().get("institution.forum.publication.reportedPublication"),
+              content:
+              AppText.getInstance().get("institution.forum.publication.reportedPublicationDescription"),
+              buttons: <Widget>[
+                CancelButton(
+                  onCancel: () => Navigator.of(context).pop(true),
+                )
+              ],
+            ),
+          ) ??
+          false;
+    } else {
+      BlocProvider.of<InstitutionForumCubit>(context)
+          .viewDetailForumPublicationState(this._forumPublication);
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:universy/constants/regex.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
@@ -180,8 +181,10 @@ class CommentItemWidget extends StatelessWidget {
   }
 
   Widget _buildReportedDateComment(BuildContext context) {
-    return SymmetricEdgePaddingWidget.horizontal(paddingValue: 10,
-      child: SymmetricEdgePaddingWidget.vertical(paddingValue: 10,
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: SymmetricEdgePaddingWidget.vertical(
+        paddingValue: 10,
         child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -199,9 +202,8 @@ class CommentItemWidget extends StatelessWidget {
     showDialog<bool>(
           context: context,
           builder: (context) => ConfirmDialog(
-            title: "Reportar Comentario",
-            content:
-                "Está seguro que desea reportar este comentario ? La misma no volverá a visualizarse hasta que el moderador la desbloquee",
+            title: AppText.getInstance().get("institution.forum.comments.reportComment"),
+            content: AppText.getInstance().get("institution.forum.comments.reportConfirmation"),
             buttons: <Widget>[
               SaveButton(
                 onSave: () => {_confirmReport(context)},
@@ -257,8 +259,8 @@ class CommentItemWidget extends StatelessWidget {
             child: Expanded(
               flex: 3,
               child: Text(
-                "Este comentario ha sido reportado",
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 18),
+                AppText.getInstance().get("institution.forum.comments.commentReported"),
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
           ),

@@ -188,7 +188,7 @@ class _NewPublicationWidgetState extends State<NewPublicationWidget> {
                   context: context,
                   builder: (context) => ConfirmDialog(
                     title: AppText.getInstance()
-                        .get("institution.forum.filter.maxTagsLengthTitle"),
+                        .get("institution.forum.publication.maxTagsLengthTitle"),
                     content: AppText.getInstance().get(
                         "institution.forum.filter.maxTagsLengthDescription"),
                     buttons: <Widget>[
