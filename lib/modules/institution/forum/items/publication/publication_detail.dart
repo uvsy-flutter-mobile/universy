@@ -12,6 +12,7 @@ import 'package:universy/modules/institution/forum/items/comments/date_item.dart
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
@@ -230,10 +231,18 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.sms_failed,
+              size: 30,
+              color: Colors.black,
+            ),
+            onPressed: () => _onReportPublication(),
+          ),
           (widget._forumPublication.idVoteUser == null)
               ? IconButton(
                   icon: Icon(
-                    Icons.thumb_up,
+                    Icons.feedback,
                     size: 30,
                     color: Colors.grey,
                   ),
@@ -314,6 +323,33 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       widget._forumPublication.votes = widget._forumPublication.votes + 1;
       widget._forumPublication.idVoteUser = widget._profile.userId;
     });
+  }
+
+  void _onReportPublication() {
+    showDialog<bool>(
+          context: context,
+          builder: (context) => ConfirmDialog(
+            title: "Reportar Publicacion",
+            content:
+                "Está seguro que desea reportar esta publicacion ? La misma no volverá a visualizarse hasta que el moderador la desbloquee",
+            buttons: <Widget>[
+              SaveButton(
+                onSave: _confirmReport,
+              ),
+              CancelButton(
+                onCancel: () => Navigator.of(context).pop(true),
+              )
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  void _confirmReport() {
+    BlocProvider.of<InstitutionForumCubit>(context).reportPublication(
+      widget._forumPublication,
+      widget._profile.userId,
+    );
   }
 
   void _onDeleteVote() {

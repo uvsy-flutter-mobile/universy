@@ -108,6 +108,21 @@ Future<void> addVotePublication(VotePublicationRequest request) {
   );
 }
 
+Future<void> reportPublication(VotePublicationRequest request) {
+  //var resource = "/votes/publications";
+  //var path = _createPath(resource);
+
+  //return api.post(    path,    payload: request,  );
+}
+
+Future<void> reportComment(VotePublicationRequest request) {
+  //var resource = "/votes/publications";
+  //var path = _createPath(resource);
+
+  //return api.post(    path,    payload: request,  );
+}
+
+
 Future<void> addVoteComment(VoteCommentRequest request) {
   var resource = "/votes/comments";
   var path = _createPath(resource);

@@ -173,6 +173,7 @@ class Comment extends JsonConvertible {
   String _content;
   int _votes;
   String _voteId;
+  bool _isReported;
 
   String get idPublication => _idPublication;
 
@@ -189,9 +190,10 @@ class Comment extends JsonConvertible {
   int get votes => _votes;
 
   String get voteId => _voteId;
+  bool get isReported => _isReported;
 
   Comment(this._idPublication, this._idComment, this._userAlias, this._userId,
-      this._date, this._content, this._votes, this._voteId);
+      this._date, this._content, this._votes, this._voteId,this._isReported);
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     int date = json["createdAt"];
@@ -204,7 +206,8 @@ class Comment extends JsonConvertible {
         publicationDate,
         json['content'],
         json['votes'],
-        json['userVoteId']);
+        json['userVoteId'],
+    true);
   }
 
   @override

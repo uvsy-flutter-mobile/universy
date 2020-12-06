@@ -121,6 +121,28 @@ class DefaultForumService implements ForumService {
   }
 
   @override
+  Future<void> reportPublication(String userId, String idPublication) async {
+    VotePublicationRequest request = VotePublicationRequest(userId,idPublication);
+    try {
+      return await forumApi.reportPublication(request);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
+  Future<void> reportComment(String userId, String idComment) async {
+    VotePublicationRequest request = VotePublicationRequest(userId,idComment);
+    try {
+      return await forumApi.reportComment(request);
+    } catch (e) {
+      Log.getLogger().error(e);
+      throw ServiceException();
+    }
+  }
+
+  @override
   Future<void> addVoteComment(String userId, String idComment) async {
     VoteCommentRequest request = VoteCommentRequest(userId,idComment);
     try {
