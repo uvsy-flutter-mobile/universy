@@ -47,7 +47,7 @@ class PublicationItemWidget extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: (this._forumPublication.tags.length == 3) ? Colors.red : Colors.transparent),
+              color: (this._forumPublication.tags.length == 4 && this._isOwner==true) ? Colors.red : Colors.transparent),
           borderRadius: BorderRadius.circular(5),
         ),
         elevation: 2.5,
@@ -167,11 +167,11 @@ class PublicationItemWidget extends StatelessWidget {
       children: <Widget>[
         _buildPublicationTitleItem(),
         //(this._forumPublication.isReported)
-        (this._forumPublication.tags.length == 3)
+        (this._forumPublication.tags.length == 4)
             ? _buildPublicationReportedDescription()
             : _buildPublicationDescriptionItem(),
         //(this._forumPublication.isReported)
-        (this._forumPublication.tags.length == 3) ? Container() : _buildTags(),
+        (this._forumPublication.tags.length == 4) ? Container() : _buildTags(),
       ],
     );
   }
