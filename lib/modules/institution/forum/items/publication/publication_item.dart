@@ -164,7 +164,7 @@ class PublicationItemWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _buildPublicationTitleItem(),
+        (this._forumPublication.tags.length == 4) ?Container():_buildPublicationTitleItem(),
         //(this._forumPublication.isReported)
         (this._forumPublication.tags.length == 4)
             ? _buildPublicationReportedDescription()
