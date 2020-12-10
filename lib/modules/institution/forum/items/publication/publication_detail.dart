@@ -232,7 +232,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         children: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.save,
+              Icons.announcement,
               size: 30,
               color: Colors.black,
             ),
