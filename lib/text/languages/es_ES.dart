@@ -448,7 +448,7 @@ const Map<dynamic, dynamic> ES = {
             "No se encontraron mensajes para esta publicación. ¿Porqué no sos el primero en comentar?",
         "separator": " a las ",
         "reportComment": "Reportar Comentario",
-        "reportConfirmation": "Está seguro que desea reportar este comentario ? La misma no volverá a visualizarse hasta que el moderador la desbloquee",
+        "reportConfirmation": "Está seguro que desea reportar este comentario ? El mismo no volverá a visualizarse hasta que el moderador lo desbloquee.",
         "commentReported":"Este comentario ha sido reportado",
       },
       "filter": {
