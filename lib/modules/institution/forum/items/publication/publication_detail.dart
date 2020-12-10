@@ -12,7 +12,6 @@ import 'package:universy/modules/institution/forum/items/comments/date_item.dart
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
 import 'package:universy/widgets/buttons/uvsy/save.dart';
-import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/formfield/decoration/builder.dart';
 import 'package:universy/widgets/formfield/text/custom.dart';
 import 'package:universy/widgets/formfield/text/validators.dart';
@@ -233,7 +232,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
         children: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.sms_failed,
+              Icons.save,
               size: 30,
               color: Colors.black,
             ),
@@ -242,7 +241,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           (widget._forumPublication.idVoteUser == null)
               ? IconButton(
                   icon: Icon(
-                    Icons.feedback,
+                    Icons.thumb_up,
                     size: 30,
                     color: Colors.grey,
                   ),
@@ -328,11 +327,11 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
   void _onReportPublication() {
     showDialog<bool>(
           context: context,
-          builder: (context) => ConfirmDialog(
-            title: "Reportar Publicacion",
-            content:
-                "Está seguro que desea reportar esta publicacion ? La misma no volverá a visualizarse hasta que el moderador la desbloquee",
-            buttons: <Widget>[
+          builder: (context) => AlertDialog(
+            shape: _buildShapeDialog(),
+            title: Text("Reportar Publicacion",textAlign: TextAlign.center,),
+            content:Text("¿Está seguro que desea reportar esta publicacion ? La misma no volverá a visualizarse hasta que el moderador la desbloquee.",textAlign: TextAlign.center,),
+            actions: <Widget>[
               SaveButton(
                 onSave: _confirmReport,
               ),
@@ -343,6 +342,11 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           ),
         ) ??
         false;
+  }
+
+  ShapeBorder _buildShapeDialog() {
+    return RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(32.0)));
   }
 
   void _confirmReport() {

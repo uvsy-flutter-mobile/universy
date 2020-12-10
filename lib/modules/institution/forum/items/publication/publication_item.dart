@@ -8,7 +8,6 @@ import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
 import 'package:universy/text/text.dart';
 import 'package:universy/widgets/buttons/uvsy/cancel.dart';
-import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class PublicationItemWidget extends StatelessWidget {
@@ -255,14 +254,14 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   void _onPublicationTap(BuildContext context) {
-    if (this._forumPublication.tags.length == 3) {
+    if (this._forumPublication.tags.length == 4) {
       showDialog<bool>(
             context: context,
-            builder: (context) => ConfirmDialog(
-              title: AppText.getInstance().get("institution.forum.publication.reportedPublication"),
-              content:
-              AppText.getInstance().get("institution.forum.publication.reportedPublicationDescription"),
-              buttons: <Widget>[
+            builder: (context) => AlertDialog(
+              shape: _buildShapeDialog(),
+              title: Text(AppText.getInstance().get("institution.forum.publication.reportedPublication"),textAlign: TextAlign.center,),
+                content: Text(AppText.getInstance().get("institution.forum.publication.reportedPublicationDescription"),textAlign: TextAlign.center,),
+              actions: <Widget>[
                 CancelButton(
                   onCancel: () => Navigator.of(context).pop(true),
                 )
@@ -274,5 +273,10 @@ class PublicationItemWidget extends StatelessWidget {
       BlocProvider.of<InstitutionForumCubit>(context)
           .viewDetailForumPublicationState(this._forumPublication);
     }
+  }
+
+  ShapeBorder _buildShapeDialog() {
+    return RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(32.0)));
   }
 }

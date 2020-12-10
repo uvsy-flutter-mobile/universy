@@ -74,7 +74,7 @@ class CommentItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 1,
-        child: (this._comment.isReported)
+        child: (this._comment.votes ==1)
             ? _buildReportedComment(context)
             : _buildNotReportedComment(context));
   }

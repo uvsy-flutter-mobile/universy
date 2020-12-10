@@ -483,7 +483,7 @@ const Map<dynamic, dynamic> ES = {
         "errorMessageComment": "El comentario se encuentra vacío",
         "defaultUser": "Usuario",
         "reportedPublication": "Publicación reportada",
-        "reportedPublicationDescription": "Deberás aguardar a que el moderador desbloquee la publicación",
+        "reportedPublicationDescription": "Deberás aguardar a que el moderador desbloquee la publicación.",
       },
       "publicationNotFound": {
         "errorMessage":
