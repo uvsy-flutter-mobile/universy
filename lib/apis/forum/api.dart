@@ -18,9 +18,11 @@ Future<List<ForumPublication>> getForumPublications(
     "offset": "${offset.toString()}",
     "limit": "15",
     "includeVoteForUserId": "$userId",
-    "sortBy":filters[0],
+    "sortBy": filters[0],
   };
-  if (filters.length>1) {queryParams.putIfAbsent("tags", () => filters[1]);}
+  if (filters.length > 1) {
+    queryParams.putIfAbsent("tags", () => filters[1]);
+  }
 
   var response = await api.getList<ForumPublication>(
     path,
@@ -109,19 +111,24 @@ Future<void> addVotePublication(VotePublicationRequest request) {
 }
 
 Future<void> reportPublication(VotePublicationRequest request) {
-  //var resource = "/votes/publications";
-  //var path = _createPath(resource);
+  var resource = "/reports/publication";
+  var path = _createPath(resource);
 
-  //return api.post(    path,    payload: request,  );
+  return api.post(
+    path,
+    payload: request,
+  );
 }
 
-Future<void> reportComment(VotePublicationRequest request) {
-  //var resource = "/votes/publications";
-  //var path = _createPath(resource);
+Future<void> reportComment(VoteCommentRequest request) {
+  var resource = "/reports/comment";
+  var path = _createPath(resource);
 
-  //return api.post(    path,    payload: request,  );
+  return api.post(
+    path,
+    payload: request,
+  );
 }
-
 
 Future<void> addVoteComment(VoteCommentRequest request) {
   var resource = "/votes/comments";

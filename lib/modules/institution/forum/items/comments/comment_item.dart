@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:linkwell/linkwell.dart';
 import 'package:universy/constants/regex.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
@@ -17,10 +18,12 @@ import 'package:universy/widgets/paddings/edge.dart';
 class CommentItemWidget extends StatelessWidget {
   final Comment _comment;
   final bool _isOwner;
+  final Profile _profile;
 
-  CommentItemWidget({Key key, Comment comment, bool isOwner, ForumPublication forumPublication})
+  CommentItemWidget({Key key, Comment comment, bool isOwner, ForumPublication forumPublication, Profile profile})
       : this._comment = comment,
         this._isOwner = isOwner,
+        this._profile = profile,
         super(key: key);
 
   List<String> urlList = [];
@@ -70,11 +73,11 @@ class CommentItemWidget extends StatelessWidget {
   Widget _buildNotOwnerCommentItem(BuildContext context) {
     return Card(
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: (_comment.votes==2) ? Colors.red : Colors.transparent),
+          side: BorderSide(color: (_comment.isReported) ? Colors.red : Colors.transparent),
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 1,
-        child: (this._comment.votes ==2)
+        child: (_comment.isReported)
             ? _buildReportedComment(context)
             : _buildNotReportedComment(context));
   }
@@ -147,7 +150,7 @@ class CommentItemWidget extends StatelessWidget {
                 size: 23,
                 color: Colors.black,
               ),
-              onPressed: () => {_onReportPublication(context)},
+              onPressed: () => _onReportComment(context),
             ),
             (this._comment.voteId == null)
                 ? IconButton(
@@ -198,18 +201,18 @@ class CommentItemWidget extends StatelessWidget {
     );
   }
 
-  void _onReportPublication(BuildContext context) {
+  void _onReportComment(BuildContext context1) {
     showDialog<bool>(
-          context: context,
+          context: context1,
           builder: (context) => ConfirmDialog(
             title: AppText.getInstance().get("institution.forum.comments.reportComment"),
             content: AppText.getInstance().get("institution.forum.comments.reportConfirmation"),
             buttons: <Widget>[
               SaveButton(
-                onSave: () => {_confirmReport(context)},
+                onSave: () => {_confirmReport(context1)},
               ),
               CancelButton(
-                onCancel: () => Navigator.of(context).pop(true),
+                onCancel: () => Navigator.of(context1).pop(true),
               )
             ],
           ),
@@ -218,7 +221,8 @@ class CommentItemWidget extends StatelessWidget {
   }
 
   void _confirmReport(BuildContext context) {
-    //BlocProvider.of<InstitutionForumCubit>(context).reportComment(      this._comment,    );
+    BlocProvider.of<InstitutionForumCubit>(context).reportComment(this._comment,this._profile.userId);
+    Navigator.pop(context);
   }
 
   void _onVote(BuildContext context) {

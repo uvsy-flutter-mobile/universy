@@ -46,7 +46,9 @@ class PublicationItemWidget extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: (this._forumPublication.tags.length == 4 && this._isOwner==true) ? Colors.red : Colors.transparent),
+              color: (this._forumPublication.tags.length == 4 && this._isOwner == true)
+                  ? Colors.red
+                  : Colors.transparent),
           borderRadius: BorderRadius.circular(5),
         ),
         elevation: 2.5,
@@ -164,13 +166,11 @@ class PublicationItemWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        (this._forumPublication.tags.length == 4) ?Container():_buildPublicationTitleItem(),
-        //(this._forumPublication.isReported)
-        (this._forumPublication.tags.length == 4)
+        (this._forumPublication.isReported) ? Container() : _buildPublicationTitleItem(),
+        (this._forumPublication.isReported)
             ? _buildPublicationReportedDescription()
             : _buildPublicationDescriptionItem(),
-        //(this._forumPublication.isReported)
-        (this._forumPublication.tags.length == 4) ? Container() : _buildTags(),
+        (this._forumPublication.isReported) ? Container() : _buildTags(),
       ],
     );
   }
@@ -254,13 +254,20 @@ class PublicationItemWidget extends StatelessWidget {
   }
 
   void _onPublicationTap(BuildContext context) {
-    if (this._forumPublication.tags.length == 4) {
+    if (this._forumPublication.isReported) {
       showDialog<bool>(
             context: context,
             builder: (context) => AlertDialog(
               shape: _buildShapeDialog(),
-              title: Text(AppText.getInstance().get("institution.forum.publication.reportedPublication"),textAlign: TextAlign.center,),
-                content: Text(AppText.getInstance().get("institution.forum.publication.reportedPublicationDescription"),textAlign: TextAlign.center,),
+              title: Text(
+                AppText.getInstance().get("institution.forum.publication.reportedPublication"),
+                textAlign: TextAlign.center,
+              ),
+              content: Text(
+                AppText.getInstance()
+                    .get("institution.forum.publication.reportedPublicationDescription"),
+                textAlign: TextAlign.center,
+              ),
               actions: <Widget>[
                 CancelButton(
                   onCancel: () => Navigator.of(context).pop(true),
@@ -270,13 +277,13 @@ class PublicationItemWidget extends StatelessWidget {
           ) ??
           false;
     } else {
+      print(this._forumPublication.idPublication);
       BlocProvider.of<InstitutionForumCubit>(context)
           .viewDetailForumPublicationState(this._forumPublication);
     }
   }
 
   ShapeBorder _buildShapeDialog() {
-    return RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(32.0)));
+    return RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(32.0)));
   }
 }

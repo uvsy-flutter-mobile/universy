@@ -78,7 +78,7 @@ class ForumPublication {
         json['userAlias'],
         json['votes'],
         json['userVoteId'],
-        true);
+        json['reported']);
   }
 
   @override
@@ -189,8 +189,9 @@ class Comment extends JsonConvertible {
   factory Comment.fromJson(Map<String, dynamic> json) {
     int date = json["createdAt"];
     DateTime publicationDate = DateTime.fromMillisecondsSinceEpoch(date);
+    bool reported = (json['reported'] == null) ? false : true;
     return Comment(json["publicationId"], json["id"], json["userAlias"], json["userId"],
-        publicationDate, json['content'], json['votes'], json['userVoteId'], true);
+        publicationDate, json['content'], json['votes'], json['userVoteId'], reported);
   }
 
   @override

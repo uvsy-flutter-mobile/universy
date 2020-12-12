@@ -354,6 +354,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       widget._forumPublication,
       widget._profile.userId,
     );
+    Navigator.pop(context);
   }
 
   void _onDeleteVote() {

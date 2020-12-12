@@ -30,6 +30,8 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
       List<Commission> listCommissions = await this._institutionService.getCommissions(programId);
 
       if (forumPublications.isNotEmpty) {
+        print(programId);
+        print(forumPublications[0].idPublication);
         emit(DisplayState(
             forumPublications, profile, institutionSubjects, listCommissions, filters));
       } else {
@@ -125,10 +127,14 @@ class InstitutionForumCubit extends Cubit<InstitutionForumState> {
 
   void reportPublication(ForumPublication forumPublication,String userId,) {
     this._forumService.reportPublication(userId, forumPublication.idPublication);
+    fetchPublications(false,[]);
   }
 
-  void reportComment(Comment comment,String userId,) {
-    this._forumService.reportPublication(userId, comment.idComment);
+  void reportComment(Comment comment,String userId) async{
+    var state = this.state as DisplayForumPublicationDetailState;
+    emit(LoadingState());
+    await this._forumService.reportComment(userId, comment.idComment);
+    viewDetailForumPublicationState(state.forumPublication);
   }
 
   void addVoteComment(String idComment) async {

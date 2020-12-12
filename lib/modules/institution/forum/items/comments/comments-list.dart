@@ -46,7 +46,8 @@ class CommentsListWidget extends StatelessWidget {
     while (this._commentsList.length > x) {
       Comment comment = this._commentsList[x];
       bool isOwner = _determinateOwner(comment);
-      column.add(CommentItemWidget(comment: comment,isOwner:isOwner));
+      print(this._commentsList[x].isReported);
+      column.add(CommentItemWidget(comment: comment,isOwner:isOwner,profile:_profile));
       x = x + 1;
     }
     return Column(children: column);

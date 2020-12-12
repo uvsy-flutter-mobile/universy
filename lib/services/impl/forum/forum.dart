@@ -133,7 +133,7 @@ class DefaultForumService implements ForumService {
 
   @override
   Future<void> reportComment(String userId, String idComment) async {
-    VotePublicationRequest request = VotePublicationRequest(userId,idComment);
+    VoteCommentRequest request = VoteCommentRequest(userId,idComment);
     try {
       return await forumApi.reportComment(request);
     } catch (e) {
