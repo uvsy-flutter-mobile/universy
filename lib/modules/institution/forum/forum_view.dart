@@ -277,7 +277,6 @@ class _InstitutionForumModuleState extends State<ForumViewWidget> {
     var careerService = sessionFactory.studentCareerService();
     var forumService = sessionFactory.forumService();
     var programId = await careerService.getCurrentProgram();
-    print(widget._filters);
     List<ForumPublication> forumPublications =
         await forumService.getForumPublications(programId, this.offset + 10,
             widget._profile.userId, widget._filters);

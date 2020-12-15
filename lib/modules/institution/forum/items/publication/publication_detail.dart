@@ -234,7 +234,7 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
             icon: Icon(
               Icons.announcement,
               size: 30,
-              color: Colors.black,
+              color: Colors.grey,
             ),
             onPressed: () => _onReportPublication(),
           ),
@@ -329,8 +329,8 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
           context: context,
           builder: (context) => AlertDialog(
             shape: _buildShapeDialog(),
-            title: Text("Reportar Publicacion",textAlign: TextAlign.center,),
-            content:Text("¿Está seguro que desea reportar esta publicacion ? La misma no volverá a visualizarse hasta que el moderador la desbloquee.",textAlign: TextAlign.center,),
+            title: Text(AppText.getInstance().get("institution.forum.publication.reportPublication"),textAlign: TextAlign.center,),
+            content:Text(AppText.getInstance().get("institution.forum.comments.reportPublicationConfirmation"),textAlign: TextAlign.center,),
             actions: <Widget>[
               SaveButton(
                 onSave: _confirmReport,

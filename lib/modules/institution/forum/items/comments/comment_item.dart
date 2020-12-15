@@ -73,11 +73,11 @@ class CommentItemWidget extends StatelessWidget {
   Widget _buildNotOwnerCommentItem(BuildContext context) {
     return Card(
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: (_comment.isReported) ? Colors.red : Colors.transparent),
+          side: BorderSide(color: (_comment.reported) ? Colors.red : Colors.transparent),
           borderRadius: BorderRadius.circular(15),
         ),
         elevation: 1,
-        child: (_comment.isReported)
+        child: (_comment.reported)
             ? _buildReportedComment(context)
             : _buildNotReportedComment(context));
   }
@@ -148,7 +148,7 @@ class CommentItemWidget extends StatelessWidget {
               icon: Icon(
                 Icons.announcement,
                 size: 23,
-                color: Colors.black,
+                color: Colors.grey,
               ),
               onPressed: () => _onReportComment(context),
             ),

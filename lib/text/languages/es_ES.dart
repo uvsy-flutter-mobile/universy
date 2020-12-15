@@ -484,6 +484,8 @@ const Map<dynamic, dynamic> ES = {
         "defaultUser": "Usuario",
         "reportedPublication": "Publicación reportada",
         "reportedPublicationDescription": "Deberás aguardar a que el moderador desbloquee la publicación.",
+        "reportPublication": "Reportar Publicacion",
+        "reportPublicationConfirmation": "¿Estás seguro que querés reportar esta publicación? No se va a poder a visualizar hasta que el moderador la desbloquee",
       },
       "publicationNotFound": {
         "errorMessage":
