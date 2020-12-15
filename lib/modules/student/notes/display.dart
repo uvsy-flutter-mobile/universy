@@ -84,6 +84,7 @@ class _NoteItemWidget extends StatelessWidget {
         onTap: () => _handleTap(context),
         child: NoteCardWidget.display(
           titleText: Optional.ofNullable(_note.title).orElse(_noTitle()),
+          updateDate: _note.updatedAt,
           descriptionText:
               Optional.ofNullable(_note.description).orElse(_noDescription()),
           selected: selected,

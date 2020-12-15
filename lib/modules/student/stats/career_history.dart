@@ -5,9 +5,10 @@ import 'package:universy/model/student/subject.dart';
 import 'package:universy/model/subject.dart';
 import 'package:universy/modules/student/stats/career_history_card.dart';
 import 'package:universy/text/text.dart';
+import 'package:universy/util/object.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
-class CareerHistory extends StatelessWidget {
+class CareerHistory extends StatefulWidget {
   final List<Subject> _subjects;
 
   const CareerHistory({Key key, List<Subject> subjects})
@@ -15,25 +16,164 @@ class CareerHistory extends StatelessWidget {
         super(key: key);
 
   @override
+  _CareerHistoryState createState() => _CareerHistoryState();
+}
+
+class _CareerHistoryState extends State<CareerHistory> {
+  List<Subject> _subjects;
+  String _selectedViewOption;
+  List<String> _options = ["Todas", "Regulares", "Aprobadas"];
+  List<HistoricItem> _historicList = [];
+
+  @override
+  void initState() {
+    _subjects =
+        widget._subjects.where((s) => s.isApproved() || s.isRegular()).toList();
+    _selectedViewOption = "Todas";
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _subjects = null;
+    _selectedViewOption = null;
+    _historicList = null;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        Expanded(child: _buildTitle(context), flex: 1),
+        SizedBox(height: 10.0),
         Expanded(
-            child: OnlyEdgePaddedWidget.top(
-              padding: 20.0,
-              child: Text(
-                  AppText.getInstance()
-                      .get("student.stats.view.careerHistory.title"),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).primaryTextTheme.headline4,
-                  overflow: TextOverflow.clip),
-            ),
-            flex: 1),
-        SizedBox(height: 20.0),
+          child: Container(width: 150.0, child: _buildDropDown()),
+          flex: 2,
+        ),
+        Divider(
+          color: Colors.grey,
+          height: 2.0,
+        ),
+        SizedBox(height: 8.0),
         Expanded(child: _buildCareerHistory(), flex: 10)
       ],
+    );
+  }
+
+  Widget _buildDropDown() {
+    return (DropdownButtonFormField(
+      decoration: InputDecoration(
+        labelText: AppText.getInstance()
+            .get("student.stats.view.careerHistory.LabelFilter"),
+      ),
+      onChanged: _onDropDownChange,
+      isExpanded: true,
+      value: _selectedViewOption,
+      items: _options.map<DropdownMenuItem<String>>((String optionToView) {
+        return DropdownMenuItem<String>(
+          value: optionToView,
+          child: Text(
+            optionToView,
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
+      }).toList(),
+    ));
+  }
+
+  void _onDropDownChange(String optionToView) {
+    if (notNull(optionToView)) {
+      switch (optionToView) {
+        case "Todas":
+          return _buildAllMilestones();
+        case "Regulares":
+          return _buildRegularMilestones();
+        case "Aprobadas":
+          return _buildApprovedMilestones();
+        default:
+          return null;
+      }
+    }
+  }
+
+  List _buildInitMilestones() {
+    List milestones = [];
+    List<HistoricItem> historic = [];
+    for (Subject subject in _subjects) {
+      milestones = subject.milestones
+          .where((s) => s.isApproved() || s.isRegular())
+          .toList();
+      for (Milestone milestone in milestones) {
+        HistoricItem milestoneItem = _buildHistoricItem(subject, milestone);
+        historic.add(milestoneItem);
+      }
+    }
+    return historic;
+  }
+
+  HistoricItem _buildHistoricItem(Subject subject, Milestone milestone) {
+    return HistoricItem(subject.name, subject.level, milestone.milestoneType,
+        milestone.isApproved(), milestone.date);
+  }
+
+  void _buildAllMilestones() {
+    List milestones = [];
+    List<HistoricItem> historic = [];
+    for (Subject subject in _subjects) {
+      milestones = subject.milestones
+          .where((s) => s.isApproved() || s.isRegular())
+          .toList();
+      for (Milestone milestone in milestones) {
+        HistoricItem milestoneItem = _buildHistoricItem(subject, milestone);
+        historic.add(milestoneItem);
+      }
+    }
+    setState(() {
+      _historicList = historic;
+    });
+  }
+
+  void _buildRegularMilestones() {
+    List milestones = [];
+    List<HistoricItem> historic = [];
+    for (Subject subject in _subjects) {
+      milestones = subject.milestones.where((s) => s.isRegular()).toList();
+      for (Milestone milestone in milestones) {
+        HistoricItem milestoneItem = _buildHistoricItem(subject, milestone);
+        historic.add(milestoneItem);
+      }
+    }
+    setState(() {
+      _historicList = historic;
+    });
+  }
+
+  void _buildApprovedMilestones() {
+    List milestones = [];
+    List<HistoricItem> historic = [];
+    for (Subject subject in _subjects) {
+      milestones = subject.milestones.where((s) => s.isApproved()).toList();
+      for (Milestone milestone in milestones) {
+        HistoricItem milestoneItem = _buildHistoricItem(subject, milestone);
+        historic.add(milestoneItem);
+      }
+    }
+    setState(() {
+      _historicList = historic;
+    });
+  }
+
+  Widget _buildTitle(BuildContext context) {
+    return OnlyEdgePaddedWidget.top(
+      padding: 20.0,
+      child: Text(
+          AppText.getInstance().get("student.stats.view.careerHistory.title"),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).primaryTextTheme.headline4,
+          overflow: TextOverflow.clip),
     );
   }
 
@@ -45,25 +185,11 @@ class CareerHistory extends StatelessWidget {
   }
 
   List<HistoricItem> _buildCareerHistoric() {
-    List<HistoricItem> historicList = List();
-    List studentSubjects =
-        _subjects.where((s) => s.isApproved() || s.isRegular()).toList();
-    for (Subject subject in studentSubjects) {
-      List regularAndApproved = subject.milestones
-          .where((s) => s.isRegular() || s.isApproved())
-          .toList();
-      for (Milestone milestone in regularAndApproved) {
-        HistoricItem milestoneItem = new HistoricItem(
-            subject.name,
-            subject.level,
-            milestone.milestoneType,
-            milestone.isApproved(),
-            milestone.date);
-        historicList.add(milestoneItem);
-      }
+    if (isNull(_historicList) || _historicList.isEmpty) {
+      _historicList = _buildInitMilestones();
     }
-    historicList.sort((a, b) => a.date.compareTo(b.date));
-    return historicList;
+    _historicList.sort((a, b) => a.date.compareTo(b.date));
+    return _historicList;
   }
 
   Widget _buildCareerHistory() {
@@ -71,12 +197,12 @@ class CareerHistory extends StatelessWidget {
     List<TimelineModel> historicItems = List();
     historicItems.add(_buildWelcomeItem(HistoricItemCard.welcomeMessage()));
     for (HistoricItem historicItem in careerHistoric) {
-      historicItems.add(_buildHistoricItem(historicItem));
+      historicItems.add(_buildHistoricTimelineModel(historicItem));
     }
     return Timeline(children: historicItems, position: TimelinePosition.Left);
   }
 
-  TimelineModel _buildHistoricItem(HistoricItem historicItem) {
+  TimelineModel _buildHistoricTimelineModel(HistoricItem historicItem) {
     HistoricItemCard historicItemCard =
         new HistoricItemCard.createHistoricItem(historicItem);
     return TimelineModel(historicItemCard,

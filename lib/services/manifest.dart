@@ -161,6 +161,10 @@ abstract class ForumService extends Service {
 
   Future<void> addVotePublication(String userId, String idPublication);
 
+  Future<void> reportPublication(String userId, String idPublication);
+
+  Future<void> reportComment(String userId, String idComment);
+
   Future<void> addVoteComment(String userId, String idComment);
 
   Future<void> deleteVote(String idVote, bool isPublication);

@@ -302,6 +302,8 @@ const Map<dynamic, dynamic> ES = {
         "careerHistory": {
           "title": "Mi historial de carrera",
           "welcomeCard": "Este es el punto de partida de tu carrera",
+          "AllMilestones": "Todas",
+          "LabelFilter": "Mostrar"
         },
       },
     },
@@ -445,6 +447,9 @@ const Map<dynamic, dynamic> ES = {
         "commentsNotFound":
             "No se encontraron mensajes para esta publicación. ¿Porqué no sos el primero en comentar?",
         "separator": " a las ",
+        "reportComment": "Reportar Comentario",
+        "reportConfirmation": "Está seguro que desea reportar este comentario ? El mismo no volverá a visualizarse hasta que el moderador lo desbloquee.",
+        "commentReported":"Este comentario ha sido reportado",
       },
       "filter": {
         "filterButton": "Filtrar",
@@ -477,6 +482,10 @@ const Map<dynamic, dynamic> ES = {
         "hintComment": "Escribí un comentario...",
         "errorMessageComment": "El comentario se encuentra vacío",
         "defaultUser": "Usuario",
+        "reportedPublication": "Publicación reportada",
+        "reportedPublicationDescription": "Deberás aguardar a que el moderador desbloquee la publicación.",
+        "reportPublication": "Reportar Publicacion",
+        "reportPublicationConfirmation": "¿Estás seguro que querés reportar esta publicación? No se va a poder a visualizar hasta que el moderador la desbloquee",
       },
       "publicationNotFound": {
         "errorMessage":

@@ -230,6 +230,14 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.announcement,
+              size: 30,
+              color: Colors.grey,
+            ),
+            onPressed: () => _onReportPublication(),
+          ),
           (widget._forumPublication.idVoteUser == null)
               ? IconButton(
                   icon: Icon(
@@ -314,6 +322,39 @@ class _PublicationDetailWidgetState extends State<PublicationDetailWidget> {
       widget._forumPublication.votes = widget._forumPublication.votes + 1;
       widget._forumPublication.idVoteUser = widget._profile.userId;
     });
+  }
+
+  void _onReportPublication() {
+    showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            shape: _buildShapeDialog(),
+            title: Text(AppText.getInstance().get("institution.forum.publication.reportPublication"),textAlign: TextAlign.center,),
+            content:Text(AppText.getInstance().get("institution.forum.comments.reportPublicationConfirmation"),textAlign: TextAlign.center,),
+            actions: <Widget>[
+              SaveButton(
+                onSave: _confirmReport,
+              ),
+              CancelButton(
+                onCancel: () => Navigator.of(context).pop(true),
+              )
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  ShapeBorder _buildShapeDialog() {
+    return RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(32.0)));
+  }
+
+  void _confirmReport() {
+    BlocProvider.of<InstitutionForumCubit>(context).reportPublication(
+      widget._forumPublication,
+      widget._profile.userId,
+    );
+    Navigator.pop(context);
   }
 
   void _onDeleteVote() {

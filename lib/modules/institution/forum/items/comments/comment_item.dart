@@ -4,23 +4,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:linkwell/linkwell.dart';
 import 'package:universy/constants/regex.dart';
+import 'package:universy/model/account/profile.dart';
 import 'package:universy/model/institution/forum.dart';
 import 'package:universy/modules/institution/forum/bloc/cubit.dart';
 import 'package:universy/modules/institution/forum/items/comments/date_item.dart';
+import 'package:universy/text/text.dart';
 import 'package:universy/widgets/async/modal.dart';
+import 'package:universy/widgets/buttons/uvsy/cancel.dart';
+import 'package:universy/widgets/buttons/uvsy/save.dart';
+import 'package:universy/widgets/dialog/confirm.dart';
 import 'package:universy/widgets/paddings/edge.dart';
 
 class CommentItemWidget extends StatelessWidget {
   final Comment _comment;
   final bool _isOwner;
+  final Profile _profile;
 
-
-  CommentItemWidget({Key key, Comment comment, bool isOwner, ForumPublication forumPublication})
+  CommentItemWidget({Key key, Comment comment, bool isOwner, ForumPublication forumPublication, Profile profile})
       : this._comment = comment,
         this._isOwner = isOwner,
+        this._profile = profile,
         super(key: key);
 
-  List<String> urlList=[];
+  List<String> urlList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -66,18 +72,38 @@ class CommentItemWidget extends StatelessWidget {
 
   Widget _buildNotOwnerCommentItem(BuildContext context) {
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15),
-      ),
-      elevation: 1,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[_buildUserName(), _buildDescription(),
-        (urlList.isNotEmpty) ? Divider():Container(),
-        SymmetricEdgePaddingWidget.horizontal(paddingValue: 15,child: _buildLinks()),
-        (urlList.isNotEmpty) ? Divider():Container(),
-        _buildDateItem(context)],
-      ),
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: (_comment.reported) ? Colors.red : Colors.transparent),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 1,
+        child: (_comment.reported)
+            ? _buildReportedComment(context)
+            : _buildNotReportedComment(context));
+  }
+
+  Widget _buildNotReportedComment(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _buildUserName(),
+        _buildDescription(),
+        (urlList.isNotEmpty) ? Divider() : Container(),
+        SymmetricEdgePaddingWidget.horizontal(paddingValue: 15, child: _buildLinks()),
+        (urlList.isNotEmpty) ? Divider() : Container(),
+        _buildNotReportedDateComment(context),
+      ],
+    );
+  }
+
+  Widget _buildReportedComment(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        _buildUserName(),
+        _buildReportDescription(),
+        _buildReportedDateComment(context),
+      ],
     );
   }
 
@@ -96,24 +122,36 @@ class CommentItemWidget extends StatelessWidget {
     if (urlList.isNotEmpty) {
       List<String> distinctUrls = urlList.toSet().toList();
       String url = '';
-      int count=1;
+      int count = 1;
       for (String x in distinctUrls) {
         url += "\nLink $count:  $x \n";
-        count+=1;
+        count += 1;
       }
-      return LinkWell("$url",style: TextStyle(fontSize: 14,color: Colors.black),linkStyle: TextStyle(fontSize: 15,color: Colors.lightBlue,fontStyle: FontStyle.italic),);
+      return LinkWell(
+        "$url",
+        style: TextStyle(fontSize: 14, color: Colors.black),
+        linkStyle: TextStyle(fontSize: 15, color: Colors.lightBlue, fontStyle: FontStyle.italic),
+      );
     } else {
       return Container();
     }
   }
 
-  Widget _buildDateItem(BuildContext context) {
+  Widget _buildNotReportedDateComment(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Row(
           children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.announcement,
+                size: 23,
+                color: Colors.grey,
+              ),
+              onPressed: () => _onReportComment(context),
+            ),
             (this._comment.voteId == null)
                 ? IconButton(
                     icon: Icon(
@@ -145,6 +183,48 @@ class CommentItemWidget extends StatelessWidget {
     );
   }
 
+  Widget _buildReportedDateComment(BuildContext context) {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 10,
+      child: SymmetricEdgePaddingWidget.vertical(
+        paddingValue: 10,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              DateItemWidget(
+                date: _comment.date,
+                withTime: true,
+              )
+            ]),
+      ),
+    );
+  }
+
+  void _onReportComment(BuildContext context1) {
+    showDialog<bool>(
+          context: context1,
+          builder: (context) => ConfirmDialog(
+            title: AppText.getInstance().get("institution.forum.comments.reportComment"),
+            content: AppText.getInstance().get("institution.forum.comments.reportConfirmation"),
+            buttons: <Widget>[
+              SaveButton(
+                onSave: () => {_confirmReport(context1)},
+              ),
+              CancelButton(
+                onCancel: () => Navigator.of(context1).pop(true),
+              )
+            ],
+          ),
+        ) ??
+        false;
+  }
+
+  void _confirmReport(BuildContext context) {
+    BlocProvider.of<InstitutionForumCubit>(context).reportComment(this._comment,this._profile.userId);
+    Navigator.pop(context);
+  }
+
   void _onVote(BuildContext context) {
     BlocProvider.of<InstitutionForumCubit>(context).addVoteComment(this._comment.idComment);
   }
@@ -162,7 +242,30 @@ class CommentItemWidget extends StatelessWidget {
           Container(
             child: Expanded(
               flex: 3,
-              child: Text(_comment.content,style: TextStyle(fontSize: 16),),
+              child: Text(
+                _comment.content,
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReportDescription() {
+    return SymmetricEdgePaddingWidget.horizontal(
+      paddingValue: 15,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            child: Expanded(
+              flex: 3,
+              child: Text(
+                AppText.getInstance().get("institution.forum.comments.commentReported"),
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
           ),
         ],

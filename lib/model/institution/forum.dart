@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:universy/model/institution/subject.dart';
 import 'package:universy/model/json.dart';
 
 class ListForumPublication {
@@ -30,6 +28,7 @@ class ForumPublication {
   String _userAlias;
   int _votes;
   String _idVoteUser;
+  bool _isReported;
 
   String get idPublication => _idPublication;
 
@@ -51,6 +50,8 @@ class ForumPublication {
 
   String get idVoteUser => _idVoteUser;
 
+  bool get isReported => _isReported;
+
   set votes(int value) {
     _votes = value;
   }
@@ -59,21 +60,11 @@ class ForumPublication {
     _idVoteUser = value;
   }
 
-  ForumPublication(
-      this._idPublication,
-      this._title,
-      this._userId,
-      this._description,
-      this._date,
-      this._comments,
-      this._tags,
-      this._userAlias,
-      this._votes,
-      this._idVoteUser);
+  ForumPublication(this._idPublication, this._title, this._userId, this._description, this._date,
+      this._comments, this._tags, this._userAlias, this._votes, this._idVoteUser, this._isReported);
 
   factory ForumPublication.fromJson(Map<String, dynamic> json) {
-    List<String> listTags =
-        (json['tags'] as List ?? []).map((tag) => tag.toString()).toList();
+    List<String> listTags = (json['tags'] as List ?? []).map((tag) => tag.toString()).toList();
     int date = json["createdAt"];
     DateTime publicationDate = DateTime.fromMillisecondsSinceEpoch(date);
     return ForumPublication(
@@ -86,7 +77,8 @@ class ForumPublication {
         listTags,
         json['userAlias'],
         json['votes'],
-        json['userVoteId']);
+        json['userVoteId'],
+        json['reported']);
   }
 
   @override
@@ -121,12 +113,11 @@ class ForumPublicationRequest extends JsonConvertible {
 
   List<String> get tags => _tags;
 
-  ForumPublicationRequest(this._title, this._userId, this._description,
-      this._tags, this._programId);
+  ForumPublicationRequest(
+      this._title, this._userId, this._description, this._tags, this._programId);
 
   @override
   Map<String, dynamic> toJson() {
-    var a = jsonEncode(this.tags);
     return {
       "title": "${this._title}",
       "description": "${this._description}",
@@ -151,8 +142,7 @@ class ForumPublicationUpdateRequest extends JsonConvertible {
 
   List<String> get tags => _tags;
 
-  ForumPublicationUpdateRequest(
-      this._title, this._description, this._tags, this._idPublication);
+  ForumPublicationUpdateRequest(this._title, this._description, this._tags, this._idPublication);
 
   @override
   Map<String, dynamic> toJson() {
@@ -173,6 +163,7 @@ class Comment extends JsonConvertible {
   String _content;
   int _votes;
   String _voteId;
+  bool _reported;
 
   String get idPublication => _idPublication;
 
@@ -190,21 +181,16 @@ class Comment extends JsonConvertible {
 
   String get voteId => _voteId;
 
-  Comment(this._idPublication, this._idComment, this._userAlias, this._userId,
-      this._date, this._content, this._votes, this._voteId);
+  bool get reported => _reported;
+
+  Comment(this._idPublication, this._idComment, this._userAlias, this._userId, this._date,
+      this._content, this._votes, this._voteId, this._reported);
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     int date = json["createdAt"];
     DateTime publicationDate = DateTime.fromMillisecondsSinceEpoch(date);
-    return Comment(
-        json["publicationId"],
-        json["id"],
-        json["userAlias"],
-        json["userId"],
-        publicationDate,
-        json['content'],
-        json['votes'],
-        json['userVoteId']);
+    return Comment(json["publicationId"], json["id"], json["userAlias"], json["userId"],
+        publicationDate, json['content'], json['votes'], json['userVoteId'], json['reported']);
   }
 
   @override
