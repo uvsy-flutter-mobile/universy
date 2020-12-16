@@ -541,7 +541,7 @@ const Map<dynamic, dynamic> ES = {
         "title": "Comisión",
         "info": {
           "saving": "Guardando valoración",
-          "saved": "Se guardó valoración",
+          "saved": "Se guardó la valoración",
         },
         "actions": {
           "rate": "Valorar",
