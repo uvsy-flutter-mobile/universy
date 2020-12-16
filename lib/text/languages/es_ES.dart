@@ -206,7 +206,7 @@ const Map<dynamic, dynamic> ES = {
       "optative": "Optativa",
       "notFound": {
         "title": "¡Bienvenido a Universy!",
-        "subtitle": "Para ver tus materias, primero elegí una carrera",
+        "subtitle": "Para ver las materias, primero elegí una carrera",
         "actions": {
           "addCareer": "Agregá una carrera",
         },
@@ -448,8 +448,9 @@ const Map<dynamic, dynamic> ES = {
             "No se encontraron mensajes para esta publicación. ¿Porqué no sos el primero en comentar?",
         "separator": " a las ",
         "reportComment": "Reportar Comentario",
-        "reportConfirmation": "Está seguro que desea reportar este comentario ? El mismo no volverá a visualizarse hasta que el moderador lo desbloquee.",
-        "commentReported":"Este comentario ha sido reportado",
+        "reportConfirmation":
+            "Está seguro que desea reportar este comentario ? El mismo no volverá a visualizarse hasta que el moderador lo desbloquee.",
+        "commentReported": "Este comentario ha sido reportado",
       },
       "filter": {
         "filterButton": "Filtrar",
@@ -483,9 +484,11 @@ const Map<dynamic, dynamic> ES = {
         "errorMessageComment": "El comentario se encuentra vacío",
         "defaultUser": "Usuario",
         "reportedPublication": "Publicación reportada",
-        "reportedPublicationDescription": "Deberás aguardar a que el moderador desbloquee la publicación.",
+        "reportedPublicationDescription":
+            "Deberás aguardar a que el moderador desbloquee la publicación.",
         "reportPublication": "Reportar Publicacion",
-        "reportPublicationConfirmation": "¿Estás seguro que querés reportar esta publicación? No se va a poder a visualizar hasta que el moderador la desbloquee",
+        "reportPublicationConfirmation":
+            "¿Estás seguro que querés reportar esta publicación? No se va a poder a visualizar hasta que el moderador la desbloquee",
       },
       "publicationNotFound": {
         "errorMessage":
@@ -501,7 +504,7 @@ const Map<dynamic, dynamic> ES = {
     "subjects": {
       "notFound": {
         "title": "¡Bienvenido a Universy!",
-        "subtitle": "Para ver tus materias, primero elegí una carrera",
+        "subtitle": "Para ver las cátedras, primero elegí una carrera",
         "actions": {
           "addCareer": "Elegir carrera",
         },

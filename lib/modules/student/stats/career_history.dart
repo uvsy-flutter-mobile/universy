@@ -22,7 +22,7 @@ class CareerHistory extends StatefulWidget {
 class _CareerHistoryState extends State<CareerHistory> {
   List<Subject> _subjects;
   String _selectedViewOption;
-  List<String> _options = ["Todas", "Regulares", "Aprobadas"];
+  List<String> _options = ["Todas", "Regularizaciones", "Aprobaciones"];
   List<HistoricItem> _historicList = [];
 
   @override
@@ -30,6 +30,7 @@ class _CareerHistoryState extends State<CareerHistory> {
     _subjects =
         widget._subjects.where((s) => s.isApproved() || s.isRegular()).toList();
     _selectedViewOption = "Todas";
+    _historicList = _buildInitMilestones();
     super.initState();
   }
 
@@ -50,7 +51,7 @@ class _CareerHistoryState extends State<CareerHistory> {
         Expanded(child: _buildTitle(context), flex: 1),
         SizedBox(height: 10.0),
         Expanded(
-          child: Container(width: 150.0, child: _buildDropDown()),
+          child: Container(width: 160.0, child: _buildDropDown()),
           flex: 2,
         ),
         Divider(
@@ -89,9 +90,9 @@ class _CareerHistoryState extends State<CareerHistory> {
       switch (optionToView) {
         case "Todas":
           return _buildAllMilestones();
-        case "Regulares":
+        case "Regularizaciones":
           return _buildRegularMilestones();
-        case "Aprobadas":
+        case "Aprobaciones":
           return _buildApprovedMilestones();
         default:
           return null;
@@ -185,19 +186,22 @@ class _CareerHistoryState extends State<CareerHistory> {
   }
 
   List<HistoricItem> _buildCareerHistoric() {
-    if (isNull(_historicList) || _historicList.isEmpty) {
-      _historicList = _buildInitMilestones();
+    if (_historicList.isNotEmpty) {
+      _historicList.sort((a, b) => a.date.compareTo(b.date));
     }
-    _historicList.sort((a, b) => a.date.compareTo(b.date));
     return _historicList;
   }
 
   Widget _buildCareerHistory() {
-    List careerHistoric = _buildCareerHistoric();
-    List<TimelineModel> historicItems = List();
+    List careerHistoric = [];
+    careerHistoric = _buildCareerHistoric();
+    List<TimelineModel> historicItems = [];
+    historicItems = List();
     historicItems.add(_buildWelcomeItem(HistoricItemCard.welcomeMessage()));
-    for (HistoricItem historicItem in careerHistoric) {
-      historicItems.add(_buildHistoricTimelineModel(historicItem));
+    if (careerHistoric.isNotEmpty) {
+      for (HistoricItem historicItem in careerHistoric) {
+        historicItems.add(_buildHistoricTimelineModel(historicItem));
+      }
     }
     return Timeline(children: historicItems, position: TimelinePosition.Left);
   }
