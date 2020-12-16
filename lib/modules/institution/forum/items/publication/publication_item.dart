@@ -46,7 +46,7 @@ class PublicationItemWidget extends StatelessWidget {
       child: Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(
-              color: (this._forumPublication.tags.length == 4 && this._isOwner == true)
+              color: (this._forumPublication.isReported == true && this._isOwner == true)
                   ? Colors.red
                   : Colors.transparent),
           borderRadius: BorderRadius.circular(5),
